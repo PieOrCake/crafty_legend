@@ -1,0 +1,22 @@
+# Build
+build/
+*.dll
+*.lib
+*.o
+*.obj
+
+# Runtime user data (created by the addon)
+**/api_key.json
+**/account_data.json
+**/tp_prices.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

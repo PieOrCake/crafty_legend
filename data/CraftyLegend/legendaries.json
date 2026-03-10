@@ -1,0 +1,1523 @@
+{
+  "legendaries": [
+    {
+      "id": 30698,
+      "name": "The Bifrost",
+      "icon": "",
+      "description": "A legendary staff that shifts through the colors of the rainbow.",
+      "type": "weapon",
+      "weapon_type": "staff",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30699,
+      "name": "Bolt",
+      "icon": "",
+      "description": "A legendary sword that crackles with electrical energy.",
+      "type": "weapon",
+      "weapon_type": "sword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30686,
+      "name": "The Dreamer",
+      "icon": "",
+      "description": "A legendary shortbow that manifests dreams into reality.",
+      "type": "weapon",
+      "weapon_type": "shortbow",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30689,
+      "name": "Eternity",
+      "icon": "",
+      "description": "A legendary greatsword that exists outside of time, forged from Sunrise and Twilight.",
+      "type": "weapon",
+      "weapon_type": "greatsword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30697,
+      "name": "Frenzy",
+      "icon": "",
+      "description": "A legendary harpoon gun that rages with battle fury.",
+      "type": "weapon",
+      "weapon_type": "Speargun",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30684,
+      "name": "Frostfang",
+      "icon": "",
+      "description": "A legendary axe that freezes foes with icy power.",
+      "type": "weapon",
+      "weapon_type": "Axe",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30696,
+      "name": "The Flameseeker Prophecies",
+      "icon": "",
+      "description": "A legendary shield that bears ancient prophecies.",
+      "type": "weapon",
+      "weapon_type": "shield",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30702,
+      "name": "Howler",
+      "icon": "",
+      "description": "A legendary warhorn that howls with primal power.",
+      "type": "weapon",
+      "weapon_type": "warhorn",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30687,
+      "name": "Incinerator",
+      "icon": "",
+      "description": "A legendary dagger that burns with eternal flame.",
+      "type": "weapon",
+      "weapon_type": "dagger",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30690,
+      "name": "The Juggernaut",
+      "icon": "",
+      "description": "A legendary hammer that embodies the power of earth.",
+      "type": "weapon",
+      "weapon_type": "hammer",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30691,
+      "name": "Kamohoali'i Kotaki",
+      "icon": "",
+      "description": "A legendary spear that channels the power of the shark spirit.",
+      "type": "weapon",
+      "weapon_type": "Harpoon",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30701,
+      "name": "Kraitkin",
+      "icon": "",
+      "description": "A legendary trident that commands the power of the deep.",
+      "type": "weapon",
+      "weapon_type": "trident",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30685,
+      "name": "Kudzu",
+      "icon": "",
+      "description": "A legendary longbow that grows with nature's power.",
+      "type": "weapon",
+      "weapon_type": "longbow",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30695,
+      "name": "Meteorlogicus",
+      "icon": "",
+      "description": "A legendary scepter that commands the power of storms.",
+      "type": "weapon",
+      "weapon_type": "scepter",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30688,
+      "name": "The Minstrel",
+      "icon": "",
+      "description": "A legendary focus that inspires allies with its melodies.",
+      "type": "weapon",
+      "weapon_type": "focus",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30692,
+      "name": "The Moot",
+      "icon": "",
+      "description": "A legendary mace that brings peace to the battlefield.",
+      "type": "weapon",
+      "weapon_type": "mace",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30694,
+      "name": "The Predator",
+      "icon": "",
+      "description": "A legendary rifle that hunts its prey with deadly precision.",
+      "type": "weapon",
+      "weapon_type": "rifle",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30693,
+      "name": "Quip",
+      "icon": "",
+      "description": "A legendary pistol that unleashes chaotic energy.",
+      "type": "weapon",
+      "weapon_type": "pistol",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30700,
+      "name": "Rodgort",
+      "icon": "",
+      "description": "A legendary torch that burns with the flame of Rodgort.",
+      "type": "weapon",
+      "weapon_type": "torch",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30703,
+      "name": "Sunrise",
+      "icon": "",
+      "description": "A legendary greatsword that shines with the light of dawn.",
+      "type": "weapon",
+      "weapon_type": "greatsword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 30704,
+      "name": "Twilight",
+      "icon": "",
+      "description": "A legendary greatsword that glows with the darkness of night.",
+      "type": "weapon",
+      "weapon_type": "greatsword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 1
+    },
+    {
+      "id": 76158,
+      "name": "Astralaria",
+      "icon": "https://render.guildwars2.com/file/13B9B1A4A85E775E267D33B6B7FA2D436DEA0BA1/1200325.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "axe",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 87109,
+      "name": "Claw of the Khan-Ur",
+      "icon": "https://render.guildwars2.com/file/0F210EEC4136273F5224D21C28F50B48B4AA5756/1947147.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "dagger",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 79562,
+      "name": "Eureka",
+      "icon": "https://render.guildwars2.com/file/D24F4476F94842E4A8B1F9650DA92A72B590DC02/1493252.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "mace",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 72713,
+      "name": "HOPE",
+      "icon": "https://render.guildwars2.com/file/08DBF1507C304507F618C0C4217E96074E1DD4EB/1204299.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "pistol",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 88576,
+      "name": "Xiuquatl",
+      "icon": "https://render.guildwars2.com/file/B51C094561D8D8DD30B8006E3DB84C149B3F1D90/2038676.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "scepter",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 81957,
+      "name": "The Shining Blade",
+      "icon": "https://render.guildwars2.com/file/DB4197185C097D04569265051654AA121F459A1D/1729769.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "sword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 86098,
+      "name": "The Binding of Ipos",
+      "icon": "https://render.guildwars2.com/file/2C2D04DA23E54103AD4C082033090D78A91BA0EE/1894811.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "focus",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 79802,
+      "name": "Shooshadoo",
+      "icon": "https://render.guildwars2.com/file/7EE6042646197A0B6A0EF21E419645ED175564F5/1601552.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "shield",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 81206,
+      "name": "Flames of War",
+      "icon": "https://render.guildwars2.com/file/0D4399FD6BC23DEF9DB32CBC49029C93682FFBC9/1676632.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "torch",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 87687,
+      "name": "Verdarach",
+      "icon": "https://render.guildwars2.com/file/C791E818A1AC06DB5A61E239C1DB6CDF4F7D69E6/1999146.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "warhorn",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 90551,
+      "name": "Exordium",
+      "icon": "https://render.guildwars2.com/file/DCFDE7D52BBB71A34C06987C1798D5FDDC74B94A/2140499.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "greatsword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 81839,
+      "name": "Sharur",
+      "icon": "https://render.guildwars2.com/file/BD331EF87CDCD678D22D4DF9B509E22C4606AAB6/1729253.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "hammer",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 89854,
+      "name": "Pharus",
+      "icon": "https://render.guildwars2.com/file/D2C5CF133804E1062B08370044E774F854F107F5/2083170.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "longbow",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 80488,
+      "name": "The HMS Divinity",
+      "icon": "https://render.guildwars2.com/file/0E9706D871154B6D43B62CC2969C2108905B9A12/1634157.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "rifle",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 78556,
+      "name": "Chuka and Champawat",
+      "icon": "https://render.guildwars2.com/file/6AA4DCD7BFD228EF1658DE017FF114700260D316/1423757.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "shortbow",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 71383,
+      "name": "Nevermore",
+      "icon": "https://render.guildwars2.com/file/5346383A9218504978A57642D9F664DB6EE9984D/1206505.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "staff",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 2
+    },
+    {
+      "id": 96937,
+      "name": "Aurene's Rending",
+      "icon": "https://render.guildwars2.com/file/7AE67A529B6960E955B8BCDE02343C704D01B7F8/2593577.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "axe",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 96203,
+      "name": "Aurene's Claw",
+      "icon": "https://render.guildwars2.com/file/08769D9DC9EC1A9D94EC19A802DA2106CB0CF741/2594358.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "dagger",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 95612,
+      "name": "Aurene's Tail",
+      "icon": "https://render.guildwars2.com/file/A56EAC4E2EFA53EDC7ECFA7B9131AB32262269FD/2595159.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "mace",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 95808,
+      "name": "Aurene's Argument",
+      "icon": "https://render.guildwars2.com/file/42B56CCE6997200828B06B7652F5DEAC0507A95E/2595779.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "pistol",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 96221,
+      "name": "Aurene's Wisdom",
+      "icon": "https://render.guildwars2.com/file/46C3662430F1CEA74CCB062FD248FC260D129B43/2596776.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "scepter",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 95675,
+      "name": "Aurene's Fang",
+      "icon": "https://render.guildwars2.com/file/CD7F0C7B39AE4529781EE126D7F4B8FDE220FAD3/2596930.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "sword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 97165,
+      "name": "Aurene's Gaze",
+      "icon": "https://render.guildwars2.com/file/3FFD5043BAB5710341A166C900BED8D47409600F/2594769.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "focus",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 96028,
+      "name": "Aurene's Scale",
+      "icon": "https://render.guildwars2.com/file/4F29EC22EA359F2EAA01E2924F9CF0733F3CA2A9/2596828.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "shield",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 97099,
+      "name": "Aurene's Breath",
+      "icon": "https://render.guildwars2.com/file/C3B21B45AA1A47A1470FAFFC1BFD9E426FC29D5C/2596992.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "torch",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 97783,
+      "name": "Aurene's Voice",
+      "icon": "https://render.guildwars2.com/file/480D1EBF4A468059631D11C100406AE1C617C3D4/2597054.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "warhorn",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 96356,
+      "name": "Aurene's Bite",
+      "icon": "https://render.guildwars2.com/file/94D19303448005274F24F433016D2CE1AC54057E/2594851.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "greatsword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 95684,
+      "name": "Aurene's Weight",
+      "icon": "https://render.guildwars2.com/file/C1B30BCF7A11E56066A46004262D01F67094B834/2595011.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "hammer",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 97590,
+      "name": "Aurene's Flight",
+      "icon": "https://render.guildwars2.com/file/F36B984CF57CF901A00526BAC1FA56979904C929/2593844.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "longbow",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 97377,
+      "name": "Aurene's Persuasion",
+      "icon": "https://render.guildwars2.com/file/7309BE5518786B002106F59110E7F9CDFE541969/2596715.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "rifle",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 97077,
+      "name": "Aurene's Wing",
+      "icon": "https://render.guildwars2.com/file/15B9AECD7B05250D4D90721CE67ACBE0E8E3DEA1/2593873.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "shortbow",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 96652,
+      "name": "Aurene's Insight",
+      "icon": "https://render.guildwars2.com/file/3B74D76E0400CC03E17097CE5E0BEFC0325EAD21/2596889.png",
+      "description": "",
+      "type": "weapon",
+      "weapon_type": "staff",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 3
+    },
+    {
+      "id": 101544,
+      "name": "Obsidian Helm",
+      "icon": "",
+      "description": "Legendary helm armor (all weight classes).",
+      "type": "armor",
+      "armor_type": "Helm",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4
+    },
+    {
+      "id": 101551,
+      "name": "Obsidian Shoulders",
+      "icon": "",
+      "description": "Legendary shoulders armor (all weight classes).",
+      "type": "armor",
+      "armor_type": "Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4
+    },
+    {
+      "id": 101521,
+      "name": "Obsidian Chest",
+      "icon": "",
+      "description": "Legendary coat armor (all weight classes).",
+      "type": "armor",
+      "armor_type": "Coat",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4
+    },
+    {
+      "id": 101609,
+      "name": "Obsidian Gloves",
+      "icon": "",
+      "description": "Legendary gloves armor (all weight classes).",
+      "type": "armor",
+      "armor_type": "Gloves",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4
+    },
+    {
+      "id": 101568,
+      "name": "Obsidian Leggings",
+      "icon": "",
+      "description": "Legendary leggings armor (all weight classes).",
+      "type": "armor",
+      "armor_type": "Leggings",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4
+    },
+    {
+      "id": 101460,
+      "name": "Obsidian Boots",
+      "icon": "",
+      "description": "Legendary boots armor (all weight classes).",
+      "type": "armor",
+      "armor_type": "Boots",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4
+    },
+    {
+      "id": 80384,
+      "name": "Perfected Envoy Helm",
+      "icon": "",
+      "description": "Legendary raid helm armor.",
+      "type": "armor",
+      "armor_type": "Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5
+    },
+    {
+      "id": 80435,
+      "name": "Perfected Envoy Shoulders",
+      "icon": "",
+      "description": "Legendary raid shoulders armor.",
+      "type": "armor",
+      "armor_type": "Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5
+    },
+    {
+      "id": 80254,
+      "name": "Perfected Envoy Coat",
+      "icon": "",
+      "description": "Legendary raid coat armor.",
+      "type": "armor",
+      "armor_type": "Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5
+    },
+    {
+      "id": 80205,
+      "name": "Perfected Envoy Gloves",
+      "icon": "",
+      "description": "Legendary raid gloves armor.",
+      "type": "armor",
+      "armor_type": "Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5
+    },
+    {
+      "id": 80277,
+      "name": "Perfected Envoy Leggings",
+      "icon": "",
+      "description": "Legendary raid leggings armor.",
+      "type": "armor",
+      "armor_type": "Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5
+    },
+    {
+      "id": 80557,
+      "name": "Perfected Envoy Boots",
+      "icon": "",
+      "description": "Legendary raid boots armor.",
+      "type": "armor",
+      "armor_type": "Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5
+    },
+    {
+      "id": 83921,
+      "name": "Ardent Glorious Plate Helm",
+      "icon": "",
+      "description": "Legendary PvP helm armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 83127,
+      "name": "Ardent Glorious Pauldrons",
+      "icon": "",
+      "description": "Legendary PvP shoulders armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 83348,
+      "name": "Ardent Glorious Breastplate",
+      "icon": "",
+      "description": "Legendary PvP coat armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 82465,
+      "name": "Ardent Glorious Gauntlets",
+      "icon": "",
+      "description": "Legendary PvP gloves armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 83323,
+      "name": "Ardent Glorious Legplates",
+      "icon": "",
+      "description": "Legendary PvP leggings armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 84655,
+      "name": "Ardent Glorious Wargreaves",
+      "icon": "",
+      "description": "Legendary PvP boots armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 84643,
+      "name": "Ardent Glorious Cap",
+      "icon": "",
+      "description": "Legendary PvP helm armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 83929,
+      "name": "Ardent Glorious Shoulderguards",
+      "icon": "",
+      "description": "Legendary PvP shoulders armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 82670,
+      "name": "Ardent Glorious Brigandine",
+      "icon": "",
+      "description": "Legendary PvP coat armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 82245,
+      "name": "Ardent Glorious Wristplates",
+      "icon": "",
+      "description": "Legendary PvP gloves armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 82512,
+      "name": "Ardent Glorious Legguards",
+      "icon": "",
+      "description": "Legendary PvP leggings armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 82214,
+      "name": "Ardent Glorious Shinplates",
+      "icon": "",
+      "description": "Legendary PvP boots armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 84633,
+      "name": "Ardent Glorious Crown",
+      "icon": "",
+      "description": "Legendary PvP helm armor (light).",
+      "type": "armor",
+      "armor_type": "Light Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 83595,
+      "name": "Ardent Glorious Epaulets",
+      "icon": "",
+      "description": "Legendary PvP shoulders armor (light).",
+      "type": "armor",
+      "armor_type": "Light Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 83113,
+      "name": "Ardent Glorious Raiment",
+      "icon": "",
+      "description": "Legendary PvP coat armor (light).",
+      "type": "armor",
+      "armor_type": "Light Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 83162,
+      "name": "Ardent Glorious Armguards",
+      "icon": "",
+      "description": "Legendary PvP gloves armor (light).",
+      "type": "armor",
+      "armor_type": "Light Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 84546,
+      "name": "Ardent Glorious Leggings",
+      "icon": "",
+      "description": "Legendary PvP leggings armor (light).",
+      "type": "armor",
+      "armor_type": "Light Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 82519,
+      "name": "Ardent Glorious Footgear",
+      "icon": "",
+      "description": "Legendary PvP boots armor (light).",
+      "type": "armor",
+      "armor_type": "Light Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 6
+    },
+    {
+      "id": 84176,
+      "name": "Triumphant Hero's Warhelm",
+      "icon": "",
+      "description": "Legendary WvW helm armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82963,
+      "name": "Triumphant Hero's Pauldrons",
+      "icon": "",
+      "description": "Legendary WvW shoulders armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 83394,
+      "name": "Triumphant Hero's Breastplate",
+      "icon": "",
+      "description": "Legendary WvW coat armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82456,
+      "name": "Triumphant Hero's Gauntlets",
+      "icon": "",
+      "description": "Legendary WvW gloves armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82196,
+      "name": "Triumphant Hero's Legplates",
+      "icon": "",
+      "description": "Legendary WvW leggings armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82801,
+      "name": "Triumphant Hero's Wargreaves",
+      "icon": "",
+      "description": "Legendary WvW boots armor (heavy).",
+      "type": "armor",
+      "armor_type": "Heavy Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82437,
+      "name": "Triumphant Hero's Faceguard",
+      "icon": "",
+      "description": "Legendary WvW helm armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82994,
+      "name": "Triumphant Hero's Shoulderguards",
+      "icon": "",
+      "description": "Legendary WvW shoulders armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 84578,
+      "name": "Triumphant Hero's Brigandine",
+      "icon": "",
+      "description": "Legendary WvW coat armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 84110,
+      "name": "Triumphant Hero's Wristplates",
+      "icon": "",
+      "description": "Legendary WvW gloves armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82903,
+      "name": "Triumphant Hero's Legguards",
+      "icon": "",
+      "description": "Legendary WvW leggings armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82093,
+      "name": "Triumphant Hero's Shinplates",
+      "icon": "",
+      "description": "Legendary WvW boots armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82902,
+      "name": "Triumphant Hero's Masque",
+      "icon": "",
+      "description": "Legendary WvW helm armor (light).",
+      "type": "armor",
+      "armor_type": "Light Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 82173,
+      "name": "Triumphant Hero's Epaulets",
+      "icon": "",
+      "description": "Legendary WvW shoulders armor (light).",
+      "type": "armor",
+      "armor_type": "Light Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 83036,
+      "name": "Triumphant Hero's Raiment",
+      "icon": "",
+      "description": "Legendary WvW coat armor (light).",
+      "type": "armor",
+      "armor_type": "Light Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 84629,
+      "name": "Triumphant Hero's Armguards",
+      "icon": "",
+      "description": "Legendary WvW gloves armor (light).",
+      "type": "armor",
+      "armor_type": "Light Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 83497,
+      "name": "Triumphant Hero's Leggings",
+      "icon": "",
+      "description": "Legendary WvW leggings armor (light).",
+      "type": "armor",
+      "armor_type": "Light Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 83289,
+      "name": "Triumphant Hero's Footgear",
+      "icon": "",
+      "description": "Legendary WvW boots armor (light).",
+      "type": "armor",
+      "armor_type": "Light Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 7
+    },
+    {
+      "id": 81908,
+      "name": "Aurora",
+      "icon": "",
+      "description": "Legendary accessory (LWS3).",
+      "type": "trinket",
+      "trinket_type": "Accessory",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 8
+    },
+    {
+      "id": 91048,
+      "name": "Vision",
+      "icon": "",
+      "description": "Legendary accessory (LWS4).",
+      "type": "trinket",
+      "trinket_type": "Accessory",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 8
+    },
+    {
+      "id": 91234,
+      "name": "Coalescence",
+      "icon": "",
+      "description": "Legendary ring (Raids).",
+      "type": "trinket",
+      "trinket_type": "Ring",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 9
+    },
+    {
+      "id": 92991,
+      "name": "Transcendence",
+      "icon": "",
+      "description": "Legendary amulet (PvP).",
+      "type": "trinket",
+      "trinket_type": "Amulet",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 10
+    },
+    {
+      "id": 93105,
+      "name": "Conflux",
+      "icon": "",
+      "description": "Legendary ring (WvW).",
+      "type": "trinket",
+      "trinket_type": "Ring",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 11
+    },
+    {
+      "id": 95380,
+      "name": "Prismatic Champion's Regalia",
+      "icon": "",
+      "description": "Legendary amulet (Achievement).",
+      "type": "trinket",
+      "trinket_type": "Amulet",
+      "binding": "account",
+      "acquisition": [
+        "achievement"
+      ],
+      "generation": 12
+    },
+    {
+      "id": 107022,
+      "name": "Endless Summer",
+      "icon": "",
+      "description": "Legendary ring (VoE).",
+      "type": "trinket",
+      "trinket_type": "Ring",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 13
+    },
+    {
+      "id": 74155,
+      "name": "Ad Infinitum",
+      "icon": "",
+      "description": "Legendary backpiece (Fractals).",
+      "type": "back",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 14,
+      "back_type": "Backpiece"
+    },
+    {
+      "id": 77474,
+      "name": "The Ascension",
+      "icon": "",
+      "description": "Legendary backpiece (PvP).",
+      "type": "back",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 14,
+      "back_type": "Backpiece"
+    },
+    {
+      "id": 81462,
+      "name": "Warbringer",
+      "icon": "",
+      "description": "Legendary backpiece (WvW).",
+      "type": "back",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 14,
+      "back_type": "Backpiece"
+    },
+    {
+      "id": 104857,
+      "name": "Orrax Manifested",
+      "icon": "",
+      "description": "Legendary backpiece (JW).",
+      "type": "back",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 14,
+      "back_type": "Backpiece"
+    },
+    {
+      "id": 103815,
+      "name": "Klobjarne Geirr",
+      "icon": "",
+      "description": "Legendary spear (JW).",
+      "type": "weapon",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 15,
+      "weapon_type": "Spear"
+    },
+    {
+      "id": 100153,
+      "name": "Legendary Relic",
+      "icon": "",
+      "description": "Legendary relic (Fractals/SotO).",
+      "type": "trinket",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 16,
+      "trinket_type": "Relic"
+    },
+    {
+      "id": 91536,
+      "name": "Legendary Rune",
+      "icon": "",
+      "description": "Legendary Rune - can take on the properties of any superior rune.",
+      "type": "upgrade",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 17
+    },
+    {
+      "id": 91505,
+      "name": "Legendary Sigil",
+      "icon": "",
+      "description": "Legendary Sigil - can take on the properties of any superior sigil.",
+      "type": "upgrade",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 18
+    },
+    {
+      "id": 105497,
+      "name": "Aetheric Anchor",
+      "icon": "",
+      "description": "Legendary container (VoE). Contains Ancora Bellum (Spear) and Ancora Pax (Staff).",
+      "type": "weapon",
+      "weapon_type": "Spear/Staff",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 15
+    }
+  ]
+}

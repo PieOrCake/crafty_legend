@@ -1,0 +1,154 @@
+{
+  "currencies": [
+    {
+      "id": 1,
+      "name": "Karma",
+      "description": "Earned by completing events, hearts, and dynamic events throughout Tyria"
+    },
+    {
+      "id": 2,
+      "name": "Coin",
+      "description": "Primary currency used for most transactions with vendors and trading post"
+    },
+    {
+      "id": 3,
+      "name": "Laurel",
+      "description": "Earned from daily and monthly achievements, used to purchase special items"
+    },
+    {
+      "id": 4,
+      "name": "Spirit Shard",
+      "description": "Currency obtained from spirit shard nodes and various activities"
+    },
+    {
+      "id": 5,
+      "name": "Guild Commendation",
+      "description": "Earned through guild missions and activities, used for guild upgrades"
+    },
+    {
+      "id": 7,
+      "name": "Badge of Honor",
+      "description": "Earned in World vs World, used to purchase WvW gear and items"
+    },
+    {
+      "id": 9,
+      "name": "Fractal Relic",
+      "description": "Basic fractal currency earned from completing fractal dungeons"
+    },
+    {
+      "id": 10,
+      "name": "Geode",
+      "description": "Currency earned from defeating bosses in the Crystal Oasis fractal"
+    },
+    {
+      "id": 11,
+      "name": "Unbound Magic",
+      "description": "Earned from various activities, used to purchase magic-related items"
+    },
+    {
+      "id": 12,
+      "name": "Volatile Magic",
+      "description": "Earned in Heart of Thorns zones, used for special purchases"
+    },
+    {
+      "id": 13,
+      "name": "Trade Contract",
+      "description": "Earned from trading contracts, used for specialized crafting materials"
+    },
+    {
+      "id": 15,
+      "name": "Bandit Crest",
+      "description": "Earned in Heart of Thorns bandit-related activities"
+    },
+    {
+      "id": 16,
+      "name": "Essence of Loyalty",
+      "description": "Earned from completing adventures and special activities"
+    },
+    {
+      "id": 18,
+      "name": "Elder Crystal",
+      "description": "Currency from Crystal Oasis fractal and related activities"
+    },
+    {
+      "id": 20,
+      "name": "Airship Part",
+      "description": "Currency earned in Thunderhead Peaks for airship construction"
+    },
+    {
+      "id": 21,
+      "name": "Inscribed Shard",
+      "description": "Currency from Elon Riverlands and related activities"
+    },
+    {
+      "id": 22,
+      "name": "Crystalline Ingot",
+      "description": "Currency from Domain of Istan and related activities"
+    },
+    {
+      "id": 23,
+      "name": "Karmic Retribution",
+      "description": "Currency from Jahai Bluffs and related activities"
+    },
+    {
+      "id": 24,
+      "name": "Frostbitten Soul",
+      "description": "Currency from Boreal Station and related activities"
+    },
+    {
+      "id": 25,
+      "name": "Bounty Ticket",
+      "description": "Earned from completing bounty hunts in various zones"
+    },
+    {
+      "id": 28,
+      "name": "Skirmish Claim Ticket",
+      "description": "Earned from World vs World skirmishes for special rewards"
+    },
+    {
+      "id": 32,
+      "name": "Transmutation Charge",
+      "description": "Used to change the appearance of equipment"
+    },
+    {
+      "id": 33,
+      "name": "Black Lion Claim Ticket",
+      "description": "Earned from Black Lion Chest rewards, used for special purchases"
+    },
+    {
+      "id": 34,
+      "name": "Lucky Coin",
+      "description": "Currency from various lucky activities and events"
+    },
+    {
+      "id": 35,
+      "name": "Writ of Competitive Success",
+      "description": "Earned from Player vs Player achievements"
+    },
+    {
+      "id": 39,
+      "name": "Dragonite Ore",
+      "description": "Mined from rich dragonite nodes, used for ascended crafting"
+    },
+    {
+      "id": 40,
+      "name": "Empyreal Fragment",
+      "description": "Gathered from special nodes, used for ascended crafting"
+    },
+    {
+      "id": 45,
+      "name": "Spirit Plasm",
+      "description": "Currency from spirit-related activities"
+    },
+    {
+      "id": 46,
+      "name": "Hall of Monuments Reward",
+      "description": "Rewards from Guild Wars 1 achievements transferred to Guild Wars 2"
+    },
+    {
+      "id": 47,
+      "name": "Lump of Mistium",
+      "description": "Currency from The Mist War activities"
+    }
+  ]
+}
