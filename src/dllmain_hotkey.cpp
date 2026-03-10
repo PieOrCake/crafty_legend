@@ -777,28 +777,35 @@ void AddonRender() {
                 if (anyBusy) ImGui::PopStyleVar();
 
                 // Status message to the right (only one active at a time)
-                ImGui::SameLine();
                 if (fetching) {
+                    ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s",
                         CraftyLegend::GW2API::GetFetchStatusMessage().c_str());
                 } else if (priceFetching) {
+                    ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s",
                         CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
                 } else if (fetchStatus == CraftyLegend::FetchStatus::Success) {
+                    ImGui::SameLine();
                     ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "%s",
                         CraftyLegend::GW2API::GetFetchStatusMessage().c_str());
                 } else if (fetchStatus == CraftyLegend::FetchStatus::Error) {
+                    ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s",
                         CraftyLegend::GW2API::GetFetchStatusMessage().c_str());
                 } else if (priceFetchStatus == CraftyLegend::FetchStatus::Success) {
+                    ImGui::SameLine();
                     ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "%s",
                         CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
                 } else if (priceFetchStatus == CraftyLegend::FetchStatus::Error) {
+                    ImGui::SameLine();
                     ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s",
                         CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
                 } else if (CraftyLegend::GW2API::HasAccountData()) {
+                    ImGui::SameLine();
                     ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "(cached data loaded)");
                 } else if (CraftyLegend::GW2API::HasPriceData()) {
+                    ImGui::SameLine();
                     ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "(cached prices loaded)");
                 }
             }
