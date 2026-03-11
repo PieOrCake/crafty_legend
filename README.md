@@ -6,6 +6,14 @@ A Guild Wars 2 addon for [Raidcore Nexus](https://raidcore.gg/Nexus) that provid
 
 This addon has been 100% created in [Windsurf](https://windsurf.com/) using Claude. I understand that some folks have a moral, financial or political objection to creating software using an LLM. I just wanted to make a useful tool for the GW2 community, and this was the only way I could do it.
 
+## Screenshots
+
+### Crafting Tree
+<img src="screenshots/main_ui.png" width="800" alt="Crafting tree with Miller column navigation, item icons, rarity borders, progress bars, and coin icons">
+
+### Shopping List
+<img src="screenshots/shopping_list.png" width="500" alt="Aggregated shopping list with TP prices and vendor costs">
+
 ## Features
 
 - **117 legendaries** with complete crafting trees

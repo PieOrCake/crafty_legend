@@ -1286,7 +1286,11 @@ void AddonRender() {
                     std::string subtypeSuffix = subtype.empty() ? "" : " (" + subtype + ")";
                     std::string lbl = leg.name + subtypeSuffix + " >";
                     ImVec2 itemPos = ImGui::GetCursorScreenPos();
-                    if (ImGui::Selectable(lbl.c_str(), isSel, 0, ImVec2(0, ICON_SIZE))) {
+                    float selH = g_ShowItemIcons ? ICON_SIZE : 0;
+                    if (g_ShowItemIcons) {
+                        ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.0f, 0.5f));
+                    }
+                    if (ImGui::Selectable(lbl.c_str(), isSel, 0, ImVec2(0, selH))) {
                         if (g_Columns.empty()) { g_Columns.resize(1); g_Columns[0].title = "Legendary Items"; }
                         g_Columns[0].selected_index = static_cast<int>(i);
                         try {
@@ -1298,9 +1302,13 @@ void AddonRender() {
                             g_Prerequisites = CraftyLegend::DataManager::GetPrerequisites(leg.id);
                         } catch (...) {}
                     }
+                    if (g_ShowItemIcons) {
+                        ImGui::PopStyleVar();
+                    }
                     if (!subtypeSuffix.empty()) {
                         float nameW = ImGui::CalcTextSize(leg.name.c_str()).x;
-                        ImVec2 subtypePos(itemPos.x + nameW, itemPos.y);
+                        float textVOff = g_ShowItemIcons ? (ICON_SIZE - ImGui::GetTextLineHeight()) * 0.5f : 0.0f;
+                        ImVec2 subtypePos(itemPos.x + nameW, itemPos.y + textVOff);
                         ImGui::GetWindowDrawList()->AddText(subtypePos, ImGui::ColorConvertFloat4ToU32(subtypeColor), subtypeSuffix.c_str());
                     }
                 }
@@ -1416,6 +1424,7 @@ void AddonRender() {
                     for (size_t i = 0; i < colData.materials.size(); i++) {
                         const auto& mat = colData.materials[i];
                         float rowBaseX = ImGui::GetCursorPosX();
+                        float rowBaseY = ImGui::GetCursorPosY();
 
                         // Row dimensions
                         ImVec2 rowPos = ImGui::GetCursorScreenPos();
@@ -1452,15 +1461,20 @@ void AddonRender() {
                             }
                         }
 
-                        // Render price (right-aligned within maxPriceW)
+                        // Render price (right-aligned within maxPriceW, vertically centered)
                         int totalPrice = GetMaterialTotalPrice(mat);
                         if (maxPriceW > 0.0f) {
                             if (totalPrice > 0) {
                                 float thisPW = CalcPriceWidth(totalPrice);
                                 float padLeft = maxPriceW - thisPW;
                                 if (padLeft > 0) ImGui::SetCursorPosX(rowBaseX + padLeft);
+                                if (g_ShowItemIcons) {
+                                    float priceVOff = (rowH - ImGui::GetTextLineHeight()) * 0.5f;
+                                    ImGui::SetCursorPosY(rowBaseY + priceVOff);
+                                }
                                 RenderPrice(totalPrice);
                                 ImGui::SameLine(0, 0);
+                                ImGui::SetCursorPosY(rowBaseY); // reset Y so icon isn't pushed down
                             }
                         }
 
@@ -1570,9 +1584,13 @@ void AddonRender() {
                             ImGui::PushStyleColor(ImGuiCol_Text, readyColor);
                         }
 
-                        // Label at fixed position
+                        // Label at fixed position, full-height selectable with centered text
                         ImGui::SetCursorPosX(rowBaseX + labelStartX);
-                        if (ImGui::Selectable(label.c_str(), isSel, 0, ImVec2(selectW, 0))) {
+                        ImGui::SetCursorPosY(rowBaseY); // align to row top
+                        if (g_ShowItemIcons) {
+                            ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.0f, 0.5f));
+                        }
+                        if (ImGui::Selectable(label.c_str(), isSel, 0, ImVec2(selectW, rowH))) {
                             CraftyLegend::DataManager::SetSelectedMaterial(col, static_cast<int>(i));
                             if (mat.item_id != 0) {
                                 try {
@@ -1591,6 +1609,9 @@ void AddonRender() {
                             g_ScrollStartX = g_PreClickScrollX;
                             g_ScrollToEnd = true;
                             g_ScrollAnimating = false;
+                        }
+                        if (g_ShowItemIcons) {
+                            ImGui::PopStyleVar();
                         }
                         if (isComplete || isReady) {
                             ImGui::PopStyleColor();
