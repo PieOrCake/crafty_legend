@@ -241,6 +241,27 @@ namespace CraftyLegend {
                 methods.push_back(CreateAcquisitionMethod(method, &item));
             }
             
+            // WvW vendor items: add vendor method for items with only "wvw" acquisition
+            auto addWvWVendor = [&](uint32_t id, const char* name, const char* ticketCost, const char* badgeCost) {
+                if (item.id == id) {
+                    AcquisitionMethod v;
+                    v.method = "vendor";
+                    v.display_name = std::string("Vendor - Skirmish Supervisor");
+                    v.description = "Purchased from WvW Skirmish Supervisor";
+                    v.vendor_name = "Skirmish Supervisor";
+                    v.vendor_location = "WvW";
+                    v.purchase_requirements = {
+                        {"WvW Skirmish Claim Ticket", ticketCost},
+                        {"Badge of Honor", badgeCost}
+                    };
+                    methods.push_back(v);
+                }
+            };
+            addWvWVendor(81455, "Recruit's Wings of War", "175", "35");
+            addWvWVendor(81356, "Soldier's Wings of War", "350", "75");
+            addWvWVendor(81288, "General's Wings of War", "525", "150");
+            addWvWVendor(81294, "Commander's Wings of War", "700", "350");
+
             // Items sold by multiple vendors: replace single vendor with specific options
             if (item.id == 80058) { // Mist Band (Infused)
                 methods.erase(std::remove_if(methods.begin(), methods.end(),
