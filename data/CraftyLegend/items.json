@@ -3,733 +3,796 @@
     {
       "id": "9443",
       "name": "Superior Sharpening Stone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/91AC9F70D30C5E3E22635DF4F30CAFA1F6F803A0/219361.png",
       "description": "",
       "type": "consumable",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "9461",
       "name": "Master Maintenance Oil",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BA57FF7A052FFE37669F97A815BD28089FCFF0AD/219367.png",
       "description": "",
       "type": "consumable",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "29178",
       "name": "The Lover",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/044C67CBFC9F5151BAFDE625349238DCD19FE248/1200924.png",
       "description": "A shortbow that manifests dreams into reality.",
       "type": "weapon",
       "weapon_type": "shortbow",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29185",
       "name": "Dusk",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6BE1D2BE3BAE4A9B08CF6EB1AFFFA4F20D7F9091/1202492.png",
       "description": "A precursor to the legendary greatsword Twilight.",
       "type": "weapon",
       "weapon_type": "greatsword",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29169",
       "name": "Dawn",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3FFD779A1401D250E6FBAABB1E544DF5FFB3C9DD/1202490.png",
       "description": "A greatsword forged from the light of dawn.",
       "type": "weapon",
       "weapon_type": "greatsword",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "12128",
       "name": "Omnomberry",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9C5457B024D9152906D808A53BFF67539BB94FA0/219396.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "12156",
       "name": "Jug of Water",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C23FA1EA0827E97312D6064F4A08B402FE9943B9/63071.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "12544",
       "name": "Ghost Pepper",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/01051F0458C052BF08916A555273FF6145592FE6/219488.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "12545",
       "name": "Orrian Truffle",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0AF0FD06192106D5D9C73A35A3E364CE6B4A1FC0/219489.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "12988",
       "name": "Orichalcum Plated Dowel",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4703A1CA2C61B002212E3D5A960C35BE13B5CF3B/455580.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Masterwork"
     },
     {
       "id": "19621",
       "name": "Gift of Metal",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FADDF94DAD6721344F300405E725AC2624330339/455802.png",
       "description": "A gift of metal used to create legendary weapons and back items, crafted by weaponsmiths.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19622",
       "name": "Gift of Wood",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/91EF4868635BF9DDB2DBB0D51C2E7AC909DB1465/455803.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19623",
       "name": "Gift of Energy",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3D0EF516072931651F7F430B0C6BD8D6FE38E1C7/455804.png",
       "description": "A gift of energy used to create legendary weapons and trinkets, crafted by artificers.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19624",
       "name": "Gift of Ice",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/00710B342569B4A818387FEF63B876476B0BB84B/455805.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19625",
       "name": "Gift of Frostfang",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/044F250F27EF97CFC2BD4AC4E61E650EEA3E0E05/455806.png",
       "description": "A gift used to create the legendary axe Frostfang.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19626",
       "name": "Gift of Fortune",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/62A0F109C444E275E966B9A903D63FFE99540BAD/455807.png",
       "description": "A gift of fortune used to create legendary weapons and trinkets, crafted in the Mystic Forge.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "mystic_forge",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19627",
       "name": "Gift of Nature",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/547F34D0DEB3597314A57B6C06E69E4CBE584352/455808.png",
       "description": "A gift of nature used to create Kudzu.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19628",
       "name": "Unicorn Statue",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C3A8D8D8E2DDD1E2C071BBC7BF322CDDD572C570/455809.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19629",
       "name": "Gift of History",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/62FA9F9C0204C105ED0555A2510D573A60C0A1EC/455810.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19630",
       "name": "Gift of Music",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6843F44BDB117AC7DD063EF6E35392B027672C69/455811.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19631",
       "name": "Gift of Darkness",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/255A5E0CC05144DD5638D9A8E4A25FA12FA042DA/455812.png",
       "description": "A gift of darkness used to create Twilight, crafted by armorsmiths.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19632",
       "name": "Gift of Light",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9BBF3A1FF80564570D5569EC7FA8F17858C63EC9/455813.png",
       "description": "A gift of light used to create Sunrise, crafted by armorsmiths.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19633",
       "name": "Vial of Quicksilver",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F32944C40CF6FC54B204CACDE5071BA0B69BEAFC/455814.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19634",
       "name": "Vial of Liquid Flame",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F9D5E42CEA6EED2DA16E036065E0D6F90E027CF8/455815.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19635",
       "name": "Gift of Entertainment",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B76A2E537E10A4BE336CC6B3471CEE0F075AE290/455816.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19636",
       "name": "Gift of Stealth",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6154279FB19D312725F942332F9F50C771D007E3/455817.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19637",
       "name": "Gift of Weather",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/070D78427B06100C1203BB280C056BF2FEE2E006/455818.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19638",
       "name": "Gift of Color",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EFADF9A7924FD4F1FB01A6284EEE0CED6F7BA2E4/455819.png",
       "description": "A gift of color used to create The Bifrost, crafted by chefs.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19639",
       "name": "Gift of Lightning",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B646B519AB469FF074C25E6C0CC55D5C64F496ED/455820.png",
       "description": "A gift of lightning used to create Bolt, crafted by artificers.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19640",
       "name": "Wolf Statue",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C9462BEC11B14173B2E797101970B658E9BF6044/455821.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19641",
       "name": "Shark Statue",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/446D4F0ABCE4796DAC650D08080010091F26C195/455822.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19642",
       "name": "Eel Statue",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/483F21E5CAA0907D0A0FBAD6AFE8C4330D1BF125/455823.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19643",
       "name": "Gift of Water",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0378A7015EEC1B790736276870F1C807447C6D98/455824.png",
       "description": "A gift of water used to craft Frenzy.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19644",
       "name": "Gift of Kudzu",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/DC0AC5E6785D5EF1FCBEB375B0FFDD08DEDAB562/455825.png",
       "description": "A gift used to create the legendary longbow Kudzu.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19645",
       "name": "Gift of Incinerator",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/780F16CEBCEC0BF6D1F672A3F921ADCCB5A323E3/455826.png",
       "description": "A gift used to create the legendary dagger Incinerator.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19646",
       "name": "Gift of The Minstrel",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BF420D11FEDEAF40629A6DB6F60F91A003F1C004/455827.png",
       "description": "A gift used to create the legendary focus The Minstrel.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19647",
       "name": "Gift of Sunrise",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/01D07FABAE26C0E5240892B00DA7AF90AB0EA022/455828.png",
       "description": "A gift used to create the legendary greatsword Sunrise.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19648",
       "name": "Gift of Twilight",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/01D07FABAE26C0E5240892B00DA7AF90AB0EA022/455828.png",
       "description": "A gift used to create the legendary greatsword Twilight.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19649",
       "name": "Gift of The Juggernaut",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A19029319070C374A6669539EB5C47E3E4E8AF44/455829.png",
       "description": "A gift used to create the legendary hammer The Juggernaut.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19650",
       "name": "Gift of The Moot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/136D219FD6083A78CA06EB1F1D040BE6AC037BE3/455830.png",
       "description": "A gift used to create the legendary mace The Moot.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19651",
       "name": "Gift of Quip",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C4CE12E8D701F767F47113911EA80DBF78485C75/455831.png",
       "description": "A gift used to create the legendary pistol Quip.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19652",
       "name": "Gift of Meteorlogicus",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/969BCDF249650D93DE26E30A0411782861026267/455832.png",
       "description": "A gift used to create the legendary scepter Meteorlogicus.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19653",
       "name": "Gift of The Flameseeker Prophecies",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2CC3D8EBB4FB1B4BE0BA0AF65C082FC6C6A3DB1C/455833.png",
       "description": "A gift used to create the legendary shield The Flameseeker Prophecies.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19654",
       "name": "Gift of The Bifrost",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/38C9C5C8F3725C196149C01FAD009C9707080B92/455834.png",
       "description": "A gift representing the colors of the rainbow, used to create The Bifrost.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "mystic_forge",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19655",
       "name": "Gift of Bolt",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F13FE7EA3950E529C163EBE008F379287194B5B6/455835.png",
       "description": "A gift containing electrical energy, used to create Bolt.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "mystic_forge",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19656",
       "name": "Gift of Rodgort",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BD08C20160BB5E2D9375A42D56D04D067E6F3515/455836.png",
       "description": "A gift used to create the legendary torch Rodgort.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19657",
       "name": "Gift of Kamohoali'i Kotaki",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/631E98DE7861920225511F250476D5341BD20CEE/455837.png",
       "description": "A gift used to create the legendary spear Kamohoali'i Kotaki.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19658",
       "name": "Gift of Kraitkin",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/E27B5358FB714E78445F04AAFC32673578433899/455838.png",
       "description": "A gift used to create the legendary trident Kraitkin.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19659",
       "name": "Gift of Frenzy",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6AC101F5EA0FD3459E404D2FE0FA0F3B942046DE/455839.png",
       "description": "A gift used to create the legendary harpoon gun Frenzy.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19660",
       "name": "Gift of The Dreamer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5190BC2AC64FE8C2FF92C5F9606C3E0302CBB873/455840.png",
       "description": "A gift containing dreams and imagination, used to create The Dreamer.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "mystic_forge",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19661",
       "name": "Gift of The Predator",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/27949D47E6F534574AAFE2D07BF20303729F94A5/455841.png",
       "description": "A gift used to create the legendary rifle The Predator.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19662",
       "name": "Gift of Howler",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7E450749DC2EA72121C4D5DD4BEDB90AD5CD47B2/455842.png",
       "description": "A gift used to create the legendary warhorn Howler.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "crafting",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19664",
       "name": "Gift of Ascalon",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/733301420DAC0DAE9206BCA4F727DB1EC6551C71/455844.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19665",
       "name": "Gift of the Nobleman",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AD73C36D337024C95E60AAA86F0A2EB931F80114/455845.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19666",
       "name": "Gift of the Forgeman",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/074D017C2DC674DD5E58FA355C5A20E6FE07C57E/455846.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19667",
       "name": "Gift of Thorns",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EB06C0AEBB6320F9E4DAF65321369198DDE143EF/455847.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19668",
       "name": "Gift of Baelfire",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/1F251A126A7A1808DE7D0E49EC02CCCD280F4CD6/455848.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19669",
       "name": "Gift of Zhaitan",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4F5B03DDC8BE16069C3D2C530C1DC84916CDBB58/455849.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19670",
       "name": "Gift of the Sanctuary",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/987AF62023C20D28BE9810D1BAD8757A3D39480C/455850.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19671",
       "name": "Gift of Knowledge",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/ACABBD3F193534D4A0C0239491DC0F95F209DEB8/455851.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19672",
       "name": "Gift of Might",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2F41032550D4024E184FAD6C1C0C14E53A09BCEA/455852.png",
       "description": "A gift of might used to create legendary weapons and back items, crafted in the Mystic Forge.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "mystic_forge",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19673",
       "name": "Gift of Magic",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/992EC43FA1317BED252DB9D09905C601160B0E01/455853.png",
       "description": "A gift of magic used to create legendary weapons and back items, crafted in the Mystic Forge.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "mystic_forge",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19674",
       "name": "Gift of Mastery",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D4E560D3197437F0010DB4B6B2DBEA7D58E9DC27/455854.png",
       "description": "A gift representing mastery of Tyria, crafted in the Mystic Forge.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "mystic_forge",
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19675",
       "name": "Mystic Clover",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FE9DC3E10D4B2AE16DADEB07CF28A058570E2EF3/455855.png",
       "description": "Used to create legendary equipment. Can be purchased from some vendors, earned from reward tracks, and made in the Mystic Forge.",
       "type": "trophy",
       "binding": "account",
@@ -737,72 +800,79 @@
         "mystic_forge",
         "trading_post",
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19676",
       "name": "Icy Runestone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/1AB22A149E9B807AA726CC6B1D7D0435A840A300/455856.png",
       "description": "Used to create legendary weapon and trinket gift items. Purchased from Rojan the Penitent in Frostgorge Sound after defeating the Claw of Jormag.",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "trading_post",
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19677",
       "name": "Gift of Exploration",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B0051EB5FF730C9EF7C2A3781D3F9B732D4D1A55/455857.png",
       "description": "Awarded for completing 100% world exploration of all Central Tyrian maps. Two are given per completion.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "achievement"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19678",
       "name": "Gift of Battle",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EB593444A3ED065F7BE3EC71713CF80D145EABCB/455858.png",
       "description": "Awarded from the Gift of Battle WvW reward track. Requires completing the entire track.",
       "type": "gift",
       "binding": "account",
       "acquisition": [
         "reward_track"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19680",
       "name": "Copper Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/32D3BC4B5722155E15DC5A1DE5E9255C50F90609/65909.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19681",
       "name": "Darksteel Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EDC02674C339C0D5B0B8C9370013394ED6270FA7/65910.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19682",
       "name": "Gold Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/80C845F5ED06036F7E041C7214C29FA3D562A480/65911.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19683",
@@ -813,78 +883,86 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19684",
       "name": "Mithril Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7B0701F4092237431EDC72340BC89AA126EA4EF0/65913.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19685",
       "name": "Orichalcum Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D1941454313ACCB234906840E1FB401D49091B96/220460.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19686",
       "name": "Platinum Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3F08D6044B2268BE57972DCB1F0424B5A60F2AEC/65914.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19687",
       "name": "Silver Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/33150406A468526276071A0D0AD678B9F1D6EDCA/65915.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19688",
       "name": "Steel Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FCB6E507C84EDD01E2CE25665370FDE8423B58F9/65916.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19697",
       "name": "Copper Ore",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6E17C5A65955239640743E48B30A3425FACA5D02/65925.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19699",
       "name": "Iron Ore",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C1FD07F60E0B74C497761C1C014D03E402E60C6F/65927.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19700",
@@ -895,7 +973,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19701",
@@ -906,7 +985,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19702",
@@ -917,34 +997,38 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19709",
       "name": "Elder Wood Plank",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/DB5C0A4EB6E7F730DAC3B3DE7032482792E76FA7/220462.png",
       "description": "A plank of elder wood, refined from Elder Wood Logs.",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19711",
       "name": "Hard Wood Plank",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4DFCF8776C05F6D304B5BAB25F5715C57CB19FD6/220463.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19712",
       "name": "Ancient Wood Plank",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4A0C6F64BD7AD446ADCA0177C052D732582EE90A/220464.png",
       "description": "Planks of ancient, durable wood, refined from Ancient Wood Logs.",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19713",
@@ -955,38 +1039,42 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19714",
       "name": "Seasoned Wood Plank",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6CFF221BAA7877C54B243D1DE9C8A211BB6AE170/65938.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19717",
       "name": "Sun Bead",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/582641FE0D5FD2AB0903CA0050049167A89CB97C/67028.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19721",
       "name": "Glob of Ectoplasm",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/18CE5D78317265000CF3C23ED76AB3CEE86BA60E/65941.png",
       "description": "A glob of ectoplasm, used in high-level crafting and ascended equipment.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "19722",
@@ -997,7 +1085,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19724",
@@ -1008,18 +1097,20 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19725",
       "name": "Ancient Wood Log",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5C999770AB7CC1F85D270A50C205673DF8B6E104/220467.png",
       "description": "Refined crystalline dust used in high-level crafting.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19726",
@@ -1030,7 +1121,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19727",
@@ -1041,7 +1133,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19728",
@@ -1052,7 +1145,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19729",
@@ -1063,7 +1157,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19730",
@@ -1074,7 +1169,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19731",
@@ -1085,18 +1181,20 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19732",
       "name": "Hardened Leather Section",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C4600FB8F97F2618F4DFA2CE9FD2C669FAE9DE6F/65949.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19733",
@@ -1107,7 +1205,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19734",
@@ -1118,69 +1217,76 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19735",
       "name": "Cured Thick Leather Square",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/12B5A77DE31564F344BFD46875C3200E9105E0A8/65952.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19736",
       "name": "Cured Rugged Leather Square",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3158B2B14EC72A93D05F07AD3FAF0EB9BC7E3E0C/65953.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "19737",
       "name": "Cured Hardened Leather Square",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BB34A319132236042659CE7B31DF6FA890FF6501/65954.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19746",
       "name": "Bolt of Gossamer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7FBA68B71DB805E416315067DD0DDEEB204CFC65/63577.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19750",
       "name": "Lump of Coal",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3728DC6E10FA4DADCD3B0918A70FAE9DEA96BDD4/65962.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19790",
       "name": "Spool of Gossamer Thread",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B7CFD70F53A845E4ED1212040C18C123FC172910/65959.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19919",
@@ -1191,7 +1297,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "19923",
@@ -1202,7 +1309,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "19924",
@@ -1213,62 +1321,68 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "19925",
       "name": "Obsidian Shard",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AE16FCC326D80A3906B17B6A75E8A91980BE4670/434362.png",
       "description": "A shard of obsidian infused with magical energy.",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "19976",
       "name": "Mystic Coin",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AB0317DF5B0E1BA47436A5420248660765154C08/62864.png",
       "description": "A coin imbued with mystic energy, used in Mystic Forge recipes.",
       "type": "trophy",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "20000",
       "name": "Box o' Fun",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BE034CD0E694AE0677B5A268446C4BBC30046660/220568.png",
       "description": "",
       "type": "gizmo",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "20323",
       "name": "Unidentified Dye",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/109A6B04C4E577D9266EEDA21CC30E6B800DD452/66587.png",
       "description": "Unidentified dyes that can be revealed.",
       "type": "container",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "20796",
       "name": "Philosopher's Stone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/68FF9617BA1BE1AD58E83E4209AEF0FB58950702/434425.png",
       "description": "Used by the Mystic Forge to change one material into another.",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "20797",
@@ -1279,18 +1393,20 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "20799",
       "name": "Mystic Crystal",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/045C05C2F83A59FC4B6F15073465C5D3040E4DF5/65674.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "20852",
@@ -1301,84 +1417,92 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "24242",
       "name": "Heart of Fire",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/45ACC107537E9D70776C9F24EDA1DCC26C4AFAB1/63345.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Masterwork"
     },
     {
       "id": "24244",
       "name": "Burning Ember",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4AA6F8CB30973B9A6E4C310124EFB5BFF42036E5/63273.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Masterwork"
     },
     {
       "id": "24272",
       "name": "Pile of Glittering Dust",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F438A5EFB89C4ED6F8A04FE6E7060D05C294C4C6/434532.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24274",
       "name": "Pile of Radiant Dust",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3F95D5E3E1B07294C7625B36004F6AE76C05E117/434534.png",
       "description": "Piles of refined radiant dust, used in high-level crafting.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24275",
       "name": "Pile of Luminous Dust",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/DDCA6504E718CA6DFF08F1483A2F356D0F4AEB4A/434535.png",
       "description": "Piles of refined luminous dust, used in high-level crafting.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24276",
       "name": "Pile of Incandescent Dust",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3501C2BBADF95BE5F14E31484850E851EFCA33CB/434536.png",
       "description": "Piles of refined incandescent dust, used in high-level crafting.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24277",
       "name": "Pile of Crystalline Dust",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/080D00670558CD9E580D5662030394B2206E92A6/434537.png",
       "description": "Piles of refined crystalline dust, used in legendary crafting.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24280",
@@ -1389,7 +1513,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24281",
@@ -1400,7 +1525,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24282",
@@ -1411,18 +1537,20 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24283",
       "name": "Powerful Venom Sac",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/543EC37900EA2A57E77FA891193A48D66AA224AB/66939.png",
       "description": "A sac containing powerful venom, used in high-level crafting.",
       "type": "material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24286",
@@ -1433,7 +1561,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24287",
@@ -1444,29 +1573,32 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24288",
       "name": "Large Scale",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F94ECFFF0FA9C321C108DA34E777B27B0AC9D5F8/66944.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24289",
       "name": "Armored Scale",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7061C82F4F9D0C585742F545C40A0F06BE0154DC/66527.png",
       "description": "An armored scale from a tough creature.",
       "type": "material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24292",
@@ -1477,7 +1609,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24293",
@@ -1488,7 +1621,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24294",
@@ -1499,18 +1633,20 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24295",
       "name": "Vial of Powerful Blood",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/1A930A6A7B5B01EAB4CB36E79014C12B500BF6B3/66950.png",
       "description": "A vial containing powerful blood, used in high-level crafting.",
       "type": "material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24298",
@@ -1521,7 +1657,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24299",
@@ -1532,73 +1669,80 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24300",
       "name": "Elaborate Totem",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C1ABF9082901FC3CEABC3138CBCCA1DAD5D41812/66955.png",
       "description": "Elaborate totems crafted from rare materials.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24305",
       "name": "Charged Lodestone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/02EFB1C5E11B2FF4B4AC25A84E2302D244C82AA3/66958.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24310",
       "name": "Onyx Lodestone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2232AA41E3DF20EB249C0B6D10BC0D37FF6C0E3D/66963.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24315",
       "name": "Molten Lodestone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/76910A3A41C33D0FF09EF3CBDA4B079706150FB9/66968.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24320",
       "name": "Glacial Lodestone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/E6FE2939F9BE1E03B4CD32B8492D3EDC407C0F75/66971.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24325",
       "name": "Destroyer Lodestone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/77BE2565DD345ADFEF3850A5B647FE50C144AAF8/66976.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24330",
@@ -1609,18 +1753,20 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24340",
       "name": "Corrupted Lodestone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/CCC31822DA0D7D930D067B17C958A5CB1F4A24A5/66986.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24341",
@@ -1631,7 +1777,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24344",
@@ -1642,7 +1789,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24345",
@@ -1653,7 +1801,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24348",
@@ -1664,7 +1813,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24349",
@@ -1675,7 +1825,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24350",
@@ -1686,18 +1837,20 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24351",
       "name": "Vicious Claw",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/043E2BBA270F381870F1B45E7C09C098CAFE3D14/66996.png",
       "description": "A vicious claw from a dangerous creature, used in high-level crafting.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24354",
@@ -1708,7 +1861,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24355",
@@ -1719,7 +1873,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24356",
@@ -1730,29 +1885,32 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24357",
       "name": "Vicious Fang",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F2050EE1A7A43EDCDCB1E971FDA608AD0566E4DA/66998.png",
       "description": "Vicious fangs used in high-level crafting.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24358",
       "name": "Ancient Bone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0EE45FBB1E1A004600E9BAA7097830B2DE08587D/66828.png",
       "description": "Ancient bones from long-dead creatures.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24363",
@@ -1763,735 +1921,801 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24366",
       "name": "Large Skull",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FA216B1B546314D0A4125D083F9BD34EA03B9329/67002.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24500",
       "name": "Pearl",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/CD4E4A59A6E86211F71DAF5366EF4F3A6B73E0D0/66268.png",
       "description": "An opal orb used in crafting.",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "24502",
       "name": "Silver Doubloon",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EA581B219A5937D31F145E3CD00CE7046216DE22/220942.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24509",
       "name": "Coral Tentacle",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2DC5460357C6E766A31EF72854F3030C43BF0143/220948.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Masterwork"
     },
     {
       "id": "24512",
       "name": "Chrysocola Orb",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/DD7DB26B7BDCED3E15CB971D0016299F38490D58/220951.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Rare"
     },
     {
       "id": "24515",
       "name": "Emerald Orb",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/327A0AA63E50E268EC02C4A5F0DBD246F207AEBB/220952.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24522",
       "name": "Opal Orb",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/62CE38CB99469CBADDAD6FF4A221F75B636AA55D/220957.png",
       "description": "",
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "24548",
       "name": "Superior Sigil of Fire",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AFFE7977FCE450E8105EBADA7436050CB7011BDB/220678.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24554",
       "name": "Superior Sigil of Air",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C337CC61DF2F5EE44B7D053EFF33059111024444/220676.png",
       "description": "A superior sigil that unleashes lightning strikes.",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24555",
       "name": "Superior Sigil of Ice",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/10E0D93F4B303CD03F6FEE0C5AAEEB070E0EFAC1/220680.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24561",
       "name": "Superior Sigil of Rage",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/15310B48271FC15332C65C5E02FEC4FFF298B652/220679.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24562",
       "name": "Superior Sigil of Strength",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/71C00204BDD7FC11AAE1906FC2EF7D37A35DF82E/220682.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24570",
       "name": "Superior Sigil of Blood",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BFD4F5E6A8B95866BBA7CDC0E8920D0346337934/220681.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24572",
       "name": "Superior Sigil of Nullification",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B926E1026E6E271D3B9F9A177710E3A8C801FFF3/220744.png",
       "description": "A superior sigil that nullifies effects.",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24584",
       "name": "Superior Sigil of Benevolence",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0147AE350DEB5561D427EC41F6F4B35523707320/220672.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24592",
       "name": "Superior Sigil of Stamina",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/970DD319EC0E7455E941CD5DA840C10EA6EF160E/220669.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24601",
       "name": "Superior Sigil of Battle",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A25A5E7D74A6B293B5C6B8EC7EDA1A06C649CBEF/220691.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24607",
       "name": "Superior Sigil of Energy",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3A064B97AB7D0E1F1250EFB5F06798A8FE623708/220688.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24612",
       "name": "Superior Sigil of Agony",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BAF34EB051D118F8A7C1645E0D940ED0660E6269/220658.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24615",
       "name": "Superior Sigil of Force",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D7420E430D002E07382035EF0D0F77370C4EE6B8/220662.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24618",
       "name": "Superior Sigil of Accuracy",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4B0EFF29FD064E5E93E4F8616BE309A451450AED/220661.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24632",
       "name": "Superior Sigil of Venom",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/080B4F940A05E60A084AA4B1D230F923A1A47CEC/220664.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "24865",
       "name": "Superior Sigil of Celerity",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/731850AB48F9944BB5FE4A050A71366C0903253E/221167.png",
       "description": "",
       "type": "upgrade_component",
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29170",
       "name": "The Colossus",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/15ED060C6B47716174FC6FB9A60118B5553EEB90/1202804.png",
       "description": "A precursor to the legendary hammer The Juggernaut.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29171",
       "name": "Carcharias",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/51FF0303B8A85468B60BD2D431550CDE0A59B206/1202902.png",
       "description": "A precursor to the legendary spear Kamohoali'i Kotaki.",
       "type": "weapon",
       "weapon_type": "spear",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29172",
       "name": "Leaf of Kudzu",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/16E4FC0E74FB0174317E380021570AF92D3F1992/1200915.png",
       "description": "A precursor to the legendary longbow Kudzu.",
       "type": "weapon",
       "weapon_type": "longbow",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29175",
       "name": "The Hunter",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/381F0719363580D4172E2A0BDEA978E1F0059D2A/1205943.png",
       "description": "A precursor to the legendary rifle The Predator.",
       "type": "weapon",
       "weapon_type": "rifle",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29179",
       "name": "Rage",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A077090AC85279D351200F77267E060C326BF75B/1206366.png",
       "description": "A precursor to the legendary harpoon gun Frenzy.",
       "type": "weapon",
       "weapon_type": "harpoon",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29180",
       "name": "The Legend",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/DA7AF6E3D970799A7847B3F10801FC1C1E98109E/1206503.png",
       "description": "A precursor to the legendary staff The Bifrost.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29181",
       "name": "Zap",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4C4FDD15CE97DFD1F13F0BA9B7740FB110F00675/1206760.png",
       "description": "A precursor to the legendary sword Bolt.",
       "type": "weapon",
       "weapon_type": "sword",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29182",
       "name": "Rodgort's Flame",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9640FF61723ECC0367B5CC041AC8C50F05C0EC64/1206986.png",
       "description": "A precursor to the legendary torch Rodgort.",
       "type": "weapon",
       "weapon_type": "torch",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29183",
       "name": "Venom",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6D2C107DA4507DE3F247D15B54794BD31C73532A/1207112.png",
       "description": "A precursor to the legendary trident Kraitkin.",
       "type": "weapon",
       "weapon_type": "trident",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29184",
       "name": "Howl",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FF282CD37AD618457F6878356739587916E5BF17/1207245.png",
       "description": "A precursor to the legendary warhorn Howler.",
       "type": "weapon",
       "weapon_type": "warhorn",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29167",
       "name": "Spark",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C90B71ED53030EB7422A9F59F17C492BC9E2DBE7/1202122.png",
       "description": "A precursor to the legendary pistol Quip.",
       "type": "weapon",
       "weapon_type": "pistol",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29173",
       "name": "The Energizer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4BD07B7E400564DBBF5060611400F2CA1FD874F1/1203189.png",
       "description": "A precursor to the legendary mace The Moot.",
       "type": "weapon",
       "weapon_type": "mace",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29174",
       "name": "Chaos Gun",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5B770B9432601D04CFD235E4712B52927EDF734B/1204293.png",
       "description": "A precursor to the legendary pistol Quip.",
       "type": "weapon",
       "weapon_type": "pistol",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29176",
       "name": "Storm",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AF3EB0E29F4B25AC3F5BE2B7BA64ABC1A62EB30E/1206078.png",
       "description": "A precursor to the legendary scepter Meteorlogicus.",
       "type": "weapon",
       "weapon_type": "scepter",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29168",
       "name": "The Bard",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/251B42DA1EC4902BB2F50F7B671DEA921DC522A2/1202277.png",
       "description": "A precursor to the legendary focus The Minstrel.",
       "type": "weapon",
       "weapon_type": "focus",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29177",
       "name": "The Chosen",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/488003DB422EC8A580EA4E16D22DF56B4E90F7CA/1206236.png",
       "description": "A precursor to the legendary shield The Flameseeker Prophecies.",
       "type": "weapon",
       "weapon_type": "shield",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "29166",
       "name": "Tooth of Frostfang",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3D361A4B187B5747FED095C6D5431EB3E65B01FB/1200349.png",
       "description": "A precursor to the legendary axe Frostfang.",
       "type": "weapon",
       "weapon_type": "axe",
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "30684",
       "name": "Frostfang",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0F9C08DE12ADD1082A103DC6EF7401281B23985E/456009.png",
       "description": "A legendary axe that freezes enemies with icy power.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30685",
       "name": "Kudzu",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B604C764D3E19E391F5E24CCFBC414500606BD29/456010.png",
       "description": "A legendary longbow that grows with nature's power.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30686",
       "name": "The Dreamer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/98F0ED6A7F7A310FCE6D161C0B36B0071E4D1917/456011.png",
       "description": "A legendary shortbow that manifests dreams into reality.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30687",
       "name": "Incinerator",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D9B12A1EBEDC04047295CF0A66E43E650297D429/456012.png",
       "description": "A legendary dagger that burns with eternal flame.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30688",
       "name": "The Minstrel",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D3DBEB4FE4C81401AF6EA905FE16E4F3050F540B/456013.png",
       "description": "A legendary focus that inspires allies with its melodies.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30689",
       "name": "Eternity",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A30DA1A1EF05BD080C95AE2EF0067BADCDD0D89D/456014.png",
       "description": "A legendary greatsword that exists outside of time, forged from Sunrise and Twilight.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30690",
       "name": "The Juggernaut",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F9FAEDF77052A514E876145908B3B3346314A13E/456015.png",
       "description": "A legendary hammer that embodies the power of earth.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30691",
       "name": "Kamohoali'i Kotaki",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4705EC549A3296F493312C4018754816175E5D28/456016.png",
       "description": "A legendary spear that channels the power of the shark spirit.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30692",
       "name": "The Moot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C0302BC8DDD84D20F0B73C1D702438F5534F3308/456017.png",
       "description": "A legendary mace that brings peace to the battlefield.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30693",
       "name": "Quip",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/03342FFE0E35B35D5207B65ECB0C1D06442377AB/456018.png",
       "description": "A legendary pistol that unleashes chaotic energy.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30694",
       "name": "The Predator",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3ECD99482DD865AA7D42B2EF6AFEFA705294555C/456019.png",
       "description": "A legendary rifle that hunts its prey with deadly precision.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30695",
       "name": "Meteorlogicus",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AC940BF377C5D3EF13B2060D53EF19F1BC34BE48/456020.png",
       "description": "A legendary scepter that commands the power of storms.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30696",
       "name": "The Flameseeker Prophecies",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BE58181BEA0559E60873ED940D0408D0596B4464/456021.png",
       "description": "A legendary shield that bears ancient prophecies.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30697",
       "name": "Frenzy",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/67EB25E29BA73D96B34523C02B256516DD60DA06/456024.png",
       "description": "A legendary harpoon gun that rages with battle fury.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30698",
       "name": "The Bifrost",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FD221A90427ADBD29B7E2DF8BDAF98BB16391162/456025.png",
       "description": "A legendary staff that shifts through the colors of the rainbow.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30699",
       "name": "Bolt",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FE47E046D10DF27508910869B5EB040F6BBBE793/456026.png",
       "description": "A legendary sword that crackles with electrical energy.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30700",
       "name": "Rodgort",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B1D6CB3AB4017633280ACDB36470F46829FDDD13/456027.png",
       "description": "A legendary torch that burns with the flame of Rodgort.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30701",
       "name": "Kraitkin",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/1FAD3D4BE1FA503C49FCF532582867FB060664E4/456028.png",
       "description": "A legendary trident that commands the power of the deep.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30702",
       "name": "Howler",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/19E01CC637F4F370B43E132ACEBFD7C6E1570DE7/456029.png",
       "description": "A legendary warhorn that howls with primal power.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30703",
       "name": "Sunrise",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EFF16C4F19792627355DC294E6D7093F544921E7/456030.png",
       "description": "A legendary precursor greatsword that shines with the light of dawn.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "30704",
       "name": "Twilight",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/CE3AF0B7B9BB6244726779F5B6A930541BA6C15F/456031.png",
       "description": "A legendary precursor greatsword that glows with the darkness of night.",
       "type": "weapon",
       "binding": "none",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "38014",
       "name": "Vial of Condensed Mists Essence",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/471602ACD77D69F968156F01F1D872237703C043/512001.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "39125",
       "name": "Mystic Binding Agent",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2CB9736615E23CC0630B09B774CAA20FE9639906/534216.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "43772",
       "name": "Charged Quartz Crystal",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/10ABB44B459640C30CB8BFAEA9DFEAE19C6ECD67/603251.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "44941",
       "name": "Watchwork Sprocket",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F996013B7E4AB74F0D73EE38723521BEA9B8D67F/619700.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "45175",
@@ -2502,7 +2726,8 @@
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "45176",
@@ -2513,7 +2738,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Masterwork"
     },
     {
       "id": "45177",
@@ -2524,7 +2750,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "45178",
@@ -2535,7 +2762,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "45832",
@@ -2546,7 +2774,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Masterwork"
     },
     {
       "id": "45833",
@@ -2557,7 +2786,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45834",
@@ -2568,7 +2798,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45835",
@@ -2579,7 +2810,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45836",
@@ -2590,7 +2822,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45838",
@@ -2601,7 +2834,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45839",
@@ -2612,7 +2846,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45840",
@@ -2623,7 +2858,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45841",
@@ -2634,7 +2870,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45842",
@@ -2645,7 +2882,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45843",
@@ -2656,7 +2894,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45844",
@@ -2667,7 +2906,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45845",
@@ -2678,7 +2918,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45846",
@@ -2689,7 +2930,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45847",
@@ -2700,7 +2942,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45848",
@@ -2711,7 +2954,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45849",
@@ -2722,7 +2966,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45850",
@@ -2733,7 +2978,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45851",
@@ -2744,7 +2990,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45852",
@@ -2755,7 +3002,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45854",
@@ -2766,7 +3014,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45855",
@@ -2777,7 +3026,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45856",
@@ -2788,7 +3038,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45857",
@@ -2799,7 +3050,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45858",
@@ -2810,7 +3062,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45883",
@@ -2821,7 +3074,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45884",
@@ -2832,7 +3086,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45885",
@@ -2843,7 +3098,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45886",
@@ -2854,7 +3110,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45887",
@@ -2865,7 +3122,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "45888",
@@ -2876,18 +3134,20 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Basic"
     },
     {
       "id": "46681",
       "name": "Glob of Dark Matter",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2C3CCBD8A8C7B97F1BB0D4EA30D447130E01160C/631468.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "salvage"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46683",
@@ -2897,8 +3157,9 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "trading_post"
-      ]
+        "crafting"
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46694",
@@ -2909,7 +3170,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46696",
@@ -2920,16 +3182,18 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46730",
       "name": "Bloodstone Brick",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9C03D6909B0A36EED87538C8D1FFFC27390FDF4E/631479.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Ascended"
     },
     {
       "id": "46731",
@@ -2940,7 +3204,8 @@
       "binding": "account",
       "acquisition": [
         "salvage"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46732",
@@ -2951,7 +3216,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46733",
@@ -2962,7 +3228,8 @@
       "binding": "account",
       "acquisition": [
         "salvage"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46734",
@@ -2973,7 +3240,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46735",
@@ -2984,34 +3252,38 @@
       "binding": "account",
       "acquisition": [
         "salvage"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46736",
       "name": "Spiritwood Plank",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/955A9F900BB8AB253C9C91C7F7DF4305A741917C/631485.png",
       "description": "A plank of spiritwood, a rare ascended crafting material.",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Ascended"
     },
     {
       "id": "46738",
       "name": "Deldrimor Steel Ingot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/94DCAE59215C0096449906A81F202B0201FBA85B/631486.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Ascended"
     },
     {
       "id": "46739",
       "name": "Elonian Leather Square",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/057F4DB327DB7F46490876E4D9D86E7C1D613C26/631487.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Ascended"
     },
     {
       "id": "46742",
@@ -3022,7 +3294,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46744",
@@ -3033,7 +3306,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46745",
@@ -3044,7 +3318,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46746",
@@ -3055,18 +3330,20 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46747",
       "name": "Thermocatalytic Reagent",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/090DF0E7AFD6AD9A6C9FC31CCE510A05663D0A0E/631495.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "46752",
@@ -3077,7 +3354,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "49523",
@@ -3088,40 +3366,44 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "49782",
       "name": "Watchwork Mechanism",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5E979AEEF7D092DCFEF9ADA527BB61F6FF03E811/711882.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "66650",
       "name": "Sheet of Ambrite",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A87B2A37E3400D19E0BF2D9206DF80DD6C98066E/831484.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "66902",
       "name": "Brick of Clay",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3344FFF73E551B6BBE954A58EE521AD0D9FB9396/849428.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Masterwork"
     },
     {
       "id": "68063",
@@ -3132,29 +3414,32 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "69953",
       "name": "Anthology of Heroes",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5DDF09ED3C0A7CD4026DA5293F07A41C9178EC0C/66878.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "70439",
       "name": "Essence of Bounty Hunting",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3F0178DE157BB3AE3CFBB40E3F0D5E66C51804D8/1205272.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "70528",
@@ -3164,8 +3449,9 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "vendor"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "70698",
@@ -3175,30 +3461,33 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
-      ]
+        "map_completion"
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "70735",
       "name": "Energy Source",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2A4BD1B5695CCE3416FCB8C1371E7492A05A4078/1204481.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "70742",
       "name": "Dragon Statue",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7F9DAD07F0126649FBEE5977CBE09CBB07CFC02A/1205555.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "70797",
@@ -3208,8 +3497,9 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
-      ]
+        "map_completion"
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "70801",
@@ -3219,8 +3509,9 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "70820",
@@ -3231,7 +3522,8 @@
       "binding": "none",
       "acquisition": [
         "pvp"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "70842",
@@ -3242,7 +3534,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "70867",
@@ -3254,18 +3547,20 @@
       "acquisition": [
         "mystic_forge",
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "70884",
       "name": "Globe",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2D4C7B9896CC27FEB6EFC1CEAB1D6F63C4D96822/1205301.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71008",
@@ -3275,8 +3570,9 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "vendor"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71123",
@@ -3286,19 +3582,21 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71163",
       "name": "Essence of Mischief",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A908046767037FA6970E4D6EF9C7BC0BA4229080/1205256.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71173",
@@ -3309,29 +3607,32 @@
       "binding": "account",
       "acquisition": [
         "achievement"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71201",
       "name": "Boar Bristle",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/08125BE0FD6F5204245D61E25706E665B57E39A1/1204429.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71260",
       "name": "Essence of Dreams",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/02A006B49750920132E0F4BD0901F0FF9ABA07B9/1205258.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71311",
@@ -3342,29 +3643,32 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "71385",
       "name": "Aerator",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AB0245EAF90B0F11463A16BD0AE5116034D932F2/1204888.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71392",
       "name": "Spirit of the Perfected Daysword",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F27AB5EC7F783F31E105D703B1F3B637CCEF0898/1205601.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71426",
@@ -3375,18 +3679,20 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "71486",
       "name": "Party Stick",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/95F14E65DCDF0A5AE8CAFD04CBBCAF79986062E8/1205417.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71581",
@@ -3397,18 +3703,20 @@
       "binding": "none",
       "acquisition": [
         "reward_track"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "71641",
       "name": "Pile of Coarse Sand",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D838CB1BF7D49E1725EBB1F3ABD00C55EB67CE1E/1205401.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "71655",
@@ -3418,19 +3726,21 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71692",
       "name": "Pouch of Red Pigment",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/56BB44D10201E6B51772FBA99BB6BEFECB40A674/1200714.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "71787",
@@ -3440,8 +3750,9 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71820",
@@ -3450,40 +3761,44 @@
       "description": "Made by combining these items in the Mystic Forge:\n\u2022 2 Gifts of Condensed Magic\n\u2022 2 Gifts of Condensed Might\n\u2022 77 Mystic Clovers\n\u2022 250 Mystic Coins",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "71856",
       "name": "Essence of Performance",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/15690E03117539304C47F2A3C5EB68E5ED0FD3FD/1205282.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71890",
       "name": "Shield of Legend",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/747593720753BCB40F1E68B8A9103F5157E97D9E/1204863.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71915",
       "name": "Spirit of the Perfected Axe",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C2C509EDF5C7132AF869A2924C1DC9B64CD65D28/1205599.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71943",
@@ -3493,30 +3808,33 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
-      ]
+        "map_completion"
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "71949",
       "name": "Lump of Beeswax",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0009B50D5125A0D150C5B72F46A9623274C39C0C/1204913.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71952",
       "name": "Pouch of Yellow Pigment",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7EA15F9A3EFA445D0FE824DA2E591D7F7DDE150F/1200716.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "71972",
@@ -3525,18 +3843,20 @@
       "description": "In the Mystic Forge, combine 100 Icy Runestones, a Gift of Metal, a Gift of the Mists, and a Gift of the Cosmos to create the Gift of Astralaria.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "71979",
       "name": "Essence of Heroes",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D6A44B1CA30D66F9D71CFAE0FEA1C0FC7F10B6E9/1205273.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "71994",
@@ -3547,29 +3867,32 @@
       "binding": "account",
       "acquisition": [
         "salvage"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "71998",
       "name": "Spirit of the Perfected Short Bow",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6B922191030C2E534C5AF8F772E0D511D315D408/1205612.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72035",
       "name": "Spirit of the Perfected Focus",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/202D430E35B975016145F40F1032379B79DCE2A3/1205602.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72083",
@@ -3580,18 +3903,20 @@
       "binding": "account",
       "acquisition": [
         "achievement"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72142",
       "name": "Essence of Illumination",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B364E3DFA7610BE5CB303F0AA8D55AB73DC1A77A/1205249.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72261",
@@ -3602,51 +3927,56 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72331",
       "name": "Essence of the Ooze",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/472228726FAF741E5ECF0596B9F75B0203BF4DB8/1205278.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72445",
       "name": "Essence of Quaggan Friendship",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0BD2EDD86CA3EF1C9401F72F68D0B8F86FD5546A/1205269.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72454",
       "name": "Essence of Control",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2660CEC1289C0D09B00B0955FE07BDCA3A9698A0/1205255.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72464",
       "name": "Horse Figure",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3557B33717A1533D7EC77F2FD72D5C90DDE37BBC/1204822.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72535",
@@ -3657,73 +3987,80 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72543",
       "name": "Snake Statue",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3E1CDD1EB4B365C8C70F97225DDD5F0EDF3AB8A7/1205184.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72551",
       "name": "Essence of Burning",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0B19A51D48F8FAA2711E6879CEB10494FF63BF70/1205252.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72579",
       "name": "Sheet of Coarse Paper",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3E3CB8B5ED53AA4E099BE4F40160E45A2859F173/1201914.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "72724",
       "name": "Engraver's Tools",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/1B02E7FB523DAF2F4C56F1942379D22177A36FC1/1204482.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72849",
       "name": "Pruning Shears",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A29C47FDD631969A245ABC07990154472946DD74/1205236.png",
       "description": "A pair of pruning shears imbued with power.",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72862",
       "name": "Wolf Statue",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/49F0C045BFA4117408DFED374D60AB7539F80590/1205029.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72934",
@@ -3734,7 +4071,8 @@
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72964",
@@ -3745,18 +4083,20 @@
       "binding": "account",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "72997",
       "name": "Scope",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2D03B8DADF0722BB51554331DD6E14F8569B1A03/1205469.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73137",
@@ -3766,19 +4106,21 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "73193",
       "name": "Spirit of the Perfected Nightsword",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6B5DD09DA341926E63CAD639047F36D8B14EE7DD/1205607.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73196",
@@ -3788,8 +4130,9 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73236",
@@ -3799,8 +4142,9 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73239",
@@ -3809,7 +4153,8 @@
       "description": "A gift used to create legendary weapons.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "73248",
@@ -3820,7 +4165,8 @@
       "binding": "none",
       "acquisition": [
         "salvage"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "73266",
@@ -3831,51 +4177,56 @@
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73291",
       "name": "Mirror",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2D4AB2CEB5E81567EDDFF7C5FA97F864491F2E1C/1205376.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73375",
       "name": "Essence of the Celebration",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/E560F15920B232F2C3E81E5FFFFE722DC4E04C08/1205284.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73396",
       "name": "Spirit of the Perfected Pistol",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0B447E670B15CEF5D2BC36C1302690A555A81A3D/1205608.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73411",
       "name": "Dimensional Destabilizer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/66A3DEDF46731574E5686DCA29F7750201296921/1204793.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73469",
@@ -3886,102 +4237,112 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "73569",
       "name": "Spirit of the Perfected Warhorn",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/26ABB94AFDC5F6EDA038382CD2586975D9412966/1205618.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73596",
       "name": "Vial of Cadmium Salts",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4CF6FCDA9B9D16A467F70216D3F0655AE1E2BFCF/1204431.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73736",
       "name": "Regulator Nozzle",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BCA880DB270CD52F36C53DA20DC4F0F694BC7E7B/1205065.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73774",
       "name": "Party Ball",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4A959A06EC69157B5D0B56C46223FCB2A52B0897/1205416.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73809",
       "name": "Carved Tear Drop",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9B4E152223323048A5270BF15A03F5BD2338ADE4/1204434.png",
       "description": "A carved tear drop infused with magical energy.",
       "type": "crafting_material",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Exotic"
     },
     {
       "id": "73863",
       "name": "Jar of Pink Paint",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EAE276910F967975295FE16AD9D8902409123D66/1204837.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73875",
       "name": "Carved Beam",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/CA024EA0FD0E77BA12A9A317C0530CFA31B80474/1204433.png",
       "description": "A carved wooden beam imbued with power.",
       "type": "crafting_material",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Exotic"
     },
     {
       "id": "73966",
       "name": "Lattice",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A6B4244CEAE02D47D006BF02AD08BDC972B609CD/1205230.png",
       "description": "A lattice structure infused with magical energy.",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "73993",
       "name": "Colored Paper",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/14A907A50938C87203B06278601FC77A4475951D/1205478.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74068",
@@ -3992,7 +4353,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "74118",
@@ -4003,18 +4365,20 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74207",
       "name": "Ooze Reservoir",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7B65067AD907BF0295FA47A10F92337D7268EA9E/1205094.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74300",
@@ -4023,40 +4387,44 @@
       "description": "In the Mystic Forge, combine 100 Icy Runestones, a Gift of Energy, a Gift of the Mists, and a Gift of the Spirit Raven to create the Gift of Nevermore.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "74348",
       "name": "Spirit of the Perfected Rifle",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/040C49C44B72D5403B35780F42F4A3FE3EC49D46/1205609.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74378",
       "name": "Essence of Rainbows",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9E7A68C15143C5F8F70E34E6B7F2EA0E78072A2E/1205286.png",
       "description": "An essence containing the power of rainbows.",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74433",
       "name": "Congealed Water",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/974EDAD1520C1A010DA9D269A837E9A4373C305C/1205169.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74457",
@@ -4067,7 +4435,8 @@
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74492",
@@ -4078,7 +4447,8 @@
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74528",
@@ -4088,30 +4458,33 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
-      ]
+        "map_completion"
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "74536",
       "name": "Delicate Harp String",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6261D89C0462DAAEF5596EA33E0B48306C1FC3E5/1205333.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74650",
       "name": "Shark Figurine",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7244F3FF99509BAA1B68BD116550034553FC2B65/1205154.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74802",
@@ -4122,62 +4495,68 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74804",
       "name": "Spirit of the Perfected Spear",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BAFA011F7323486644686951793B0EF8AC5A2E14/1205613.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74809",
       "name": "Spirit of the Perfected Harpoon Gun",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/76A865087DB493771A320FED1FF6B40748E5D04E/1205604.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74854",
       "name": "Fuel for the Fire",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/686880EA0A326EFAC196C890736375226EBA7313/1205569.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74907",
       "name": "Spirit of the Perfected Shield",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/CFA206139998FCAFC1EBB8BD55AFD821D97F036B/1205611.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74909",
       "name": "Sculptor's Tools",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D2487B54B56D4AC2F91CD09BBEEE40B290E47CFD/1205125.png",
       "description": "Tools used by sculptors to craft precursor components. Purchased from Grandmaster Craftsman Hobbs.",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "74927",
@@ -4188,95 +4567,104 @@
       "binding": "account",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "74939",
       "name": "Everburning Flame",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7E9DCDF010470235CC5AC7D73878D265E8A1C64D/1205557.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75034",
       "name": "Bow Wings",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/1A6A2EC3495AA2C47A3D993BD11CED51DFFDB99A/1204796.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75064",
       "name": "Spirit of the Perfected Dagger",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/ADC191B9C2F361F704610258D2263DB777CDA74C/1205600.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75143",
       "name": "Paint Brush",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D31979F82E0525070946454F4FE7ECF69EC9D00B/1204466.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75176",
       "name": "Harp",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/30D4E23A690B55611B273ED8B138A3DC387E595E/1205346.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75207",
       "name": "Spirit of the Perfected Hammer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A402F6C4D3DD40040B3E6C51B8DCB30410ED02CE/1205603.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75215",
       "name": "Essence of the Krait",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0D4E0B260B9224217F211EB469F5A756D71B0F2B/1205266.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75272",
       "name": "Black Powder",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/97A1A264110C2D4ACF5A5C960870F85C4F06D0E2/1205452.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75299",
@@ -4286,8 +4674,9 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75333",
@@ -4298,62 +4687,68 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75336",
       "name": "Spirit of the Perfected Scepter",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/23095D9CF237056C9C037D0ECB2076D468BAEBA7/1205610.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75429",
       "name": "Ornate Pistol Frame",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/ADA50041B5D807A55B7DBB4D320D17432BCE5876/1205493.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75504",
       "name": "Essence of Chemistry",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F8A961F21A1621082108E06CDFD858B37FDB9CC2/1205275.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75619",
       "name": "Dragon Mold",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0FCAF50B18386D0EBF3CDEA536CB9CC85357AE58/1204927.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75694",
       "name": "Pouch of Blue Pigment",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B7A7BC319AE979B3F40B3776FC66F91692694446/1200709.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Fine"
     },
     {
       "id": "75744",
@@ -4363,96 +4758,105 @@
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
-        "mystic_forge"
-      ]
+        "crafting"
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75818",
       "name": "Essence of Freezing",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F130FEE1C930CCCE527F2A030EF460D4B5A73F59/1205251.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75825",
       "name": "Fuel Cannister",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4AEE6F47161901A8D419153FE5B20819F74BBFC6/1205053.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75841",
       "name": "Serrated Harpoon",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/426E1CEE6103DD609D083E01EBF0D7E8B6375572/1205153.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75877",
       "name": "Rooster Statues",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/451315E5085D5CAAFFD07F99B1A2D12B80EAB536/1205367.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75899",
       "name": "Essence of Spirit",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B1FC4C6EE50422AC1BB7A9C290943BF090459FB0/1205270.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75972",
       "name": "Fish Figurine",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5B32AE0192764326AA714BB820D21A0BAB609111/1204896.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "75991",
       "name": "Spirit of the Perfected Torch",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AD5CB058D36CC85DE4ED9CEE5D3FDE03C0DD55D1/1205616.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76076",
       "name": "Jar of Paint Base",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/23497939CCC257CC9214F16C6E711EF6F322FFFC/1204475.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76083",
@@ -4463,117 +4867,128 @@
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76094",
       "name": "Confetti Bullets",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A9374603E1D0BD98BDE2600CDABACBB93242BD4F/1205480.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76120",
       "name": "Tome of Heroes",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5C90415C0CB71401D7C06B2C79C3622C02289597/1204886.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76157",
       "name": "Essence of Diving",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/190216E5A3190A0C629AA83156B2AE67D3652733/1205262.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76229",
       "name": "Spinning Mechanism",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D8EB5963033A9CC97B0F9F28496480A1945FDBF1/1205323.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76249",
       "name": "Spirit of the Perfected Longbow",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C65CEA0D7460CD769ADD300256B5A8F20B94D79B/1205605.png",
       "description": "A spirit embodying the essence of perfected longbow crafting.",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76269",
       "name": "Spirit of the Perfected Sword",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/055618CBADCFAD343EFC93FC4FB03CFEA53E13BD/1205615.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76342",
       "name": "Freezing Core",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A37B79716C0F12F05DCF337ADF7FE426C97A5E05/1204934.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76376",
       "name": "Spirit of the Perfected Trident",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2693BD79A23DB20A79ED8057B1D0DAC63E6FADE8/1205617.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76379",
       "name": "Essence of Gloom",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3C0A612D5570076C3C5BA3A9975464427BF90ADE/1205283.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76380",
       "name": "Essence of Energy",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A1916250BC110E516D72BF1A54C7A307A3FB0FD0/1205281.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76399",
@@ -4584,18 +4999,20 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "76405",
       "name": "Essence of the Garden",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D961067804592B919CAE217807B408D5EF799501/1205280.png",
       "description": "An essence containing the power of nature.",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76427",
@@ -4606,7 +5023,8 @@
       "binding": "account",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76442",
@@ -4617,18 +5035,20 @@
       "binding": "account",
       "acquisition": [
         "achievement"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76491",
       "name": "Black Diamond",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4E096C75FAB2EF90A82648A43C64FC226267FB92/1202991.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Rare"
     },
     {
       "id": "76530",
@@ -4640,7 +5060,8 @@
       "acquisition": [
         "mystic_forge",
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76587",
@@ -4651,7 +5072,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76636",
@@ -4662,18 +5084,20 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "76735",
       "name": "Spirit of the Perfected Mace",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4C2A0E7655E4ED6615D7A5F3539E27F85152ACF4/1205606.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76767",
@@ -4684,29 +5108,32 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "76843",
       "name": "Colossus Statue",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FD5DC812AA4D4F7BFFBFBC7EB45AD9DFA7489141/1205078.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "76891",
       "name": "Spirit of the Perfected Staff",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6B3935DDE299F0C532F3D20D4AD335373608C5BD/1205614.png",
       "description": "A spirit embodying the essence of perfected staff crafting.",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "77082",
@@ -4717,7 +5144,8 @@
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "77086",
@@ -4726,29 +5154,32 @@
       "description": "In the Mystic Forge, combine 100 Icy Runestones, a Gift of Wood, a Gift of the Mists, and a Gift of the Catalyst to create the Gift of HOPE.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "77179",
       "name": "Mithril Snake",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/54777703EDFC9146AE7EC43E251F46EE230F1C61/1205003.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "77217",
       "name": "Living Flame",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B299051142D2944FF15A2F104FE0E8BFBDB7C7C7/1205459.png",
       "description": "",
       "type": "trophy",
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "77604",
@@ -4757,7 +5188,8 @@
       "description": "Double-click to open.",
       "type": "container",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Basic"
     },
     {
       "id": "77897",
@@ -4766,7 +5198,8 @@
       "description": "Double-click to apply this look to any other dagger.",
       "type": "consumable",
       "binding": "none",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Rare"
     },
     {
       "id": "78119",
@@ -4777,7 +5210,8 @@
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "78342",
@@ -4788,7 +5222,8 @@
       "binding": "account",
       "acquisition": [
         "collection"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "78344",
@@ -4799,7 +5234,8 @@
       "binding": "account",
       "acquisition": [
         "achievement"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "78425",
@@ -4810,7 +5246,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "78475",
@@ -4821,7 +5258,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "78627",
@@ -4830,7 +5268,8 @@
       "description": "In the Mystic Forge, combine 100 Icy Runestones, a Gift of Wood, a Gift of the Mists, and a Gift of Family to create the Gift of Chuka and Champawat.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "78642",
@@ -4841,7 +5280,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "79410",
@@ -4852,7 +5292,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "79418",
@@ -4863,7 +5304,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "79419",
@@ -4872,7 +5314,8 @@
       "description": "Used to forge the legendary mace Eureka.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "79445",
@@ -4883,7 +5326,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "79453",
@@ -4894,7 +5338,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "79570",
@@ -4905,7 +5350,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "79784",
@@ -4916,7 +5362,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "79836",
@@ -4927,7 +5374,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "79839",
@@ -4936,7 +5384,8 @@
       "description": "Used to craft the legendary shield Shooshadoo.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "79845",
@@ -4947,7 +5396,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "80135",
@@ -4958,7 +5408,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "80201",
@@ -4969,7 +5420,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "80380",
@@ -4980,7 +5432,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "80503",
@@ -4991,7 +5444,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "80650",
@@ -5000,7 +5454,8 @@
       "description": "Used to craft the legendary rifle the HMS Divinity.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "81022",
@@ -5011,7 +5466,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "81051",
@@ -5022,7 +5478,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "81144",
@@ -5031,7 +5488,8 @@
       "description": "Used to craft the legendary torch Flames of War.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "81163",
@@ -5042,7 +5500,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "81634",
@@ -5053,7 +5512,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "81684",
@@ -5062,7 +5522,8 @@
       "description": "Used to forge the legendary hammer Sharur.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "81812",
@@ -5073,7 +5534,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "81871",
@@ -5084,7 +5546,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "81961",
@@ -5095,7 +5558,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "81974",
@@ -5106,7 +5570,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "82003",
@@ -5115,7 +5580,8 @@
       "description": "Used to craft the legendary sword the Shining Blade.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "82069",
@@ -5126,7 +5592,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "85631",
@@ -5137,7 +5604,8 @@
       "binding": "account",
       "acquisition": [
         "mystic_forge"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "85744",
@@ -5146,7 +5614,8 @@
       "description": "Used to craft the legendary focus, the Binding of Ipos.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "85961",
@@ -5157,7 +5626,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "86010",
@@ -5168,7 +5638,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "86018",
@@ -5179,7 +5650,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "86036",
@@ -5188,7 +5660,8 @@
       "description": "A gift used to create legendary weapons.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "86093",
@@ -5199,7 +5672,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "86097",
@@ -5210,7 +5684,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "86120",
@@ -5221,7 +5696,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "86241",
@@ -5232,7 +5708,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "86266",
@@ -5243,7 +5720,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "86330",
@@ -5254,18 +5732,20 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "86627",
       "name": "Snow Diamond",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4E72696614D536500D093EE6C95FA9DD650E913B/1914827.png",
       "description": "",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "87031",
@@ -5276,7 +5756,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "87037",
@@ -5287,7 +5768,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "87115",
@@ -5296,7 +5778,8 @@
       "description": "Used to craft the legendary dagger Claw of the Khan-Ur.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "87165",
@@ -5307,7 +5790,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "87627",
@@ -5318,7 +5802,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "87711",
@@ -5329,7 +5814,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "87764",
@@ -5340,7 +5826,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "88060",
@@ -5349,7 +5836,8 @@
       "description": "Used to craft the legendary warhorn the Verdarach.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "88500",
@@ -5358,7 +5846,8 @@
       "description": "Used to craft the legendary scepter Xiuquatl.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "88738",
@@ -5369,7 +5858,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "88756",
@@ -5380,7 +5870,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "88851",
@@ -5391,7 +5882,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "89445",
@@ -5400,7 +5892,8 @@
       "description": "Used to craft the legendary longbow Pharus.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "89478",
@@ -5411,7 +5904,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "89886",
@@ -5422,7 +5916,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "89947",
@@ -5433,7 +5928,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "90390",
@@ -5444,7 +5940,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "90776",
@@ -5455,7 +5952,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "90883",
@@ -5466,7 +5964,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "90893",
@@ -5475,7 +5974,8 @@
       "description": "Used to craft the legendary greatsword Exordium.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "92687",
@@ -5486,7 +5986,32 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
+    },
+    {
+      "id": "95081",
+      "name": "Memory of Sunrise",
+      "icon": "https://render.guildwars2.com/file/7160900270BB9FF5FBBFD5A85F4E0750EFB32256/2467755.png",
+      "description": "Can be used in the Mystic Forge in place of Sunrise to add the greatsword Eternity to your Legendary Armory.",
+      "type": "trophy",
+      "binding": "account",
+      "acquisition": [
+        "legendary_armory"
+      ],
+      "rarity": "Legendary"
+    },
+    {
+      "id": "95086",
+      "name": "Memory of Twilight",
+      "icon": "https://render.guildwars2.com/file/B8B40BED28CCA6D3C979F8FEC117507423B4560E/2467756.png",
+      "description": "Can be used in the Mystic Forge in place of Twilight to add the greatsword Eternity to your Legendary Armory.",
+      "type": "trophy",
+      "binding": "account",
+      "acquisition": [
+        "legendary_armory"
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "95621",
@@ -5497,7 +6022,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "95631",
@@ -5508,7 +6034,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95656",
@@ -5519,7 +6046,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95708",
@@ -5530,7 +6058,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95740",
@@ -5541,7 +6070,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "95777",
@@ -5550,7 +6080,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Flight, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary longbow Aurene's Flight.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "95809",
@@ -5561,7 +6092,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "95813",
@@ -5572,7 +6104,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Ascended"
     },
     {
       "id": "95814",
@@ -5583,7 +6116,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95834",
@@ -5594,7 +6128,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95841",
@@ -5605,7 +6140,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95846",
@@ -5614,7 +6150,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Tail, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary mace Aurene's Tail.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "95913",
@@ -5625,7 +6162,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "95920",
@@ -5636,7 +6174,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95922",
@@ -5645,7 +6184,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Breath, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary torch Aurene's Breath.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "95962",
@@ -5656,7 +6196,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "95967",
@@ -5667,7 +6208,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95970",
@@ -5678,7 +6220,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "95994",
@@ -5689,7 +6232,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96015",
@@ -5698,7 +6242,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Wing, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary short bow Aurene's Wing.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "96033",
@@ -5707,7 +6252,8 @@
       "description": "In the Mystic Forge, combine a Bloodstone Shard, a Gift of Cantha, a Gift of the Dragon Empire, and 100 Antique Summoning Stones to create the Gift of Jade Mastery.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "96035",
@@ -5718,7 +6264,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96036",
@@ -5729,7 +6276,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96040",
@@ -5740,7 +6288,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96056",
@@ -5751,7 +6300,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96073",
@@ -5760,7 +6310,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Scale, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary shield Aurene's Scale.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "96083",
@@ -5771,7 +6322,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96088",
@@ -5782,7 +6334,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96137",
@@ -5791,7 +6344,8 @@
       "description": "In the Mystic Forge, combine 38 Mystic Clovers, a Gift of Condensed Magic, a Gift of Condensed Might, and 5 Amalgamated Draconic Lodestones to create a Draconic Tribute.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "96161",
@@ -5800,7 +6354,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Weight, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary hammer Aurene's Weight.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "96173",
@@ -5811,7 +6366,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96187",
@@ -5822,7 +6378,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96193",
@@ -5833,7 +6390,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96267",
@@ -5844,7 +6402,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96303",
@@ -5855,7 +6414,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96312",
@@ -5866,7 +6426,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96330",
@@ -5877,7 +6438,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96341",
@@ -5888,7 +6450,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96347",
@@ -5899,7 +6462,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96354",
@@ -5908,7 +6472,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Horn, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary warhorn Aurene's Horn.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "96357",
@@ -5919,7 +6484,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96380",
@@ -5930,7 +6496,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96398",
@@ -5941,7 +6508,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96399",
@@ -5952,7 +6520,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96448",
@@ -5963,7 +6532,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96471",
@@ -5974,7 +6544,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96493",
@@ -5983,7 +6554,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Argument, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary pistol Aurene's Argument.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "96526",
@@ -5994,7 +6566,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96709",
@@ -6005,7 +6578,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96721",
@@ -6016,7 +6590,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96722",
@@ -6027,7 +6602,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96790",
@@ -6036,7 +6612,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Fang, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary sword Aurene's Fang.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "96827",
@@ -6047,7 +6624,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96849",
@@ -6058,7 +6636,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96915",
@@ -6069,7 +6648,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96925",
@@ -6080,7 +6660,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "96951",
@@ -6091,7 +6672,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96978",
@@ -6102,7 +6684,8 @@
       "binding": "none",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "96993",
@@ -6113,7 +6696,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97006",
@@ -6124,7 +6708,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97027",
@@ -6133,7 +6718,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Bite, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary greatsword Aurene's Bite.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "97036",
@@ -6144,7 +6730,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97066",
@@ -6153,7 +6740,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Claw, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary dagger Aurene's Claw.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "97082",
@@ -6164,7 +6752,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97088",
@@ -6173,7 +6762,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Gaze, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary focus Aurene's Gaze.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "97089",
@@ -6184,7 +6774,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97096",
@@ -6193,7 +6784,8 @@
       "description": "In the Mystic Forge, combine a Bloodstone Shard, a Gift of Cantha, a Gift of the Dragon Empire, and 100 Antique Summoning Stones to create the Gift of Jade Mastery.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "97102",
@@ -6204,7 +6796,8 @@
       "binding": "none",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97160",
@@ -6215,7 +6808,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97201",
@@ -6226,7 +6820,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97206",
@@ -6237,7 +6832,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97232",
@@ -6248,7 +6844,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97235",
@@ -6259,7 +6856,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97257",
@@ -6270,7 +6868,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97267",
@@ -6281,7 +6880,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97273",
@@ -6292,7 +6892,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97281",
@@ -6301,7 +6902,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Insight, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary staff Aurene's Insight.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "97305",
@@ -6312,7 +6914,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97335",
@@ -6323,7 +6926,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97366",
@@ -6334,7 +6938,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97408",
@@ -6345,7 +6950,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97412",
@@ -6354,7 +6960,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Persuasion, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary rifle Aurene's Persuasion.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "97433",
@@ -6365,7 +6972,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97449",
@@ -6376,7 +6984,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97513",
@@ -6387,7 +6996,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97552",
@@ -6396,7 +7006,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Wisdom, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary scepter Aurene's Wisdom.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "97586",
@@ -6407,7 +7018,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97598",
@@ -6418,7 +7030,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97655",
@@ -6430,7 +7043,8 @@
       "acquisition": [
         "mystic_forge",
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97691",
@@ -6441,7 +7055,8 @@
       "binding": "none",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97757",
@@ -6452,7 +7067,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97800",
@@ -6463,7 +7079,8 @@
       "binding": "account",
       "acquisition": [
         "vendor"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "97802",
@@ -6474,7 +7091,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97804",
@@ -6483,7 +7101,8 @@
       "description": "Combine at the Mystic Forge with Dragon's Rending, a Gift of Jade Mastery, and a Draconic Tribute to create the legendary axe Aurene's Rending.",
       "type": "trophy",
       "binding": "account",
-      "acquisition": []
+      "acquisition": [],
+      "rarity": "Legendary"
     },
     {
       "id": "97815",
@@ -6494,7 +7113,8 @@
       "binding": "account",
       "acquisition": [
         "crafting"
-      ]
+      ],
+      "rarity": "Exotic"
     },
     {
       "id": "97829",
@@ -6505,7 +7125,8 @@
       "binding": "account",
       "acquisition": [
         "trading_post"
-      ]
+      ],
+      "rarity": "Legendary"
     },
     {
       "id": "100098",
@@ -9287,7 +9908,7 @@
       "rarity": "Ascended",
       "level": 0,
       "acquisition": [
-        "mystic_forge"
+        "crafting"
       ]
     },
     {
@@ -10580,7 +11201,7 @@
     {
       "id": "24508",
       "name": "Ruby Orb",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7702E49901413CC14B2F5B7BFD059522333210E6/220947.png",
       "description": "Upgrade component.",
       "type": "upgrade component",
       "binding": "none",
@@ -10594,7 +11215,7 @@
     {
       "id": "24516",
       "name": "Sapphire Orb",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D13B6E523AE806CFF3D21E12793571037FAA46F7/220953.png",
       "description": "Upgrade component.",
       "type": "upgrade component",
       "binding": "none",
@@ -10608,7 +11229,7 @@
     {
       "id": "24520",
       "name": "Beryl Orb",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7D130AE0AE5073703219A0BC48C3CD6C95215CFD/220955.png",
       "description": "Upgrade component.",
       "type": "upgrade component",
       "binding": "none",
@@ -10622,7 +11243,7 @@
     {
       "id": "105686",
       "name": "Raw Enchanting Stone",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AA420C667F369E59BC075D6B06117613ED71DC0D/3710076.png",
       "description": "A raw enchanting stone found in Starlit Weald.",
       "type": "crafting material",
       "binding": "account",
@@ -10635,7 +11256,7 @@
     {
       "id": "105848",
       "name": "Concentrated Chromatic Sap",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/62B6A3561704ED626FE46046F041A3B1DA7ADB51/3710069.png",
       "description": "Used to create a Gift of the Survivors.",
       "type": "crafting material",
       "binding": "account",
@@ -10648,7 +11269,7 @@
     {
       "id": "105933",
       "name": "Patron of the Magical Arts Plaque",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/04BBDBF2746479F9F4DA2EE0ED5AE35CA602DEA8/3710055.png",
       "description": "Used to create a Gift of the People.",
       "type": "crafting material",
       "binding": "account",
@@ -10661,7 +11282,7 @@
     {
       "id": "106370",
       "name": "Survivor's Enchanted Compass",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3DF23197BD570150B071C7949BE9F5BBFE50D434/3710062.png",
       "description": "Obtained from Shipwreck Strand Mastery achievement.",
       "type": "crafting material",
       "binding": "account",
@@ -10674,7 +11295,7 @@
     {
       "id": "106385",
       "name": "Chromatic Sap",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2714DAB2CB9C40510190E7C4E30F1BFAED732B99/3710068.png",
       "description": "Found in Shipwreck Strand.",
       "type": "crafting material",
       "binding": "account",
@@ -10687,7 +11308,7 @@
     {
       "id": "106467",
       "name": "Gift of Shipwreck Strand Exploration",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/69490A215111E1BA0A7C307AC590316E560D2DB4/3708957.png",
       "description": "Map completion reward for Shipwreck Strand.",
       "type": "crafting material",
       "binding": "account",
@@ -10700,7 +11321,7 @@
     {
       "id": "106627",
       "name": "Seer Wreath of Service",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0D36C238C4EB0337FA32D6D507D8F3C925BE10F6/3710056.png",
       "description": "Obtained from Starlit Weald Mastery achievement.",
       "type": "crafting material",
       "binding": "account",
@@ -10713,7 +11334,7 @@
     {
       "id": "106672",
       "name": "Gift of Starlit Weald Exploration",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7236FF7200ADFA3F973E51B40A582FF00316F2AD/3708958.png",
       "description": "Map completion reward for Starlit Weald.",
       "type": "crafting material",
       "binding": "account",
@@ -11346,6 +11967,256 @@
       "acquisition": [
         "pvp"
       ]
+    },
+    {
+      "id": "46682",
+      "name": "Crystalline Ore",
+      "icon": "https://render.guildwars2.com/file/1BE52D559C4196100120ADF3E91AC0CC08F4FEF2/631469.png",
+      "description": "Refine into crystalline ingots.",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "drop"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "76933",
+      "name": "Fulgurite",
+      "icon": "https://render.guildwars2.com/file/C00CF0A5804C7794EEE7605945A66098B302D00E/1204964.png",
+      "description": "Used to refine Crystalline Ore into Crystalline Ingots.",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "69434",
+      "name": "Bottle of Airship Oil",
+      "icon": "https://render.guildwars2.com/file/0ECB0DB23BF2E0F0FE2103044D5AB06748772CB8/1204962.png",
+      "description": "Used in crafting ascended and legendary gear.",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "salvage"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "69432",
+      "name": "Pile of Auric Dust",
+      "icon": "https://render.guildwars2.com/file/FDC53CC11B9AB85DB076EDB07AF3D274BF47BC3D/1204963.png",
+      "description": "Used in crafting ascended and legendary gear.",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "salvage"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "69392",
+      "name": "Ley Line Spark",
+      "icon": "https://render.guildwars2.com/file/C4676E0C0FAEB44FB538EFEA4E36F39B012E1A06/1204970.png",
+      "description": "Used in crafting ascended and legendary gear.",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "salvage"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "19740",
+      "name": "Bolt of Wool",
+      "icon": "https://render.guildwars2.com/file/E9BB423BDD0D54E33B020DAFFAFBE6F75A62F003/63545.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "trading_post"
+      ],
+      "rarity": "Basic"
+    },
+    {
+      "id": "19742",
+      "name": "Bolt of Cotton",
+      "icon": "https://render.guildwars2.com/file/2EA1366176E09ECFCA1E93441ACAEF10E7C93B7A/63542.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "trading_post"
+      ],
+      "rarity": "Basic"
+    },
+    {
+      "id": "19744",
+      "name": "Bolt of Linen",
+      "icon": "https://render.guildwars2.com/file/7CD96276BF2094F5A17EB520DAA5123F04023102/63575.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "trading_post"
+      ],
+      "rarity": "Basic"
+    },
+    {
+      "id": "19747",
+      "name": "Bolt of Silk",
+      "icon": "https://render.guildwars2.com/file/17570FF5167A03B42605BEE44AFFF0547E07C0F4/65960.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "trading_post"
+      ],
+      "rarity": "Basic"
+    },
+    {
+      "id": "46740",
+      "name": "Spool of Silk Weaving Thread",
+      "icon": "https://render.guildwars2.com/file/45C6FC08BE801CFC31C455A8684A963B51A73759/631488.png",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80685",
+      "name": "Grandmaster Armorsmith's Mark",
+      "icon": "https://render.guildwars2.com/file/51A7F2BC41A1CDBAC649D409AD3680EAA9BCA87D/1653609.png",
+      "type": "trophy",
+      "binding": "account",
+      "acquisition": [
+        "crafting",
+        "vendor"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80686",
+      "name": "Bolt of Empowered Silk",
+      "icon": "https://render.guildwars2.com/file/6560E67C60D2D40D7CEA94EDD62BA32BFEBD6F17/1653616.png",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80714",
+      "name": "Carbonized Mithrillium Ingot",
+      "icon": "https://render.guildwars2.com/file/7EA70FE31408FB0A07B891ED0913A62C40B514F5/1653617.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80723",
+      "name": "Blended Leather Sheet",
+      "icon": "https://render.guildwars2.com/file/C6BFD6AEF9C70A75C7129016C9B8BC2C20395DA8/1653612.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80728",
+      "name": "Vial of Magic",
+      "icon": "https://render.guildwars2.com/file/D9BA60E2CE0DC05E38CC1A11A6523D5002DF425E/1653618.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80743",
+      "name": "Empowered Cured Thick Leather Square",
+      "icon": "https://render.guildwars2.com/file/AA47C89AD604BEBE48D4F6B10A3E1C0E295FFAAF/1653614.png",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80764",
+      "name": "Vial of Might",
+      "icon": "https://render.guildwars2.com/file/E43EF2C20A026348A562F510625A7F3390C017B1/1653619.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80775",
+      "name": "Square of Vabbian Silk",
+      "icon": "https://render.guildwars2.com/file/2B0CF51E755FE9C1F3034F4921613E6692F6C2AE/1653611.png",
+      "type": "crafting_material",
+      "binding": "none",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80799",
+      "name": "Grandmaster Leatherworker's Mark",
+      "icon": "https://render.guildwars2.com/file/DF68FBD9CB0775B897124222C8197B2D3BC30AF4/1653608.png",
+      "type": "trophy",
+      "binding": "account",
+      "acquisition": [
+        "crafting",
+        "vendor"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80831",
+      "name": "Empowered Mithril Ingot",
+      "icon": "https://render.guildwars2.com/file/11C6A728B8601B4DC73C80373E2D3C413BFDA6B2/1653615.png",
+      "type": "crafting_material",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "80857",
+      "name": "Grandmaster Tailor's Mark",
+      "icon": "https://render.guildwars2.com/file/AAFB50D43DECF5CE7BAF2809534B3C653591CD03/1653610.png",
+      "type": "trophy",
+      "binding": "account",
+      "acquisition": [
+        "crafting",
+        "vendor"
+      ],
+      "rarity": "Ascended"
+    },
+    {
+      "id": "87557",
+      "name": "Grandmaster Mark Shard",
+      "icon": "https://render.guildwars2.com/file/51A7F2BC41A1CDBAC649D409AD3680EAA9BCA87D/1653609.png",
+      "type": "trophy",
+      "binding": "account",
+      "acquisition": [
+        "vendor"
+      ],
+      "rarity": "Exotic"
     }
   ]
 }

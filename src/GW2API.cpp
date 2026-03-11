@@ -475,7 +475,7 @@ namespace CraftyLegend {
             // PvP currencies
             {"PvP League Ticket", 30}, {"PvP League Tickets", 30},
             {"PvP Tournament Voucher", 46}, {"PvP Tournament Vouchers", 46},
-            {"Ascended Shards of Glory", 33},
+            {"Ascended Shard of Glory", 33}, {"Ascended Shards of Glory", 33},
             // Guild
             {"Guild Commendation", 16}, {"Guild Commendations", 16},
             // Living World / Core Tyria map currencies

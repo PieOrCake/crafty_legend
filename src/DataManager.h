@@ -18,6 +18,7 @@ namespace CraftyLegend {
         std::string icon;
         std::string description;
         std::string type;
+        std::string rarity; // "Legendary", "Ascended", "Exotic", "Rare", "Masterwork", "Fine", "Basic", "Junk"
         std::string binding; // "none", "account", "soul"
         std::vector<std::string> acquisition;
     };
@@ -44,6 +45,7 @@ namespace CraftyLegend {
     struct Currency {
         uint32_t id;
         std::string name;
+        std::string icon;
         std::string description;
     };
     
@@ -126,6 +128,7 @@ namespace CraftyLegend {
         static const std::unordered_map<uint32_t, Recipe>& GetRecipes();
         static const std::vector<Currency>& GetCurrencies();
         static const Currency* GetCurrency(uint32_t id);
+        static const Currency* GetCurrencyByName(const std::string& name);
         static std::string GetCurrencyName(uint32_t id);
         static size_t GetAcquisitionMethodCount();
         static const std::vector<AcquisitionMethod>& GetAcquisitionMethods(uint32_t item_id);
@@ -137,6 +140,7 @@ namespace CraftyLegend {
         // Name lookups
         static std::string GetItemName(uint32_t id);
         static std::string GetLegendaryName(uint32_t id);
+        static uint32_t ResolveItemIdByName(const std::string& name);
         
         // Column management
         static void InitializeColumns();
@@ -197,6 +201,7 @@ namespace CraftyLegend {
         static AcquisitionMethod CreateAcquisitionMethod(const std::string& method, const Item* item);
         static std::vector<std::string> ParseAcquisitionArray(const std::vector<std::string>& acquisition);
         static std::string FormatDisciplines(const std::vector<std::string>& disciplines);
+    
     };
     
 }

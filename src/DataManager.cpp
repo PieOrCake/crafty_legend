@@ -90,6 +90,17 @@ namespace CraftyLegend {
             {"Legendary War Insights", 83584},
             {"Memory of Battle", 71581},
             {"Memories of Battle", 71581},
+            // LWS3 map currencies (inventory items)
+            {"Blood Ruby", 79280},
+            {"Blood Rubies", 79280},
+            {"Fire Orchid Blossom", 81127},
+            {"Fire Orchid Blossoms", 81127},
+            // Grandmaster Marks
+            {"Grandmaster Armorsmith's Mark", 80685},
+            {"Grandmaster Leatherworker's Mark", 80799},
+            {"Grandmaster Tailor's Mark", 80857},
+            {"Grandmaster Mark Shard", 87557},
+            {"Grandmaster Mark Shards", 87557},
         };
 
         for (const auto& req : requirements) {
@@ -164,7 +175,6 @@ namespace CraftyLegend {
     std::unordered_map<uint32_t, Recipe> DataManager::s_recipes;
     std::vector<Currency> DataManager::s_currencies;
     std::unordered_map<uint32_t, std::vector<AcquisitionMethod>> DataManager::s_acquisition_methods;
-    
     // JSON data storage
     json DataManager::s_legendaries_json;
     json DataManager::s_items_json;
@@ -229,6 +239,45 @@ namespace CraftyLegend {
             
             for (const std::string& method : base_methods) {
                 methods.push_back(CreateAcquisitionMethod(method, &item));
+            }
+            
+            // Items sold by multiple vendors: replace single vendor with specific options
+            if (item.id == 80058) { // Mist Band (Infused)
+                methods.erase(std::remove_if(methods.begin(), methods.end(),
+                    [](const AcquisitionMethod& m) { return m.method == "vendor"; }), methods.end());
+                AcquisitionMethod fractal;
+                fractal.method = "vendor";
+                fractal.display_name = "Vendor - Fractal";
+                fractal.description = "Available from vendors";
+                fractal.vendor_name = "BUY-2046 PFR";
+                fractal.vendor_location = "Mistlock Observatory";
+                fractal.purchase_requirements = {
+                    {"Pristine Fractal Relic", "100"},
+                    {"Integrated Fractal Matrix", "2"}
+                };
+                methods.push_back(fractal);
+                AcquisitionMethod pvp;
+                pvp.method = "vendor";
+                pvp.display_name = "Vendor - PvP League";
+                pvp.description = "Available from vendors";
+                pvp.vendor_name = "Ascended Armor League Vendor";
+                pvp.vendor_location = "Heart of the Mists";
+                pvp.purchase_requirements = {
+                    {"Ascended Shard of Glory", "150"},
+                    {"Shard of Glory", "170"}
+                };
+                methods.push_back(pvp);
+                AcquisitionMethod wvw;
+                wvw.method = "vendor";
+                wvw.display_name = "Vendor - WvW";
+                wvw.description = "Available from vendors";
+                wvw.vendor_name = "Skirmish Supervisor";
+                wvw.vendor_location = "WvW";
+                wvw.purchase_requirements = {
+                    {"WvW Skirmish Claim Ticket", "250"},
+                    {"Memory of Battle", "350"}
+                };
+                methods.push_back(wvw);
             }
             
             s_acquisition_methods[item.id] = methods;
@@ -327,6 +376,7 @@ namespace CraftyLegend {
                 item.icon = legendary.icon;
                 item.description = legendary.description;
                 item.type = legendary.type;
+                item.rarity = "Legendary";
                 item.binding = legendary.binding;
                 item.acquisition = legendary.acquisition;
                 
@@ -405,8 +455,9 @@ namespace CraftyLegend {
                 item.id = static_cast<uint32_t>(std::stoul(item_json["id"].get<std::string>()));
                 item.name = item_json["name"];
                 item.icon = item_json["icon"];
-                item.description = item_json["description"];
+                item.description = item_json.value("description", "");
                 item.type = item_json["type"];
+                item.rarity = item_json.value("rarity", "");
                 item.binding = item_json["binding"];
                 
                 // Parse acquisition array
@@ -533,19 +584,38 @@ namespace CraftyLegend {
     bool DataManager::LoadCurrencies() {
         // Get the DLL directory
         std::string dllDir = GetDllDirectory();
+        if (!dllDir.empty()) {
+            std::replace(dllDir.begin(), dllDir.end(), '\\', '/');
+        }
         
-        // Construct the currencies.json path
-        std::string currenciesPath = dllDir + "/data/CraftyLegend/currencies.json";
-        
-        // Store for debug output
-        s_debug_recipes_path = currenciesPath;
+        // Try multiple paths (same pattern as LoadLegendaries/LoadItems)
+        std::vector<std::string> paths_to_try;
+        if (!dllDir.empty()) {
+            paths_to_try = {
+                dllDir + "/CraftyLegend/currencies.json",
+                dllDir + "/currencies.json",
+                dllDir + "/../CraftyLegend/currencies.json",
+                dllDir + "/../../CraftyLegend/currencies.json"
+            };
+        }
+        paths_to_try.push_back("CraftyLegend/currencies.json");
+        paths_to_try.push_back("./CraftyLegend/currencies.json");
+        paths_to_try.push_back("currencies.json");
         
         // Clear existing data
         s_currencies.clear();
         
+        std::string currenciesPath;
+        std::ifstream currenciesFile;
+        for (const auto& path : paths_to_try) {
+            currenciesFile.open(path);
+            if (currenciesFile.is_open()) {
+                currenciesPath = path;
+                break;
+            }
+        }
+        
         try {
-            // Open and read the currencies JSON file
-            std::ifstream currenciesFile(currenciesPath);
             if (!currenciesFile.is_open()) {
                 return false;
             }
@@ -563,6 +633,7 @@ namespace CraftyLegend {
                 Currency currency;
                 currency.id = currencyJson.value("id", 0);
                 currency.name = currencyJson.value("name", "");
+                currency.icon = currencyJson.value("icon", "");
                 currency.description = currencyJson.value("description", "");
                 
                 s_currencies.push_back(currency);
@@ -665,63 +736,54 @@ namespace CraftyLegend {
                     {"Trade Contracts", "25"},
                     {"Elegy Mosaic", "1"}
                 };
-            // --- HoT Map Meta Gifts ---
-            } else if (item && item->id == 70797) { // Gift of the Fleet
-                acq.display_name = "Vendor - Verdant Brink";
-                acq.vendor_name = "Itzel Mastery Vendor";
-                acq.vendor_location = "Verdant Brink";
-                acq.purchase_requirements = {
-                    {"Airship Parts", "250"}
-                };
-            } else if (item && item->id == 71943) { // Gift of Tarir
-                acq.display_name = "Vendor - Auric Basin";
-                acq.vendor_name = "Exalted Mastery Vendor";
-                acq.vendor_location = "Auric Basin";
-                acq.purchase_requirements = {
-                    {"Lumps of Aurillium", "250"}
-                };
-            } else if (item && item->id == 74528) { // Gift of the Chak
-                acq.display_name = "Vendor - Tangled Depths";
-                acq.vendor_name = "Nuhoch Mastery Vendor";
-                acq.vendor_location = "Tangled Depths";
-                acq.purchase_requirements = {
-                    {"Ley Line Crystals", "250"}
-                };
-            } else if (item && item->id == 70698) { // Gift of the Jungle
-                acq.display_name = "Vendor - Dragon's Stand";
-                acq.vendor_name = "Dragon's Stand Vendor";
-                acq.vendor_location = "Dragon's Stand";
-                acq.purchase_requirements = {
-                    {"Crystalline Ore", "250"}
-                };
             // --- HoT Mastery Gifts ---
             } else if (item && item->id == 73469) { // Gift of the Itzel
-                acq.display_name = "Vendor - Itzel Mastery";
+                acq.display_name = "Vendor - Itzel Mastery Vendor";
                 acq.vendor_name = "Itzel Mastery Vendor";
                 acq.vendor_location = "Verdant Brink";
                 acq.purchase_requirements = {
-                    {"Airship Parts", "Requires Adrenal Mushrooms mastery"}
+                    {"Airship Parts", "500"},
+                    {"Coin", "10000"}
                 };
             } else if (item && item->id == 76767) { // Gift of the Nuhoch
-                acq.display_name = "Vendor - Nuhoch Mastery";
+                acq.display_name = "Vendor - Nuhoch Mastery Vendor";
                 acq.vendor_name = "Nuhoch Mastery Vendor";
                 acq.vendor_location = "Tangled Depths";
                 acq.purchase_requirements = {
-                    {"Ley Line Crystals", "Requires Nuhoch Alchemy mastery"}
+                    {"Ley Line Crystals", "500"},
+                    {"Coin", "10000"}
                 };
             } else if (item && item->id == 76636) { // Gift of the Exalted
-                acq.display_name = "Vendor - Exalted Mastery";
+                acq.display_name = "Vendor - Exalted Mastery Vendor";
                 acq.vendor_name = "Exalted Mastery Vendor";
                 acq.vendor_location = "Auric Basin";
                 acq.purchase_requirements = {
-                    {"Lumps of Aurillium", "Requires Exalted Gathering mastery"}
+                    {"Lumps of Aurillium", "500"},
+                    {"Coin", "10000"}
                 };
             } else if (item && item->id == 71311) { // Gift of Gliding
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
                 acq.vendor_location = "Trader's Forum, Lion's Arch";
                 acq.purchase_requirements = {
-                    {"Spirit Shards", "Requires Ley Line Gliding mastery"}
+                    {"Airship Parts", "300"},
+                    {"Lumps of Aurillium", "300"},
+                    {"Ley Line Crystals", "300"}
+                };
+            // --- Miyani Vendor Items ---
+            } else if (item && item->id == 70528) { // Gift of Glory
+                acq.display_name = "Vendor - Miyani";
+                acq.vendor_name = "Miyani";
+                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                acq.purchase_requirements = {
+                    {"Shard of Glory", "250"}
+                };
+            } else if (item && item->id == 71008) { // Gift of War
+                acq.display_name = "Vendor - Miyani";
+                acq.vendor_name = "Miyani";
+                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                acq.purchase_requirements = {
+                    {"Memory of Battle", "250"}
                 };
             // --- PoF Map Gifts ---
             } else if (item && item->id == 86010) { // Gift of the Desolation
@@ -1026,6 +1088,9 @@ namespace CraftyLegend {
                     {"Magnetite Shard", "500"}
                 };
             // --- WvW Ascended Precursors (all weights) ---
+            // Heavy: Warhelm(81330) Pauldrons(81333) Breastplate(81304) Gauntlets(81349) Legplates(81418) Wargreaves(81336)
+            // Medium: Faceguard(81315) Shoulderguards(81446) Brigandine(81434) Wristplates(81489) Legguards(81386) Shinplates(81420)
+            // Light: Masque(81476) Epaulets(81285) Raiment(81338) Armguards(81428) Leggings(81279) Footgear(81500)
             } else if (item && (item->id == 81330 || item->id == 81333 || item->id == 81304 ||
                                 item->id == 81349 || item->id == 81418 || item->id == 81336 ||
                                 item->id == 81315 || item->id == 81446 || item->id == 81434 ||
@@ -1035,8 +1100,24 @@ namespace CraftyLegend {
                 acq.display_name = "Vendor - Skirmish Supervisor";
                 acq.vendor_name = "Skirmish Supervisor";
                 acq.vendor_location = "WvW";
+                // Ticket cost varies by slot: chest=350, legs=260, others=175
+                bool isChest = (item->id == 81304 || item->id == 81434 || item->id == 81338);
+                bool isLegs  = (item->id == 81418 || item->id == 81386 || item->id == 81279);
+                std::string tickets = isChest ? "350" : (isLegs ? "260" : "175");
+                // Mark count: chest/legs=4, others=3
+                std::string marks = (isChest || isLegs) ? "4" : "3";
+                // Mark type varies by weight class
+                bool isHeavy  = (item->id == 81330 || item->id == 81333 || item->id == 81304 ||
+                                  item->id == 81349 || item->id == 81418 || item->id == 81336);
+                bool isMedium = (item->id == 81315 || item->id == 81446 || item->id == 81434 ||
+                                  item->id == 81489 || item->id == 81386 || item->id == 81420);
+                std::string markName = isHeavy ? "Grandmaster Armorsmith's Mark" :
+                                       (isMedium ? "Grandmaster Leatherworker's Mark" :
+                                                   "Grandmaster Tailor's Mark");
                 acq.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "175"},
+                    {"Coin", "20000"},
+                    {markName, marks},
+                    {"WvW Skirmish Claim Ticket", tickets},
                     {"Memory of Battle", "250"}
                 };
             // --- PvP Ascended Precursors (all weights) ---
@@ -1200,13 +1281,24 @@ namespace CraftyLegend {
                     {"PvP League Ticket", "40"}
                 };
             // Conflux (WvW)
-            } else if (item && item->id == 80058) { // Mist Band (Infused)
-                acq.display_name = "Vendor - WvW";
+            } else if (item && item->id == 80058) { // Mist Band (Infused) - handled by multi-vendor logic in Initialize()
+                acq.display_name = "Vendor";
+                acq.vendor_name = "Multiple Vendors";
+                acq.vendor_location = "Fractals / PvP / WvW";
+            // Grandmaster Marks (via Box of Grandmaster Marks from Skirmish Supervisor)
+            } else if (item && (item->id == 80685 || item->id == 80799 || item->id == 80857)) {
+                acq.display_name = "Vendor - Skirmish Supervisor";
                 acq.vendor_name = "Skirmish Supervisor";
                 acq.vendor_location = "WvW";
                 acq.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "250"},
-                    {"Memory of Battle", "250"}
+                    {"Grandmaster Mark Shard", "10"}
+                };
+            } else if (item && item->id == 87557) { // Grandmaster Mark Shard
+                acq.display_name = "Vendor - Skirmish Supervisor";
+                acq.vendor_name = "Skirmish Supervisor";
+                acq.vendor_location = "WvW";
+                acq.purchase_requirements = {
+                    {"WvW Skirmish Claim Ticket", "1"}
                 };
             } else if (item && item->id == 93147) { // Mist Pearl
                 acq.display_name = "Vendor - WvW";
@@ -1407,7 +1499,7 @@ namespace CraftyLegend {
                 acq.vendor_name = "Miyani";
                 acq.vendor_location = "Trader's Forum, Lion's Arch";
                 acq.purchase_requirements = {
-                    {"Spirit Shards", "1 per 10"}
+                    {"Spirit Shards", "1 (buys 10)"}
                 };
             } else if (item && item->id == 19790) { // Spool of Gossamer Thread
                 acq.display_name = "Vendor - Master Craftsman";
@@ -1721,6 +1813,72 @@ namespace CraftyLegend {
         return nullptr;
     }
     
+    const Currency* DataManager::GetCurrencyByName(const std::string& name) {
+        // Map common plural/variant names to canonical GW2 API currency names
+        static const std::unordered_map<std::string, std::string> aliases = {
+            // Core currencies
+            {"Spirit Shards", "Spirit Shard"},
+            {"Laurels", "Laurel"},
+            {"Coins", "Coin"},
+            {"Badges of Honor", "Badge of Honor"},
+            {"Guild Commendations", "Guild Commendation"},
+            {"Transmutation Charges", "Transmutation Charge"},
+            // Fractal currencies
+            {"Fractal Relics", "Fractal Relic"},
+            {"Pristine Fractal Relics", "Pristine Fractal Relic"},
+            // PvP currencies
+            {"League Ticket", "PvP League Ticket"},
+            {"League Tickets", "PvP League Ticket"},
+            {"Ascended Shard of Glory", "Ascended Shards of Glory"},
+            {"Shard of Glory", "Ascended Shards of Glory"},
+            {"Shards of Glory", "Ascended Shards of Glory"},
+            // WvW currencies
+            {"Skirmish Claim Ticket", "WvW Skirmish Claim Ticket"},
+            {"Skirmish Claim Tickets", "WvW Skirmish Claim Ticket"},
+            {"WvW Skirmish Claim Tickets", "WvW Skirmish Claim Ticket"},
+            {"Magnetite Shards", "Magnetite Shard"},
+            // HoT map currencies
+            {"Airship Parts", "Airship Part"},
+            {"Lumps of Aurillium", "Lump of Aurillium"},
+            {"Ley Line Crystals", "Ley Line Crystal"},
+            {"Bandit Crests", "Bandit Crest"},
+            // PoF currencies
+            {"Trade Contracts", "Trade Contract"},
+            {"Elegy Mosaics", "Elegy Mosaic"},
+            // LW/IBS currencies
+            {"Geodes", "Geode"},
+            // SotO currencies
+            {"Ancient Coins", "Ancient Coin"},
+            {"Static Charges", "Static Charge"},
+            {"Pinches of Stardust", "Pinch of Stardust"},
+            {"Calcified Gasps", "Calcified Gasp"},
+            {"Antiquated Ducats", "Antiquated Ducat"},
+            // JW currencies
+            {"Aether-Rich Saps", "Aether-Rich Sap"},
+            // Dungeon currencies
+            {"Ascalonian Tears", "Ascalonian Tear"},
+            {"Shards of Zhaitan", "Shard of Zhaitan"},
+            {"Tales of Dungeon Delving", "Tales of Dungeon Delving"},
+            // Raid currencies
+            {"Legendary Insights", "Legendary Insight"},
+            // Research
+            {"Research Notes", "Research Note"},
+        };
+        
+        // Try direct match first
+        for (const auto& c : s_currencies) {
+            if (c.name == name) return &c;
+        }
+        // Try alias
+        auto it = aliases.find(name);
+        if (it != aliases.end()) {
+            for (const auto& c : s_currencies) {
+                if (c.name == it->second) return &c;
+            }
+        }
+        return nullptr;
+    }
+    
     std::string DataManager::GetCurrencyName(uint32_t id) {
         const Currency* currency = GetCurrency(id);
         return currency ? currency->name : "Unknown Currency";
@@ -1807,6 +1965,105 @@ namespace CraftyLegend {
         return item ? item->name : "Unknown Item";
     }
     
+    uint32_t DataManager::ResolveItemIdByName(const std::string& name) {
+        // Check the known name-to-id map first (handles plural/singular variants)
+        static const std::unordered_map<std::string, uint32_t>& map = []() -> const std::unordered_map<std::string, uint32_t>& {
+            // Reuse the same map from BuildVendorCostMaterials
+            static const std::unordered_map<std::string, uint32_t> name_to_item_id = {
+                {"Mystic Coins", 19976},
+                {"Mystic Coin", 19976},
+                {"Obsidian Shards", 19925},
+                {"Obsidian Shard", 19925},
+                {"Glob of Ectoplasm", 19721},
+                {"Mystic Clover", 19675},
+                {"Philosopher's Stone", 20796},
+                {"Thermocatalytic Reagent", 46747},
+                {"Jug of Water", 12156},
+                {"Vial of Condensed Mists Essence", 38014},
+                {"Icy Runestone", 19676},
+                {"Bloodstone Shard", 19925},
+                {"Crystalline Ore", 46682},
+                {"Antique Summoning Stone", 96978},
+                {"Antique Summoning Stones", 96978},
+                {"Jade Runestone", 96722},
+                {"Jade Runestones", 96722},
+                {"Chunk of Pure Jade", 97102},
+                {"Chunks of Pure Jade", 97102},
+                {"Chunk of Ancient Ambergris", 96347},
+                {"Chunks of Ancient Ambergris", 96347},
+                {"Blessing of the Jade Empress", 97829},
+                {"Blessings of the Jade Empress", 97829},
+                {"Memory of Aurene", 96088},
+                {"Memories of Aurene", 96088},
+                {"Hydrocatalytic Reagent", 95813},
+                {"Hydrocatalytic Reagents", 95813},
+                {"Amalgamated Draconic Lodestone", 92687},
+                {"Amalgamated Draconic Lodestones", 92687},
+                {"Chunk of Petrified Echovald Resin", 96471},
+                {"Chunks of Petrified Echovald Resin", 96471},
+                {"Lesser Vision Crystal", 49523},
+                {"Lesser Vision Crystals", 49523},
+                {"Provisioner Token", 88926},
+                {"Provisioner Tokens", 88926},
+                {"Amalgamated Rift Essence", 100930},
+                {"Amalgamated Rift Essences", 100930},
+                {"Case of Captured Lightning", 100267},
+                {"Clot of Congealed Screams", 100098},
+                {"Pouch of Stardust", 99964},
+                {"Ball of Dark Energy", 71994},
+                {"Cube of Stabilized Dark Energy", 73137},
+                {"Concentrated Chromatic Sap", 105848},
+                {"Chromatic Sap", 106385},
+                {"Gift of Shipwreck Strand Exploration", 106467},
+                {"Survivor's Enchanted Compass", 106370},
+                {"Patron of the Magical Arts Plaque", 105933},
+                {"Raw Enchanting Stone", 105686},
+                {"Gift of Starlit Weald Exploration", 106672},
+                {"Seer Wreath of Service", 106627},
+                {"Sun Bead", 19717},
+                {"Sun Beads", 19717},
+                {"Exotic Essence of Luck", 45178},
+                {"Legendary Insight", 98327},
+                {"Legendary Insights", 98327},
+                {"Envoy Insignia", 80516},
+                {"Chak Egg", 72205},
+                {"Chak Eggs", 72205},
+                {"Auric Ingot", 73537},
+                {"Auric Ingots", 73537},
+                {"Reclaimed Metal Plate", 74356},
+                {"Reclaimed Metal Plates", 74356},
+                {"Mist Core Fragment", 77531},
+                {"Mist Core Fragments", 77531},
+                {"Record of League Victories", 82700},
+                {"Legendary War Insight", 83584},
+                {"Legendary War Insights", 83584},
+                {"Memory of Battle", 71581},
+                {"Memories of Battle", 71581},
+                {"Shard of Glory", 70820},
+                {"Shards of Glory", 70820},
+                // LWS3 map currencies (inventory items)
+                {"Blood Ruby", 79280},
+                {"Blood Rubies", 79280},
+                {"Fire Orchid Blossom", 81127},
+                {"Fire Orchid Blossoms", 81127},
+                // Grandmaster Marks
+                {"Grandmaster Armorsmith's Mark", 80685},
+                {"Grandmaster Leatherworker's Mark", 80799},
+                {"Grandmaster Tailor's Mark", 80857},
+                {"Grandmaster Mark Shard", 87557},
+                {"Grandmaster Mark Shards", 87557},
+            };
+            return name_to_item_id;
+        }();
+        auto it = map.find(name);
+        if (it != map.end()) return it->second;
+        // Fallback: search loaded items by exact name
+        for (const auto& [id, item] : s_items) {
+            if (item.name == name) return id;
+        }
+        return 0;
+    }
+
     std::string DataManager::GetLegendaryName(uint32_t id) {
         for (const auto& legendary : s_legendaries) {
             if (legendary.id == id) {
@@ -2372,6 +2629,14 @@ namespace CraftyLegend {
                 out.push_back(MakePrereq(PC::WvW, "Gift of Battle Reward Track",
                     "Complete the Gift of Battle WvW reward track", item_id));
                 break;
+            // WvW Ascended Precursors - require exotic skin from Triumphant Armor Reward Track
+            case 81330: case 81333: case 81304: case 81349: case 81418: case 81336: // Heavy
+            case 81315: case 81446: case 81434: case 81489: case 81386: case 81420: // Medium
+            case 81476: case 81285: case 81338: case 81428: case 81279: case 81500: // Light
+                out.push_back(MakePrereq(PC::WvW, "Triumphant Armor Reward Track",
+                    "Complete the Triumphant Armor Reward Track in WvW to unlock the exotic skin (Tier 8, 5th reward, 40th of 40)",
+                    item_id));
+                break;
             // --- HoT Masteries ---
             case 73469: // Gift of the Itzel
                 out.push_back(MakePrereq(PC::Mastery, "Itzel Lore: Adrenal Mushrooms",
@@ -2399,22 +2664,22 @@ namespace CraftyLegend {
                     "Requires Raptor, Springer, Skimmer, and Jackal mount masteries (Path of Fire)",
                     item_id)); // checked specially below
                 break;
-            // --- HoT Map Currencies ---
+            // --- HoT Map Completion Gifts ---
             case 70797: // Gift of the Fleet
-                out.push_back(MakePrereq(PC::MapCurrency, "Verdant Brink: Airship Parts",
-                    "Earn 250 Airship Parts from Verdant Brink events and meta", item_id));
+                out.push_back(MakePrereq(PC::MapCompletion, "Verdant Brink Map Completion",
+                    "Complete all hearts, waypoints, vistas, hero points, and POIs in Verdant Brink", item_id));
                 break;
             case 71943: // Gift of Tarir
-                out.push_back(MakePrereq(PC::MapCurrency, "Auric Basin: Lumps of Aurillium",
-                    "Earn 250 Lumps of Aurillium from Auric Basin events and meta", item_id));
+                out.push_back(MakePrereq(PC::MapCompletion, "Auric Basin Map Completion",
+                    "Complete all hearts, waypoints, vistas, hero points, and POIs in Auric Basin", item_id));
                 break;
             case 74528: // Gift of the Chak
-                out.push_back(MakePrereq(PC::MapCurrency, "Tangled Depths: Ley Line Crystals",
-                    "Earn 250 Ley Line Crystals from Tangled Depths events and meta", item_id));
+                out.push_back(MakePrereq(PC::MapCompletion, "Tangled Depths Map Completion",
+                    "Complete all hearts, waypoints, vistas, hero points, and POIs in Tangled Depths", item_id));
                 break;
             case 70698: // Gift of the Jungle
-                out.push_back(MakePrereq(PC::MapCurrency, "Dragon's Stand: Crystalline Ore",
-                    "Earn 250 Crystalline Ore from Dragon's Stand meta event", item_id));
+                out.push_back(MakePrereq(PC::MapCompletion, "Dragon's Stand Map Completion",
+                    "Complete all hearts, waypoints, vistas, hero points, and POIs in Dragon's Stand", item_id));
                 break;
             // --- PoF Map Currencies ---
             case 86010: // Gift of the Desolation

@@ -2,33 +2,19 @@
 
 A Guild Wars 2 addon for [Raidcore Nexus](https://raidcore.gg/Nexus) that provides a comprehensive crafting tracker for all legendary equipment.
 
+## AI Notice
+
+This addon has been 100% created in [Windsurf](https://windsurf.com/) using Claude. I understand that some folks have a moral, financial or political objection to creating software using an LLM. I just wanted to make a useful tool for the GW2 community, and this was the only way I could do it.
+
 ## Features
 
-- **117 legendaries** with complete crafting trees down to leaf materials
-- Miller column UI for navigating crafting trees
+- **117 legendaries** with complete crafting trees
+- Miller column UI (Like Mac OSX Finder) for navigating crafting trees
 - GW2 API integration for tracking owned materials, wallet currencies, masteries, and achievements
-- Trading Post price fetching
-- Vendor cost details with locations and currency requirements
+- Trading Post and vendor gold prices from GW2 API
+- Vendor cost details with vendor names and currency requirements
 - Achievement and collection prerequisite tracking
 - Persistent account data and price caching
-
-## Legendary Coverage
-
-| Category | Count |
-|----------|-------|
-| Gen 1 Weapons | 21 |
-| Gen 2 Weapons | 16 |
-| Gen 3 (Aurene) Weapons | 16 |
-| Obsidian Armor (SotO) | 6 |
-| Perfected Envoy Armor (Raid) | 6 |
-| Ardent Glorious Armor (PvP) | 18 |
-| Triumphant Hero's Armor (WvW) | 18 |
-| Trinkets | 7 |
-| Backpieces | 4 |
-| Spear | 1 |
-| Relic | 1 |
-| Prismatic Champion's Regalia | 1 |
-| Conflux / Transcendence | 2 |
 
 ## Building
 

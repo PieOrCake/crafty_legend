@@ -2,153 +2,477 @@
   "currencies": [
     {
       "id": 1,
-      "name": "Karma",
-      "description": "Earned by completing events, hearts, and dynamic events throughout Tyria"
+      "name": "Coin",
+      "icon": "https://render.guildwars2.com/file/98457F504BA2FAC8457F532C4B30EDC23929ACF9/619316.png",
+      "description": "The primary currency of Tyria. Spent at vendors throughout the world."
     },
     {
       "id": 2,
-      "name": "Coin",
-      "description": "Primary currency used for most transactions with vendors and trading post"
+      "name": "Karma",
+      "icon": "https://render.guildwars2.com/file/94953FA23D3E0D23559624015DFEA4CFAA07F0E5/155026.png",
+      "description": "Earned through various activities. Spent at vendors throughout the world."
     },
     {
       "id": 3,
       "name": "Laurel",
-      "description": "Earned from daily and monthly achievements, used to purchase special items"
+      "icon": "https://render.guildwars2.com/file/A1BD345AD9192C3A585BE2F6CB0617C5A797A1E2/619317.png",
+      "description": "Obtained from Wizard's Vault rewards. Used to purchase various rewards from laurel merchants."
     },
     {
       "id": 4,
-      "name": "Spirit Shard",
-      "description": "Currency obtained from spirit shard nodes and various activities"
+      "name": "Gem",
+      "icon": "https://render.guildwars2.com/file/220061640ECA41C0577758030357221B4ECCE62C/502065.png",
+      "description": "Purchased and spent via the Black Lion Trading Company."
     },
     {
       "id": 5,
-      "name": "Guild Commendation",
-      "description": "Earned through guild missions and activities, used for guild upgrades"
+      "name": "Ascalonian Tear",
+      "icon": "https://render.guildwars2.com/file/2AA9C0B030BE152B915E0174D7F0495FDA711C54/619318.png",
+      "description": "Earned in Ascalonian Catacombs. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the \"Gift of Ascalon\" component used in creating legendary weapons."
+    },
+    {
+      "id": 6,
+      "name": "Shard of Zhaitan",
+      "icon": "https://render.guildwars2.com/file/06083C4F7321512918E23D57B999F04E94C8D9A3/619319.png",
+      "description": "Earned in the Ruined City of Arah. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the \"Gift of Zhaitan\" component used in creating legendary weapons."
     },
     {
       "id": 7,
-      "name": "Badge of Honor",
-      "description": "Earned in World vs World, used to purchase WvW gear and items"
+      "name": "Fractal Relic",
+      "icon": "https://render.guildwars2.com/file/0204DAD0D40674035F9F5F5270043C3207EEA7E8/619320.png",
+      "description": "Earned and spent in Fractals of the Mists. Also used as a crafting ingredient."
     },
     {
       "id": 9,
-      "name": "Fractal Relic",
-      "description": "Basic fractal currency earned from completing fractal dungeons"
+      "name": "Seal of Beetletun",
+      "icon": "https://render.guildwars2.com/file/C97B0607A6DB1FA1469D1DBBF2F107A057F8A313/619322.png",
+      "description": "Earned in Caudecus's Manor. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the \"Gift of the Nobleman\" component used in creating legendary weapons."
     },
     {
       "id": 10,
-      "name": "Geode",
-      "description": "Currency earned from defeating bosses in the Crystal Oasis fractal"
+      "name": "Manifesto of the Moletariate",
+      "icon": "https://render.guildwars2.com/file/B83A4ED528FC237D4D1862CDD0250B773EAB36AA/619323.png",
+      "description": "Earned in Sorrow's Embrace. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the \"Gift of the Forgeman\" component used in creating legendary weapons."
     },
     {
       "id": 11,
-      "name": "Unbound Magic",
-      "description": "Earned from various activities, used to purchase magic-related items"
+      "name": "Deadly Bloom",
+      "icon": "https://render.guildwars2.com/file/F6F4F39212AF3324223D73BAA807026BD863997C/619324.png",
+      "description": "Earned in Twilight Arbor. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the \"Gift of Thorns\" component used in creating legendary weapons."
     },
     {
       "id": 12,
-      "name": "Volatile Magic",
-      "description": "Earned in Heart of Thorns zones, used for special purchases"
+      "name": "Symbol of Koda",
+      "icon": "https://render.guildwars2.com/file/2B9E2BC9D5D080C54C17E27CECACEFFC0D64EE22/619325.png",
+      "description": "Earned in Honor of the Waves. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the \"Gift of the Sanctuary\" component used in creating legendary weapons."
     },
     {
       "id": 13,
-      "name": "Trade Contract",
-      "description": "Earned from trading contracts, used for specialized crafting materials"
+      "name": "Flame Legion Charr Carving",
+      "icon": "https://render.guildwars2.com/file/310CA245DBF61A54BD0C5D5361E26F0821FCAAFD/619326.png",
+      "description": "Earned in Citadel of Flame. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the \"Gift of Baelfire\" component used in creating legendary weapons."
+    },
+    {
+      "id": 14,
+      "name": "Knowledge Crystal",
+      "icon": "https://render.guildwars2.com/file/37CCE672250A3170B71760949C4C9C9B186517B1/619327.png",
+      "description": "Earned in Crucible of Eternity. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the \"Gift of Knowledge\" component used in creating legendary weapons."
     },
     {
       "id": 15,
-      "name": "Bandit Crest",
-      "description": "Earned in Heart of Thorns bandit-related activities"
+      "name": "Badge of Honor",
+      "icon": "https://render.guildwars2.com/file/AC3178E7BD066BC597F9D4247848E6033A047EDE/699004.png",
+      "description": "Earned and spent in WvW to purchase various items."
     },
     {
       "id": 16,
-      "name": "Essence of Loyalty",
-      "description": "Earned from completing adventures and special activities"
+      "name": "Guild Commendation",
+      "icon": "https://render.guildwars2.com/file/1DB12CF3E9D8D3CF77DA805B2008D417EA32C172/699005.png",
+      "description": "Earned through Guild Missions. Spent in Lion's Arch. Used to purchase various rewards."
     },
     {
       "id": 18,
-      "name": "Elder Crystal",
-      "description": "Currency from Crystal Oasis fractal and related activities"
+      "name": "Transmutation Charge",
+      "icon": "https://render.guildwars2.com/file/66A42690C2EA05235C4090372B975117F60EE7E3/779571.png",
+      "description": "Purchased via the Black Lion Trading Company. Spent in the wardrobe to change appearance."
+    },
+    {
+      "id": 19,
+      "name": "Airship Part",
+      "icon": "https://render.guildwars2.com/file/07EC38BCBE979B7F4557057F51785F0930075F35/1029833.png",
+      "description": "Earned and spent in Verdant Brink. Train the Itzel Language Mastery ability to trade with Itzel vendors for bladed armor and other goods."
     },
     {
       "id": 20,
-      "name": "Airship Part",
-      "description": "Currency earned in Thunderhead Peaks for airship construction"
-    },
-    {
-      "id": 21,
-      "name": "Inscribed Shard",
-      "description": "Currency from Elon Riverlands and related activities"
+      "name": "Ley Line Crystal",
+      "icon": "https://render.guildwars2.com/file/DD02946A3AB4076C500836533F67303EE464A6AC/1206837.png",
+      "description": "Earned and spent in Tangled Depths. Train the Nuhoch Language Mastery ability to trade with Nuhoch vendors for chak weapons and other goods."
     },
     {
       "id": 22,
-      "name": "Crystalline Ingot",
-      "description": "Currency from Domain of Istan and related activities"
+      "name": "Lump of Aurillium",
+      "icon": "https://render.guildwars2.com/file/5D74D6D3D8179FC49D572975CC5E0CC701025508/1206836.png",
+      "description": "Earned and spent in Auric Basin. Train the Exalted Acceptance Mastery line to trade with Exalted merchants for auric weapon recipes and other goods."
     },
     {
       "id": 23,
-      "name": "Karmic Retribution",
-      "description": "Currency from Jahai Bluffs and related activities"
+      "name": "Spirit Shard",
+      "icon": "https://render.guildwars2.com/file/0AD608DE7FDEE0B909905C0AF9401321CF65CD94/1010701.png",
+      "description": "Used by Miyani to maintain the Mystic Forge."
     },
     {
       "id": 24,
-      "name": "Frostbitten Soul",
-      "description": "Currency from Boreal Station and related activities"
+      "name": "Pristine Fractal Relic",
+      "icon": "https://render.guildwars2.com/file/77B0F842ED036D71E46B80570D6CFE25CB4C0677/619321.png",
+      "description": "Earned and spent in the Fractals of the Mists. Used to purchase ascended rings."
     },
     {
       "id": 25,
-      "name": "Bounty Ticket",
-      "description": "Earned from completing bounty hunts in various zones"
+      "name": "Geode",
+      "icon": "https://render.guildwars2.com/file/11C6D8AB5FD04866BF3D751771F90C392739B5DF/1010699.png",
+      "description": "Earned by completing events in Dry Top. Accepted by vendors throughout the area.\nCan be traded for valuable items including recipes for foods, Nomad's gear, and ambrite weapons."
+    },
+    {
+      "id": 26,
+      "name": "WvW Skirmish Claim Ticket",
+      "icon": "https://render.guildwars2.com/file/0F911F55FF800FC0589970FF9137BF050699392F/1010702.png",
+      "description": "Earned by participating in WvW skirmishes. Traded for various rewards at a WvW Skirmish Supervisor."
+    },
+    {
+      "id": 27,
+      "name": "Bandit Crest",
+      "icon": "https://render.guildwars2.com/file/B8E963AF6D4C66237D44194A6570A1492D1F5EE4/1010697.png",
+      "description": "Earned by completing events in the Silverwastes. Accepted by vendors in Camp Resolve and at secured outposts.\nCan be traded for valuable items including Carapace armor and recipes for sinister gear."
     },
     {
       "id": 28,
-      "name": "Skirmish Claim Ticket",
-      "description": "Earned from World vs World skirmishes for special rewards"
+      "name": "Magnetite Shard",
+      "icon": "https://render.guildwars2.com/file/95F8F70D97186780CE45B54600B90BE356D8EA7C/1302741.png",
+      "description": "Earned from bosses and events inside Heart of Thorns and Path of Fire raids."
+    },
+    {
+      "id": 29,
+      "name": "Provisioner Token",
+      "icon": "https://render.guildwars2.com/file/5CF6FC0B62554EBECAC6752AAFA2B8D80F726077/1302745.png",
+      "description": "Earned by helping Faction Provisioners."
+    },
+    {
+      "id": 30,
+      "name": "PvP League Ticket",
+      "icon": "https://render.guildwars2.com/file/DB05F5F20B94A3D12AF11041F60E194D66584957/1313248.png",
+      "description": "Earned when crossing division thresholds during PvP league seasons. Spend in the Heart of the Mists and trade for various rewards at the PvP League Vendor."
+    },
+    {
+      "id": 31,
+      "name": "Proof of Heroics",
+      "icon": "https://render.guildwars2.com/file/0D971EF54A6FA5146AC9F60A0702DD640CBB8011/1207142.png",
+      "description": "Earned when ranking up in World vs World. Spent at any Notary of Heroics in World vs. World to obtain hero points."
     },
     {
       "id": 32,
-      "name": "Transmutation Charge",
-      "description": "Used to change the appearance of equipment"
+      "name": "Unbound Magic",
+      "icon": "https://render.guildwars2.com/file/55CBF5154BC749F0BE7B01F9C75C04F2CD4BC561/1465799.png",
+      "description": "Earned from creatures empowered by unbound magic."
     },
     {
       "id": 33,
-      "name": "Black Lion Claim Ticket",
-      "description": "Earned from Black Lion Chest rewards, used for special purchases"
+      "name": "Ascended Shards of Glory",
+      "icon": "https://render.guildwars2.com/file/1AAD230BF65AE92C000E0C18D26D404022092C35/1614710.png",
+      "description": "Earned from PvP League Division Chests."
     },
     {
       "id": 34,
-      "name": "Lucky Coin",
-      "description": "Currency from various lucky activities and events"
+      "name": "Trade Contract",
+      "icon": "https://render.guildwars2.com/file/DEC2276FB1D5637BE563F618A012DEE63402170C/1767459.png",
+      "description": "Earned in the Crystal Desert. Spend at karma merchants to purchase trade crates with crafting materials, new crafting recipes, and other rewards unique to the Crystal Desert."
     },
     {
       "id": 35,
-      "name": "Writ of Competitive Success",
-      "description": "Earned from Player vs Player achievements"
+      "name": "Elegy Mosaic",
+      "icon": "https://render.guildwars2.com/file/4C5D08BCD7F55B250B413F98A9FB4C323E3B0F93/1766338.png",
+      "description": "Earned by completing legendary bounties in the Crystal Desert. Spend at the Tomb of Primeval Kings.\n\n<c=@Flavor>These markers were used to commemorate great deeds in the Dynastic Era of ancient Elona.</c>"
+    },
+    {
+      "id": 36,
+      "name": "Testimony of Desert Heroics",
+      "icon": "https://render.guildwars2.com/file/29A2465AE376091D3871B42D14D90B453060B69C/1822313.png",
+      "description": "Earned when ranking up in World vs World. Spent at any Notary of Heroics in World vs. World to obtain hero points."
+    },
+    {
+      "id": 37,
+      "name": "Exalted Key",
+      "icon": "https://render.guildwars2.com/file/D8A351CBB13B24E49F9755BD290F710964B8FD99/1203022.png",
+      "description": "Used to open Exalted chests in Auric Basin. Chests can contain armor, weapons, and recipes."
+    },
+    {
+      "id": 38,
+      "name": "Machete",
+      "icon": "https://render.guildwars2.com/file/2539DA0C2F1259A20DEE6707B8D8BCDA050372E2/1203080.png",
+      "description": "Used to open noxious pods in Dragon's Stand. Pods can contain armor, weapons, and recipes."
     },
     {
       "id": 39,
-      "name": "Dragonite Ore",
-      "description": "Mined from rich dragonite nodes, used for ascended crafting"
+      "name": "Gaeting Crystal",
+      "icon": "https://render.guildwars2.com/file/B31002F9772C0DDF7428A7A16BD14945C34AB4A8/1896039.png",
+      "description": "Earned from bosses and events inside Path of Fire raids."
     },
     {
       "id": 40,
-      "name": "Empyreal Fragment",
-      "description": "Gathered from special nodes, used for ascended crafting"
+      "name": "Bandit Skeleton Key",
+      "icon": "https://render.guildwars2.com/file/332FF8697F27CEC0A599A008C901ACD8273E0C1E/65724.png",
+      "description": "Used to open lost bandit chests in the Silverwastes. Chests can contain armor, weapons, recipes, ambrite, and more."
+    },
+    {
+      "id": 41,
+      "name": "Pact Crowbar",
+      "icon": "https://render.guildwars2.com/file/CC21772A9131AEAF4C18EE90172AE2A8DB1850BA/1203099.png",
+      "description": "Used to open airship cargo in Verdant Brink. Cargo can contain crafting materials, armor, weapons, and recipes."
+    },
+    {
+      "id": 42,
+      "name": "Vial of Chak Acid",
+      "icon": "https://render.guildwars2.com/file/B60BE97A3899A1D36CE81CB3C896CACACCA79237/1203046.png",
+      "description": "Used to open crystallized supply caches in Tangled Depths. Caches can contain armor, weapons, and recipes."
+    },
+    {
+      "id": 43,
+      "name": "Zephyrite Lockpick",
+      "icon": "https://render.guildwars2.com/file/A6F57A2C946B2A02062AC0A9452703505CF8B3BE/831466.png",
+      "description": "Used to open buried locked chests in Dry Top. These chests are only visible during sandstorms. Chests can contain armor, weapons, rare skins, recipes, ambrite, and more."
+    },
+    {
+      "id": 44,
+      "name": "Trader's Key",
+      "icon": "https://render.guildwars2.com/file/7CD20D4B072AD23F97202F05E4130CF8A4B069C5/69116.png",
+      "description": "Used to open trade crates in the Crystal Desert."
     },
     {
       "id": 45,
-      "name": "Spirit Plasm",
-      "description": "Currency from spirit-related activities"
+      "name": "Volatile Magic",
+      "icon": "https://render.guildwars2.com/file/57F51A1F62E3FBB7B5E02CBD7C9717371D1CC8F2/1894697.png",
+      "description": "Unstable magic lingering from the fall of a god and two Elder Dragons. Spent at vendors to purchase unlocks and rewards."
     },
     {
       "id": 46,
-      "name": "Hall of Monuments Reward",
-      "description": "Rewards from Guild Wars 1 achievements transferred to Guild Wars 2"
+      "name": "PvP Tournament Voucher",
+      "icon": "https://render.guildwars2.com/file/C30D1480E3383F999DE87921706D9D39E49CDC7A/2010217.png",
+      "description": "Earned in monthly automated tournaments and some special event tournaments."
     },
     {
       "id": 47,
-      "name": "Lump of Mistium",
-      "description": "Currency from The Mist War activities"
+      "name": "Racing Medallion",
+      "icon": "https://render.guildwars2.com/file/555601A503A5DCFCC90C421AECF1ACEF70B2AFAC/2069367.png",
+      "description": "Earned by participating in roller beetle races and time trials."
+    },
+    {
+      "id": 49,
+      "name": "Mistborn Key",
+      "icon": "https://render.guildwars2.com/file/2C47C1C30F61DB3A743BA47FB7E70808156A9009/2140520.png",
+      "description": "Used to open Mistborn Coffers in Dragonfall."
+    },
+    {
+      "id": 50,
+      "name": "Festival Token",
+      "icon": "https://render.guildwars2.com/file/63E1A0F023D101045B5BA2331C289327687FC7E3/797790.png",
+      "description": "Earned by participating in the yearly Festival of the Four Winds."
+    },
+    {
+      "id": 51,
+      "name": "Cache Key",
+      "icon": "https://render.guildwars2.com/file/7D7CAD2BF4527006CFE6BE3DBF306353260DC8B2/2292743.png",
+      "description": "Used to loot cache chests around Drizzlewood Coast."
+    },
+    {
+      "id": 52,
+      "name": "Red Prophet Shard",
+      "icon": "https://render.guildwars2.com/file/05E12F28F7747F580105C8DACD0FF2027644C5FB/2270835.png",
+      "description": "Crystalline shards of dragon magic, veined with red.\nEmissaries in the Eye of the North have interest in these."
+    },
+    {
+      "id": 53,
+      "name": "Green Prophet Shard",
+      "icon": "https://render.guildwars2.com/file/BFEDF6110C69BE3521010E7F23B5147919B90FA9/2270834.png",
+      "description": "Crystalline shards of dragon magic, veined with green.\nCan be exchanged for rewards in the Wizard's Tower, the Eye of the North, Arborstone, or Lion's Arch."
+    },
+    {
+      "id": 54,
+      "name": "Blue Prophet Crystal",
+      "icon": "https://render.guildwars2.com/file/2F531F63F5A9A93C624A3CDDC73F9078C00E5097/2270830.png",
+      "description": "Crystalline formations of dragon magic, veined with blue.\nUsed to open the weekly strike rewards chest in the Eye of the North.\nObtained by purchasing from vendors for magnetite shards."
+    },
+    {
+      "id": 55,
+      "name": "Green Prophet Crystal",
+      "icon": "https://render.guildwars2.com/file/361BEAAEB637D90905060E4A59365118C7A6790D/2270831.png",
+      "description": "Crystalline formations of dragon magic, veined with green.\nEmissaries in the Eye of the North have interest in these.\nObtained from Priority Strikes or by combining shards."
+    },
+    {
+      "id": 56,
+      "name": "Red Prophet Crystal",
+      "icon": "https://render.guildwars2.com/file/3AB7586DBCB7C9967459FB4F10A8C205E6760BA7/2270832.png",
+      "description": "Crystalline formations of dragon magic, veined with red.\nEmissaries in the Eye of the North have interest in these.\nObtained from Priority Strikes or by combining shards."
+    },
+    {
+      "id": 57,
+      "name": "Blue Prophet Shard",
+      "icon": "https://render.guildwars2.com/file/A0ECC4DEE6E84062649EA464079AE46B61089130/2270833.png",
+      "description": "Crystalline shards of dragon magic, veined with blue.\nCan be exchanged for rewards in the Eye of the North, Arborstone, or Lion's Arch."
+    },
+    {
+      "id": 58,
+      "name": "War Supplies",
+      "icon": "https://render.guildwars2.com/file/3A930379AABCB10BDBE42F0FA436F29DD023C274/2293273.png",
+      "description": "Materials to aid in the ongoing conflict in the Drizzlewood Coast. Can be traded for war equipment and items or used to upgrade bases."
+    },
+    {
+      "id": 59,
+      "name": "Unstable Fractal Essence",
+      "icon": "https://render.guildwars2.com/file/AD0AF3F321EB250B5FB4C44A7B3392CD1208921A/1202328.png",
+      "description": "Earned and spent in Fractals of the Mists. Used to purchase prestigious rewards."
+    },
+    {
+      "id": 60,
+      "name": "Tyrian Defense Seal",
+      "icon": "https://render.guildwars2.com/file/A004AF632A0ABA29ACFAB475AF1197B5BF80D9D9/2351816.png",
+      "description": "Earned by protecting Tyria in Dragon Response Missions. Spent at faction vendors in Eye of the North."
+    },
+    {
+      "id": 61,
+      "name": "Research Note",
+      "icon": "https://render.guildwars2.com/file/BC2EACDA78BC950263F901E8EBA6E74D08E97E23/2596976.png",
+      "description": "Acquired by deconstructing crafted items with research kits. Used at vendors in Cantha, the Horn of Maguuma, and Janthir, and to craft newer recipes."
+    },
+    {
+      "id": 62,
+      "name": "Unusual Coin",
+      "icon": "https://render.guildwars2.com/file/662D371A6C145EDDDA2DE6B53BC05F5F08CE386F/2596977.png",
+      "description": "Acquired by opening hidden chests in the most recent expansion's content. Can be traded with Unusual Coin Collectors for rewards."
+    },
+    {
+      "id": 63,
+      "name": "Astral Acclaim",
+      "icon": "https://render.guildwars2.com/file/1856A01E331452E4C14E4C9CF4F818E3FAEF9B79/3124964.png",
+      "description": "Earned by completing objectives in the Wizard's Vault. Spend to purchase rewards from the Astral Rewards section of the Wizard's Vault."
+    },
+    {
+      "id": 64,
+      "name": "Jade Sliver",
+      "icon": "https://render.guildwars2.com/file/90FF7B7D0CBBC031B04F7E0A18576D7EBECB1C90/2596975.png",
+      "description": "Acquired from junk items recycled by the Jade Bot Recycler."
+    },
+    {
+      "id": 65,
+      "name": "Testimony of Jade Heroics",
+      "icon": "https://render.guildwars2.com/file/7BFCF20F62C7DA650DFA69723E0B4F00E4F0ACF8/2597023.png",
+      "description": "Earned when ranking up in World vs World. Spent at any Notary of Heroics in World vs. World to obtain hero points."
+    },
+    {
+      "id": 66,
+      "name": "Ancient Coin",
+      "icon": "https://render.guildwars2.com/file/482B14330E349A01766C03412599B42DA103963D/3123700.png",
+      "description": "Acquired by opening hidden chests in content released prior to the current expansion. Can be traded with Ancient Coin Collectors for rewards."
+    },
+    {
+      "id": 67,
+      "name": "Canach Coins",
+      "icon": "https://render.guildwars2.com/file/F5FDD02592E10C3E63CF64D44713220FB6C70D03/2596973.png",
+      "description": "Acquired by playing the Coin Rush in Club Canach. May be used to obtain rewards in Club Canach."
+    },
+    {
+      "id": 68,
+      "name": "Imperial Favor",
+      "icon": "https://render.guildwars2.com/file/D312AE6DB1AE2ECC2494772DF1D312D13B501D4E/2596974.png",
+      "description": "Acquired by assisting in events throughout Cantha. Used at vendors in Cantha."
+    },
+    {
+      "id": 69,
+      "name": "Tales of Dungeon Delving",
+      "icon": "https://render.guildwars2.com/file/37CCE672250A3170B71760949C4C9C9B186517B1/619327.png",
+      "description": "Earned in dungeons. Spent in Lion's Arch to purchase rare and exotic gear, runes and sigils, crafting materials, and the legendary crafting components used in creating legendary weapons."
+    },
+    {
+      "id": 70,
+      "name": "Legendary Insight",
+      "icon": "https://render.guildwars2.com/file/6D33B7387BAF2E2CC9B5D37D1D1B01246AB6FA22/1302744.png",
+      "description": "Earned from bosses and events inside raids and challenge mode Strike Missions."
+    },
+    {
+      "id": 71,
+      "name": "Jade Miner's Keycard",
+      "icon": "https://render.guildwars2.com/file/5E741B943ACA14FBAEFD2B75CEEDAF4750BA20DA/3004443.png",
+      "description": "Used to open mining caches around Gyala Delve."
+    },
+    {
+      "id": 72,
+      "name": "Static Charge",
+      "icon": "https://render.guildwars2.com/file/314EF613F04029E9A8354FB8D79A72EDC36DDF10/3123702.png",
+      "description": "Earned in Skywatch Archipelago"
+    },
+    {
+      "id": 73,
+      "name": "Pinch of Stardust",
+      "icon": "https://render.guildwars2.com/file/22DE50C72BCD2610345EA67F5E4032057EA2ABE5/3123701.png",
+      "description": "Earned in Amnytas"
+    },
+    {
+      "id": 74,
+      "name": "",
+      "icon": "https://render.guildwars2.com/file/1856A01E331452E4C14E4C9CF4F818E3FAEF9B79/3124964.png",
+      "description": ""
+    },
+    {
+      "id": 75,
+      "name": "Calcified Gasp",
+      "icon": "https://render.guildwars2.com/file/0BF799CCA1DD262AE1F3B867900A002D080B56C3/3188140.png",
+      "description": "Earned in Inner Nayos."
+    },
+    {
+      "id": 76,
+      "name": "Ursus Oblige",
+      "icon": "https://render.guildwars2.com/file/0CCE7302D97D26A695BDD40863EED11D0B221DE7/3593176.png",
+      "description": "Acquired by assisting in events throughout Janthir. Used at vendors across Janthir Wilds."
+    },
+    {
+      "id": 77,
+      "name": "Gaeting Crystal",
+      "icon": "https://render.guildwars2.com/file/0C05B2E6F012B209C3095CDD6AF5F84B0BA9CC3A/3442797.png",
+      "description": "Earned from bosses and events inside Janthir Wilds raids. Used at specific raid vendors in the Janthir region."
+    },
+    {
+      "id": 78,
+      "name": "Fine Rift Essence",
+      "icon": "https://render.guildwars2.com/file/41D633F8F0CCFAD7FDADEF7CE84BF7C312AA1B49/3630022.png",
+      "description": "Found in rift hunts and Convergences."
+    },
+    {
+      "id": 79,
+      "name": "Rare Rift Essence",
+      "icon": "https://render.guildwars2.com/file/A6012206459C56680D1BD4D23E0B706F0B0AE40D/3630024.png",
+      "description": "Found in tier 3 rift hunts and Convergences."
+    },
+    {
+      "id": 80,
+      "name": "Masterwork Rift Essence",
+      "icon": "https://render.guildwars2.com/file/E0A96441F8405ABEF06114BE750154583CF3B1D2/3630023.png",
+      "description": "Found in tier 2 rift hunts and Convergences."
+    },
+    {
+      "id": 81,
+      "name": "Antiquated Ducat",
+      "icon": "https://render.guildwars2.com/file/F891B355BC31BD7B4103FE5DF9ACB2FCF928F4CB/3710051.png",
+      "description": "Acquired by assisting in events throughout Castora. Used at vendors across Castora."
+    },
+    {
+      "id": 82,
+      "name": "Testimony of Castoran Heroics",
+      "icon": "https://render.guildwars2.com/file/D6BC79630AFF64123ED10DF9D065CCA657E0767E/3710074.png",
+      "description": "Earned when ranking up in World vs World. Spent at any Notary of Heroics in World vs. World to obtain hero points."
+    },
+    {
+      "id": 83,
+      "name": "Aether-Rich Sap",
+      "icon": "https://render.guildwars2.com/file/79F23C52AF0AA29A976877285FF904BCA2D122FE/3710050.png",
+      "description": "Acquired by assisting in events throughout Castora. Used at vendors across Castora."
     }
   ]
 }

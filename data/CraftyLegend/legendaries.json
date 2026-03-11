@@ -3,7 +3,7 @@
     {
       "id": 30698,
       "name": "The Bifrost",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FD221A90427ADBD29B7E2DF8BDAF98BB16391162/456025.png",
       "description": "A legendary staff that shifts through the colors of the rainbow.",
       "type": "weapon",
       "weapon_type": "staff",
@@ -16,7 +16,7 @@
     {
       "id": 30699,
       "name": "Bolt",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/FE47E046D10DF27508910869B5EB040F6BBBE793/456026.png",
       "description": "A legendary sword that crackles with electrical energy.",
       "type": "weapon",
       "weapon_type": "sword",
@@ -29,7 +29,7 @@
     {
       "id": 30686,
       "name": "The Dreamer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/98F0ED6A7F7A310FCE6D161C0B36B0071E4D1917/456011.png",
       "description": "A legendary shortbow that manifests dreams into reality.",
       "type": "weapon",
       "weapon_type": "shortbow",
@@ -42,7 +42,7 @@
     {
       "id": 30689,
       "name": "Eternity",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A30DA1A1EF05BD080C95AE2EF0067BADCDD0D89D/456014.png",
       "description": "A legendary greatsword that exists outside of time, forged from Sunrise and Twilight.",
       "type": "weapon",
       "weapon_type": "greatsword",
@@ -55,7 +55,7 @@
     {
       "id": 30697,
       "name": "Frenzy",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/67EB25E29BA73D96B34523C02B256516DD60DA06/456024.png",
       "description": "A legendary harpoon gun that rages with battle fury.",
       "type": "weapon",
       "weapon_type": "Speargun",
@@ -68,7 +68,7 @@
     {
       "id": 30684,
       "name": "Frostfang",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0F9C08DE12ADD1082A103DC6EF7401281B23985E/456009.png",
       "description": "A legendary axe that freezes foes with icy power.",
       "type": "weapon",
       "weapon_type": "Axe",
@@ -81,7 +81,7 @@
     {
       "id": 30696,
       "name": "The Flameseeker Prophecies",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BE58181BEA0559E60873ED940D0408D0596B4464/456021.png",
       "description": "A legendary shield that bears ancient prophecies.",
       "type": "weapon",
       "weapon_type": "shield",
@@ -94,7 +94,7 @@
     {
       "id": 30702,
       "name": "Howler",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/19E01CC637F4F370B43E132ACEBFD7C6E1570DE7/456029.png",
       "description": "A legendary warhorn that howls with primal power.",
       "type": "weapon",
       "weapon_type": "warhorn",
@@ -107,7 +107,7 @@
     {
       "id": 30687,
       "name": "Incinerator",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D9B12A1EBEDC04047295CF0A66E43E650297D429/456012.png",
       "description": "A legendary dagger that burns with eternal flame.",
       "type": "weapon",
       "weapon_type": "dagger",
@@ -120,7 +120,7 @@
     {
       "id": 30690,
       "name": "The Juggernaut",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/F9FAEDF77052A514E876145908B3B3346314A13E/456015.png",
       "description": "A legendary hammer that embodies the power of earth.",
       "type": "weapon",
       "weapon_type": "hammer",
@@ -133,7 +133,7 @@
     {
       "id": 30691,
       "name": "Kamohoali'i Kotaki",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/4705EC549A3296F493312C4018754816175E5D28/456016.png",
       "description": "A legendary spear that channels the power of the shark spirit.",
       "type": "weapon",
       "weapon_type": "Harpoon",
@@ -146,7 +146,7 @@
     {
       "id": 30701,
       "name": "Kraitkin",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/1FAD3D4BE1FA503C49FCF532582867FB060664E4/456028.png",
       "description": "A legendary trident that commands the power of the deep.",
       "type": "weapon",
       "weapon_type": "trident",
@@ -159,7 +159,7 @@
     {
       "id": 30685,
       "name": "Kudzu",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B604C764D3E19E391F5E24CCFBC414500606BD29/456010.png",
       "description": "A legendary longbow that grows with nature's power.",
       "type": "weapon",
       "weapon_type": "longbow",
@@ -172,7 +172,7 @@
     {
       "id": 30695,
       "name": "Meteorlogicus",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/AC940BF377C5D3EF13B2060D53EF19F1BC34BE48/456020.png",
       "description": "A legendary scepter that commands the power of storms.",
       "type": "weapon",
       "weapon_type": "scepter",
@@ -185,7 +185,7 @@
     {
       "id": 30688,
       "name": "The Minstrel",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D3DBEB4FE4C81401AF6EA905FE16E4F3050F540B/456013.png",
       "description": "A legendary focus that inspires allies with its melodies.",
       "type": "weapon",
       "weapon_type": "focus",
@@ -198,7 +198,7 @@
     {
       "id": 30692,
       "name": "The Moot",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C0302BC8DDD84D20F0B73C1D702438F5534F3308/456017.png",
       "description": "A legendary mace that brings peace to the battlefield.",
       "type": "weapon",
       "weapon_type": "mace",
@@ -211,7 +211,7 @@
     {
       "id": 30694,
       "name": "The Predator",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3ECD99482DD865AA7D42B2EF6AFEFA705294555C/456019.png",
       "description": "A legendary rifle that hunts its prey with deadly precision.",
       "type": "weapon",
       "weapon_type": "rifle",
@@ -224,7 +224,7 @@
     {
       "id": 30693,
       "name": "Quip",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/03342FFE0E35B35D5207B65ECB0C1D06442377AB/456018.png",
       "description": "A legendary pistol that unleashes chaotic energy.",
       "type": "weapon",
       "weapon_type": "pistol",
@@ -237,7 +237,7 @@
     {
       "id": 30700,
       "name": "Rodgort",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B1D6CB3AB4017633280ACDB36470F46829FDDD13/456027.png",
       "description": "A legendary torch that burns with the flame of Rodgort.",
       "type": "weapon",
       "weapon_type": "torch",
@@ -250,7 +250,7 @@
     {
       "id": 30703,
       "name": "Sunrise",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EFF16C4F19792627355DC294E6D7093F544921E7/456030.png",
       "description": "A legendary greatsword that shines with the light of dawn.",
       "type": "weapon",
       "weapon_type": "greatsword",
@@ -263,7 +263,7 @@
     {
       "id": 30704,
       "name": "Twilight",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/CE3AF0B7B9BB6244726779F5B6A930541BA6C15F/456031.png",
       "description": "A legendary greatsword that glows with the darkness of night.",
       "type": "weapon",
       "weapon_type": "greatsword",
@@ -692,7 +692,7 @@
     {
       "id": 101544,
       "name": "Obsidian Helm",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C905E4515CFB4AA52C7C57DF2F98D4DB0D04055D/3256184.png",
       "description": "Legendary helm armor (all weight classes).",
       "type": "armor",
       "armor_type": "Helm",
@@ -705,7 +705,7 @@
     {
       "id": 101551,
       "name": "Obsidian Shoulders",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BAC307B13FD2A4A803CA5CED056916D7B34DDFF8/3256186.png",
       "description": "Legendary shoulders armor (all weight classes).",
       "type": "armor",
       "armor_type": "Shoulders",
@@ -718,7 +718,7 @@
     {
       "id": 101521,
       "name": "Obsidian Chest",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0E039364A11D5B9A0F40ADB9D0A7FD6FEDB64DB0/3256182.png",
       "description": "Legendary coat armor (all weight classes).",
       "type": "armor",
       "armor_type": "Coat",
@@ -731,7 +731,7 @@
     {
       "id": 101609,
       "name": "Obsidian Gloves",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/78A5446DC86D5FDE540B45102F973D94A2EDC3C0/3256183.png",
       "description": "Legendary gloves armor (all weight classes).",
       "type": "armor",
       "armor_type": "Gloves",
@@ -744,7 +744,7 @@
     {
       "id": 101568,
       "name": "Obsidian Leggings",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/22BED3680AC1A1AB6B3ED4F8922891077DADF361/3256185.png",
       "description": "Legendary leggings armor (all weight classes).",
       "type": "armor",
       "armor_type": "Leggings",
@@ -757,7 +757,7 @@
     {
       "id": 101460,
       "name": "Obsidian Boots",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0EB6787B05B90E21D7982A3B2E75460166C6520D/3256181.png",
       "description": "Legendary boots armor (all weight classes).",
       "type": "armor",
       "armor_type": "Boots",
@@ -770,7 +770,7 @@
     {
       "id": 80384,
       "name": "Perfected Envoy Helm",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2695A8E44B7F07EF15A20857790EFCA91513F5F0/1634565.png",
       "description": "Legendary raid helm armor.",
       "type": "armor",
       "armor_type": "Helm",
@@ -783,7 +783,7 @@
     {
       "id": 80435,
       "name": "Perfected Envoy Shoulders",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0F0F4BE73C9316BAA4956A3AA622CB0AE84D9CEA/1634567.png",
       "description": "Legendary raid shoulders armor.",
       "type": "armor",
       "armor_type": "Shoulders",
@@ -796,7 +796,7 @@
     {
       "id": 80254,
       "name": "Perfected Envoy Coat",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/DACF9B1ACBE8687B6B31ABC0CF295301120D7A67/1634563.png",
       "description": "Legendary raid coat armor.",
       "type": "armor",
       "armor_type": "Coat",
@@ -809,7 +809,7 @@
     {
       "id": 80205,
       "name": "Perfected Envoy Gloves",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A5DD0D661970F02CC26D04B510C7C94259B99520/1634564.png",
       "description": "Legendary raid gloves armor.",
       "type": "armor",
       "armor_type": "Gloves",
@@ -822,7 +822,7 @@
     {
       "id": 80277,
       "name": "Perfected Envoy Leggings",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/EA9294557C175A43567906721E43962EC4B12D34/1634566.png",
       "description": "Legendary raid leggings armor.",
       "type": "armor",
       "armor_type": "Leggings",
@@ -835,7 +835,7 @@
     {
       "id": 80557,
       "name": "Perfected Envoy Boots",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/E895D40AE0D1A500FFFDB955C27A98FF687AA4C1/1634562.png",
       "description": "Legendary raid boots armor.",
       "type": "armor",
       "armor_type": "Boots",
@@ -848,7 +848,7 @@
     {
       "id": 83921,
       "name": "Ardent Glorious Plate Helm",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/35BD081715E6C4330AB8706A3C1110000A80F190/1614747.png",
       "description": "Legendary PvP helm armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Helm",
@@ -861,7 +861,7 @@
     {
       "id": 83127,
       "name": "Ardent Glorious Pauldrons",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/06EA1DCD71DD4125DAF401C36D560CABFC6950B4/1614749.png",
       "description": "Legendary PvP shoulders armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Shoulders",
@@ -874,7 +874,7 @@
     {
       "id": 83348,
       "name": "Ardent Glorious Breastplate",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/E9531DD43D5AA5B15FC40C0F336357947B177B40/1614745.png",
       "description": "Legendary PvP coat armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Coat",
@@ -887,7 +887,7 @@
     {
       "id": 82465,
       "name": "Ardent Glorious Gauntlets",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2E72F16CC7201A0D04B2B166C86FA8BF06262EE5/1614746.png",
       "description": "Legendary PvP gloves armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Gloves",
@@ -900,7 +900,7 @@
     {
       "id": 83323,
       "name": "Ardent Glorious Legplates",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/E81FA70225B09E9B55750EE5681BB1B17C17C72D/1614748.png",
       "description": "Legendary PvP leggings armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Leggings",
@@ -913,7 +913,7 @@
     {
       "id": 84655,
       "name": "Ardent Glorious Wargreaves",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B8230ABBBAB60034D7EE4C59C53944DCEB22D6AE/1614744.png",
       "description": "Legendary PvP boots armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Boots",
@@ -926,7 +926,7 @@
     {
       "id": 84643,
       "name": "Ardent Glorious Cap",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9C38D712207518FBBF12EB20C8CC5D5D92E4B2C2/1614761.png",
       "description": "Legendary PvP helm armor (medium).",
       "type": "armor",
       "armor_type": "Medium Helm",
@@ -939,7 +939,7 @@
     {
       "id": 83929,
       "name": "Ardent Glorious Shoulderguards",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5553497B9B78200DE192611BBD037AD96E5439EF/1614763.png",
       "description": "Legendary PvP shoulders armor (medium).",
       "type": "armor",
       "armor_type": "Medium Shoulders",
@@ -952,7 +952,7 @@
     {
       "id": 82670,
       "name": "Ardent Glorious Brigandine",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B0906E0C2EADA0C59390115899A6979D665C64CA/1614759.png",
       "description": "Legendary PvP coat armor (medium).",
       "type": "armor",
       "armor_type": "Medium Coat",
@@ -965,7 +965,7 @@
     {
       "id": 82245,
       "name": "Ardent Glorious Wristplates",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B7CBE0606944F6983F5A95DFAB7E53CB4245B40F/1614760.png",
       "description": "Legendary PvP gloves armor (medium).",
       "type": "armor",
       "armor_type": "Medium Gloves",
@@ -978,7 +978,7 @@
     {
       "id": 82512,
       "name": "Ardent Glorious Legguards",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6BD2EEC59E31C6D605F49AF4C93F1CF46D3F2B66/1614762.png",
       "description": "Legendary PvP leggings armor (medium).",
       "type": "armor",
       "armor_type": "Medium Leggings",
@@ -991,7 +991,7 @@
     {
       "id": 82214,
       "name": "Ardent Glorious Shinplates",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/14ED04F94CF35A1ACA51C4FAED01F7BEB209FC63/1614758.png",
       "description": "Legendary PvP boots armor (medium).",
       "type": "armor",
       "armor_type": "Medium Boots",
@@ -1004,7 +1004,7 @@
     {
       "id": 84633,
       "name": "Ardent Glorious Crown",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5BCC779A79759760D73EBFA20A56332E3D076301/1614753.png",
       "description": "Legendary PvP helm armor (light).",
       "type": "armor",
       "armor_type": "Light Helm",
@@ -1017,7 +1017,7 @@
     {
       "id": 83595,
       "name": "Ardent Glorious Epaulets",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/D07026CAB304449F95B790041B530DA4BF1FA75E/1614755.png",
       "description": "Legendary PvP shoulders armor (light).",
       "type": "armor",
       "armor_type": "Light Shoulders",
@@ -1030,7 +1030,7 @@
     {
       "id": 83113,
       "name": "Ardent Glorious Raiment",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A2F718496A092F651A3B389155247999A91D2DE5/1614751.png",
       "description": "Legendary PvP coat armor (light).",
       "type": "armor",
       "armor_type": "Light Coat",
@@ -1043,7 +1043,7 @@
     {
       "id": 83162,
       "name": "Ardent Glorious Armguards",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/499A0D7A4158E5DB0F1D0E5811699AED01550DF0/1614752.png",
       "description": "Legendary PvP gloves armor (light).",
       "type": "armor",
       "armor_type": "Light Gloves",
@@ -1056,7 +1056,7 @@
     {
       "id": 84546,
       "name": "Ardent Glorious Leggings",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3E79337DFCB1B17D9726C1550F04212070AF0A51/1614754.png",
       "description": "Legendary PvP leggings armor (light).",
       "type": "armor",
       "armor_type": "Light Leggings",
@@ -1069,7 +1069,7 @@
     {
       "id": 82519,
       "name": "Ardent Glorious Footgear",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/77B399C6021A5FF0A03E3D0CCAB6C47408F90BE2/1614750.png",
       "description": "Legendary PvP boots armor (light).",
       "type": "armor",
       "armor_type": "Light Boots",
@@ -1082,7 +1082,7 @@
     {
       "id": 84176,
       "name": "Triumphant Hero's Warhelm",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BCFC78934BCEDC9E92F54160E24FAB78F978664C/1424087.png",
       "description": "Legendary WvW helm armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Helm",
@@ -1095,7 +1095,7 @@
     {
       "id": 82963,
       "name": "Triumphant Hero's Pauldrons",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BD48962D7D3475E359DD9B34A5EF5B2F9204009E/1424089.png",
       "description": "Legendary WvW shoulders armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Shoulders",
@@ -1108,7 +1108,7 @@
     {
       "id": 83394,
       "name": "Triumphant Hero's Breastplate",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/694939A86C196A93D84D1602650B7849EF704C64/1424085.png",
       "description": "Legendary WvW coat armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Coat",
@@ -1121,7 +1121,7 @@
     {
       "id": 82456,
       "name": "Triumphant Hero's Gauntlets",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9D07B60141520863CE60D2391CFAA09DB9B8A0E1/1424086.png",
       "description": "Legendary WvW gloves armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Gloves",
@@ -1134,7 +1134,7 @@
     {
       "id": 82196,
       "name": "Triumphant Hero's Legplates",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6C9F11AC46DDD4755ED3ADEA07A90F2A05951B94/1424088.png",
       "description": "Legendary WvW leggings armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Leggings",
@@ -1147,7 +1147,7 @@
     {
       "id": 82801,
       "name": "Triumphant Hero's Wargreaves",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9DF8D839C6DABFBC783CA1DFBEFE1DA957581F47/1424084.png",
       "description": "Legendary WvW boots armor (heavy).",
       "type": "armor",
       "armor_type": "Heavy Boots",
@@ -1160,7 +1160,7 @@
     {
       "id": 82437,
       "name": "Triumphant Hero's Faceguard",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9AD2650E077C9258BEF3339760A72E29E531E922/1424111.png",
       "description": "Legendary WvW helm armor (medium).",
       "type": "armor",
       "armor_type": "Medium Helm",
@@ -1173,7 +1173,7 @@
     {
       "id": 82994,
       "name": "Triumphant Hero's Shoulderguards",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C3F6C09509D643B6B6B1D3BD9BC6B3FE7A2ED042/1424113.png",
       "description": "Legendary WvW shoulders armor (medium).",
       "type": "armor",
       "armor_type": "Medium Shoulders",
@@ -1186,7 +1186,7 @@
     {
       "id": 84578,
       "name": "Triumphant Hero's Brigandine",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2F7CF5F3B3A06CD14565C132EE2C439E4B1027D5/1424109.png",
       "description": "Legendary WvW coat armor (medium).",
       "type": "armor",
       "armor_type": "Medium Coat",
@@ -1199,7 +1199,7 @@
     {
       "id": 84110,
       "name": "Triumphant Hero's Wristplates",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5BC934F44CD90A4EADCD085EC1375F77B117A978/1424110.png",
       "description": "Legendary WvW gloves armor (medium).",
       "type": "armor",
       "armor_type": "Medium Gloves",
@@ -1212,7 +1212,7 @@
     {
       "id": 82903,
       "name": "Triumphant Hero's Legguards",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/7DDC027AA30993F8005F1A263A926C193143E7B5/1424112.png",
       "description": "Legendary WvW leggings armor (medium).",
       "type": "armor",
       "armor_type": "Medium Leggings",
@@ -1225,7 +1225,7 @@
     {
       "id": 82093,
       "name": "Triumphant Hero's Shinplates",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0642ACDC7CDF58CF1D384A23E1B3B3E0590115C5/1424108.png",
       "description": "Legendary WvW boots armor (medium).",
       "type": "armor",
       "armor_type": "Medium Boots",
@@ -1238,7 +1238,7 @@
     {
       "id": 82902,
       "name": "Triumphant Hero's Masque",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0EDAC40348BC373C68FB73AD4CA7B0A91A5F0DED/1424099.png",
       "description": "Legendary WvW helm armor (light).",
       "type": "armor",
       "armor_type": "Light Helm",
@@ -1251,7 +1251,7 @@
     {
       "id": 82173,
       "name": "Triumphant Hero's Epaulets",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/6D1E1A9C49365C704BB7167BF5980EC5F695A706/1424101.png",
       "description": "Legendary WvW shoulders armor (light).",
       "type": "armor",
       "armor_type": "Light Shoulders",
@@ -1264,7 +1264,7 @@
     {
       "id": 83036,
       "name": "Triumphant Hero's Raiment",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BC1A902C632DEFD0AC26F998039BAD3C7B0F69CC/1424097.png",
       "description": "Legendary WvW coat armor (light).",
       "type": "armor",
       "armor_type": "Light Coat",
@@ -1277,7 +1277,7 @@
     {
       "id": 84629,
       "name": "Triumphant Hero's Armguards",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0EE3370461A7AEE1C7530A745E747E9D0E68E034/1424098.png",
       "description": "Legendary WvW gloves armor (light).",
       "type": "armor",
       "armor_type": "Light Gloves",
@@ -1290,7 +1290,7 @@
     {
       "id": 83497,
       "name": "Triumphant Hero's Leggings",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B2A2AD0A47EF806A4673925F05F5BE9BEFADBE78/1424100.png",
       "description": "Legendary WvW leggings armor (light).",
       "type": "armor",
       "armor_type": "Light Leggings",
@@ -1303,7 +1303,7 @@
     {
       "id": 83289,
       "name": "Triumphant Hero's Footgear",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/309FA30E0915FA590A01DAA42370800AEE7D0506/1424096.png",
       "description": "Legendary WvW boots armor (light).",
       "type": "armor",
       "armor_type": "Light Boots",
@@ -1316,7 +1316,7 @@
     {
       "id": 81908,
       "name": "Aurora",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2E5391DBF100D5A4413A07C3A13FC3513F29C394/1729332.png",
       "description": "Legendary accessory (LWS3).",
       "type": "trinket",
       "trinket_type": "Accessory",
@@ -1329,7 +1329,7 @@
     {
       "id": 91048,
       "name": "Vision",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/A5587E6C220ECF0601523947DE33A0B34048800D/2149863.png",
       "description": "Legendary accessory (LWS4).",
       "type": "trinket",
       "trinket_type": "Accessory",
@@ -1342,7 +1342,7 @@
     {
       "id": 91234,
       "name": "Coalescence",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/962F99162FDE4AF471DF9E3BCA712CD6F5050B53/2149899.png",
       "description": "Legendary ring (Raids).",
       "type": "trinket",
       "trinket_type": "Ring",
@@ -1355,7 +1355,7 @@
     {
       "id": 92991,
       "name": "Transcendence",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/0C0D5BBDDD412439FE5F620253EFADAEF6CB760E/2270218.png",
       "description": "Legendary amulet (PvP).",
       "type": "trinket",
       "trinket_type": "Amulet",
@@ -1368,7 +1368,7 @@
     {
       "id": 93105,
       "name": "Conflux",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/170765A1B5C5A90C430BD04479DABC10B1AF7E01/2270744.png",
       "description": "Legendary ring (WvW).",
       "type": "trinket",
       "trinket_type": "Ring",
@@ -1381,7 +1381,7 @@
     {
       "id": 95380,
       "name": "Prismatic Champion's Regalia",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/046C2DACF8C064D23BD8374C7895DA2F13AD146F/2449345.png",
       "description": "Legendary amulet (Achievement).",
       "type": "trinket",
       "trinket_type": "Amulet",
@@ -1394,7 +1394,7 @@
     {
       "id": 107022,
       "name": "Endless Summer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2869C8BF337BBA66173504119A0380C7BB13EB31/3745902.png",
       "description": "Legendary ring (VoE).",
       "type": "trinket",
       "trinket_type": "Ring",
@@ -1407,7 +1407,7 @@
     {
       "id": 74155,
       "name": "Ad Infinitum",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/562A009CE8D66B63B975251BC97041BFBE0E07E1/1202351.png",
       "description": "Legendary backpiece (Fractals).",
       "type": "back",
       "binding": "account",
@@ -1420,7 +1420,7 @@
     {
       "id": 77474,
       "name": "The Ascension",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/C72336A9140CC9F2B34CCFCDCE2B217B380A1ADC/1313065.png",
       "description": "Legendary backpiece (PvP).",
       "type": "back",
       "binding": "account",
@@ -1433,7 +1433,7 @@
     {
       "id": 81462,
       "name": "Warbringer",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/5EBEA1A467236237FCBACDC09969647956C4A371/1701118.png",
       "description": "Legendary backpiece (WvW).",
       "type": "back",
       "binding": "account",
@@ -1446,7 +1446,7 @@
     {
       "id": 104857,
       "name": "Orrax Manifested",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/9C5948587832ACA31FD01298DE081BDE626CC607/3629149.png",
       "description": "Legendary backpiece (JW).",
       "type": "back",
       "binding": "account",
@@ -1459,7 +1459,7 @@
     {
       "id": 103815,
       "name": "Klobjarne Geirr",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/BC680270399F49A15415E402623AD4E5A09A6411/3442617.png",
       "description": "Legendary spear (JW).",
       "type": "weapon",
       "binding": "account",
@@ -1472,7 +1472,7 @@
     {
       "id": 100153,
       "name": "Legendary Relic",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/B2D409644147BF18935A95A52505ABCB9EECE142/3122351.png",
       "description": "Legendary relic (Fractals/SotO).",
       "type": "trinket",
       "binding": "account",
@@ -1485,7 +1485,7 @@
     {
       "id": 91536,
       "name": "Legendary Rune",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/3CEECEBACCC4E7D25DBC79C7A4B5B2933AB01DE3/2179567.png",
       "description": "Legendary Rune - can take on the properties of any superior rune.",
       "type": "upgrade",
       "binding": "account",
@@ -1497,7 +1497,7 @@
     {
       "id": 91505,
       "name": "Legendary Sigil",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/2DDB0E173860AD433DF6D8AF412FDAFB9BCC4FB9/2179569.png",
       "description": "Legendary Sigil - can take on the properties of any superior sigil.",
       "type": "upgrade",
       "binding": "account",
@@ -1509,7 +1509,7 @@
     {
       "id": 105497,
       "name": "Aetheric Anchor",
-      "icon": "",
+      "icon": "https://render.guildwars2.com/file/80C0746F7E65C40119EBC2A26E4C6F0A6E7A6617/3708965.png",
       "description": "Legendary container (VoE). Contains Ancora Bellum (Spear) and Ancora Pax (Staff).",
       "type": "weapon",
       "weapon_type": "Spear/Staff",

@@ -159,14 +159,14 @@
       "type": "mystic_forge",
       "ingredients": [
         {
-          "item_id": "30703",
+          "item_id": "95081",
           "count": 1,
-          "name": "Sunrise"
+          "name": "Memory of Sunrise"
         },
         {
-          "item_id": "30704",
+          "item_id": "95086",
           "count": 1,
-          "name": "Twilight"
+          "name": "Memory of Twilight"
         },
         {
           "item_id": "24277",
@@ -7057,9 +7057,13 @@
     {
       "output_id": "75744",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "24357",
@@ -7086,9 +7090,13 @@
     {
       "output_id": "75299",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "24289",
@@ -7115,9 +7123,13 @@
     {
       "output_id": "70801",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "24351",
@@ -7144,9 +7156,13 @@
     {
       "output_id": "71123",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "24358",
@@ -7173,9 +7189,13 @@
     {
       "output_id": "71655",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "24295",
@@ -7202,9 +7222,13 @@
     {
       "output_id": "71787",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "24283",
@@ -7231,9 +7255,13 @@
     {
       "output_id": "73236",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "24300",
@@ -7260,9 +7288,13 @@
     {
       "output_id": "73196",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "24277",
@@ -7463,9 +7495,16 @@
     {
       "output_id": "73137",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "71994",
@@ -7476,34 +7515,6 @@
           "item_id": "73248",
           "count": 75,
           "name": "Stabilizing Matrix"
-        }
-      ]
-    },
-    {
-      "output_id": "70528",
-      "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
-      "ingredients": [
-        {
-          "item_id": "70820",
-          "count": 250,
-          "name": "Shard of Glory"
-        }
-      ]
-    },
-    {
-      "output_id": "71008",
-      "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
-      "ingredients": [
-        {
-          "item_id": "71581",
-          "count": 250,
-          "name": "Memory of Battle"
         }
       ]
     },
@@ -8554,9 +8565,13 @@
     {
       "output_id": "95913",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "19721",
@@ -11843,9 +11858,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -11872,9 +11887,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -11901,9 +11916,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -11930,9 +11945,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -11959,9 +11974,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -11988,9 +12003,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12017,9 +12032,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12046,9 +12061,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12075,9 +12090,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12104,9 +12119,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12133,9 +12148,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12162,9 +12177,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12191,9 +12206,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12220,9 +12235,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12249,9 +12264,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12278,9 +12293,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12307,9 +12322,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -12336,9 +12351,9 @@
           "name": "Gift of War Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "83259",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of War Dedication"
         }
       ]
     },
@@ -13041,9 +13056,19 @@
     {
       "output_id": "100569",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Chef",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Scribe",
+        "Huntsman",
+        "Jeweler"
+      ],
+      "rating": 400,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "100930",
@@ -13582,9 +13607,13 @@
     {
       "output_id": "89105",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor"
+      ],
+      "rating": 75,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "89271",
@@ -13669,9 +13698,13 @@
     {
       "output_id": "89133",
       "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 75,
+      "type": "crafting",
       "ingredients": [
         {
           "item_id": "89271",
@@ -13975,7 +14008,7 @@
           "count": 10
         }
       ],
-      "type": "MysticForge",
+      "type": "crafting",
       "rating": 0
     },
     {
@@ -14383,6 +14416,469 @@
       ],
       "type": "MysticForge",
       "rating": 0
+    },
+    {
+      "output_id": "46683",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "46682",
+          "count": 1,
+          "name": "Crystalline Ore"
+        },
+        {
+          "item_id": "76933",
+          "count": 1,
+          "name": "Fulgurite"
+        },
+        {
+          "item_id": "19721",
+          "count": 1,
+          "name": "Glob of Ectoplasm"
+        },
+        {
+          "item_id": "68063",
+          "count": 1,
+          "name": "Amalgamated Gemstone"
+        }
+      ]
+    },
+    {
+      "output_id": "76933",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19925",
+          "count": 1,
+          "name": "Obsidian Shard"
+        },
+        {
+          "item_id": "69434",
+          "count": 1,
+          "name": "Bottle of Airship Oil"
+        },
+        {
+          "item_id": "69432",
+          "count": 1,
+          "name": "Pile of Auric Dust"
+        },
+        {
+          "item_id": "69392",
+          "count": 1,
+          "name": "Ley Line Spark"
+        }
+      ]
+    },
+    {
+      "output_id": "80685",
+      "output_count": 1,
+      "disciplines": [
+        "Armorsmith"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "80714",
+          "count": 2,
+          "name": "Carbonized Mithrillium Ingot"
+        },
+        {
+          "item_id": "80775",
+          "count": 1,
+          "name": "Square of Vabbian Silk"
+        },
+        {
+          "item_id": "80723",
+          "count": 1,
+          "name": "Blended Leather Sheet"
+        },
+        {
+          "item_id": "80831",
+          "count": 1,
+          "name": "Empowered Mithril Ingot"
+        }
+      ]
+    },
+    {
+      "output_id": "80799",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "80714",
+          "count": 1,
+          "name": "Carbonized Mithrillium Ingot"
+        },
+        {
+          "item_id": "80775",
+          "count": 1,
+          "name": "Square of Vabbian Silk"
+        },
+        {
+          "item_id": "80723",
+          "count": 1,
+          "name": "Blended Leather Sheet"
+        },
+        {
+          "item_id": "80743",
+          "count": 1,
+          "name": "Empowered Cured Thick Leather Square"
+        }
+      ]
+    },
+    {
+      "output_id": "80857",
+      "output_count": 1,
+      "disciplines": [
+        "Tailor"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "80714",
+          "count": 1,
+          "name": "Carbonized Mithrillium Ingot"
+        },
+        {
+          "item_id": "80775",
+          "count": 2,
+          "name": "Square of Vabbian Silk"
+        },
+        {
+          "item_id": "80723",
+          "count": 1,
+          "name": "Blended Leather Sheet"
+        },
+        {
+          "item_id": "80686",
+          "count": 1,
+          "name": "Bolt of Empowered Silk"
+        }
+      ]
+    },
+    {
+      "output_id": "80714",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19683",
+          "count": 10,
+          "name": "Iron Ingot"
+        },
+        {
+          "item_id": "19688",
+          "count": 5,
+          "name": "Steel Ingot"
+        },
+        {
+          "item_id": "19681",
+          "count": 10,
+          "name": "Darksteel Ingot"
+        },
+        {
+          "item_id": "46742",
+          "count": 1,
+          "name": "Lump of Mithrillium"
+        }
+      ]
+    },
+    {
+      "output_id": "80775",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19740",
+          "count": 10,
+          "name": "Bolt of Wool"
+        },
+        {
+          "item_id": "19742",
+          "count": 5,
+          "name": "Bolt of Cotton"
+        },
+        {
+          "item_id": "19744",
+          "count": 10,
+          "name": "Bolt of Linen"
+        },
+        {
+          "item_id": "46740",
+          "count": 1,
+          "name": "Spool of Silk Weaving Thread"
+        }
+      ]
+    },
+    {
+      "output_id": "80723",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19733",
+          "count": 10,
+          "name": "Cured Thin Leather Square"
+        },
+        {
+          "item_id": "19734",
+          "count": 5,
+          "name": "Cured Coarse Leather Square"
+        },
+        {
+          "item_id": "19736",
+          "count": 10,
+          "name": "Cured Rugged Leather Square"
+        },
+        {
+          "item_id": "46745",
+          "count": 1,
+          "name": "Spool of Thick Elonian Cord"
+        }
+      ]
+    },
+    {
+      "output_id": "80831",
+      "output_count": 1,
+      "disciplines": [
+        "Armorsmith"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "46681",
+          "count": 1,
+          "name": "Glob of Dark Matter"
+        },
+        {
+          "item_id": "80764",
+          "count": 1,
+          "name": "Vial of Might"
+        },
+        {
+          "item_id": "80728",
+          "count": 1,
+          "name": "Vial of Magic"
+        },
+        {
+          "item_id": "19684",
+          "count": 150,
+          "name": "Mithril Ingot"
+        }
+      ]
+    },
+    {
+      "output_id": "80743",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "46681",
+          "count": 1,
+          "name": "Glob of Dark Matter"
+        },
+        {
+          "item_id": "80764",
+          "count": 1,
+          "name": "Vial of Might"
+        },
+        {
+          "item_id": "80728",
+          "count": 1,
+          "name": "Vial of Magic"
+        },
+        {
+          "item_id": "19735",
+          "count": 65,
+          "name": "Cured Thick Leather Square"
+        }
+      ]
+    },
+    {
+      "output_id": "80686",
+      "output_count": 1,
+      "disciplines": [
+        "Tailor"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "46681",
+          "count": 1,
+          "name": "Glob of Dark Matter"
+        },
+        {
+          "item_id": "80764",
+          "count": 1,
+          "name": "Vial of Might"
+        },
+        {
+          "item_id": "80728",
+          "count": 1,
+          "name": "Vial of Magic"
+        },
+        {
+          "item_id": "19747",
+          "count": 150,
+          "name": "Bolt of Silk"
+        }
+      ]
+    },
+    {
+      "output_id": "80764",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "24357",
+          "count": 1,
+          "name": "Vicious Fang"
+        },
+        {
+          "item_id": "24289",
+          "count": 1,
+          "name": "Armored Scale"
+        },
+        {
+          "item_id": "24351",
+          "count": 1,
+          "name": "Vicious Claw"
+        },
+        {
+          "item_id": "24358",
+          "count": 1,
+          "name": "Ancient Bone"
+        }
+      ]
+    },
+    {
+      "output_id": "80728",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "24295",
+          "count": 1,
+          "name": "Vial of Powerful Blood"
+        },
+        {
+          "item_id": "24283",
+          "count": 1,
+          "name": "Powerful Venom Sac"
+        },
+        {
+          "item_id": "24300",
+          "count": 1,
+          "name": "Elaborate Totem"
+        },
+        {
+          "item_id": "24277",
+          "count": 1,
+          "name": "Pile of Crystalline Dust"
+        }
+      ]
+    },
+    {
+      "output_id": "46740",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor"
+      ],
+      "rating": 450,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19747",
+          "count": 100,
+          "name": "Bolt of Silk"
+        },
+        {
+          "item_id": "19721",
+          "count": 1,
+          "name": "Glob of Ectoplasm"
+        },
+        {
+          "item_id": "19790",
+          "count": 25,
+          "name": "Spool of Gossamer Thread"
+        }
+      ]
     }
   ]
 }

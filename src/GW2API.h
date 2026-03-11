@@ -25,6 +25,9 @@ namespace CraftyLegend {
 
     class GW2API {
     public:
+        // Data path helper
+        static std::string GetDataDirectory();
+
         // API Key management
         static void SetApiKey(const std::string& key);
         static const std::string& GetApiKey();
@@ -83,8 +86,6 @@ namespace CraftyLegend {
         // HTTP helper
         static std::string HttpGet(const std::string& url);
 
-        // Data path helper
-        static std::string GetDataDirectory();
         static bool EnsureDataDirectory();
 
         // Save aggregated data
