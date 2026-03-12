@@ -16,9 +16,9 @@
 #include "IconManager.h"
 
 // Version constants
-#define V_MAJOR 1
-#define V_MINOR 0
-#define V_BUILD 0
+#define V_MAJOR 0
+#define V_MINOR 9
+#define V_BUILD 2
 #define V_REVISION 0
 
 // Quick Access icon identifiers
@@ -2044,7 +2044,7 @@ void AddonOptions() {
 
 // Export function - match working Raidcore addons structure
 extern "C" __declspec(dllexport) AddonDefinition_t* GetAddonDef() {
-    AddonDef.Signature = 17;  // Use same as Compass (working example)
+    AddonDef.Signature = 0x9ae2a2d9;
     AddonDef.APIVersion = NEXUS_API_VERSION;
     AddonDef.Name = "CraftyLegend";
     AddonDef.Version.Major = V_MAJOR;
@@ -2057,7 +2057,7 @@ extern "C" __declspec(dllexport) AddonDefinition_t* GetAddonDef() {
     AddonDef.Unload = AddonUnload;
     AddonDef.Flags = AF_None;
     AddonDef.Provider = UP_GitHub;
-    AddonDef.UpdateLink = "https://github.com/tony/crafty-legend";
+    AddonDef.UpdateLink = "https://github.com/PieOrCake/crafty-legend";
 
     return &AddonDef;
 }

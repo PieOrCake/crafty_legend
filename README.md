@@ -2,6 +2,8 @@
 
 A Guild Wars 2 addon for [Raidcore Nexus](https://raidcore.gg/Nexus) that provides a comprehensive crafting tracker for all legendary equipment.
 
+I have tried to ensure that the data is accurate and up to date. If you find something that looks incorrect, right click the item and view it in the wiki to confirm the correct data. Open an issue on Github with as much detail as it takes, and I'll take care of it.
+
 ## AI Notice
 
 This addon has been 100% created in [Windsurf](https://windsurf.com/) using Claude. I understand that some folks have a moral, financial or political objection to creating software using an LLM. I just wanted to make a useful tool for the GW2 community, and this was the only way I could do it.
