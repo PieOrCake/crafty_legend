@@ -41,41 +41,13 @@ cmake ..
 make
 ```
 
-The build produces `CraftyLegend.dll` and copies the data JSON files alongside it.
+The build produces `CraftyLegend.dll`.
 
 ## Installation
 
 1. Install [Raidcore Nexus](https://raidcore.gg/Nexus) for Guild Wars 2
 2. Copy `CraftyLegend.dll` to your Nexus addons directory
-3. Copy the `CraftyLegend/` data folder alongside the DLL
-4. Launch GW2 — toggle the window with `Ctrl+Shift+L`
-
-## Project Structure
-
-```
-crafty_legend/
-├── CMakeLists.txt              # Build configuration
-├── CraftyLegend.def            # DLL export definitions
-├── include/nexus/Nexus.h       # Nexus API header
-├── lib/
-│   ├── imgui/                  # Dear ImGui (bundled)
-│   └── nlohmann/               # nlohmann/json (bundled)
-├── src/
-│   ├── dllmain_hotkey.cpp      # DLL entry point, UI rendering, addon lifecycle
-│   ├── DataManager.h/cpp       # Item/recipe/legendary data, vendor handlers, prereqs
-│   └── GW2API.h/cpp            # API key, account data, TP prices, persistence
-├── data/CraftyLegend/
-│   ├── items.json              # 971 items with acquisition methods
-│   ├── recipes.json            # 499 recipes (crafting + Mystic Forge)
-│   ├── legendaries.json        # 117 legendary definitions
-│   └── currencies.json         # Currency database
-├── scripts/                    # Data generation/verification scripts (Python)
-└── docs/                       # Documentation
-```
-
-## Data Format
-
-All data uses GW2 API item IDs internally. The JSON data files are the source of truth for crafting trees and are loaded at runtime. User data (API key, account data, TP prices) is saved to the same directory and excluded from version control.
+3. Launch GW2 — toggle the window with `Ctrl+Shift+L` or click the anvil icon in the Quick Access toolbar.
 
 ## License
 
