@@ -19,7 +19,7 @@
 #define V_MAJOR 0
 #define V_MINOR 9
 #define V_BUILD 2
-#define V_REVISION 0
+#define V_REVISION 1
 
 // Quick Access icon identifiers
 #define QA_ID "QA_CRAFTY_LEGEND"
@@ -235,6 +235,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 static void SaveDisplaySettings() {
     std::string dir = CraftyLegend::GW2API::GetDataDirectory();
     if (dir.empty()) return;
+    try { std::filesystem::create_directories(dir); } catch (...) {}
     std::string path = dir + "/display_settings.json";
     std::ofstream file(path);
     if (!file.is_open()) return;
@@ -934,14 +935,16 @@ void AddonRender() {
             bool anyBusy = fetching || priceFetching;
 
             // Shopping List toggle (before refresh buttons)
-            if (g_PrereqLegendaryId != 0) {
-                if (ImGui::SmallButton(g_ShowShoppingList ? "Hide Shopping List" : "Show Shopping List")) {
+            {
+                bool canShow = (g_PrereqLegendaryId != 0);
+                if (!canShow) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.4f);
+                if (ImGui::SmallButton(g_ShowShoppingList ? "Hide Shopping List" : "Show Shopping List") && canShow) {
                     g_ShowShoppingList = !g_ShowShoppingList;
                     if (g_ShowShoppingList) g_ShoppingListDirty = true;
                 }
-                ImGui::SameLine();
+                if (!canShow) ImGui::PopStyleVar();
+                if (hasKey) ImGui::SameLine();
             }
-            if (hasKey) ImGui::SameLine();
 
             if (hasKey) {
                 // Both buttons on same line, disabled when either is busy

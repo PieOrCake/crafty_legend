@@ -42,6 +42,7 @@ set(SOURCES
     src/DataManager.cpp
     src/GW2API.cpp
     src/IconManager.cpp
+    src/embedded_data.cpp
     ${IMGUI_SOURCES}
 )
 
@@ -53,16 +54,7 @@ set(HEADERS
 # Create shared library (DLL)
 add_library(CraftyLegend SHARED ${SOURCES} ${HEADERS})
 
-# Copy JSON files and icons to CraftyLegend subdirectory alongside DLL
-add_custom_command(TARGET CraftyLegend POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:CraftyLegend>/CraftyLegend
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/CraftyLegend/legendaries.json $<TARGET_FILE_DIR:CraftyLegend>/CraftyLegend/
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/CraftyLegend/items.json $<TARGET_FILE_DIR:CraftyLegend>/CraftyLegend/
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/CraftyLegend/recipes.json $<TARGET_FILE_DIR:CraftyLegend>/CraftyLegend/
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/CraftyLegend/currencies.json $<TARGET_FILE_DIR:CraftyLegend>/CraftyLegend/
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/CraftyLegend/icon_anvil.png $<TARGET_FILE_DIR:CraftyLegend>/CraftyLegend/
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/CraftyLegend/icon_anvil_hover.png $<TARGET_FILE_DIR:CraftyLegend>/CraftyLegend/
-)
+# No post-build copy needed - JSON data is embedded in DLL, user data dir created at runtime
 
 # Force Windows DLL extension
 set_target_properties(CraftyLegend PROPERTIES

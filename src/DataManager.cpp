@@ -1,5 +1,6 @@
 #include "DataManager.h"
 #include "GW2API.h"
+#include "embedded_data.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -320,42 +321,13 @@ namespace CraftyLegend {
     }
     
     bool DataManager::LoadLegendaries() {
-        std::string dllDir = GetDllDirectory();
-        if (!dllDir.empty()) {
-            std::replace(dllDir.begin(), dllDir.end(), '\\', '/');
-        }
-        
-        std::vector<std::string> paths_to_try;
-        if (!dllDir.empty()) {
-            paths_to_try = {
-                dllDir + "/CraftyLegend/legendaries.json",
-                dllDir + "/legendaries.json",
-                dllDir + "/../CraftyLegend/legendaries.json",
-                dllDir + "/../../CraftyLegend/legendaries.json"
-            };
-        }
-        // Also try relative paths
-        paths_to_try.push_back("CraftyLegend/legendaries.json");
-        paths_to_try.push_back("./CraftyLegend/legendaries.json");
-        paths_to_try.push_back("legendaries.json");
-        
-        std::ifstream file;
-        for (const auto& path : paths_to_try) {
-            file.open(path);
-            if (file.is_open()) {
-                s_debug_legendaries_path = path;
-                break;
-            }
-        }
-        
-        if (!file.is_open()) {
-            s_debug_legendaries_path = "ALL_PATHS_FAILED (DLL dir: " + dllDir + ")";
-            return false;
-        }
+        s_debug_legendaries_path = "embedded";
         
         try {
-            // Parse JSON file
-            file >> s_legendaries_json;
+            // Parse from embedded data
+            s_legendaries_json = json::parse(
+                EmbeddedData::LEGENDARIES_DATA,
+                EmbeddedData::LEGENDARIES_DATA + EmbeddedData::LEGENDARIES_SIZE);
             
             // Convert JSON data to internal structures
             for (const auto& legendary_json : s_legendaries_json["legendaries"]) {
@@ -413,62 +385,13 @@ namespace CraftyLegend {
     }
     
     bool DataManager::LoadItems() {
-        // Get the DLL directory
-        std::string dllDir = GetDllDirectory();
-        
-        // Convert backslashes to forward slashes for consistency
-        if (!dllDir.empty()) {
-            std::replace(dllDir.begin(), dllDir.end(), '\\', '/');
-        }
-        
-        // Construct the full path to the JSON file
-        std::string json_path = dllDir.empty() ? "CraftyLegend/items.json" : dllDir + "/CraftyLegend/items.json";
-        
-        std::ifstream file(json_path);
-        if (!file.is_open()) {
-            // Try alternative paths based on DLL directory
-            std::vector<std::string> paths_to_try;
-            
-            if (!dllDir.empty()) {
-                paths_to_try = {
-                    dllDir + "/CraftyLegend/items.json",
-                    dllDir + "/items.json",
-                    dllDir + "/../CraftyLegend/items.json",
-                    dllDir + "/../../CraftyLegend/items.json"
-                };
-            } else {
-                // Fallback to relative paths if we can't get DLL directory
-                paths_to_try = {
-                    "CraftyLegend/items.json",
-                    "./CraftyLegend/items.json",
-                    "../CraftyLegend/items.json",
-                    "../../CraftyLegend/items.json",
-                    "items.json",
-                    "./items.json",
-                    "../items.json",
-                    "../../items.json"
-                };
-            }
-            
-            for (const auto& path : paths_to_try) {
-                file.open(path);
-                if (file.is_open()) {
-                    s_debug_items_path = path;
-                    break;
-                }
-            }
-            
-            if (!file.is_open()) {
-                s_debug_items_path = "ALL_PATHS_FAILED (DLL dir: " + dllDir + ")";
-                return false;
-            }
-        } else {
-            s_debug_items_path = json_path;
-        }
+        s_debug_items_path = "embedded";
         
         try {
-            // Parse JSON file
-            file >> s_items_json;
+            // Parse from embedded data
+            s_items_json = json::parse(
+                EmbeddedData::ITEMS_DATA,
+                EmbeddedData::ITEMS_DATA + EmbeddedData::ITEMS_SIZE);
             
             // Convert JSON data to internal structures
             for (const auto& item_json : s_items_json["items"]) {
@@ -500,62 +423,13 @@ namespace CraftyLegend {
     }
     
     bool DataManager::LoadRecipes() {
-        // Get the DLL directory
-        std::string dllDir = GetDllDirectory();
-        
-        // Convert backslashes to forward slashes for consistency
-        if (!dllDir.empty()) {
-            std::replace(dllDir.begin(), dllDir.end(), '\\', '/');
-        }
-        
-        // Construct the full path to the JSON file
-        std::string json_path = dllDir.empty() ? "CraftyLegend/recipes.json" : dllDir + "/CraftyLegend/recipes.json";
-        
-        std::ifstream file(json_path);
-        if (!file.is_open()) {
-            // Try alternative paths based on DLL directory
-            std::vector<std::string> paths_to_try;
-            
-            if (!dllDir.empty()) {
-                paths_to_try = {
-                    dllDir + "/CraftyLegend/recipes.json",
-                    dllDir + "/recipes.json",
-                    dllDir + "/../CraftyLegend/recipes.json",
-                    dllDir + "/../../CraftyLegend/recipes.json"
-                };
-            } else {
-                // Fallback to relative paths if we can't get DLL directory
-                paths_to_try = {
-                    "CraftyLegend/recipes.json",
-                    "./CraftyLegend/recipes.json",
-                    "../CraftyLegend/recipes.json",
-                    "../../CraftyLegend/recipes.json",
-                    "recipes.json",
-                    "./recipes.json",
-                    "../recipes.json",
-                    "../../recipes.json"
-                };
-            }
-            
-            for (const auto& path : paths_to_try) {
-                file.open(path);
-                if (file.is_open()) {
-                    s_debug_recipes_path = path;
-                    break;
-                }
-            }
-            
-            if (!file.is_open()) {
-                s_debug_recipes_path = "ALL_PATHS_FAILED (DLL dir: " + dllDir + ")";
-                return false;
-            }
-        } else {
-            s_debug_recipes_path = json_path;
-        }
+        s_debug_recipes_path = "embedded";
         
         try {
-            // Parse JSON file
-            file >> s_recipes_json;
+            // Parse from embedded data
+            s_recipes_json = json::parse(
+                EmbeddedData::RECIPES_DATA,
+                EmbeddedData::RECIPES_DATA + EmbeddedData::RECIPES_SIZE);
             
             // Convert JSON data to internal structures
             int recipe_count = 0;
@@ -603,49 +477,14 @@ namespace CraftyLegend {
     }
     
     bool DataManager::LoadCurrencies() {
-        // Get the DLL directory
-        std::string dllDir = GetDllDirectory();
-        if (!dllDir.empty()) {
-            std::replace(dllDir.begin(), dllDir.end(), '\\', '/');
-        }
-        
-        // Try multiple paths (same pattern as LoadLegendaries/LoadItems)
-        std::vector<std::string> paths_to_try;
-        if (!dllDir.empty()) {
-            paths_to_try = {
-                dllDir + "/CraftyLegend/currencies.json",
-                dllDir + "/currencies.json",
-                dllDir + "/../CraftyLegend/currencies.json",
-                dllDir + "/../../CraftyLegend/currencies.json"
-            };
-        }
-        paths_to_try.push_back("CraftyLegend/currencies.json");
-        paths_to_try.push_back("./CraftyLegend/currencies.json");
-        paths_to_try.push_back("currencies.json");
-        
-        // Clear existing data
         s_currencies.clear();
         
-        std::string currenciesPath;
-        std::ifstream currenciesFile;
-        for (const auto& path : paths_to_try) {
-            currenciesFile.open(path);
-            if (currenciesFile.is_open()) {
-                currenciesPath = path;
-                break;
-            }
-        }
-        
         try {
-            if (!currenciesFile.is_open()) {
-                return false;
-            }
+            // Parse from embedded data
+            json currenciesJson = json::parse(
+                EmbeddedData::CURRENCIES_DATA,
+                EmbeddedData::CURRENCIES_DATA + EmbeddedData::CURRENCIES_SIZE);
             
-            json currenciesJson;
-            currenciesFile >> currenciesJson;
-            currenciesFile.close();
-            
-            // Parse currencies
             if (!currenciesJson.contains("currencies") || !currenciesJson["currencies"].is_array()) {
                 return false;
             }
@@ -2528,7 +2367,9 @@ namespace CraftyLegend {
             std::string dllDir = GetDllDirectory();
             if (dllDir.empty()) return;
             std::replace(dllDir.begin(), dllDir.end(), '\\', '/');
-            std::string path = dllDir + "/CraftyLegend/session.json";
+            std::string dir = dllDir + "/CraftyLegend";
+            std::filesystem::create_directories(dir);
+            std::string path = dir + "/session.json";
 
             json session;
             session["legendary_id"] = 0;
