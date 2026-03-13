@@ -51,4 +51,4 @@ The build produces `CraftyLegend.dll`.
 
 ## License
 
-This project is provided as-is for educational and personal use.
+This software is provided as-is, without a warranty of any kind. Use at your own risk. It might delete your files, melt your PC, burn your house down, or cause world peace.

@@ -2049,7 +2049,7 @@ void AddonOptions() {
 extern "C" __declspec(dllexport) AddonDefinition_t* GetAddonDef() {
     AddonDef.Signature = 0x9ae2a2d9;
     AddonDef.APIVersion = NEXUS_API_VERSION;
-    AddonDef.Name = "CraftyLegend";
+    AddonDef.Name = "Crafty Legend";
     AddonDef.Version.Major = V_MAJOR;
     AddonDef.Version.Minor = V_MINOR;
     AddonDef.Version.Build = V_BUILD;
