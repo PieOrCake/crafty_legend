@@ -19,7 +19,7 @@
 #define V_MAJOR 0
 #define V_MINOR 9
 #define V_BUILD 2
-#define V_REVISION 2
+#define V_REVISION 3
 
 // Quick Access icon identifiers
 #define QA_ID "QA_CRAFTY_LEGEND"
@@ -169,6 +169,7 @@ static char g_SearchFilter[256] = "";
 static char g_ApiKeyBuf[256] = "";
 static bool g_ShowApiKey = false;
 static bool g_ShowItemIcons = false;
+static bool g_ShowOwnedLegendaries = true;
 
 // Debug window state
 static bool g_ShowDebugWindow = false;
@@ -241,7 +242,8 @@ static void SaveDisplaySettings() {
     if (!file.is_open()) return;
     file << "{\n";
     file << "  \"show_item_icons\": " << (g_ShowItemIcons ? "true" : "false") << ",\n";
-    file << "  \"show_debug_window\": " << (g_ShowDebugWindow ? "true" : "false") << "\n";
+    file << "  \"show_debug_window\": " << (g_ShowDebugWindow ? "true" : "false") << ",\n";
+    file << "  \"show_owned_legendaries\": " << (g_ShowOwnedLegendaries ? "true" : "false") << "\n";
     file << "}\n";
 }
 
@@ -257,6 +259,8 @@ static void LoadDisplaySettings() {
     else if (content.find("\"show_item_icons\": false") != std::string::npos) g_ShowItemIcons = false;
     if (content.find("\"show_debug_window\": true") != std::string::npos) g_ShowDebugWindow = true;
     else if (content.find("\"show_debug_window\": false") != std::string::npos) g_ShowDebugWindow = false;
+    if (content.find("\"show_owned_legendaries\": true") != std::string::npos) g_ShowOwnedLegendaries = true;
+    else if (content.find("\"show_owned_legendaries\": false") != std::string::npos) g_ShowOwnedLegendaries = false;
 }
 
 // Forward declarations
@@ -1273,6 +1277,7 @@ void AddonRender() {
             ImGui::Indent(textPadX);
             ImGui::TextColored(titleColor, "Legendary Items");
             ImGui::Separator();
+            ImGui::Spacing();
 
             // Search bar (fixed at top) with clear button
             float clearBtnW = ImGui::CalcTextSize("Clear").x + ImGui::GetStyle().FramePadding.x * 2;
@@ -1312,6 +1317,11 @@ void AddonRender() {
                 for (size_t i = 0; i < legendaries.size(); i++) {
                     const auto& leg = legendaries[i];
                     if (!predicate(leg)) continue;
+                    // Hide owned legendaries if setting is off
+                    if (!g_ShowOwnedLegendaries && CraftyLegend::GW2API::HasAccountData()) {
+                        float comp = GetLegendaryCompletion(leg.id);
+                        if (comp >= 1.0f) continue;
+                    }
                     if (!filterLower.empty()) {
                         std::string nameLower = leg.name;
                         for (auto& c : nameLower) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
@@ -1951,6 +1961,17 @@ void AddonOptions() {
         ImGui::EndTooltip();
     }
     
+    if (ImGui::Checkbox("Show Owned Legendaries", &g_ShowOwnedLegendaries)) {
+        SaveDisplaySettings();
+    }
+    ImGui::SameLine();
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::Text("Show legendaries you already own in the list (requires API key)");
+        ImGui::EndTooltip();
+    }
+
     if (ImGui::Checkbox("Show Debug Window", &g_ShowDebugWindow)) {
         SaveDisplaySettings();
     }
