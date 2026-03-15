@@ -483,6 +483,25 @@ static int GetVendorCoinCost(uint32_t item_id) {
     return 0;
 }
 
+// Helper: strip GW2 markup tags (e.g. <c=@flavor>text</c>) from strings
+static std::string StripMarkup(const std::string& text) {
+    std::string result;
+    result.reserve(text.size());
+    size_t i = 0;
+    while (i < text.size()) {
+        if (text[i] == '<') {
+            size_t close = text.find('>', i);
+            if (close != std::string::npos) {
+                i = close + 1;
+                continue;
+            }
+        }
+        result += text[i];
+        i++;
+    }
+    return result;
+}
+
 // Helper: open GW2 Wiki page for an item name
 static void OpenWikiPage(const std::string& itemName) {
     std::string url = "https://wiki.guildwars2.com/wiki/";
@@ -1319,8 +1338,7 @@ void AddonRender() {
                     if (!predicate(leg)) continue;
                     // Hide owned legendaries if setting is off
                     if (!g_ShowOwnedLegendaries && CraftyLegend::GW2API::HasAccountData()) {
-                        float comp = GetLegendaryCompletion(leg.id);
-                        if (comp >= 1.0f) continue;
+                        if (CraftyLegend::GW2API::IsLegendaryUnlocked(leg.id)) continue;
                     }
                     if (!filterLower.empty()) {
                         std::string nameLower = leg.name;
@@ -1698,7 +1716,8 @@ void AddonRender() {
                                                 }
                                                 if (!tipItem->description.empty()) {
                                                     ImGui::PushTextWrapPos(300.0f);
-                                                    ImGui::TextColored(ImVec4(0.6f,0.6f,0.6f,1), "%s", tipItem->description.c_str());
+                                                    std::string cleanDesc = StripMarkup(tipItem->description);
+                                                    ImGui::TextColored(ImVec4(0.6f,0.6f,0.6f,1), "%s", cleanDesc.c_str());
                                                     ImGui::PopTextWrapPos();
                                                 }
                                             } else {

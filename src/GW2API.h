@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <mutex>
 #include <nlohmann/json.hpp>
 
@@ -53,6 +54,9 @@ namespace CraftyLegend {
         static int GetWalletAmount(int currency_id);
         static int GetWalletAmountByName(const std::string& currency_name);
 
+        // Legendary Armory
+        static bool IsLegendaryUnlocked(uint32_t item_id);
+
         // Masteries & Achievements
         static int GetMasteryLevel(int mastery_id);
         static bool IsAchievementDone(int achievement_id);
@@ -76,6 +80,7 @@ namespace CraftyLegend {
         static std::unordered_map<int, int> s_wallet;
         static std::unordered_map<int, int> s_masteries;     // mastery_id -> level
         static std::unordered_map<int, bool> s_achievements;  // achievement_id -> done
+        static std::unordered_set<uint32_t> s_legendary_armory; // unlocked legendary item IDs
         static bool s_has_account_data;
         static std::unordered_map<uint32_t, int> s_tp_prices;  // item_id -> sell unit_price in copper
         static bool s_has_price_data;
@@ -92,7 +97,8 @@ namespace CraftyLegend {
         static bool SaveAccountData(const std::unordered_map<uint32_t, int>& items,
                                     const std::unordered_map<int, int>& wallet,
                                     const std::unordered_map<int, int>& masteries,
-                                    const std::unordered_map<int, bool>& achievements);
+                                    const std::unordered_map<int, bool>& achievements,
+                                    const std::unordered_set<uint32_t>& armory);
         static bool SavePriceData(const std::unordered_map<uint32_t, int>& prices);
     };
 

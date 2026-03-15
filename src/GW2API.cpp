@@ -20,6 +20,7 @@ namespace CraftyLegend {
     std::unordered_map<int, int> GW2API::s_wallet;
     std::unordered_map<int, int> GW2API::s_masteries;
     std::unordered_map<int, bool> GW2API::s_achievements;
+    std::unordered_set<uint32_t> GW2API::s_legendary_armory;
     bool GW2API::s_has_account_data = false;
     std::unordered_map<uint32_t, int> GW2API::s_tp_prices;
     bool GW2API::s_has_price_data = false;
@@ -387,8 +388,29 @@ namespace CraftyLegend {
                     } catch (...) {}
                 }
 
+                // 7. Legendary Armory
+                std::unordered_set<uint32_t> armory;
+                {
+                    std::lock_guard<std::mutex> lock(s_mutex);
+                    s_fetch_message = "Fetching legendary armory...";
+                }
+                url = "https://api.guildwars2.com/v2/account/legendaryarmory?access_token=" + key;
+                response = HttpGet(url);
+                if (!response.empty()) {
+                    try {
+                        json j = json::parse(response);
+                        if (j.is_array()) {
+                            for (const auto& entry : j) {
+                                if (!entry.contains("id")) continue;
+                                uint32_t id = entry["id"].get<uint32_t>();
+                                armory.insert(id);
+                            }
+                        }
+                    } catch (...) {}
+                }
+
                 // Save and apply
-                SaveAccountData(items, wallet, masteries, achievements);
+                SaveAccountData(items, wallet, masteries, achievements, armory);
 
                 {
                     std::lock_guard<std::mutex> lock(s_mutex);
@@ -396,11 +418,12 @@ namespace CraftyLegend {
                     s_wallet = wallet;
                     s_masteries = masteries;
                     s_achievements = achievements;
+                    s_legendary_armory = armory;
                     s_has_account_data = true;
                     s_fetch_status = FetchStatus::Success;
                     s_fetch_message = "Done (" + std::to_string(items.size()) + " items, " +
                                      std::to_string(wallet.size()) + " currencies, " +
-                                     std::to_string(masteries.size()) + " masteries)";
+                                     std::to_string(armory.size()) + " legendaries)";
                 }
 
             } catch (const std::exception& e) {
@@ -439,6 +462,11 @@ namespace CraftyLegend {
         auto it = s_wallet.find(currency_id);
         if (it != s_wallet.end()) return it->second;
         return 0;
+    }
+
+    bool GW2API::IsLegendaryUnlocked(uint32_t item_id) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        return s_legendary_armory.count(item_id) > 0;
     }
 
     int GW2API::GetWalletAmountByName(const std::string& name) {
@@ -572,7 +600,8 @@ namespace CraftyLegend {
     bool GW2API::SaveAccountData(const std::unordered_map<uint32_t, int>& items,
                                   const std::unordered_map<int, int>& wallet,
                                   const std::unordered_map<int, int>& masteries,
-                                  const std::unordered_map<int, bool>& achievements) {
+                                  const std::unordered_map<int, bool>& achievements,
+                                  const std::unordered_set<uint32_t>& armory) {
         EnsureDataDirectory();
         std::string path = GetDataDirectory() + "/account_data.json";
 
@@ -601,6 +630,12 @@ namespace CraftyLegend {
         }
         j["achievements"] = achievements_arr;
 
+        json armory_arr = json::array();
+        for (uint32_t id : armory) {
+            armory_arr.push_back(id);
+        }
+        j["legendary_armory"] = armory_arr;
+
         std::ofstream file(path);
         if (!file.is_open()) return false;
         file << j.dump(2);
@@ -621,6 +656,7 @@ namespace CraftyLegend {
             s_wallet.clear();
             s_masteries.clear();
             s_achievements.clear();
+            s_legendary_armory.clear();
 
             if (j.contains("items") && j["items"].is_array()) {
                 for (const auto& entry : j["items"]) {
@@ -651,6 +687,14 @@ namespace CraftyLegend {
                     int id = entry["id"].get<int>();
                     bool done = entry.value("done", false);
                     s_achievements[id] = done;
+                }
+            }
+
+            if (j.contains("legendary_armory") && j["legendary_armory"].is_array()) {
+                for (const auto& entry : j["legendary_armory"]) {
+                    if (entry.is_number_unsigned()) {
+                        s_legendary_armory.insert(entry.get<uint32_t>());
+                    }
                 }
             }
 
