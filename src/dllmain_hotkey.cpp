@@ -310,6 +310,7 @@ void AddonLoad(AddonAPI_t* aApi) {
     }
     CraftyLegend::GW2API::LoadAccountData();
     CraftyLegend::GW2API::LoadPriceData();
+    CraftyLegend::DataManager::LoadFavourites();
 
     // Register render functions
     APIDefs->GUI_Register(RT_Render, AddonRender);
@@ -708,6 +709,8 @@ static bool IsReadyToCraft(uint32_t item_id, int count, std::unordered_set<uint3
         visited.insert(item_id);
         int output = std::max(1u, recipe->output_count);
         int numCrafts = (remaining + output - 1) / output;
+        // Mystic Clover: ~33% success rate, need ~3x attempts
+        if (item_id == 19675 && numCrafts > 1) numCrafts *= 3;
         for (const auto& ing : recipe->ingredients) {
             if (!IsReadyToCraft(ing.item_id, static_cast<int>(ing.count) * numCrafts, visited)) {
                 visited.erase(item_id);
@@ -722,9 +725,49 @@ static bool IsReadyToCraft(uint32_t item_id, int count, std::unordered_set<uint3
     return false;
 }
 
+// Forward declaration for mutual recursion
+static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_set<uint32_t>& visited);
+
+// Helper: compute vendor acquisition cost for an item (gold portion only).
+// Returns -1 if no vendor cost is computable.
+static long long GetVendorPrice(uint32_t item_id, int remaining, std::unordered_set<uint32_t>& visited) {
+    const auto& acqs = CraftyLegend::DataManager::GetAcquisitionMethods(item_id);
+    long long bestVendor = -1;
+    for (const auto& acq : acqs) {
+        if (acq.method != "vendor" || acq.purchase_requirements.empty()) continue;
+        long long vendorSum = 0;
+        bool hasAnyCost = false;
+        for (const auto& req : acq.purchase_requirements) {
+            if (req.first == "Coin") {
+                try {
+                    int copper = std::stoi(req.second);
+                    if (copper > 0) { vendorSum += static_cast<long long>(copper) * remaining; hasAnyCost = true; }
+                } catch (...) {}
+                continue;
+            }
+            if (CraftyLegend::GW2API::GetWalletAmountByName(req.first) >= 0) continue;
+            uint32_t sub_id = 0;
+            for (const auto& [id, it] : CraftyLegend::DataManager::GetItems()) {
+                if (it.name == req.first) { sub_id = id; break; }
+            }
+            if (sub_id == 0) continue;
+            int sub_count = 0;
+            try { sub_count = std::stoi(req.second); } catch (...) { continue; }
+            if (sub_count <= 0) continue;
+            visited.insert(item_id);
+            long long sub_price = GetRecursivePrice(sub_id, sub_count * remaining, visited);
+            visited.erase(item_id);
+            if (sub_price > 0) { vendorSum += sub_price; hasAnyCost = true; }
+        }
+        if (hasAnyCost && (bestVendor < 0 || vendorSum < bestVendor)) {
+            bestVendor = vendorSum;
+        }
+    }
+    return bestVendor;
+}
+
 // Helper: recursively compute TP cost for an item.
-// Leaf items (no recipe) use TP sell price * remaining.
-// Parent items (have recipe) sum children's recursive prices.
+// Considers recipe crafting, TP direct buy, and vendor costs; returns cheapest.
 static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_set<uint32_t>& visited) {
     if (item_id == 0 || count <= 0) return 0;
     if (!CraftyLegend::GW2API::HasPriceData()) return 0;
@@ -738,60 +781,36 @@ static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_s
     }
     if (remaining <= 0) return 0;
 
-    // If item has a recipe, recurse into ingredients
+    long long bestPrice = -1; // -1 = no valid price yet
+
+    // Option 1: TP direct buy
+    int unitPrice = CraftyLegend::GW2API::GetSellPrice(item_id);
+    if (unitPrice > 0) {
+        long long tpCost = static_cast<long long>(unitPrice) * remaining;
+        if (bestPrice < 0 || tpCost < bestPrice) bestPrice = tpCost;
+    }
+
+    // Option 2: Craft via recipe (recurse into ingredients)
     const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
     if (recipe && !recipe->ingredients.empty()) {
         visited.insert(item_id);
         int output = std::max(1u, recipe->output_count);
-        int numCrafts = (remaining + output - 1) / output; // ceil division
-        long long sum = 0;
+        int numCrafts = (remaining + output - 1) / output;
+        // Mystic Clover: ~33% success rate, need ~3x attempts
+        if (item_id == 19675 && numCrafts > 1) numCrafts *= 3;
+        long long craftSum = 0;
         for (const auto& ing : recipe->ingredients) {
-            sum += GetRecursivePrice(ing.item_id, static_cast<int>(ing.count) * numCrafts, visited);
+            craftSum += GetRecursivePrice(ing.item_id, static_cast<int>(ing.count) * numCrafts, visited);
         }
         visited.erase(item_id);
-        return sum;
+        if (bestPrice < 0 || craftSum < bestPrice) bestPrice = craftSum;
     }
 
-    // Leaf item: use TP price first (cheapest option)
-    int unitPrice = CraftyLegend::GW2API::GetSellPrice(item_id);
-    if (unitPrice > 0) return static_cast<long long>(unitPrice) * remaining;
+    // Option 3: Vendor purchase
+    long long vendorCost = GetVendorPrice(item_id, remaining, visited);
+    if (vendorCost >= 0 && (bestPrice < 0 || vendorCost < bestPrice)) bestPrice = vendorCost;
 
-    // No TP price: sum vendor purchase requirement costs recursively
-    const auto& acqs = CraftyLegend::DataManager::GetAcquisitionMethods(item_id);
-    for (const auto& acq : acqs) {
-        if (acq.purchase_requirements.empty()) continue;
-        long long vendorSum = 0;
-        bool hasAnyCost = false;
-        for (const auto& req : acq.purchase_requirements) {
-            if (req.first == "Coin") {
-                // Direct gold cost
-                try {
-                    int copper = std::stoi(req.second);
-                    if (copper > 0) { vendorSum += static_cast<long long>(copper) * remaining; hasAnyCost = true; }
-                } catch (...) {}
-                continue;
-            }
-            // Skip wallet currencies (Karma, etc.) - no gold cost
-            if (CraftyLegend::GW2API::GetWalletAmountByName(req.first) >= 0) continue;
-            // Look up item ID for this material
-            uint32_t sub_id = 0;
-            for (const auto& [id, it] : CraftyLegend::DataManager::GetItems()) {
-                if (it.name == req.first) { sub_id = id; break; }
-            }
-            if (sub_id == 0) continue;
-            // Parse the count
-            int sub_count = 0;
-            try { sub_count = std::stoi(req.second); } catch (...) { continue; }
-            if (sub_count <= 0) continue;
-            // Recurse into this sub-material
-            visited.insert(item_id);
-            long long sub_price = GetRecursivePrice(sub_id, sub_count * remaining, visited);
-            visited.erase(item_id);
-            if (sub_price > 0) { vendorSum += sub_price; hasAnyCost = true; }
-        }
-        if (hasAnyCost) return vendorSum;
-    }
-    return 0;
+    return bestPrice > 0 ? bestPrice : 0;
 }
 
 // Helper: get the total gold cost for a material (recursive through crafting tree)
@@ -1327,15 +1346,21 @@ void AddonRender() {
             g_TrackedCol0ScrollY = ImGui::GetScrollY();
 
             // Render a category section: header + filtered items matching a predicate
+            // Two-pass: favourites first, then non-favourites
             auto renderSection = [&](const char* label, auto predicate, bool first = false) {
                 bool any = false;
                 for (const auto& leg : legendaries) { if (predicate(leg)) { any = true; break; } }
                 if (!any) return;
                 if (!first) ImGui::Spacing();
                 ImGui::TextColored(sectionHeaderColor, "%s", label);
+                // pass 0 = favourites, pass 1 = non-favourites
+                for (int pass = 0; pass < 2; pass++) {
                 for (size_t i = 0; i < legendaries.size(); i++) {
                     const auto& leg = legendaries[i];
                     if (!predicate(leg)) continue;
+                    bool isFav = CraftyLegend::DataManager::IsFavourite(leg.id);
+                    if (pass == 0 && !isFav) continue;
+                    if (pass == 1 && isFav) continue;
                     // Hide owned legendaries if setting is off
                     if (!g_ShowOwnedLegendaries && CraftyLegend::GW2API::HasAccountData()) {
                         if (CraftyLegend::GW2API::IsLegendaryUnlocked(leg.id)) continue;
@@ -1394,6 +1419,31 @@ void AddonRender() {
 
                     std::string subtype = !leg.weapon_type.empty() ? leg.weapon_type : (!leg.armor_type.empty() ? leg.armor_type : (!leg.trinket_type.empty() ? leg.trinket_type : leg.back_type));
                     std::string subtypeSuffix = subtype.empty() ? "" : " (" + subtype + ")";
+                    // Draw a filled star for favourites
+                    float starSize = 0.0f;
+                    if (isFav) {
+                        float sz = ImGui::GetTextLineHeight() * 0.5f;
+                        ImVec2 starCenter = ImGui::GetCursorScreenPos();
+                        float yOff = g_ShowItemIcons ? (ICON_SIZE * 0.5f) : (ImGui::GetTextLineHeightWithSpacing() * 0.5f);
+                        starCenter.x += sz + 1.0f;
+                        starCenter.y += yOff;
+                        float outerR = sz;
+                        float innerR = sz * 0.38f;
+                        ImVec2 pts[10];
+                        for (int s = 0; s < 10; s++) {
+                            float angle = (float)s * 3.14159265f / 5.0f - 3.14159265f / 2.0f;
+                            float r = (s % 2 == 0) ? outerR : innerR;
+                            pts[s] = ImVec2(starCenter.x + r * cosf(angle), starCenter.y + r * sinf(angle));
+                        }
+                        // Draw as triangles from center for correct concave rendering
+                        ImU32 starCol = IM_COL32(255, 200, 50, 255);
+                        ImDrawList* dl = ImGui::GetWindowDrawList();
+                        for (int s = 0; s < 10; s++) {
+                            dl->AddTriangleFilled(starCenter, pts[s], pts[(s + 1) % 10], starCol);
+                        }
+                        starSize = sz * 2.0f + 4.0f;
+                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + starSize);
+                    }
                     std::string lbl = leg.name + subtypeSuffix + " >";
                     ImVec2 itemPos = ImGui::GetCursorScreenPos();
                     float selH = g_ShowItemIcons ? ICON_SIZE : 0;
@@ -1422,6 +1472,9 @@ void AddonRender() {
                             if (ImGui::MenuItem("Open on Wiki")) {
                                 OpenWikiPage(leg.name);
                             }
+                            if (ImGui::MenuItem(isFav ? "Remove Favourite" : "Add Favourite")) {
+                                CraftyLegend::DataManager::ToggleFavourite(leg.id);
+                            }
                             ImGui::EndPopup();
                         }
                     }
@@ -1445,6 +1498,7 @@ void AddonRender() {
                         ImGui::GetWindowDrawList()->AddText(pctPos, pctCol, pctBuf);
                     }
                 }
+                } // end two-pass loop
             };
 
             // Weapons: Gen 1-3 + Spear (15) + Sigil (18)
@@ -2027,22 +2081,28 @@ void AddonOptions() {
         g_ShowApiKey = !g_ShowApiKey;
     }
 
-    // Save and Validate buttons
-    if (ImGui::Button("Save Key")) {
-        CraftyLegend::GW2API::SetApiKey(std::string(g_ApiKeyBuf));
-        CraftyLegend::GW2API::SaveApiKey();
-    }
-    ImGui::SameLine();
-
+    // Save Key button: validates first, saves only on success
+    static bool pendingSave = false;
     auto valStatus = CraftyLegend::GW2API::GetValidationStatus();
     bool validating = (valStatus == CraftyLegend::FetchStatus::InProgress);
+
     if (validating) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
-    if (ImGui::Button("Validate Key") && !validating) {
+    if (ImGui::Button("Save Key") && !validating) {
         CraftyLegend::GW2API::SetApiKey(std::string(g_ApiKeyBuf));
-        CraftyLegend::GW2API::SaveApiKey();
         CraftyLegend::GW2API::ValidateApiKeyAsync();
+        pendingSave = true;
     }
     if (validating) ImGui::PopStyleVar();
+
+    // Auto-save when validation succeeds, show error when it fails
+    if (pendingSave && !validating) {
+        if (valStatus == CraftyLegend::FetchStatus::Success) {
+            CraftyLegend::GW2API::SaveApiKey();
+            pendingSave = false;
+        } else if (valStatus == CraftyLegend::FetchStatus::Error) {
+            pendingSave = false;
+        }
+    }
 
     // Transient validation status (inline)
     if (validating) {
@@ -2051,6 +2111,12 @@ void AddonOptions() {
     } else if (valStatus == CraftyLegend::FetchStatus::Error) {
         const auto& info = CraftyLegend::GW2API::GetApiKeyInfo();
         ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Invalid: %s", info.error.c_str());
+        ImGui::SameLine();
+        if (ImGui::SmallButton("Retry")) {
+            CraftyLegend::GW2API::SetApiKey(std::string(g_ApiKeyBuf));
+            CraftyLegend::GW2API::ValidateApiKeyAsync();
+            pendingSave = true;
+        }
     }
 
     // Persistent key info - always show when we have valid key data

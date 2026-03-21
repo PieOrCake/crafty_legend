@@ -194,6 +194,9 @@ namespace CraftyLegend {
     float DataManager::s_session_col0_scroll_y = 0.0f;
     std::vector<float> DataManager::s_session_col_scroll_y;
     
+    // Favourites
+    std::unordered_set<uint32_t> DataManager::s_favourites;
+    
     bool DataManager::Initialize() {
         // Load all JSON data
         bool legendaries_loaded = LoadLegendaries();
@@ -2219,16 +2222,32 @@ namespace CraftyLegend {
         next_column.selected_acquisition_index = -1;
         next_column.selected_material_index = -1;
         
+        // Compute qty: prefer parent column's selected material count (robust),
+        // fall back to source_item_count if parent lookup fails.
+        uint32_t src_id = s_columns[column_index].source_item_id;
+        int qty = s_columns[column_index].source_item_count;
+        if (column_index > 0 && src_id > 0) {
+            const auto& parent = s_columns[column_index - 1];
+            int sel = parent.selected_material_index;
+            if (sel >= 0 && sel < static_cast<int>(parent.materials.size()) &&
+                parent.materials[sel].item_id == src_id) {
+                qty = static_cast<int>(parent.materials[sel].count);
+                if (GW2API::HasAccountData()) {
+                    int owned = GW2API::GetOwnedCount(src_id);
+                    qty = std::max(0, qty - owned);
+                }
+                // Update source_item_count so it stays consistent
+                s_columns[column_index].source_item_count = qty;
+            }
+        }
+        
         // Populate next column based on acquisition method
         if (acq.method == "vendor") {
             next_column.title = "Vendor - " + acq.vendor_name;
             // Add purchase requirements as materials, multiplied by required quantity
-            int qty = s_columns[column_index].source_item_count;
             BuildVendorCostMaterials(next_column.materials, acq.purchase_requirements, qty);
         } else if (acq.method == "mystic_forge") {
             // Use source_item_id from the acquisition column to find the recipe
-            uint32_t src_id = s_columns[column_index].source_item_id;
-            int qty = s_columns[column_index].source_item_count;
             if (src_id > 0) {
                 const Recipe* src_recipe = GetRecipe(src_id);
                 if (src_recipe && !src_recipe->ingredients.empty()) {
@@ -2253,9 +2272,6 @@ namespace CraftyLegend {
                 next_column.title = "Mystic Forge";
             }
         } else if (acq.method == "crafting") {
-            // Use source_item_id from the acquisition column to find the recipe
-            uint32_t src_id = s_columns[column_index].source_item_id;
-            int qty = s_columns[column_index].source_item_count;
             if (src_id > 0) {
                 const Recipe* src_recipe = GetRecipe(src_id);
                 if (src_recipe) {
@@ -2437,7 +2453,14 @@ namespace CraftyLegend {
                     col.selected_material_index = selected_mat;
                     uint32_t mat_id = col.materials[selected_mat].item_id;
                     if (mat_id != 0) {
-                        UpdateColumn(col_index, mat_id, count);
+                        // Compute drill count from material's actual count minus owned
+                        // (matches normal click behavior in dllmain_hotkey.cpp)
+                        int drill_count = static_cast<int>(col.materials[selected_mat].count);
+                        if (GW2API::HasAccountData()) {
+                            int owned = GW2API::GetOwnedCount(mat_id);
+                            drill_count = std::max(0, drill_count - owned);
+                        }
+                        UpdateColumn(col_index, mat_id, drill_count);
                     }
                 }
                 // Restore acquisition selection
@@ -3034,6 +3057,62 @@ namespace CraftyLegend {
         }
 
         return std::vector<uint32_t>(tradeable.begin(), tradeable.end());
+    }
+
+    // --- Favourites ---
+
+    std::string DataManager::GetFavouritesPath() {
+        std::string dllDir = GetDllDirectory();
+        if (dllDir.empty()) return "";
+        std::replace(dllDir.begin(), dllDir.end(), '\\', '/');
+        return dllDir + "/CraftyLegend/favourites.json";
+    }
+
+    bool DataManager::IsFavourite(uint32_t legendary_id) {
+        return s_favourites.count(legendary_id) > 0;
+    }
+
+    void DataManager::ToggleFavourite(uint32_t legendary_id) {
+        if (s_favourites.count(legendary_id)) {
+            s_favourites.erase(legendary_id);
+        } else {
+            s_favourites.insert(legendary_id);
+        }
+        SaveFavourites();
+    }
+
+    void DataManager::LoadFavourites() {
+        std::string path = GetFavouritesPath();
+        if (path.empty()) return;
+        std::ifstream file(path);
+        if (!file.is_open()) return;
+        try {
+            json j;
+            file >> j;
+            if (j.contains("favourites") && j["favourites"].is_array()) {
+                s_favourites.clear();
+                for (const auto& entry : j["favourites"]) {
+                    if (entry.is_number_unsigned()) {
+                        s_favourites.insert(entry.get<uint32_t>());
+                    }
+                }
+            }
+        } catch (...) {}
+    }
+
+    void DataManager::SaveFavourites() {
+        std::string path = GetFavouritesPath();
+        if (path.empty()) return;
+        json j;
+        json arr = json::array();
+        for (uint32_t id : s_favourites) {
+            arr.push_back(id);
+        }
+        j["favourites"] = arr;
+        std::ofstream file(path);
+        if (file.is_open()) {
+            file << j.dump(2);
+        }
     }
 
 }

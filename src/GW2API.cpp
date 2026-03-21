@@ -92,9 +92,17 @@ namespace CraftyLegend {
 
     // --- API Key Management ---
 
+    // Helper: trim leading/trailing whitespace from a string
+    static std::string TrimKey(const std::string& s) {
+        size_t start = s.find_first_not_of(" \t\r\n");
+        if (start == std::string::npos) return "";
+        size_t end = s.find_last_not_of(" \t\r\n");
+        return s.substr(start, end - start + 1);
+    }
+
     void GW2API::SetApiKey(const std::string& key) {
         std::lock_guard<std::mutex> lock(s_mutex);
-        s_api_key = key;
+        s_api_key = TrimKey(key);
     }
 
     const std::string& GW2API::GetApiKey() {
@@ -111,7 +119,7 @@ namespace CraftyLegend {
             file >> j;
             if (j.contains("api_key")) {
                 std::lock_guard<std::mutex> lock(s_mutex);
-                s_api_key = j["api_key"].get<std::string>();
+                s_api_key = TrimKey(j["api_key"].get<std::string>());
                 return true;
             }
         } catch (...) {}
@@ -123,15 +131,42 @@ namespace CraftyLegend {
         std::string dir = GetDataDirectory();
         std::string path = dir + "/api_key.json";
 
+        std::string expected_key;
         json j;
         {
             std::lock_guard<std::mutex> lock(s_mutex);
             j["api_key"] = s_api_key;
+            expected_key = s_api_key;
         }
 
-        std::ofstream file(path);
-        if (!file.is_open()) return false;
-        file << j.dump(2);
+        {
+            std::ofstream file(path);
+            if (!file.is_open()) return false;
+            file << j.dump(2);
+            file.flush();
+        } // file closed here
+
+        // Verify: re-read and compare
+        {
+            std::ifstream verify(path);
+            if (!verify.is_open()) return false;
+            try {
+                json vj;
+                verify >> vj;
+                if (vj.contains("api_key")) {
+                    std::string saved = vj["api_key"].get<std::string>();
+                    if (saved != expected_key) {
+                        // Mismatch — retry save once
+                        std::ofstream retry(path);
+                        if (!retry.is_open()) return false;
+                        retry << j.dump(2);
+                        retry.flush();
+                    }
+                }
+            } catch (...) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -235,6 +270,14 @@ namespace CraftyLegend {
             std::unordered_map<int, bool> achievements;
 
             try {
+                // Early check: reject empty key
+                if (key.empty()) {
+                    std::lock_guard<std::mutex> lock(s_mutex);
+                    s_fetch_status = FetchStatus::Error;
+                    s_fetch_message = "No API key configured";
+                    return;
+                }
+
                 // 1. Material Storage
                 {
                     std::lock_guard<std::mutex> lock(s_mutex);
@@ -242,8 +285,21 @@ namespace CraftyLegend {
                 }
                 std::string url = "https://api.guildwars2.com/v2/account/materials?access_token=" + key;
                 std::string response = HttpGet(url);
-                if (!response.empty()) {
+                if (response.empty()) {
+                    std::lock_guard<std::mutex> lock(s_mutex);
+                    s_fetch_status = FetchStatus::Error;
+                    s_fetch_message = "No response from API (network error?)";
+                    return;
+                }
+                {
+                    // Check first response for API error (invalid key, etc.)
                     json j = json::parse(response);
+                    if (j.is_object() && j.contains("text")) {
+                        std::lock_guard<std::mutex> lock(s_mutex);
+                        s_fetch_status = FetchStatus::Error;
+                        s_fetch_message = "API error: " + j["text"].get<std::string>();
+                        return;
+                    }
                     if (j.is_array()) {
                         for (const auto& slot : j) {
                             if (slot.is_null() || !slot.contains("id")) continue;
@@ -409,7 +465,14 @@ namespace CraftyLegend {
                     } catch (...) {}
                 }
 
-                // Save and apply
+                // Save and apply (only if we got meaningful data)
+                if (items.empty() && wallet.empty()) {
+                    std::lock_guard<std::mutex> lock(s_mutex);
+                    s_fetch_status = FetchStatus::Error;
+                    s_fetch_message = "API returned no data (key may be invalid)";
+                    return;
+                }
+
                 SaveAccountData(items, wallet, masteries, achievements, armory);
 
                 {

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <cstdint>
@@ -165,6 +166,12 @@ namespace CraftyLegend {
         // TP Prices - collect all non-bound item IDs across all crafting trees
         static std::vector<uint32_t> GetAllTradeableItemIds();
         
+        // Favourites
+        static bool IsFavourite(uint32_t legendary_id);
+        static void ToggleFavourite(uint32_t legendary_id);
+        static void LoadFavourites();
+        static void SaveFavourites();
+        
     private:
         // JSON loading
         static bool LoadLegendaries();
@@ -201,6 +208,10 @@ namespace CraftyLegend {
         static AcquisitionMethod CreateAcquisitionMethod(const std::string& method, const Item* item);
         static std::vector<std::string> ParseAcquisitionArray(const std::vector<std::string>& acquisition);
         static std::string FormatDisciplines(const std::vector<std::string>& disciplines);
+        
+        // Favourites data
+        static std::unordered_set<uint32_t> s_favourites;
+        static std::string GetFavouritesPath();
     
     };
     
