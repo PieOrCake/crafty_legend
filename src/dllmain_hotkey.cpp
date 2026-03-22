@@ -240,6 +240,9 @@ static int64_t g_HoardLastUpdated = 0;
 static int64_t g_HoardRefreshAvailableAt = 0;
 static std::unordered_set<uint32_t> g_HoardQueriedItems;
 static std::unordered_set<uint32_t> g_HoardQueriedWallets;
+static bool g_HoardPermissionPending = false;
+static bool g_HoardPermissionDenied = false;
+static std::chrono::steady_clock::time_point g_HoardPermissionRetryTime;
 
 // Completion cache (declared early for H&S callbacks)
 static std::unordered_map<uint32_t, float> g_CompletionCache;
@@ -321,6 +324,7 @@ void OnHoardPong(void* aEventArgs) {
     if (pong->has_data) {
         g_HoardDataAvailable = true;
         g_HoardRefreshNeeded = true;
+        CraftyLegend::GW2API::SetHasAccountData(true);
     }
     SaveLastUpdated();
 }
@@ -356,6 +360,19 @@ void OnHoardItemResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryItemResponse* resp = static_cast<HoardQueryItemResponse*>(aEventArgs);
     if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->status == HOARD_STATUS_PENDING) {
+        g_HoardPermissionPending = true;
+        g_HoardPermissionRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(3);
+        g_HoardQueriedItems.erase(resp->item_id);
+        delete resp;
+        return;
+    }
+    if (resp->status == HOARD_STATUS_DENIED) {
+        g_HoardPermissionDenied = true;
+        delete resp;
+        return;
+    }
+    g_HoardPermissionPending = false;
     CraftyLegend::GW2API::SetItemCount(resp->item_id, resp->total_count);
     // Detect legendary armory presence
     for (uint32_t i = 0; i < resp->location_count && i < 32; i++) {
@@ -373,6 +390,19 @@ void OnHoardWalletResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryWalletResponse* resp = static_cast<HoardQueryWalletResponse*>(aEventArgs);
     if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->status == HOARD_STATUS_PENDING) {
+        g_HoardPermissionPending = true;
+        g_HoardPermissionRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(3);
+        g_HoardQueriedWallets.erase(resp->currency_id);
+        delete resp;
+        return;
+    }
+    if (resp->status == HOARD_STATUS_DENIED) {
+        g_HoardPermissionDenied = true;
+        delete resp;
+        return;
+    }
+    g_HoardPermissionPending = false;
     if (resp->found) {
         CraftyLegend::GW2API::SetWalletAmount(static_cast<int>(resp->currency_id), resp->amount);
     }
@@ -383,6 +413,19 @@ void OnAchievementResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryAchievementResponse* resp = static_cast<HoardQueryAchievementResponse*>(aEventArgs);
     if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->status == HOARD_STATUS_PENDING) {
+        g_HoardPermissionPending = true;
+        g_HoardPermissionRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(3);
+        g_HoardRefreshNeeded = true;
+        delete resp;
+        return;
+    }
+    if (resp->status == HOARD_STATUS_DENIED) {
+        g_HoardPermissionDenied = true;
+        delete resp;
+        return;
+    }
+    g_HoardPermissionPending = false;
     for (uint32_t i = 0; i < resp->entry_count && i < 200; i++) {
         CraftyLegend::GW2API::SetAchievementDone(
             static_cast<int>(resp->entries[i].id), resp->entries[i].done);
@@ -395,6 +438,19 @@ void OnMasteryResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryMasteryResponse* resp = static_cast<HoardQueryMasteryResponse*>(aEventArgs);
     if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->status == HOARD_STATUS_PENDING) {
+        g_HoardPermissionPending = true;
+        g_HoardPermissionRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(3);
+        g_HoardRefreshNeeded = true;
+        delete resp;
+        return;
+    }
+    if (resp->status == HOARD_STATUS_DENIED) {
+        g_HoardPermissionDenied = true;
+        delete resp;
+        return;
+    }
+    g_HoardPermissionPending = false;
     for (uint32_t i = 0; i < resp->entry_count && i < 200; i++) {
         CraftyLegend::GW2API::SetMasteryLevel(
             static_cast<int>(resp->entries[i].id), resp->entries[i].level);
@@ -428,10 +484,12 @@ void OnHoardFetchError(void* aEventArgs) {
 // Helper: fire H&S item query if not already queried
 static void QueryHoardItem(uint32_t item_id) {
     if (item_id == 0 || !g_HoardDataAvailable) return;
+    if (g_HoardPermissionPending || g_HoardPermissionDenied) return;
     if (g_HoardQueriedItems.count(item_id)) return;
     g_HoardQueriedItems.insert(item_id);
     HoardQueryItemRequest req{};
     req.api_version = HOARD_API_VERSION;
+    strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
     req.item_id = item_id;
     strncpy(req.response_event, CL_ITEM_RESPONSE, sizeof(req.response_event));
     APIDefs->Events_Raise(EV_HOARD_QUERY_ITEM, &req);
@@ -440,10 +498,12 @@ static void QueryHoardItem(uint32_t item_id) {
 // Helper: fire H&S wallet query if not already queried
 static void QueryHoardWallet(uint32_t currency_id) {
     if (currency_id == 0 || !g_HoardDataAvailable) return;
+    if (g_HoardPermissionPending || g_HoardPermissionDenied) return;
     if (g_HoardQueriedWallets.count(currency_id)) return;
     g_HoardQueriedWallets.insert(currency_id);
     HoardQueryWalletRequest req{};
     req.api_version = HOARD_API_VERSION;
+    strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
     req.currency_id = currency_id;
     strncpy(req.response_event, CL_WALLET_RESPONSE, sizeof(req.response_event));
     APIDefs->Events_Raise(EV_HOARD_QUERY_WALLET, &req);
@@ -486,6 +546,7 @@ static void RefreshHoardData() {
     {
         HoardQueryAchievementRequest req{};
         req.api_version = HOARD_API_VERSION;
+        strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
         strncpy(req.response_event, CL_ACHIEVEMENT_RESPONSE, sizeof(req.response_event));
         req.id_count = 0;
         for (uint32_t id : achIds) {
@@ -504,6 +565,7 @@ static void RefreshHoardData() {
     {
         HoardQueryMasteryRequest req{};
         req.api_version = HOARD_API_VERSION;
+        strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
         strncpy(req.response_event, CL_MASTERY_RESPONSE, sizeof(req.response_event));
         req.id_count = 0;
         for (uint32_t id : mastIds) {
@@ -1193,6 +1255,14 @@ void AddonRender() {
         }
     }
 
+    // Permission retry: after 3s delay, clear pending and allow queries to re-fire
+    if (g_HoardPermissionPending && std::chrono::steady_clock::now() >= g_HoardPermissionRetryTime) {
+        g_HoardPermissionPending = false;
+        g_HoardQueriedItems.clear();
+        g_HoardQueriedWallets.clear();
+        g_HoardRefreshNeeded = true;
+    }
+
     // Trigger H&S batch query if needed
     if (g_HoardRefreshNeeded && g_HoardDataAvailable) {
         RefreshHoardData();
@@ -1323,6 +1393,12 @@ void AddonRender() {
                 ImGui::SameLine();
                 ImGui::TextColored(titleColor, "%s",
                     CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
+            } else if (g_HoardPermissionPending) {
+                ImGui::SameLine();
+                ImGui::TextColored(titleColor, "Waiting for Hoard & Seek permission...");
+            } else if (g_HoardPermissionDenied) {
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Hoard & Seek permission denied");
             } else if (!statusExpired && g_HoardPingFailed) {
                 ImGui::SameLine();
                 ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Hoard & Seek addon not found");

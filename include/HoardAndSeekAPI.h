@@ -1,13 +1,18 @@
 /*
  * HoardAndSeekAPI.h - Cross-addon event interface for Hoard & Seek
- * Version: 1
+ * Version: 2
  */
 
 #pragma once
 #include <cstdint>
 
-#define HOARD_API_VERSION 1
+#define HOARD_API_VERSION 2
 #define HOARD_REFRESH_COOLDOWN 300  // 5 minutes
+
+// Response status codes
+#define HOARD_STATUS_OK      0
+#define HOARD_STATUS_DENIED  1
+#define HOARD_STATUS_PENDING 2
 
 // Broadcasts (raised by H&S)
 #define EV_HOARD_DATA_UPDATED    "EV_HOARD_DATA_UPDATED"
@@ -22,6 +27,9 @@
 #define EV_HOARD_QUERY_WALLET       "EV_HOARD_QUERY_WALLET"
 #define EV_HOARD_QUERY_ACHIEVEMENT  "EV_HOARD_QUERY_ACHIEVEMENT"
 #define EV_HOARD_QUERY_MASTERY      "EV_HOARD_QUERY_MASTERY"
+#define EV_HOARD_QUERY_SKINS        "EV_HOARD_QUERY_SKINS"
+#define EV_HOARD_QUERY_RECIPES      "EV_HOARD_QUERY_RECIPES"
+#define EV_HOARD_QUERY_WIZARDSVAULT "EV_HOARD_QUERY_WIZARDSVAULT"
 
 #pragma pack(push, 1)
 
@@ -35,6 +43,7 @@ struct HoardDataReadyPayload {
 
 struct HoardQueryItemRequest {
     uint32_t api_version;
+    char requester[64];
     uint32_t item_id;
     char response_event[64];
 };
@@ -47,6 +56,7 @@ struct HoardItemLocationEntry {
 
 struct HoardQueryItemResponse {
     uint32_t api_version;
+    uint8_t  status;
     uint32_t item_id;
     char name[128];
     char rarity[32];
@@ -58,12 +68,14 @@ struct HoardQueryItemResponse {
 
 struct HoardQueryWalletRequest {
     uint32_t api_version;
+    char requester[64];
     uint32_t currency_id;
     char response_event[64];
 };
 
 struct HoardQueryWalletResponse {
     uint32_t api_version;
+    uint8_t  status;
     uint32_t currency_id;
     char name[128];
     int32_t amount;
@@ -74,6 +86,7 @@ struct HoardQueryWalletResponse {
 
 struct HoardQueryAchievementRequest {
     uint32_t api_version;
+    char requester[64];
     uint32_t ids[200];
     uint32_t id_count;
     char response_event[64];
@@ -90,6 +103,7 @@ struct HoardAchievementEntry {
 
 struct HoardQueryAchievementResponse {
     uint32_t api_version;
+    uint8_t  status;
     uint32_t entry_count;
     HoardAchievementEntry entries[200];
 };
@@ -98,6 +112,7 @@ struct HoardQueryAchievementResponse {
 
 struct HoardQueryMasteryRequest {
     uint32_t api_version;
+    char requester[64];
     uint32_t ids[200];
     uint32_t id_count;
     char response_event[64];
@@ -110,6 +125,7 @@ struct HoardMasteryEntry {
 
 struct HoardQueryMasteryResponse {
     uint32_t api_version;
+    uint8_t  status;
     uint32_t entry_count;
     HoardMasteryEntry entries[200];
 };
