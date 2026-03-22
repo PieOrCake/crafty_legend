@@ -9,14 +9,6 @@
 
 namespace CraftyLegend {
 
-    struct ApiKeyInfo {
-        bool valid = false;
-        std::string account_name;
-        std::string key_name;
-        std::vector<std::string> permissions;
-        std::string error;
-    };
-
     enum class FetchStatus {
         Idle,
         InProgress,
@@ -29,37 +21,29 @@ namespace CraftyLegend {
         // Data path helper
         static std::string GetDataDirectory();
 
-        // API Key management
-        static void SetApiKey(const std::string& key);
-        static const std::string& GetApiKey();
-        static bool LoadApiKey();
-        static bool SaveApiKey();
-
-        // Validation (async)
-        static void ValidateApiKeyAsync();
-        static FetchStatus GetValidationStatus();
-        static const ApiKeyInfo& GetApiKeyInfo();
-
-        // Account data fetching (async)
-        static void FetchAccountDataAsync();
-        static FetchStatus GetFetchStatus();
-        static const std::string& GetFetchStatusMessage();
-
-        // Owned item counts
+        // Owned item counts (data set by H&S events)
         static int GetOwnedCount(uint32_t item_id);
+        static void SetItemCount(uint32_t item_id, int count);
+        static void ClearItemsAndWallet();
         static bool HasAccountData();
-        static bool LoadAccountData();
+        static void SetHasAccountData(bool has_data);
 
-        // Wallet
+        // Wallet (data set by H&S events)
         static int GetWalletAmount(int currency_id);
+        static void SetWalletAmount(int currency_id, int amount);
         static int GetWalletAmountByName(const std::string& currency_name);
 
-        // Legendary Armory
+        // Legendary Armory (data set by H&S events)
         static bool IsLegendaryUnlocked(uint32_t item_id);
+        static void SetLegendaryUnlocked(uint32_t item_id);
+        static void ClearLegendaryArmory();
 
-        // Masteries & Achievements
+        // Masteries & Achievements (data set by H&S events)
         static int GetMasteryLevel(int mastery_id);
+        static void SetMasteryLevel(int mastery_id, int level);
         static bool IsAchievementDone(int achievement_id);
+        static void SetAchievementDone(int achievement_id, bool done);
+        static void ClearMasteriesAndAchievements();
         static bool HasMapCompletion();
 
         // TP Prices
@@ -71,11 +55,6 @@ namespace CraftyLegend {
         static bool LoadPriceData();
 
     private:
-        static std::string s_api_key;
-        static ApiKeyInfo s_key_info;
-        static FetchStatus s_validation_status;
-        static FetchStatus s_fetch_status;
-        static std::string s_fetch_message;
         static std::unordered_map<uint32_t, int> s_owned_items;
         static std::unordered_map<int, int> s_wallet;
         static std::unordered_map<int, int> s_masteries;     // mastery_id -> level
@@ -93,12 +72,6 @@ namespace CraftyLegend {
 
         static bool EnsureDataDirectory();
 
-        // Save aggregated data
-        static bool SaveAccountData(const std::unordered_map<uint32_t, int>& items,
-                                    const std::unordered_map<int, int>& wallet,
-                                    const std::unordered_map<int, int>& masteries,
-                                    const std::unordered_map<int, bool>& achievements,
-                                    const std::unordered_set<uint32_t>& armory);
         static bool SavePriceData(const std::unordered_map<uint32_t, int>& prices);
     };
 

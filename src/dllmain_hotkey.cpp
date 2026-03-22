@@ -14,12 +14,13 @@
 #include "DataManager.h"
 #include "GW2API.h"
 #include "IconManager.h"
+#include "../include/HoardAndSeekAPI.h"
 
 // Version constants
 #define V_MAJOR 0
 #define V_MINOR 9
-#define V_BUILD 2
-#define V_REVISION 3
+#define V_BUILD 3
+#define V_REVISION 0
 
 // Quick Access icon identifiers
 #define QA_ID "QA_CRAFTY_LEGEND"
@@ -166,8 +167,6 @@ static bool g_ShowIngredients = true;
 static bool g_ShowAcquisition = true;
 static bool g_ShowRecipes = true;
 static char g_SearchFilter[256] = "";
-static char g_ApiKeyBuf[256] = "";
-static bool g_ShowApiKey = false;
 static bool g_ShowItemIcons = false;
 static bool g_ShowOwnedLegendaries = true;
 
@@ -203,8 +202,7 @@ static std::vector<float> g_TrackedColScrollY;
 // Prerequisites panel state
 static std::vector<CraftyLegend::Prerequisite> g_Prerequisites;
 static uint32_t g_PrereqLegendaryId = 0;
-static CraftyLegend::FetchStatus g_LastFetchStatus = CraftyLegend::FetchStatus::Idle;
-
+static bool g_PrereqDirty = false;
 // Shopping list state
 struct ShoppingEntry {
     uint32_t item_id;
@@ -220,6 +218,32 @@ static std::vector<ShoppingEntry> g_ShoppingList;
 static uint32_t g_ShoppingListLegendaryId = 0;
 static bool g_ShoppingListDirty = true;
 static ShoppingSort g_ShoppingSort = ShoppingSort::Name;
+
+// Hoard & Seek integration state
+#define CL_ITEM_RESPONSE        "CL_ITEM_RESPONSE"
+#define CL_WALLET_RESPONSE      "CL_WALLET_RESPONSE"
+#define CL_ACHIEVEMENT_RESPONSE "CL_ACHIEVEMENT_RESPONSE"
+#define CL_MASTERY_RESPONSE     "CL_MASTERY_RESPONSE"
+static bool g_HoardDetected = false;
+static bool g_HoardDataAvailable = false;
+static bool g_HoardRefreshNeeded = false;
+static bool g_HoardRefreshPending = false;
+static bool g_HoardFetching = false;
+static std::string g_HoardFetchMessage;
+static bool g_HoardFetchError = false;
+static std::string g_HoardErrorMessage;
+static bool g_HoardPingPending = false;
+static bool g_HoardPingFailed = false;
+static std::chrono::steady_clock::time_point g_HoardPingTime;
+static std::chrono::steady_clock::time_point g_StatusMessageTime;
+static int64_t g_HoardLastUpdated = 0;
+static int64_t g_HoardRefreshAvailableAt = 0;
+static std::unordered_set<uint32_t> g_HoardQueriedItems;
+static std::unordered_set<uint32_t> g_HoardQueriedWallets;
+
+// Completion cache (declared early for H&S callbacks)
+static std::unordered_map<uint32_t, float> g_CompletionCache;
+static bool g_CompletionCacheDirty = true;
 
 // DLL entry point
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
@@ -247,6 +271,26 @@ static void SaveDisplaySettings() {
     file << "}\n";
 }
 
+static void SaveLastUpdated() {
+    std::string dir = CraftyLegend::GW2API::GetDataDirectory();
+    if (dir.empty()) return;
+    try { std::filesystem::create_directories(dir); } catch (...) {}
+    std::string path = dir + "/last_updated.txt";
+    std::ofstream file(path);
+    if (file.is_open()) file << g_HoardLastUpdated << " " << g_HoardRefreshAvailableAt;
+}
+
+static void LoadLastUpdated() {
+    std::string dir = CraftyLegend::GW2API::GetDataDirectory();
+    if (dir.empty()) return;
+    std::string path = dir + "/last_updated.txt";
+    std::ifstream file(path);
+    if (file.is_open()) {
+        file >> g_HoardLastUpdated;
+        if (!(file >> g_HoardRefreshAvailableAt)) g_HoardRefreshAvailableAt = 0;
+    }
+}
+
 static void LoadDisplaySettings() {
     std::string dir = CraftyLegend::GW2API::GetDataDirectory();
     if (dir.empty()) return;
@@ -261,6 +305,220 @@ static void LoadDisplaySettings() {
     else if (content.find("\"show_debug_window\": false") != std::string::npos) g_ShowDebugWindow = false;
     if (content.find("\"show_owned_legendaries\": true") != std::string::npos) g_ShowOwnedLegendaries = true;
     else if (content.find("\"show_owned_legendaries\": false") != std::string::npos) g_ShowOwnedLegendaries = false;
+}
+
+// --- Hoard & Seek event callbacks ---
+
+void OnHoardPong(void* aEventArgs) {
+    g_HoardDetected = true;
+
+    if (!aEventArgs) return; // Backward compat with older H&S
+    HoardPongPayload* pong = static_cast<HoardPongPayload*>(aEventArgs);
+    if (pong->api_version != HOARD_API_VERSION) return;
+
+    g_HoardLastUpdated = pong->last_updated;
+    g_HoardRefreshAvailableAt = pong->refresh_available_at;
+    if (pong->has_data) {
+        g_HoardDataAvailable = true;
+        g_HoardRefreshNeeded = true;
+    }
+    SaveLastUpdated();
+}
+
+void OnHoardDataUpdated(void* aEventArgs) {
+    if (aEventArgs) {
+        HoardDataReadyPayload* payload = static_cast<HoardDataReadyPayload*>(aEventArgs);
+        if (payload->api_version == HOARD_API_VERSION) {
+            g_HoardLastUpdated = payload->last_updated;
+            g_HoardRefreshAvailableAt = payload->refresh_available_at;
+            SaveLastUpdated();
+        }
+    }
+    g_HoardDetected = true;
+    g_HoardDataAvailable = true;
+    g_HoardRefreshNeeded = true;
+    g_HoardRefreshPending = false;
+    g_HoardFetching = false;
+    g_HoardFetchMessage.clear();
+    g_StatusMessageTime = std::chrono::steady_clock::now();
+    // Clear old cached data so it gets refreshed
+    CraftyLegend::GW2API::ClearItemsAndWallet();
+    CraftyLegend::GW2API::ClearLegendaryArmory();
+    CraftyLegend::GW2API::ClearMasteriesAndAchievements();
+    CraftyLegend::GW2API::SetHasAccountData(true);
+    g_HoardQueriedItems.clear();
+    g_HoardQueriedWallets.clear();
+    g_CompletionCacheDirty = true;
+    g_ShoppingListDirty = true;
+}
+
+void OnHoardItemResponse(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardQueryItemResponse* resp = static_cast<HoardQueryItemResponse*>(aEventArgs);
+    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    CraftyLegend::GW2API::SetItemCount(resp->item_id, resp->total_count);
+    // Detect legendary armory presence
+    for (uint32_t i = 0; i < resp->location_count && i < 32; i++) {
+        if (strcmp(resp->locations[i].location, "Legendary Armory") == 0) {
+            CraftyLegend::GW2API::SetLegendaryUnlocked(resp->item_id);
+            break;
+        }
+    }
+    delete resp;
+    g_CompletionCacheDirty = true;
+    g_ShoppingListDirty = true;
+}
+
+void OnHoardWalletResponse(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardQueryWalletResponse* resp = static_cast<HoardQueryWalletResponse*>(aEventArgs);
+    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->found) {
+        CraftyLegend::GW2API::SetWalletAmount(static_cast<int>(resp->currency_id), resp->amount);
+    }
+    delete resp;
+}
+
+void OnAchievementResponse(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardQueryAchievementResponse* resp = static_cast<HoardQueryAchievementResponse*>(aEventArgs);
+    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    for (uint32_t i = 0; i < resp->entry_count && i < 200; i++) {
+        CraftyLegend::GW2API::SetAchievementDone(
+            static_cast<int>(resp->entries[i].id), resp->entries[i].done);
+    }
+    delete resp;
+    g_PrereqDirty = true;
+}
+
+void OnMasteryResponse(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardQueryMasteryResponse* resp = static_cast<HoardQueryMasteryResponse*>(aEventArgs);
+    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    for (uint32_t i = 0; i < resp->entry_count && i < 200; i++) {
+        CraftyLegend::GW2API::SetMasteryLevel(
+            static_cast<int>(resp->entries[i].id), resp->entries[i].level);
+    }
+    delete resp;
+    g_PrereqDirty = true;
+}
+
+void OnHoardFetchProgress(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardFetchProgressPayload* payload = static_cast<HoardFetchProgressPayload*>(aEventArgs);
+    if (payload->api_version != HOARD_API_VERSION) return;
+    g_HoardFetchMessage = payload->message;
+    g_HoardFetching = true;
+    g_HoardFetchError = false;
+    // Do NOT delete — payload is stack-allocated by H&S
+}
+
+void OnHoardFetchError(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardFetchErrorPayload* payload = static_cast<HoardFetchErrorPayload*>(aEventArgs);
+    if (payload->api_version != HOARD_API_VERSION) return;
+    g_HoardFetchError = true;
+    g_HoardFetching = false;
+    g_HoardRefreshPending = false;
+    g_HoardErrorMessage = payload->message;
+    g_StatusMessageTime = std::chrono::steady_clock::now();
+    // Do NOT delete — payload is stack-allocated by H&S
+}
+
+// Helper: fire H&S item query if not already queried
+static void QueryHoardItem(uint32_t item_id) {
+    if (item_id == 0 || !g_HoardDataAvailable) return;
+    if (g_HoardQueriedItems.count(item_id)) return;
+    g_HoardQueriedItems.insert(item_id);
+    HoardQueryItemRequest req{};
+    req.api_version = HOARD_API_VERSION;
+    req.item_id = item_id;
+    strncpy(req.response_event, CL_ITEM_RESPONSE, sizeof(req.response_event));
+    APIDefs->Events_Raise(EV_HOARD_QUERY_ITEM, &req);
+}
+
+// Helper: fire H&S wallet query if not already queried
+static void QueryHoardWallet(uint32_t currency_id) {
+    if (currency_id == 0 || !g_HoardDataAvailable) return;
+    if (g_HoardQueriedWallets.count(currency_id)) return;
+    g_HoardQueriedWallets.insert(currency_id);
+    HoardQueryWalletRequest req{};
+    req.api_version = HOARD_API_VERSION;
+    req.currency_id = currency_id;
+    strncpy(req.response_event, CL_WALLET_RESPONSE, sizeof(req.response_event));
+    APIDefs->Events_Raise(EV_HOARD_QUERY_WALLET, &req);
+}
+
+// Helper: batch-query all items in crafting trees + all known currencies
+static void RefreshHoardData() {
+    if (!g_HoardDataAvailable) return;
+    // Query all items known to the data manager
+    const auto& items = CraftyLegend::DataManager::GetItems();
+    for (const auto& [id, item] : items) {
+        QueryHoardItem(id);
+    }
+    // Query all known wallet currencies
+    static const uint32_t wallet_ids[] = {
+        1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29,
+        30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 50, 51, 52, 53, 54,
+        55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 75, 76, 78, 79, 80, 81, 82, 83
+    };
+    for (uint32_t cid : wallet_ids) {
+        QueryHoardWallet(cid);
+    }
+
+    // Collect all achievement/mastery IDs needed from prerequisites
+    std::unordered_set<uint32_t> achIds;
+    std::unordered_set<uint32_t> mastIds;
+    achIds.insert(137); // Map completion: "Been There, Done That"
+    mastIds.insert(14); mastIds.insert(15); mastIds.insert(17); mastIds.insert(18); // PoF mounts
+
+    const auto& legendaries = CraftyLegend::DataManager::GetLegendaries();
+    for (const auto& leg : legendaries) {
+        auto prereqs = CraftyLegend::DataManager::GetPrerequisites(leg.id);
+        for (const auto& p : prereqs) {
+            if (p.achievement_id >= 0) achIds.insert(static_cast<uint32_t>(p.achievement_id));
+            if (p.mastery_id >= 0) mastIds.insert(static_cast<uint32_t>(p.mastery_id));
+        }
+    }
+
+    // Batch query achievements (up to 200 per request)
+    {
+        HoardQueryAchievementRequest req{};
+        req.api_version = HOARD_API_VERSION;
+        strncpy(req.response_event, CL_ACHIEVEMENT_RESPONSE, sizeof(req.response_event));
+        req.id_count = 0;
+        for (uint32_t id : achIds) {
+            req.ids[req.id_count++] = id;
+            if (req.id_count >= 200) {
+                APIDefs->Events_Raise(EV_HOARD_QUERY_ACHIEVEMENT, &req);
+                req.id_count = 0;
+            }
+        }
+        if (req.id_count > 0) {
+            APIDefs->Events_Raise(EV_HOARD_QUERY_ACHIEVEMENT, &req);
+        }
+    }
+
+    // Batch query masteries (up to 200 per request)
+    {
+        HoardQueryMasteryRequest req{};
+        req.api_version = HOARD_API_VERSION;
+        strncpy(req.response_event, CL_MASTERY_RESPONSE, sizeof(req.response_event));
+        req.id_count = 0;
+        for (uint32_t id : mastIds) {
+            req.ids[req.id_count++] = id;
+            if (req.id_count >= 200) {
+                APIDefs->Events_Raise(EV_HOARD_QUERY_MASTERY, &req);
+                req.id_count = 0;
+            }
+        }
+        if (req.id_count > 0) {
+            APIDefs->Events_Raise(EV_HOARD_QUERY_MASTERY, &req);
+        }
+    }
+
+    g_HoardRefreshNeeded = false;
 }
 
 // Forward declarations
@@ -297,20 +555,26 @@ void AddonLoad(AddonAPI_t* aApi) {
     // Initialize icon manager
     CraftyLegend::IconManager::Initialize(APIDefs);
     
-    // Load display settings
+    // Load display settings and persisted state
     LoadDisplaySettings();
+    LoadLastUpdated();
 
-    // Load saved API key and account data
-    if (CraftyLegend::GW2API::LoadApiKey()) {
-        const auto& key = CraftyLegend::GW2API::GetApiKey();
-        strncpy(g_ApiKeyBuf, key.c_str(), sizeof(g_ApiKeyBuf) - 1);
-        APIDefs->Log(LOGL_INFO, "CraftyLegend", "API key loaded from config");
-        // Auto-validate so key info is available immediately in settings
-        CraftyLegend::GW2API::ValidateApiKeyAsync();
-    }
-    CraftyLegend::GW2API::LoadAccountData();
     CraftyLegend::GW2API::LoadPriceData();
     CraftyLegend::DataManager::LoadFavourites();
+
+    // Subscribe to Hoard & Seek events
+    APIDefs->Events_Subscribe(EV_HOARD_DATA_UPDATED, OnHoardDataUpdated);
+    APIDefs->Events_Subscribe(CL_ITEM_RESPONSE, OnHoardItemResponse);
+    APIDefs->Events_Subscribe(CL_WALLET_RESPONSE, OnHoardWalletResponse);
+    APIDefs->Events_Subscribe(CL_ACHIEVEMENT_RESPONSE, OnAchievementResponse);
+    APIDefs->Events_Subscribe(CL_MASTERY_RESPONSE, OnMasteryResponse);
+    APIDefs->Events_Subscribe(EV_HOARD_FETCH_PROGRESS, OnHoardFetchProgress);
+    APIDefs->Events_Subscribe(EV_HOARD_FETCH_ERROR, OnHoardFetchError);
+    APIDefs->Events_Subscribe(EV_HOARD_PONG, OnHoardPong);
+    APIDefs->Log(LOGL_INFO, "CraftyLegend", "Subscribed to Hoard & Seek events");
+
+    // Ping H&S to get current state (timestamps, has_data) if already loaded
+    APIDefs->Events_Raise(EV_HOARD_PING, nullptr);
 
     // Register render functions
     APIDefs->GUI_Register(RT_Render, AddonRender);
@@ -330,6 +594,16 @@ void AddonLoad(AddonAPI_t* aApi) {
 }
 
 void AddonUnload() {
+    // Unsubscribe from Hoard & Seek events
+    APIDefs->Events_Unsubscribe(EV_HOARD_DATA_UPDATED, OnHoardDataUpdated);
+    APIDefs->Events_Unsubscribe(CL_ITEM_RESPONSE, OnHoardItemResponse);
+    APIDefs->Events_Unsubscribe(CL_WALLET_RESPONSE, OnHoardWalletResponse);
+    APIDefs->Events_Unsubscribe(CL_ACHIEVEMENT_RESPONSE, OnAchievementResponse);
+    APIDefs->Events_Unsubscribe(CL_MASTERY_RESPONSE, OnMasteryResponse);
+    APIDefs->Events_Unsubscribe(EV_HOARD_FETCH_PROGRESS, OnHoardFetchProgress);
+    APIDefs->Events_Unsubscribe(EV_HOARD_FETCH_ERROR, OnHoardFetchError);
+    APIDefs->Events_Unsubscribe(EV_HOARD_PONG, OnHoardPong);
+
     CraftyLegend::IconManager::Shutdown();
     APIDefs->QuickAccess_Remove(QA_ID);
     APIDefs->GUI_Deregister(AddonOptions);
@@ -540,10 +814,6 @@ static void CollectLeafMaterials(uint32_t item_id, int count,
     // Leaf material
     leafItems[item_id] += count;
 }
-
-// Cache: legendary_id -> completion fraction [0.0, 1.0]
-static std::unordered_map<uint32_t, float> g_CompletionCache;
-static bool g_CompletionCacheDirty = true;
 
 static float GetLegendaryCompletion(uint32_t legendary_id) {
     if (!CraftyLegend::GW2API::HasAccountData()) return -1.0f; // no data
@@ -904,6 +1174,38 @@ void AddonRender() {
     
     if (!g_WindowVisible) return;
 
+    // Check if ping got a pong — allow up to 2 seconds for H&S to respond
+    if (g_HoardPingPending) {
+        if (g_HoardDetected) {
+            g_HoardPingPending = false;
+            g_HoardPingFailed = false;
+            // Ping succeeded, now trigger the refresh
+            APIDefs->Events_Raise("EV_HOARD_REFRESH", nullptr);
+            g_HoardRefreshPending = true;
+            g_CompletionCacheDirty = true;
+        } else {
+            auto elapsed = std::chrono::steady_clock::now() - g_HoardPingTime;
+            if (elapsed >= std::chrono::seconds(2)) {
+                g_HoardPingPending = false;
+                g_HoardPingFailed = true;
+                g_StatusMessageTime = std::chrono::steady_clock::now();
+            }
+        }
+    }
+
+    // Trigger H&S batch query if needed
+    if (g_HoardRefreshNeeded && g_HoardDataAvailable) {
+        RefreshHoardData();
+    }
+
+    // Recompute prerequisites when achievement/mastery data arrives
+    if (g_PrereqDirty && g_PrereqLegendaryId != 0) {
+        g_Prerequisites = CraftyLegend::DataManager::GetPrerequisites(g_PrereqLegendaryId);
+        g_ShoppingListDirty = true;
+        g_CompletionCacheDirty = true;
+    }
+    g_PrereqDirty = false;
+
     // Initialize columns if empty
     if (g_Columns.empty()) {
         try {
@@ -969,12 +1271,8 @@ void AddonRender() {
 
         // Account data & TP prices button row
         {
-            bool hasKey = !CraftyLegend::GW2API::GetApiKey().empty();
-            auto fetchStatus = CraftyLegend::GW2API::GetFetchStatus();
-            bool fetching = (fetchStatus == CraftyLegend::FetchStatus::InProgress);
             auto priceFetchStatus = CraftyLegend::GW2API::GetPriceFetchStatus();
             bool priceFetching = (priceFetchStatus == CraftyLegend::FetchStatus::InProgress);
-            bool anyBusy = fetching || priceFetching;
 
             // Shopping List toggle (before refresh buttons)
             {
@@ -985,68 +1283,96 @@ void AddonRender() {
                     if (g_ShowShoppingList) g_ShoppingListDirty = true;
                 }
                 if (!canShow) ImGui::PopStyleVar();
-                if (hasKey) ImGui::SameLine();
-            }
-
-            if (hasKey) {
-                // Both buttons on same line, disabled when either is busy
-                if (anyBusy) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
-                if (ImGui::SmallButton("Refresh Account Data") && !anyBusy) {
-                    CraftyLegend::GW2API::FetchAccountDataAsync();
-                    g_CompletionCacheDirty = true;
-                }
                 ImGui::SameLine();
-                if (ImGui::SmallButton("Refresh TP Prices") && !anyBusy) {
-                    auto ids = CraftyLegend::DataManager::GetAllTradeableItemIds();
-                    CraftyLegend::GW2API::FetchPricesAsync(ids);
-                }
-                if (anyBusy) ImGui::PopStyleVar();
-
-                // Status message to the right (only one active at a time)
-                if (fetching) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(titleColor, "%s",
-                        CraftyLegend::GW2API::GetFetchStatusMessage().c_str());
-                } else if (priceFetching) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(titleColor, "%s",
-                        CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
-                } else if (fetchStatus == CraftyLegend::FetchStatus::Success) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(completedColor, "%s",
-                        CraftyLegend::GW2API::GetFetchStatusMessage().c_str());
-                } else if (fetchStatus == CraftyLegend::FetchStatus::Error) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(0.9f, 0.35f, 0.3f, 1.0f), "%s",
-                        CraftyLegend::GW2API::GetFetchStatusMessage().c_str());
-                } else if (priceFetchStatus == CraftyLegend::FetchStatus::Success) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(completedColor, "%s",
-                        CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
-                } else if (priceFetchStatus == CraftyLegend::FetchStatus::Error) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(ImVec4(0.9f, 0.35f, 0.3f, 1.0f), "%s",
-                        CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
-                } else if (CraftyLegend::GW2API::HasAccountData()) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(dimTextColor, "(cached data loaded)");
-                } else if (CraftyLegend::GW2API::HasPriceData()) {
-                    ImGui::SameLine();
-                    ImGui::TextColored(dimTextColor, "(cached prices loaded)");
-                }
             }
 
-            // Refresh prerequisites when account data fetch completes
-            if (fetchStatus == CraftyLegend::FetchStatus::Success &&
-                g_LastFetchStatus != CraftyLegend::FetchStatus::Success &&
-                g_PrereqLegendaryId != 0) {
-                g_Prerequisites = CraftyLegend::DataManager::GetPrerequisites(g_PrereqLegendaryId);
-                g_ShoppingListDirty = true;
+            // Refresh buttons
+            bool onCooldown = (g_HoardRefreshAvailableAt > 0 && std::time(nullptr) < (time_t)g_HoardRefreshAvailableAt);
+            bool busy = priceFetching || g_HoardRefreshPending || g_HoardPingPending || onCooldown;
+            if (busy) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
+            if (ImGui::SmallButton("Update Account Data") && !busy) {
+                // Always ping to verify H&S is still loaded
+                g_HoardDetected = false;
+                APIDefs->Events_Raise(EV_HOARD_PING, nullptr);
+                g_HoardPingPending = true;
+                g_HoardPingFailed = false;
+                g_HoardPingTime = std::chrono::steady_clock::now();
+            }
+            ImGui::SameLine();
+            if (ImGui::SmallButton("Refresh TP Prices") && !priceFetching && !g_HoardRefreshPending) {
+                auto ids = CraftyLegend::DataManager::GetAllTradeableItemIds();
+                CraftyLegend::GW2API::FetchPricesAsync(ids);
+            }
+            if (busy) ImGui::PopStyleVar();
+
+            // Auto-expire transient status messages after 5 seconds
+            auto statusAge = std::chrono::steady_clock::now() - g_StatusMessageTime;
+            bool statusExpired = statusAge >= std::chrono::seconds(5);
+
+            // Status message
+            if (g_HoardPingPending) {
+                ImGui::SameLine();
+                ImGui::TextColored(titleColor, "Looking for Hoard & Seek...");
+            } else if (g_HoardFetching && !g_HoardFetchMessage.empty()) {
+                ImGui::SameLine();
+                ImGui::TextColored(titleColor, "%s", g_HoardFetchMessage.c_str());
+            } else if (g_HoardRefreshPending) {
+                ImGui::SameLine();
+                ImGui::TextColored(titleColor, "Waiting for Hoard & Seek...");
+            } else if (priceFetching) {
+                ImGui::SameLine();
+                ImGui::TextColored(titleColor, "%s",
+                    CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
+            } else if (!statusExpired && g_HoardPingFailed) {
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Hoard & Seek addon not found");
+            } else if (!statusExpired && g_HoardFetchError) {
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s", g_HoardErrorMessage.c_str());
+            } else if (!statusExpired && priceFetchStatus == CraftyLegend::FetchStatus::Success) {
+                ImGui::SameLine();
+                ImGui::TextColored(completedColor, "%s",
+                    CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
+            } else if (!statusExpired && priceFetchStatus == CraftyLegend::FetchStatus::Error) {
+                ImGui::SameLine();
+                ImGui::TextColored(ImVec4(0.9f, 0.35f, 0.3f, 1.0f), "%s",
+                    CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
+            } else if (g_HoardLastUpdated > 0) {
+                time_t now = std::time(nullptr);
+                int elapsed = (int)(now - (time_t)g_HoardLastUpdated);
+                const char* ago;
+                char buf[64];
+                if (elapsed < 60) ago = "just now";
+                else if (elapsed < 3600) { snprintf(buf, sizeof(buf), "%dm ago", elapsed / 60); ago = buf; }
+                else if (elapsed < 86400) { snprintf(buf, sizeof(buf), "%dh ago", elapsed / 3600); ago = buf; }
+                else { snprintf(buf, sizeof(buf), "%dd ago", elapsed / 86400); ago = buf; }
+                ImGui::SameLine();
+                if (onCooldown) {
+                    int remaining = (int)((time_t)g_HoardRefreshAvailableAt - now);
+                    ImGui::TextColored(dimTextColor, "(Account data: %s | Next refresh available in %dm %ds)", ago, remaining / 60, remaining % 60);
+                } else {
+                    ImGui::TextColored(dimTextColor, "(Account data: %s)", ago);
+                }
+            } else if (g_HoardDataAvailable) {
+                ImGui::SameLine();
+                ImGui::TextColored(dimTextColor, "(Hoard & Seek connected)");
+            } else if (CraftyLegend::GW2API::HasPriceData()) {
+                ImGui::SameLine();
+                ImGui::TextColored(dimTextColor, "(cached prices loaded)");
+            }
+
+            // Detect price fetch completion and start status timer
+            static auto lastPriceFetchStatus = CraftyLegend::FetchStatus::Idle;
+            if (priceFetchStatus != lastPriceFetchStatus) {
+                if (priceFetchStatus == CraftyLegend::FetchStatus::Success ||
+                    priceFetchStatus == CraftyLegend::FetchStatus::Error) {
+                    g_StatusMessageTime = std::chrono::steady_clock::now();
+                }
+                lastPriceFetchStatus = priceFetchStatus;
             }
             if (priceFetchStatus == CraftyLegend::FetchStatus::Success) {
                 g_ShoppingListDirty = true;
             }
-            g_LastFetchStatus = fetchStatus;
         }
 
         const auto& legendaries = CraftyLegend::DataManager::GetLegendaries();
@@ -1475,6 +1801,11 @@ void AddonRender() {
                             if (ImGui::MenuItem(isFav ? "Remove Favourite" : "Add Favourite")) {
                                 CraftyLegend::DataManager::ToggleFavourite(leg.id);
                             }
+                            if (CraftyLegend::GW2API::HasAccountData() && CraftyLegend::GW2API::GetOwnedCount(leg.id) > 0) {
+                                if (ImGui::MenuItem("Search in Hoard & Seek")) {
+                                    APIDefs->Events_Raise(EV_HOARD_SEARCH, (void*)leg.name.c_str());
+                                }
+                            }
                             ImGui::EndPopup();
                         }
                     }
@@ -1854,6 +2185,11 @@ void AddonRender() {
                                 if (ImGui::MenuItem("Open on Wiki")) {
                                     OpenWikiPage(wikiName);
                                 }
+                                if (mat.item_id != 0 && CraftyLegend::GW2API::HasAccountData() && CraftyLegend::GW2API::GetOwnedCount(mat.item_id) > 0) {
+                                    if (ImGui::MenuItem("Search in Hoard & Seek")) {
+                                        APIDefs->Events_Raise(EV_HOARD_SEARCH, (void*)wikiName.c_str());
+                                    }
+                                }
                                 ImGui::EndPopup();
                             }
                         }
@@ -2041,7 +2377,7 @@ void AddonOptions() {
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
-        ImGui::Text("Show legendaries you already own in the list (requires API key)");
+        ImGui::Text("Show legendaries you already own in the list (requires Hoard & Seek)");
         ImGui::EndTooltip();
     }
 
@@ -2056,99 +2392,6 @@ void AddonOptions() {
         ImGui::EndTooltip();
     }
 
-    ImGui::Separator();
-
-    // API Key section
-    ImGui::Text("GW2 API Key");
-    ImGui::SameLine();
-    ImGui::TextDisabled("(?)");
-    if (ImGui::IsItemHovered()) {
-        ImGui::BeginTooltip();
-        ImGui::Text("Generate an API key at https://account.arena.net/applications");
-        ImGui::Text("Required permissions: account, inventories, wallet, characters");
-        ImGui::EndTooltip();
-    }
-
-    // API key input
-    ImGuiInputTextFlags flags = ImGuiInputTextFlags_None;
-    if (!g_ShowApiKey) {
-        flags |= ImGuiInputTextFlags_Password;
-    }
-    ImGui::SetNextItemWidth(400.0f);
-    ImGui::InputText("##apikey", g_ApiKeyBuf, sizeof(g_ApiKeyBuf), flags);
-    ImGui::SameLine();
-    if (ImGui::SmallButton(g_ShowApiKey ? "Hide" : "Show")) {
-        g_ShowApiKey = !g_ShowApiKey;
-    }
-
-    // Save Key button: validates first, saves only on success
-    static bool pendingSave = false;
-    auto valStatus = CraftyLegend::GW2API::GetValidationStatus();
-    bool validating = (valStatus == CraftyLegend::FetchStatus::InProgress);
-
-    if (validating) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
-    if (ImGui::Button("Save Key") && !validating) {
-        CraftyLegend::GW2API::SetApiKey(std::string(g_ApiKeyBuf));
-        CraftyLegend::GW2API::ValidateApiKeyAsync();
-        pendingSave = true;
-    }
-    if (validating) ImGui::PopStyleVar();
-
-    // Auto-save when validation succeeds, show error when it fails
-    if (pendingSave && !validating) {
-        if (valStatus == CraftyLegend::FetchStatus::Success) {
-            CraftyLegend::GW2API::SaveApiKey();
-            pendingSave = false;
-        } else if (valStatus == CraftyLegend::FetchStatus::Error) {
-            pendingSave = false;
-        }
-    }
-
-    // Transient validation status (inline)
-    if (validating) {
-        ImGui::SameLine();
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Validating...");
-    } else if (valStatus == CraftyLegend::FetchStatus::Error) {
-        const auto& info = CraftyLegend::GW2API::GetApiKeyInfo();
-        ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Invalid: %s", info.error.c_str());
-        ImGui::SameLine();
-        if (ImGui::SmallButton("Retry")) {
-            CraftyLegend::GW2API::SetApiKey(std::string(g_ApiKeyBuf));
-            CraftyLegend::GW2API::ValidateApiKeyAsync();
-            pendingSave = true;
-        }
-    }
-
-    // Persistent key info - always show when we have valid key data
-    const auto& info = CraftyLegend::GW2API::GetApiKeyInfo();
-    if (info.valid) {
-        ImGui::Spacing();
-        ImGui::TextColored(ImVec4(0.35f, 0.82f, 0.35f, 1.0f), "Valid");
-        ImGui::Text("Account: %s", info.account_name.c_str());
-        ImGui::Text("Key Name: %s", info.key_name.c_str());
-
-        // Show permissions
-        std::string perms;
-        for (size_t i = 0; i < info.permissions.size(); i++) {
-            if (i > 0) perms += ", ";
-            perms += info.permissions[i];
-        }
-        ImGui::Text("Scopes: %s", perms.c_str());
-
-        // Check for required permissions
-        bool hasAccount = false, hasInventories = false, hasWallet = false, hasCharacters = false;
-        for (const auto& p : info.permissions) {
-            if (p == "account") hasAccount = true;
-            if (p == "inventories") hasInventories = true;
-            if (p == "wallet") hasWallet = true;
-            if (p == "characters") hasCharacters = true;
-        }
-        if (!hasAccount || !hasInventories || !hasWallet || !hasCharacters) {
-            ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f),
-                "Warning: Missing required permissions. Need: account, inventories, wallet, characters");
-        }
-    }
-
 }
 
 // Export function - match working Raidcore addons structure
@@ -2161,7 +2404,7 @@ extern "C" __declspec(dllexport) AddonDefinition_t* GetAddonDef() {
     AddonDef.Version.Build = V_BUILD;
     AddonDef.Version.Revision = V_REVISION;
     AddonDef.Author = "PieOrCake.7635";
-    AddonDef.Description = "Legendary crafting assistant for Guild Wars 2";
+    AddonDef.Description = "Legendary crafting assistant for Guild Wars 2. Requires Hoard & Seek addon for account data retrieval.";
     AddonDef.Load = AddonLoad;
     AddonDef.Unload = AddonUnload;
     AddonDef.Flags = AF_None;

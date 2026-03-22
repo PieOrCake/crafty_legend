@@ -22,11 +22,11 @@ If an LLM creating software upsets you, then perhaps this repo isn't for you. Mo
 
 - **117 legendaries** with complete crafting trees
 - Miller column UI (Like Mac OSX Finder) for navigating crafting trees
-- GW2 API integration for tracking owned materials, wallet currencies, masteries, and achievements
+- Account data tracking via [Hoard & Seek](https://github.com/PieOrCake/hoard_and_seek) — owned materials, wallet currencies, legendary armory, masteries, and achievements
 - Trading Post and vendor gold prices from GW2 API
 - Vendor cost details with vendor names and currency requirements
 - Achievement and collection prerequisite tracking
-- Persistent account data and price caching
+- Live fetch progress display when updating account data
 
 ## Building
 
@@ -45,12 +45,26 @@ make
 
 The build produces `CraftyLegend.dll`.
 
+## Requirements
+
+- [Raidcore Nexus](https://raidcore.gg/Nexus)
+- [Hoard & Seek](https://github.com/PieOrCake/hoard_and_seek) Nexus addon — required for account data (inventory, wallet, achievements, masteries, legendary armory). Crafty Legend does not use a GW2 API key directly; all account data is retrieved through Hoard & Seek.
+
 ## Installation
 
 1. Install [Raidcore Nexus](https://raidcore.gg/Nexus) for Guild Wars 2
-2. Copy `CraftyLegend.dll` to your Nexus addons directory
-3. Launch GW2 — toggle the window with `Ctrl+Shift+L` or click the anvil icon in the Quick Access toolbar.
+2. Install **Hoard & Seek** from the Nexus addon library, or from https://github.com/PieOrCake/hoard_and_seek
+3. Copy `CraftyLegend.dll` to your Nexus addons directory
+4. Launch GW2 — toggle the window with `Ctrl+Shift+L` or click the anvil icon in the Quick Access toolbar.
 
 ## License
 
-This software is provided as-is, without a warranty of any kind. Use at your own risk. It might delete your files, melt your PC, burn your house down, or cause world peace. Probably not that last one, but we can hope.
+This project is licensed under the [MIT License](LICENSE).
+
+## Third-Party Notices
+
+This project uses the following open-source libraries:
+
+- **[Dear ImGui](https://github.com/ocornut/imgui)** — MIT License, Copyright (c) 2014-2021 Omar Cornut
+- **[nlohmann/json](https://github.com/nlohmann/json)** — MIT License, Copyright (c) 2013-2025 Niels Lohmann
+- **[Nexus API](https://raidcore.gg/Nexus)** — MIT License, Copyright (c) Raidcore.GG

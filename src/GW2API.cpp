@@ -11,11 +11,6 @@ using json = nlohmann::json;
 namespace CraftyLegend {
 
     // Static member initialization
-    std::string GW2API::s_api_key;
-    ApiKeyInfo GW2API::s_key_info;
-    FetchStatus GW2API::s_validation_status = FetchStatus::Idle;
-    FetchStatus GW2API::s_fetch_status = FetchStatus::Idle;
-    std::string GW2API::s_fetch_message;
     std::unordered_map<uint32_t, int> GW2API::s_owned_items;
     std::unordered_map<int, int> GW2API::s_wallet;
     std::unordered_map<int, int> GW2API::s_masteries;
@@ -90,422 +85,6 @@ namespace CraftyLegend {
         return result;
     }
 
-    // --- API Key Management ---
-
-    // Helper: trim leading/trailing whitespace from a string
-    static std::string TrimKey(const std::string& s) {
-        size_t start = s.find_first_not_of(" \t\r\n");
-        if (start == std::string::npos) return "";
-        size_t end = s.find_last_not_of(" \t\r\n");
-        return s.substr(start, end - start + 1);
-    }
-
-    void GW2API::SetApiKey(const std::string& key) {
-        std::lock_guard<std::mutex> lock(s_mutex);
-        s_api_key = TrimKey(key);
-    }
-
-    const std::string& GW2API::GetApiKey() {
-        return s_api_key;
-    }
-
-    bool GW2API::LoadApiKey() {
-        std::string path = GetDataDirectory() + "/api_key.json";
-        std::ifstream file(path);
-        if (!file.is_open()) return false;
-
-        try {
-            json j;
-            file >> j;
-            if (j.contains("api_key")) {
-                std::lock_guard<std::mutex> lock(s_mutex);
-                s_api_key = TrimKey(j["api_key"].get<std::string>());
-                return true;
-            }
-        } catch (...) {}
-        return false;
-    }
-
-    bool GW2API::SaveApiKey() {
-        EnsureDataDirectory();
-        std::string dir = GetDataDirectory();
-        std::string path = dir + "/api_key.json";
-
-        std::string expected_key;
-        json j;
-        {
-            std::lock_guard<std::mutex> lock(s_mutex);
-            j["api_key"] = s_api_key;
-            expected_key = s_api_key;
-        }
-
-        {
-            std::ofstream file(path);
-            if (!file.is_open()) return false;
-            file << j.dump(2);
-            file.flush();
-        } // file closed here
-
-        // Verify: re-read and compare
-        {
-            std::ifstream verify(path);
-            if (!verify.is_open()) return false;
-            try {
-                json vj;
-                verify >> vj;
-                if (vj.contains("api_key")) {
-                    std::string saved = vj["api_key"].get<std::string>();
-                    if (saved != expected_key) {
-                        // Mismatch — retry save once
-                        std::ofstream retry(path);
-                        if (!retry.is_open()) return false;
-                        retry << j.dump(2);
-                        retry.flush();
-                    }
-                }
-            } catch (...) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // --- Validation ---
-
-    void GW2API::ValidateApiKeyAsync() {
-        {
-            std::lock_guard<std::mutex> lock(s_mutex);
-            s_validation_status = FetchStatus::InProgress;
-            s_key_info = ApiKeyInfo{};
-        }
-
-        std::string key;
-        {
-            std::lock_guard<std::mutex> lock(s_mutex);
-            key = s_api_key;
-        }
-
-        std::thread([key]() {
-            ApiKeyInfo info;
-            try {
-                // Fetch token info
-                std::string url = "https://api.guildwars2.com/v2/tokeninfo?access_token=" + key;
-                std::string response = HttpGet(url);
-                if (response.empty()) {
-                    info.error = "No response from API";
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_key_info = info;
-                    s_validation_status = FetchStatus::Error;
-                    return;
-                }
-
-                json j = json::parse(response);
-                if (j.contains("text")) {
-                    info.error = j["text"].get<std::string>();
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_key_info = info;
-                    s_validation_status = FetchStatus::Error;
-                    return;
-                }
-
-                info.key_name = j.value("name", "");
-                if (j.contains("permissions")) {
-                    for (const auto& p : j["permissions"]) {
-                        info.permissions.push_back(p.get<std::string>());
-                    }
-                }
-
-                // Fetch account name
-                std::string acc_url = "https://api.guildwars2.com/v2/account?access_token=" + key;
-                std::string acc_response = HttpGet(acc_url);
-                if (!acc_response.empty()) {
-                    json acc_j = json::parse(acc_response);
-                    if (acc_j.contains("name")) {
-                        info.account_name = acc_j["name"].get<std::string>();
-                    }
-                }
-
-                info.valid = true;
-                std::lock_guard<std::mutex> lock(s_mutex);
-                s_key_info = info;
-                s_validation_status = FetchStatus::Success;
-
-            } catch (const std::exception& e) {
-                info.error = std::string("Exception: ") + e.what();
-                std::lock_guard<std::mutex> lock(s_mutex);
-                s_key_info = info;
-                s_validation_status = FetchStatus::Error;
-            }
-        }).detach();
-    }
-
-    FetchStatus GW2API::GetValidationStatus() {
-        std::lock_guard<std::mutex> lock(s_mutex);
-        return s_validation_status;
-    }
-
-    const ApiKeyInfo& GW2API::GetApiKeyInfo() {
-        return s_key_info;
-    }
-
-    // --- Account Data Fetching ---
-
-    void GW2API::FetchAccountDataAsync() {
-        {
-            std::lock_guard<std::mutex> lock(s_mutex);
-            s_fetch_status = FetchStatus::InProgress;
-            s_fetch_message = "Starting...";
-        }
-
-        std::string key;
-        {
-            std::lock_guard<std::mutex> lock(s_mutex);
-            key = s_api_key;
-        }
-
-        std::thread([key]() {
-            std::unordered_map<uint32_t, int> items;
-            std::unordered_map<int, int> wallet;
-            std::unordered_map<int, int> masteries;
-            std::unordered_map<int, bool> achievements;
-
-            try {
-                // Early check: reject empty key
-                if (key.empty()) {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_status = FetchStatus::Error;
-                    s_fetch_message = "No API key configured";
-                    return;
-                }
-
-                // 1. Material Storage
-                {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_message = "Fetching material storage...";
-                }
-                std::string url = "https://api.guildwars2.com/v2/account/materials?access_token=" + key;
-                std::string response = HttpGet(url);
-                if (response.empty()) {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_status = FetchStatus::Error;
-                    s_fetch_message = "No response from API (network error?)";
-                    return;
-                }
-                {
-                    // Check first response for API error (invalid key, etc.)
-                    json j = json::parse(response);
-                    if (j.is_object() && j.contains("text")) {
-                        std::lock_guard<std::mutex> lock(s_mutex);
-                        s_fetch_status = FetchStatus::Error;
-                        s_fetch_message = "API error: " + j["text"].get<std::string>();
-                        return;
-                    }
-                    if (j.is_array()) {
-                        for (const auto& slot : j) {
-                            if (slot.is_null() || !slot.contains("id")) continue;
-                            uint32_t id = slot["id"].get<uint32_t>();
-                            int count = slot.value("count", 0);
-                            if (count > 0) {
-                                items[id] += count;
-                            }
-                        }
-                    }
-                }
-
-                // 2. Bank
-                {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_message = "Fetching bank...";
-                }
-                url = "https://api.guildwars2.com/v2/account/bank?access_token=" + key;
-                response = HttpGet(url);
-                if (!response.empty()) {
-                    json j = json::parse(response);
-                    if (j.is_array()) {
-                        for (const auto& slot : j) {
-                            if (slot.is_null() || !slot.contains("id")) continue;
-                            uint32_t id = slot["id"].get<uint32_t>();
-                            int count = slot.value("count", 1);
-                            items[id] += count;
-                        }
-                    }
-                }
-
-                // 3. Character Inventories
-                {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_message = "Fetching characters...";
-                }
-                url = "https://api.guildwars2.com/v2/characters?access_token=" + key;
-                response = HttpGet(url);
-                if (!response.empty()) {
-                    json chars = json::parse(response);
-                    if (chars.is_array()) {
-                        for (const auto& char_name : chars) {
-                            std::string name = char_name.get<std::string>();
-                            {
-                                std::lock_guard<std::mutex> lock(s_mutex);
-                                s_fetch_message = "Fetching inventory: " + name + "...";
-                            }
-
-                            // URL-encode character name
-                            std::string encoded_name;
-                            for (char c : name) {
-                                if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
-                                    encoded_name += c;
-                                } else {
-                                    char hex[4];
-                                    snprintf(hex, sizeof(hex), "%%%02X", (unsigned char)c);
-                                    encoded_name += hex;
-                                }
-                            }
-
-                            std::string inv_url = "https://api.guildwars2.com/v2/characters/" +
-                                encoded_name + "/inventory?access_token=" + key;
-                            std::string inv_response = HttpGet(inv_url);
-                            if (!inv_response.empty()) {
-                                try {
-                                    json inv = json::parse(inv_response);
-                                    if (inv.contains("bags") && inv["bags"].is_array()) {
-                                        for (const auto& bag : inv["bags"]) {
-                                            if (bag.is_null() || !bag.contains("inventory")) continue;
-                                            for (const auto& item : bag["inventory"]) {
-                                                if (item.is_null() || !item.contains("id")) continue;
-                                                uint32_t id = item["id"].get<uint32_t>();
-                                                int count = item.value("count", 1);
-                                                items[id] += count;
-                                            }
-                                        }
-                                    }
-                                } catch (...) {}
-                            }
-                        }
-                    }
-                }
-
-                // 4. Wallet
-                {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_message = "Fetching wallet...";
-                }
-                url = "https://api.guildwars2.com/v2/account/wallet?access_token=" + key;
-                response = HttpGet(url);
-                if (!response.empty()) {
-                    json j = json::parse(response);
-                    if (j.is_array()) {
-                        for (const auto& entry : j) {
-                            if (!entry.contains("id") || !entry.contains("value")) continue;
-                            int id = entry["id"].get<int>();
-                            int value = entry["value"].get<int>();
-                            wallet[id] = value;
-                        }
-                    }
-                }
-
-                // 5. Masteries
-                {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_message = "Fetching masteries...";
-                }
-                url = "https://api.guildwars2.com/v2/account/masteries?access_token=" + key;
-                response = HttpGet(url);
-                if (!response.empty()) {
-                    try {
-                        json j = json::parse(response);
-                        if (j.is_array()) {
-                            for (const auto& entry : j) {
-                                if (!entry.contains("id")) continue;
-                                int id = entry["id"].get<int>();
-                                int level = entry.value("level", 0);
-                                masteries[id] = level;
-                            }
-                        }
-                    } catch (...) {}
-                }
-
-                // 6. Achievements
-                {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_message = "Fetching achievements...";
-                }
-                url = "https://api.guildwars2.com/v2/account/achievements?access_token=" + key;
-                response = HttpGet(url);
-                if (!response.empty()) {
-                    try {
-                        json j = json::parse(response);
-                        if (j.is_array()) {
-                            for (const auto& entry : j) {
-                                if (!entry.contains("id")) continue;
-                                int id = entry["id"].get<int>();
-                                bool done = entry.value("done", false);
-                                achievements[id] = done;
-                            }
-                        }
-                    } catch (...) {}
-                }
-
-                // 7. Legendary Armory
-                std::unordered_set<uint32_t> armory;
-                {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_message = "Fetching legendary armory...";
-                }
-                url = "https://api.guildwars2.com/v2/account/legendaryarmory?access_token=" + key;
-                response = HttpGet(url);
-                if (!response.empty()) {
-                    try {
-                        json j = json::parse(response);
-                        if (j.is_array()) {
-                            for (const auto& entry : j) {
-                                if (!entry.contains("id")) continue;
-                                uint32_t id = entry["id"].get<uint32_t>();
-                                armory.insert(id);
-                            }
-                        }
-                    } catch (...) {}
-                }
-
-                // Save and apply (only if we got meaningful data)
-                if (items.empty() && wallet.empty()) {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_fetch_status = FetchStatus::Error;
-                    s_fetch_message = "API returned no data (key may be invalid)";
-                    return;
-                }
-
-                SaveAccountData(items, wallet, masteries, achievements, armory);
-
-                {
-                    std::lock_guard<std::mutex> lock(s_mutex);
-                    s_owned_items = items;
-                    s_wallet = wallet;
-                    s_masteries = masteries;
-                    s_achievements = achievements;
-                    s_legendary_armory = armory;
-                    s_has_account_data = true;
-                    s_fetch_status = FetchStatus::Success;
-                    s_fetch_message = "Done (" + std::to_string(items.size()) + " items, " +
-                                     std::to_string(wallet.size()) + " currencies, " +
-                                     std::to_string(armory.size()) + " legendaries)";
-                }
-
-            } catch (const std::exception& e) {
-                std::lock_guard<std::mutex> lock(s_mutex);
-                s_fetch_status = FetchStatus::Error;
-                s_fetch_message = std::string("Error: ") + e.what();
-            }
-        }).detach();
-    }
-
-    FetchStatus GW2API::GetFetchStatus() {
-        std::lock_guard<std::mutex> lock(s_mutex);
-        return s_fetch_status;
-    }
-
-    const std::string& GW2API::GetFetchStatusMessage() {
-        return s_fetch_message;
-    }
-
     // --- Owned counts ---
 
     int GW2API::GetOwnedCount(uint32_t item_id) {
@@ -520,6 +99,31 @@ namespace CraftyLegend {
         return s_has_account_data;
     }
 
+    void GW2API::SetHasAccountData(bool has_data) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_has_account_data = has_data;
+    }
+
+    void GW2API::SetItemCount(uint32_t item_id, int count) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        if (count > 0) {
+            s_owned_items[item_id] = count;
+        } else {
+            s_owned_items.erase(item_id);
+        }
+    }
+
+    void GW2API::ClearItemsAndWallet() {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_owned_items.clear();
+        s_wallet.clear();
+    }
+
+    void GW2API::SetWalletAmount(int currency_id, int amount) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_wallet[currency_id] = amount;
+    }
+
     int GW2API::GetWalletAmount(int currency_id) {
         std::lock_guard<std::mutex> lock(s_mutex);
         auto it = s_wallet.find(currency_id);
@@ -530,6 +134,16 @@ namespace CraftyLegend {
     bool GW2API::IsLegendaryUnlocked(uint32_t item_id) {
         std::lock_guard<std::mutex> lock(s_mutex);
         return s_legendary_armory.count(item_id) > 0;
+    }
+
+    void GW2API::SetLegendaryUnlocked(uint32_t item_id) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_legendary_armory.insert(item_id);
+    }
+
+    void GW2API::ClearLegendaryArmory() {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_legendary_armory.clear();
     }
 
     int GW2API::GetWalletAmountByName(const std::string& name) {
@@ -649,6 +263,22 @@ namespace CraftyLegend {
         return false;
     }
 
+    void GW2API::SetMasteryLevel(int mastery_id, int level) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_masteries[mastery_id] = level;
+    }
+
+    void GW2API::SetAchievementDone(int achievement_id, bool done) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_achievements[achievement_id] = done;
+    }
+
+    void GW2API::ClearMasteriesAndAchievements() {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_masteries.clear();
+        s_achievements.clear();
+    }
+
     bool GW2API::HasMapCompletion() {
         // Gift of Exploration (19677) in inventory means world completion done
         // but it may have been consumed already - check achievements instead
@@ -656,116 +286,6 @@ namespace CraftyLegend {
         if (IsAchievementDone(137)) return true;
         // Fallback: check if Gift of Exploration is owned
         return GetOwnedCount(19677) > 0;
-    }
-
-    // --- Persistence ---
-
-    bool GW2API::SaveAccountData(const std::unordered_map<uint32_t, int>& items,
-                                  const std::unordered_map<int, int>& wallet,
-                                  const std::unordered_map<int, int>& masteries,
-                                  const std::unordered_map<int, bool>& achievements,
-                                  const std::unordered_set<uint32_t>& armory) {
-        EnsureDataDirectory();
-        std::string path = GetDataDirectory() + "/account_data.json";
-
-        json j;
-        json items_arr = json::array();
-        for (const auto& [id, count] : items) {
-            items_arr.push_back({{"id", id}, {"count", count}});
-        }
-        j["items"] = items_arr;
-
-        json wallet_arr = json::array();
-        for (const auto& [id, value] : wallet) {
-            wallet_arr.push_back({{"id", id}, {"value", value}});
-        }
-        j["wallet"] = wallet_arr;
-
-        json masteries_arr = json::array();
-        for (const auto& [id, level] : masteries) {
-            masteries_arr.push_back({{"id", id}, {"level", level}});
-        }
-        j["masteries"] = masteries_arr;
-
-        json achievements_arr = json::array();
-        for (const auto& [id, done] : achievements) {
-            if (done) achievements_arr.push_back({{"id", id}, {"done", true}});
-        }
-        j["achievements"] = achievements_arr;
-
-        json armory_arr = json::array();
-        for (uint32_t id : armory) {
-            armory_arr.push_back(id);
-        }
-        j["legendary_armory"] = armory_arr;
-
-        std::ofstream file(path);
-        if (!file.is_open()) return false;
-        file << j.dump(2);
-        return true;
-    }
-
-    bool GW2API::LoadAccountData() {
-        std::string path = GetDataDirectory() + "/account_data.json";
-        std::ifstream file(path);
-        if (!file.is_open()) return false;
-
-        try {
-            json j;
-            file >> j;
-
-            std::lock_guard<std::mutex> lock(s_mutex);
-            s_owned_items.clear();
-            s_wallet.clear();
-            s_masteries.clear();
-            s_achievements.clear();
-            s_legendary_armory.clear();
-
-            if (j.contains("items") && j["items"].is_array()) {
-                for (const auto& entry : j["items"]) {
-                    uint32_t id = entry["id"].get<uint32_t>();
-                    int count = entry["count"].get<int>();
-                    s_owned_items[id] = count;
-                }
-            }
-
-            if (j.contains("wallet") && j["wallet"].is_array()) {
-                for (const auto& entry : j["wallet"]) {
-                    int id = entry["id"].get<int>();
-                    int value = entry["value"].get<int>();
-                    s_wallet[id] = value;
-                }
-            }
-
-            if (j.contains("masteries") && j["masteries"].is_array()) {
-                for (const auto& entry : j["masteries"]) {
-                    int id = entry["id"].get<int>();
-                    int level = entry.value("level", 0);
-                    s_masteries[id] = level;
-                }
-            }
-
-            if (j.contains("achievements") && j["achievements"].is_array()) {
-                for (const auto& entry : j["achievements"]) {
-                    int id = entry["id"].get<int>();
-                    bool done = entry.value("done", false);
-                    s_achievements[id] = done;
-                }
-            }
-
-            if (j.contains("legendary_armory") && j["legendary_armory"].is_array()) {
-                for (const auto& entry : j["legendary_armory"]) {
-                    if (entry.is_number_unsigned()) {
-                        s_legendary_armory.insert(entry.get<uint32_t>());
-                    }
-                }
-            }
-
-            s_has_account_data = true;
-            return true;
-        } catch (...) {
-            return false;
-        }
     }
 
     // --- TP Prices ---
