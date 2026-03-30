@@ -20,7 +20,7 @@
 #define V_MAJOR 0
 #define V_MINOR 9
 #define V_BUILD 3
-#define V_REVISION 0
+#define V_REVISION 1
 
 // Quick Access icon identifiers
 #define QA_ID "QA_CRAFTY_LEGEND"
@@ -169,6 +169,7 @@ static bool g_ShowRecipes = true;
 static char g_SearchFilter[256] = "";
 static bool g_ShowItemIcons = false;
 static bool g_ShowOwnedLegendaries = true;
+static bool g_ShowQAIcon = true;
 
 // Debug window state
 static bool g_ShowDebugWindow = false;
@@ -270,7 +271,8 @@ static void SaveDisplaySettings() {
     file << "{\n";
     file << "  \"show_item_icons\": " << (g_ShowItemIcons ? "true" : "false") << ",\n";
     file << "  \"show_debug_window\": " << (g_ShowDebugWindow ? "true" : "false") << ",\n";
-    file << "  \"show_owned_legendaries\": " << (g_ShowOwnedLegendaries ? "true" : "false") << "\n";
+    file << "  \"show_owned_legendaries\": " << (g_ShowOwnedLegendaries ? "true" : "false") << ",\n";
+    file << "  \"show_qa_icon\": " << (g_ShowQAIcon ? "true" : "false") << "\n";
     file << "}\n";
 }
 
@@ -308,6 +310,8 @@ static void LoadDisplaySettings() {
     else if (content.find("\"show_debug_window\": false") != std::string::npos) g_ShowDebugWindow = false;
     if (content.find("\"show_owned_legendaries\": true") != std::string::npos) g_ShowOwnedLegendaries = true;
     else if (content.find("\"show_owned_legendaries\": false") != std::string::npos) g_ShowOwnedLegendaries = false;
+    if (content.find("\"show_qa_icon\": true") != std::string::npos) g_ShowQAIcon = true;
+    else if (content.find("\"show_qa_icon\": false") != std::string::npos) g_ShowQAIcon = false;
 }
 
 // --- Hoard & Seek event callbacks ---
@@ -650,7 +654,9 @@ void AddonLoad(AddonAPI_t* aApi) {
     APIDefs->Textures_LoadFromMemory(TEX_ANVIL_HOVER, (void*)ICON_ANVIL_HOVER, ICON_ANVIL_HOVER_size, nullptr);
 
     // Register quick access shortcut (anvil icon toggles window via keybind)
-    APIDefs->QuickAccess_Add(QA_ID, TEX_ANVIL, TEX_ANVIL_HOVER, "KB_CRAFTY_TOGGLE", "CraftyLegend");
+    if (g_ShowQAIcon) {
+        APIDefs->QuickAccess_Add(QA_ID, TEX_ANVIL, TEX_ANVIL_HOVER, "KB_CRAFTY_TOGGLE", "CraftyLegend");
+    }
 
     APIDefs->Log(LOGL_INFO, "CraftyLegend", "Addon loaded successfully");
 }
@@ -2429,6 +2435,13 @@ void AddonRender() {
 
 void AddonOptions() {
     ImGui::TextColored(ImVec4(1.0f, 0.85f, 0.0f, 1.0f), "CraftyLegend Settings");
+    if (ImGui::SmallButton("Homepage")) {
+        ShellExecuteA(NULL, "open", "https://pie.rocks.cc/", NULL, NULL, SW_SHOWNORMAL);
+    }
+    ImGui::SameLine();
+    if (ImGui::SmallButton("Buy me a coffee!")) {
+        ShellExecuteA(NULL, "open", "https://ko-fi.com/pieorcake", NULL, NULL, SW_SHOWNORMAL);
+    }
     ImGui::Separator();
 
     // Icon settings (always visible at top)
@@ -2454,6 +2467,22 @@ void AddonOptions() {
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
         ImGui::Text("Show legendaries you already own in the list (requires Hoard & Seek)");
+        ImGui::EndTooltip();
+    }
+
+    if (ImGui::Checkbox("Show Quick Access Icon", &g_ShowQAIcon)) {
+        if (g_ShowQAIcon) {
+            APIDefs->QuickAccess_Add(QA_ID, TEX_ANVIL, TEX_ANVIL_HOVER, "KB_CRAFTY_TOGGLE", "CraftyLegend");
+        } else {
+            APIDefs->QuickAccess_Remove(QA_ID);
+        }
+        SaveDisplaySettings();
+    }
+    ImGui::SameLine();
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::Text("Show the anvil icon in the Nexus Quick Access toolbar");
         ImGui::EndTooltip();
     }
 
