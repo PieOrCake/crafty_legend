@@ -12,10 +12,8 @@
 
 namespace CraftyLegend {
 
-    // Helper: build vendor cost materials from purchase requirements, handling non-numeric costs
-    static void BuildVendorCostMaterials(std::vector<RecipeIngredient>& out,
-        const std::vector<std::pair<std::string, std::string>>& requirements, int qty) {
-        // Map known item names to their GW2 item IDs for owned count lookups
+    // Shared name-to-item-ID map for resolving vendor purchase requirement names (handles plurals)
+    static const std::unordered_map<std::string, uint32_t>& GetNameToItemIdMap() {
         static const std::unordered_map<std::string, uint32_t> name_to_item_id = {
             {"Mystic Coins", 19976},
             {"Mystic Coin", 19976},
@@ -91,6 +89,8 @@ namespace CraftyLegend {
             {"Legendary War Insights", 83584},
             {"Memory of Battle", 71581},
             {"Memories of Battle", 71581},
+            {"Shard of Glory", 70820},
+            {"Shards of Glory", 70820},
             // LWS3 map currencies (inventory items)
             {"Blood Ruby", 79280},
             {"Blood Rubies", 79280},
@@ -103,23 +103,27 @@ namespace CraftyLegend {
             {"Grandmaster Mark Shard", 87557},
             {"Grandmaster Mark Shards", 87557},
         };
+        return name_to_item_id;
+    }
 
+    uint32_t DataManager::ResolveItemIdByName(const std::string& name) {
+        const auto& map = GetNameToItemIdMap();
+        auto it = map.find(name);
+        if (it != map.end()) return it->second;
+        // Fallback: search loaded items by name
+        for (const auto& [id, item] : DataManager::GetItems()) {
+            if (item.name == name) return id;
+        }
+        return 0;
+    }
+
+    // Helper: build vendor cost materials from purchase requirements, handling non-numeric costs
+    static void BuildVendorCostMaterials(std::vector<RecipeIngredient>& out,
+        const std::vector<std::pair<std::string, std::string>>& requirements, int qty) {
         for (const auto& req : requirements) {
             RecipeIngredient material;
             // Set real item ID if this is a known item, otherwise 0 (wallet/currency)
-            auto id_it = name_to_item_id.find(req.first);
-            if (id_it != name_to_item_id.end()) {
-                material.item_id = id_it->second;
-            } else {
-                // Fallback: search loaded items by name
-                material.item_id = 0;
-                for (const auto& [id, it] : DataManager::GetItems()) {
-                    if (it.name == req.first) {
-                        material.item_id = id;
-                        break;
-                    }
-                }
-            }
+            material.item_id = DataManager::ResolveItemIdByName(req.first);
             // Try to parse as pure integer for multiplication
             bool is_numeric = !req.second.empty() && req.second != "Unknown";
             int parsed = 0;
@@ -1828,105 +1832,6 @@ namespace CraftyLegend {
         return item ? item->name : "Unknown Item";
     }
     
-    uint32_t DataManager::ResolveItemIdByName(const std::string& name) {
-        // Check the known name-to-id map first (handles plural/singular variants)
-        static const std::unordered_map<std::string, uint32_t>& map = []() -> const std::unordered_map<std::string, uint32_t>& {
-            // Reuse the same map from BuildVendorCostMaterials
-            static const std::unordered_map<std::string, uint32_t> name_to_item_id = {
-                {"Mystic Coins", 19976},
-                {"Mystic Coin", 19976},
-                {"Obsidian Shards", 19925},
-                {"Obsidian Shard", 19925},
-                {"Glob of Ectoplasm", 19721},
-                {"Mystic Clover", 19675},
-                {"Philosopher's Stone", 20796},
-                {"Thermocatalytic Reagent", 46747},
-                {"Jug of Water", 12156},
-                {"Vial of Condensed Mists Essence", 38014},
-                {"Icy Runestone", 19676},
-                {"Bloodstone Shard", 19925},
-                {"Crystalline Ore", 46682},
-                {"Antique Summoning Stone", 96978},
-                {"Antique Summoning Stones", 96978},
-                {"Jade Runestone", 96722},
-                {"Jade Runestones", 96722},
-                {"Chunk of Pure Jade", 97102},
-                {"Chunks of Pure Jade", 97102},
-                {"Chunk of Ancient Ambergris", 96347},
-                {"Chunks of Ancient Ambergris", 96347},
-                {"Blessing of the Jade Empress", 97829},
-                {"Blessings of the Jade Empress", 97829},
-                {"Memory of Aurene", 96088},
-                {"Memories of Aurene", 96088},
-                {"Hydrocatalytic Reagent", 95813},
-                {"Hydrocatalytic Reagents", 95813},
-                {"Amalgamated Draconic Lodestone", 92687},
-                {"Amalgamated Draconic Lodestones", 92687},
-                {"Chunk of Petrified Echovald Resin", 96471},
-                {"Chunks of Petrified Echovald Resin", 96471},
-                {"Lesser Vision Crystal", 49523},
-                {"Lesser Vision Crystals", 49523},
-                {"Provisioner Token", 88926},
-                {"Provisioner Tokens", 88926},
-                {"Amalgamated Rift Essence", 100930},
-                {"Amalgamated Rift Essences", 100930},
-                {"Case of Captured Lightning", 100267},
-                {"Clot of Congealed Screams", 100098},
-                {"Pouch of Stardust", 99964},
-                {"Ball of Dark Energy", 71994},
-                {"Cube of Stabilized Dark Energy", 73137},
-                {"Concentrated Chromatic Sap", 105848},
-                {"Chromatic Sap", 106385},
-                {"Gift of Shipwreck Strand Exploration", 106467},
-                {"Survivor's Enchanted Compass", 106370},
-                {"Patron of the Magical Arts Plaque", 105933},
-                {"Raw Enchanting Stone", 105686},
-                {"Gift of Starlit Weald Exploration", 106672},
-                {"Seer Wreath of Service", 106627},
-                {"Sun Bead", 19717},
-                {"Sun Beads", 19717},
-                {"Exotic Essence of Luck", 45178},
-                {"Legendary Insight", 98327},
-                {"Legendary Insights", 98327},
-                {"Envoy Insignia", 80516},
-                {"Chak Egg", 72205},
-                {"Chak Eggs", 72205},
-                {"Auric Ingot", 73537},
-                {"Auric Ingots", 73537},
-                {"Reclaimed Metal Plate", 74356},
-                {"Reclaimed Metal Plates", 74356},
-                {"Mist Core Fragment", 77531},
-                {"Mist Core Fragments", 77531},
-                {"Record of League Victories", 82700},
-                {"Legendary War Insight", 83584},
-                {"Legendary War Insights", 83584},
-                {"Memory of Battle", 71581},
-                {"Memories of Battle", 71581},
-                {"Shard of Glory", 70820},
-                {"Shards of Glory", 70820},
-                // LWS3 map currencies (inventory items)
-                {"Blood Ruby", 79280},
-                {"Blood Rubies", 79280},
-                {"Fire Orchid Blossom", 81127},
-                {"Fire Orchid Blossoms", 81127},
-                // Grandmaster Marks
-                {"Grandmaster Armorsmith's Mark", 80685},
-                {"Grandmaster Leatherworker's Mark", 80799},
-                {"Grandmaster Tailor's Mark", 80857},
-                {"Grandmaster Mark Shard", 87557},
-                {"Grandmaster Mark Shards", 87557},
-            };
-            return name_to_item_id;
-        }();
-        auto it = map.find(name);
-        if (it != map.end()) return it->second;
-        // Fallback: search loaded items by exact name
-        for (const auto& [id, item] : s_items) {
-            if (item.name == name) return id;
-        }
-        return 0;
-    }
-
     std::string DataManager::GetLegendaryName(uint32_t id) {
         for (const auto& legendary : s_legendaries) {
             if (legendary.id == id) {
@@ -2955,18 +2860,31 @@ namespace CraftyLegend {
 
     // Recursive tree walker
     static void WalkCraftingTree(uint32_t item_id, std::vector<Prerequisite>& prereqs,
-                                  std::unordered_set<uint32_t>& visited) {
+                                  std::unordered_set<uint32_t>& visited,
+                                  bool parent_owned = false) {
         if (item_id == 0 || visited.count(item_id)) return;
         visited.insert(item_id);
 
         // Collect prerequisites for this item
+        size_t before = prereqs.size();
         GetItemPrereqs(item_id, prereqs);
+
+        // If a parent item is already owned, mark these prereqs as completed
+        if (parent_owned) {
+            for (size_t i = before; i < prereqs.size(); i++) {
+                prereqs[i].completed = true;
+            }
+        }
+
+        // Check if player owns this item — sub-ingredients are satisfied
+        bool owned = parent_owned ||
+            (GW2API::HasAccountData() && GW2API::GetOwnedCount(item_id) > 0);
 
         // Walk recipe ingredients
         const Recipe* recipe = DataManager::GetRecipe(item_id);
         if (recipe) {
             for (const auto& ing : recipe->ingredients) {
-                WalkCraftingTree(ing.item_id, prereqs, visited);
+                WalkCraftingTree(ing.item_id, prereqs, visited, owned);
             }
         } else {
             // No recipe: walk vendor purchase requirement items
@@ -2974,13 +2892,9 @@ namespace CraftyLegend {
             for (const auto& acq : acqs) {
                 for (const auto& req : acq.purchase_requirements) {
                     if (req.first == "Coin") continue;
-                    // Resolve name to item ID
-                    uint32_t sub_id = 0;
-                    for (const auto& [id, it] : DataManager::GetItems()) {
-                        if (it.name == req.first) { sub_id = id; break; }
-                    }
+                    uint32_t sub_id = DataManager::ResolveItemIdByName(req.first);
                     if (sub_id != 0) {
-                        WalkCraftingTree(sub_id, prereqs, visited);
+                        WalkCraftingTree(sub_id, prereqs, visited, owned);
                     }
                 }
             }
@@ -3019,9 +2933,11 @@ namespace CraftyLegend {
             return a.name < b.name;
         });
 
-        // Check completion against account data
+        // Check completion against account data (skip prereqs already satisfied by parent ownership)
         for (auto& p : unique) {
-            CheckPrereqCompletion(p);
+            if (!p.completed) {
+                CheckPrereqCompletion(p);
+            }
         }
 
         return unique;
@@ -3047,6 +2963,18 @@ namespace CraftyLegend {
             if (recipe) {
                 for (const auto& ing : recipe->ingredients) {
                     walkTree(ing.item_id);
+                }
+            } else {
+                // No recipe: walk vendor purchase requirement items
+                const auto& acqs = GetAcquisitionMethods(item_id);
+                for (const auto& acq : acqs) {
+                    for (const auto& req : acq.purchase_requirements) {
+                        if (req.first == "Coin") continue;
+                        uint32_t sub_id = ResolveItemIdByName(req.first);
+                        if (sub_id != 0) {
+                            walkTree(sub_id);
+                        }
+                    }
                 }
             }
         };

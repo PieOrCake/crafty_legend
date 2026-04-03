@@ -20,7 +20,7 @@
 #define V_MAJOR 0
 #define V_MINOR 9
 #define V_BUILD 3
-#define V_REVISION 1
+#define V_REVISION 2
 
 // Quick Access icon identifiers
 #define QA_ID "QA_CRAFTY_LEGEND"
@@ -964,11 +964,7 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
                 if (pos != req.second.size() && req.second[pos] != ' ') sub_count = 0;
             } catch (...) { sub_count = 0; }
             if (sub_count <= 0) continue;
-            // Resolve name to item_id
-            uint32_t sub_id = 0;
-            for (const auto& [id, it] : CraftyLegend::DataManager::GetItems()) {
-                if (it.name == req.first) { sub_id = id; break; }
-            }
+            uint32_t sub_id = CraftyLegend::DataManager::ResolveItemIdByName(req.first);
             if (sub_id != 0) {
                 FlattenCraftingTree(sub_id, sub_count * remaining, itemMats, walletMats, visited);
             }
@@ -1084,10 +1080,7 @@ static long long GetVendorPrice(uint32_t item_id, int remaining, std::unordered_
                 continue;
             }
             if (CraftyLegend::GW2API::GetWalletAmountByName(req.first) >= 0) continue;
-            uint32_t sub_id = 0;
-            for (const auto& [id, it] : CraftyLegend::DataManager::GetItems()) {
-                if (it.name == req.first) { sub_id = id; break; }
-            }
+            uint32_t sub_id = CraftyLegend::DataManager::ResolveItemIdByName(req.first);
             if (sub_id == 0) continue;
             int sub_count = 0;
             try { sub_count = std::stoi(req.second); } catch (...) { continue; }
@@ -1827,32 +1820,14 @@ void AddonRender() {
 
                     std::string subtype = !leg.weapon_type.empty() ? leg.weapon_type : (!leg.armor_type.empty() ? leg.armor_type : (!leg.trinket_type.empty() ? leg.trinket_type : leg.back_type));
                     std::string subtypeSuffix = subtype.empty() ? "" : " (" + subtype + ")";
-                    // Draw a filled star for favourites
+                    // Compute star size for favourites (drawn as overlay after Selectable)
                     float starSize = 0.0f;
+                    ImVec2 starAnchor = ImGui::GetCursorScreenPos();
                     if (isFav) {
                         float sz = ImGui::GetTextLineHeight() * 0.5f;
-                        ImVec2 starCenter = ImGui::GetCursorScreenPos();
-                        float yOff = g_ShowItemIcons ? (ICON_SIZE * 0.5f) : (ImGui::GetTextLineHeightWithSpacing() * 0.5f);
-                        starCenter.x += sz + 1.0f;
-                        starCenter.y += yOff;
-                        float outerR = sz;
-                        float innerR = sz * 0.38f;
-                        ImVec2 pts[10];
-                        for (int s = 0; s < 10; s++) {
-                            float angle = (float)s * 3.14159265f / 5.0f - 3.14159265f / 2.0f;
-                            float r = (s % 2 == 0) ? outerR : innerR;
-                            pts[s] = ImVec2(starCenter.x + r * cosf(angle), starCenter.y + r * sinf(angle));
-                        }
-                        // Draw as triangles from center for correct concave rendering
-                        ImU32 starCol = IM_COL32(255, 200, 50, 255);
-                        ImDrawList* dl = ImGui::GetWindowDrawList();
-                        for (int s = 0; s < 10; s++) {
-                            dl->AddTriangleFilled(starCenter, pts[s], pts[(s + 1) % 10], starCol);
-                        }
                         starSize = sz * 2.0f + 4.0f;
-                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + starSize);
                     }
-                    std::string lbl = leg.name + subtypeSuffix + " >";
+                    std::string lbl = (isFav ? "     " : "") + leg.name + subtypeSuffix + " >";
                     ImVec2 itemPos = ImGui::GetCursorScreenPos();
                     float selH = g_ShowItemIcons ? ICON_SIZE : 0;
                     if (g_ShowItemIcons) {
@@ -1891,8 +1866,28 @@ void AddonRender() {
                             ImGui::EndPopup();
                         }
                     }
+                    // Draw favourite star as overlay (after Selectable so highlight covers the star area)
+                    if (isFav) {
+                        float sz = ImGui::GetTextLineHeight() * 0.5f;
+                        float yOff = g_ShowItemIcons ? (ICON_SIZE * 0.5f) : (ImGui::GetTextLineHeightWithSpacing() * 0.5f);
+                        ImVec2 sc(starAnchor.x + sz + 1.0f, starAnchor.y + yOff);
+                        float outerR = sz;
+                        float innerR = sz * 0.38f;
+                        ImVec2 pts[10];
+                        for (int s = 0; s < 10; s++) {
+                            float angle = (float)s * 3.14159265f / 5.0f - 3.14159265f / 2.0f;
+                            float r = (s % 2 == 0) ? outerR : innerR;
+                            pts[s] = ImVec2(sc.x + r * cosf(angle), sc.y + r * sinf(angle));
+                        }
+                        ImU32 starCol = IM_COL32(255, 200, 50, 255);
+                        ImDrawList* dl = ImGui::GetWindowDrawList();
+                        for (int s = 0; s < 10; s++) {
+                            dl->AddTriangleFilled(sc, pts[s], pts[(s + 1) % 10], starCol);
+                        }
+                    }
                     if (!subtypeSuffix.empty()) {
-                        float nameW = ImGui::CalcTextSize(leg.name.c_str()).x;
+                        float padW = isFav ? ImGui::CalcTextSize("     ").x : 0.0f;
+                        float nameW = ImGui::CalcTextSize(leg.name.c_str()).x + padW;
                         float textVOff = g_ShowItemIcons ? (ICON_SIZE - ImGui::GetTextLineHeight()) * 0.5f : 0.0f;
                         ImVec2 subtypePos(itemPos.x + nameW, itemPos.y + textVOff);
                         ImGui::GetWindowDrawList()->AddText(subtypePos, ImGui::ColorConvertFloat4ToU32(subtypeColor), subtypeSuffix.c_str());
