@@ -20,7 +20,7 @@
 #define V_MAJOR 0
 #define V_MINOR 9
 #define V_BUILD 3
-#define V_REVISION 2
+#define V_REVISION 3
 
 // Quick Access icon identifiers
 #define QA_ID "QA_CRAFTY_LEGEND"

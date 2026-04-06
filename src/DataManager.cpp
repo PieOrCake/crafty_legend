@@ -1019,12 +1019,11 @@ namespace CraftyLegend {
                 };
             // --- WvW Armor Vendors ---
             } else if (item && item->id == 83584) { // Legendary War Insight
-                acq.display_name = "Vendor - Skirmish Supervisor";
-                acq.vendor_name = "Skirmish Supervisor";
+                acq.display_name = "Vendor - Legendary Commander War Razor";
+                acq.vendor_name = "Legendary Commander War Razor";
                 acq.vendor_location = "WvW";
                 acq.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "175"},
-                    {"Memory of Battle", "250"}
+                    {"WvW Skirmish Claim Tickets", "1095"}
                 };
             // --- Legendary Trinket Vendors ---
             // Aurora (LWS3)
