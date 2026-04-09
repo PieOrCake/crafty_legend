@@ -20,7 +20,7 @@
 #define V_MAJOR 0
 #define V_MINOR 9
 #define V_BUILD 3
-#define V_REVISION 3
+#define V_REVISION 4
 
 // Quick Access icon identifiers
 #define QA_ID "QA_CRAFTY_LEGEND"
@@ -248,6 +248,8 @@ static std::chrono::steady_clock::time_point g_HoardPermissionRetryTime;
 // Completion cache (declared early for H&S callbacks)
 static std::unordered_map<uint32_t, float> g_CompletionCache;
 static bool g_CompletionCacheDirty = true;
+static std::vector<uint32_t> g_CompletionQueue; // IDs pending recomputation
+static const int COMPLETION_BATCH_SIZE = 5;     // max recomputations per frame
 
 // DLL entry point
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
@@ -883,17 +885,12 @@ static void CollectLeafMaterials(uint32_t item_id, int count,
     leafItems[item_id] += count;
 }
 
-static float GetLegendaryCompletion(uint32_t legendary_id) {
-    if (!CraftyLegend::GW2API::HasAccountData()) return -1.0f; // no data
-
-    auto it = g_CompletionCache.find(legendary_id);
-    if (!g_CompletionCacheDirty && it != g_CompletionCache.end()) return it->second;
-
+static float ComputeLegendaryCompletion(uint32_t legendary_id) {
     std::unordered_map<uint32_t, int> leafItems;
     std::unordered_set<uint32_t> visited;
     CollectLeafMaterials(legendary_id, 1, leafItems, visited);
 
-    if (leafItems.empty()) { g_CompletionCache[legendary_id] = 0.0f; return 0.0f; }
+    if (leafItems.empty()) return 0.0f;
 
     double totalNeeded = 0, totalHave = 0;
     for (const auto& [id, needed] : leafItems) {
@@ -901,9 +898,25 @@ static float GetLegendaryCompletion(uint32_t legendary_id) {
         totalNeeded += needed;
         totalHave += std::min(owned, needed);
     }
-    float pct = (totalNeeded > 0) ? static_cast<float>(totalHave / totalNeeded) : 0.0f;
-    g_CompletionCache[legendary_id] = pct;
-    return pct;
+    return (totalNeeded > 0) ? static_cast<float>(totalHave / totalNeeded) : 0.0f;
+}
+
+// Process a batch of queued completion recomputations per frame
+static void TickCompletionQueue() {
+    if (g_CompletionQueue.empty()) return;
+    int count = std::min(COMPLETION_BATCH_SIZE, static_cast<int>(g_CompletionQueue.size()));
+    for (int i = 0; i < count; i++) {
+        uint32_t id = g_CompletionQueue.back();
+        g_CompletionQueue.pop_back();
+        g_CompletionCache[id] = ComputeLegendaryCompletion(id);
+    }
+}
+
+static float GetLegendaryCompletion(uint32_t legendary_id) {
+    if (!CraftyLegend::GW2API::HasAccountData()) return -1.0f;
+    auto it = g_CompletionCache.find(legendary_id);
+    if (it != g_CompletionCache.end()) return it->second;
+    return -1.0f; // not yet computed
 }
 
 // Helper: recursively flatten a crafting tree into base materials.
@@ -1274,6 +1287,18 @@ void AddonRender() {
         g_CompletionCacheDirty = true;
     }
     g_PrereqDirty = false;
+
+    // When completion cache is dirty, queue all legendaries for amortized recomputation
+    if (g_CompletionCacheDirty && CraftyLegend::GW2API::HasAccountData()) {
+        g_CompletionCacheDirty = false;
+        g_CompletionQueue.clear();
+        const auto& legs = CraftyLegend::DataManager::GetLegendaries();
+        for (const auto& leg : legs) {
+            g_CompletionQueue.push_back(leg.id);
+        }
+    }
+    // Process a small batch of completion recomputations this frame
+    TickCompletionQueue();
 
     // Initialize columns if empty
     if (g_Columns.empty()) {
@@ -1763,8 +1788,15 @@ void AddonRender() {
                     if (pass == 0 && !isFav) continue;
                     if (pass == 1 && isFav) continue;
                     // Hide owned legendaries if setting is off
+                    // Runes (gen 17) and Sigils (gen 18) can be owned multiple times
                     if (!g_ShowOwnedLegendaries && CraftyLegend::GW2API::HasAccountData()) {
-                        if (CraftyLegend::GW2API::IsLegendaryUnlocked(leg.id)) continue;
+                        if (leg.generation == 17) {
+                            if (CraftyLegend::GW2API::GetOwnedCount(leg.id) >= 7) continue;
+                        } else if (leg.generation == 18) {
+                            if (CraftyLegend::GW2API::GetOwnedCount(leg.id) >= 8) continue;
+                        } else {
+                            if (CraftyLegend::GW2API::IsLegendaryUnlocked(leg.id)) continue;
+                        }
                     }
                     if (!filterLower.empty()) {
                         std::string nameLower = leg.name;
@@ -1921,8 +1953,6 @@ void AddonRender() {
             renderSection("Trinkets", [](const CraftyLegend::Legendary& l) {
                 return l.generation >= 8 && l.generation <= 14 || l.generation == 16;
             });
-
-            g_CompletionCacheDirty = false; // all legendaries computed this frame
 
             ImGui::EndChild(); // Col0Scroll
             ImGui::Unindent(textPadX);
