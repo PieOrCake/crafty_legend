@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <unordered_set>
+#include <map>
 #include <unordered_map>
 #include <climits>
 #include <chrono>
@@ -15,12 +16,13 @@
 #include "GW2API.h"
 #include "IconManager.h"
 #include "../include/HoardAndSeekAPI.h"
+#include "../include/mumble/Mumble.h"
 
 // Version constants
 #define V_MAJOR 0
 #define V_MINOR 9
-#define V_BUILD 3
-#define V_REVISION 4
+#define V_BUILD 4
+#define V_REVISION 0
 
 // Quick Access icon identifiers
 #define QA_ID "QA_CRAFTY_LEGEND"
@@ -236,6 +238,8 @@ static std::string g_HoardErrorMessage;
 static bool g_HoardPingPending = false;
 static bool g_HoardPingFailed = false;
 static std::chrono::steady_clock::time_point g_HoardPingTime;
+static std::chrono::steady_clock::time_point g_StartupPingRetryTime;
+static bool g_StartupPingDone = false; // true once H&S has responded
 static std::chrono::steady_clock::time_point g_StatusMessageTime;
 static int64_t g_HoardLastUpdated = 0;
 static int64_t g_HoardRefreshAvailableAt = 0;
@@ -244,6 +248,18 @@ static std::unordered_set<uint32_t> g_HoardQueriedWallets;
 static bool g_HoardPermissionPending = false;
 static bool g_HoardPermissionDenied = false;
 static std::chrono::steady_clock::time_point g_HoardPermissionRetryTime;
+
+// Account detection via MumbleLink
+#define CL_ACCOUNTS_RESPONSE    "CL_ACCOUNTS_RESPONSE"
+static uint32_t g_HoardAccountCount = 0; // number of configured H&S accounts (from pong/data_updated)
+static Mumble::Data* g_MumbleData = nullptr; // for polling identity JSON when event fires too early
+static std::string g_CurrentCharacterName;
+static std::unordered_map<std::string, std::string> g_CharToAccount; // character_name -> account_name
+static std::vector<std::string> g_AccountNames; // all configured H&S accounts
+static std::unordered_map<std::string, std::string> g_AccountLabels; // account_name -> label
+static bool g_AccountDetectionDone = false;
+static std::string g_MasteryAchievementAccount; // which account the cached mastery/achievement data is for
+static bool g_MasteryAchievementRefreshNeeded = false; // set when account changes and data needs re-query
 
 // Completion cache (declared early for H&S callbacks)
 static std::unordered_map<uint32_t, float> g_CompletionCache;
@@ -316,10 +332,14 @@ static void LoadDisplaySettings() {
     else if (content.find("\"show_qa_icon\": false") != std::string::npos) g_ShowQAIcon = false;
 }
 
+// Forward declaration for account detection
+static void StartAccountDetection();
+
 // --- Hoard & Seek event callbacks ---
 
 void OnHoardPong(void* aEventArgs) {
     g_HoardDetected = true;
+    g_StartupPingDone = true;
 
     if (!aEventArgs) return; // Backward compat with older H&S
     HoardPongPayload* pong = static_cast<HoardPongPayload*>(aEventArgs);
@@ -327,10 +347,15 @@ void OnHoardPong(void* aEventArgs) {
 
     g_HoardLastUpdated = pong->last_updated;
     g_HoardRefreshAvailableAt = pong->refresh_available_at;
+    g_HoardAccountCount = pong->account_count;
     if (pong->has_data) {
         g_HoardDataAvailable = true;
         g_HoardRefreshNeeded = true;
         CraftyLegend::GW2API::SetHasAccountData(true);
+        // Start account detection only for multi-account setups
+        if (g_HoardAccountCount > 1 && !g_AccountDetectionDone) {
+            StartAccountDetection();
+        }
     }
     SaveLastUpdated();
 }
@@ -341,10 +366,12 @@ void OnHoardDataUpdated(void* aEventArgs) {
         if (payload->api_version == HOARD_API_VERSION) {
             g_HoardLastUpdated = payload->last_updated;
             g_HoardRefreshAvailableAt = payload->refresh_available_at;
+            g_HoardAccountCount = payload->account_count;
             SaveLastUpdated();
         }
     }
     g_HoardDetected = true;
+    g_StartupPingDone = true;
     g_HoardDataAvailable = true;
     g_HoardRefreshNeeded = true;
     g_HoardRefreshPending = false;
@@ -380,12 +407,34 @@ void OnHoardItemResponse(void* aEventArgs) {
     }
     g_HoardPermissionPending = false;
     CraftyLegend::GW2API::SetItemCount(resp->item_id, resp->total_count);
-    // Detect legendary armory presence
-    for (uint32_t i = 0; i < resp->location_count && i < 32; i++) {
+    // Extract per-account counts from location entries
+    std::map<std::string, int> perAccount;
+    for (uint32_t i = 0; i < resp->location_count && i < 64; i++) {
+        // Detect legendary armory presence
         if (strcmp(resp->locations[i].location, "Legendary Armory") == 0) {
             CraftyLegend::GW2API::SetLegendaryUnlocked(resp->item_id);
-            break;
         }
+        std::string acct = resp->locations[i].account_name;
+        if (!acct.empty()) {
+            perAccount[acct] += resp->locations[i].count;
+            // Build character→account map from inventory-type locations
+            // (locations that aren't known storage types are character names)
+            const char* loc = resp->locations[i].location;
+            if (loc[0] != '\0'
+                && strcmp(loc, "Bank") != 0
+                && strcmp(loc, "Material Storage") != 0
+                && strcmp(loc, "Legendary Armory") != 0
+                && strcmp(loc, "Shared Inventory") != 0
+                && strcmp(loc, "Equipment") != 0
+                && strcmp(loc, "Wardrobe") != 0
+                && strcmp(loc, "Crafting Station") != 0
+                && strcmp(loc, "Guild Bank") != 0) {
+                g_CharToAccount[loc] = acct;
+            }
+        }
+    }
+    for (const auto& [acct, count] : perAccount) {
+        CraftyLegend::GW2API::SetItemCountPerAccount(resp->item_id, acct, count);
     }
     delete resp;
     g_CompletionCacheDirty = true;
@@ -487,6 +536,94 @@ void OnHoardFetchError(void* aEventArgs) {
     // Do NOT delete — payload is stack-allocated by H&S
 }
 
+// --- Account detection via MumbleLink + H&S ---
+
+// Get display name for an account: label if available, otherwise account_name
+static std::string GetAccountDisplayName(const std::string& account_name) {
+    auto it = g_AccountLabels.find(account_name);
+    if (it != g_AccountLabels.end()) return it->second;
+    return account_name;
+}
+
+// Called when H&S accounts are added/removed — refresh the account list
+void OnAccountsChanged(void* aEventArgs) {
+    StartAccountDetection();
+}
+
+// Try to resolve current character name to an account
+static void TryResolveCurrentAccount() {
+    if (g_CurrentCharacterName.empty()) return;
+    auto it = g_CharToAccount.find(g_CurrentCharacterName);
+    if (it != g_CharToAccount.end()) {
+        CraftyLegend::GW2API::SetCurrentAccountName(it->second);
+    }
+}
+
+// Called when H&S returns the account list
+void OnAccountsResponse(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardQueryAccountsResponse* resp = static_cast<HoardQueryAccountsResponse*>(aEventArgs);
+    if (resp->status != HOARD_STATUS_OK) { delete resp; return; }
+
+    g_AccountNames.clear();
+    g_AccountLabels.clear();
+    g_CharToAccount.clear();
+    for (uint32_t i = 0; i < resp->account_count && i < 16; i++) {
+        std::string name = resp->accounts[i].account_name;
+        if (!name.empty()) {
+            g_AccountNames.push_back(name);
+            std::string label = resp->accounts[i].label;
+            if (!label.empty()) g_AccountLabels[name] = label;
+            // Build character→account map from the account's character list
+            for (uint32_t c = 0; c < resp->accounts[i].character_count && c < 80; c++) {
+                g_CharToAccount[resp->accounts[i].characters[c]] = name;
+            }
+        }
+    }
+    delete resp;
+
+    g_AccountDetectionDone = true;
+    TryResolveCurrentAccount();
+}
+
+// Called when MumbleLink identity updates (character change)
+// eventArgs IS the Mumble::Identity pointer — use it directly, not the DataLink
+void OnMumbleIdentityUpdated(void* aEventArgs) {
+    if (!aEventArgs) return;
+    const Mumble::Identity* id = static_cast<const Mumble::Identity*>(aEventArgs);
+    // Safe read: Name is char[20], ensure null-terminated
+    char buf[20] = {};
+    memcpy(buf, id->Name, 19);
+    std::string newName(buf);
+    // Validate: GW2 names contain only ASCII letters, spaces, hyphens, and accented chars (UTF-8 >= 0x80)
+    for (unsigned char c : newName) {
+        if (c == ' ' || c == '-' || isalpha(c) || c >= 0x80) continue;
+        return; // invalid character (path separators, digits, etc.)
+    }
+    if (newName.empty() || newName == g_CurrentCharacterName) return;
+    std::string previousAccount = CraftyLegend::GW2API::GetCurrentAccountName();
+    g_CurrentCharacterName = newName;
+    TryResolveCurrentAccount();
+    // If account changed, invalidate cached mastery/achievement data
+    std::string newAccount = CraftyLegend::GW2API::GetCurrentAccountName();
+    if (!newAccount.empty() && newAccount != previousAccount) {
+        CraftyLegend::GW2API::ClearMasteriesAndAchievements();
+        g_MasteryAchievementAccount.clear();
+        g_MasteryAchievementRefreshNeeded = true;
+        g_PrereqDirty = true;
+        g_CompletionCacheDirty = true;
+    }
+}
+
+// Start account detection: query H&S for accounts list
+static void StartAccountDetection() {
+    HoardQueryAccountsRequest req{};
+    req.api_version = HOARD_API_VERSION;
+    strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
+    strncpy(req.response_event, CL_ACCOUNTS_RESPONSE, sizeof(req.response_event));
+    APIDefs->Events_Raise(EV_HOARD_QUERY_ACCOUNTS, &req);
+}
+
 // Helper: fire H&S item query if not already queried
 static void QueryHoardItem(uint32_t item_id) {
     if (item_id == 0 || !g_HoardDataAvailable) return;
@@ -515,6 +652,9 @@ static void QueryHoardWallet(uint32_t currency_id) {
     APIDefs->Events_Raise(EV_HOARD_QUERY_WALLET, &req);
 }
 
+// Forward declaration
+static void RefreshMasteriesAndAchievements();
+
 // Helper: batch-query all items in crafting trees + all known currencies
 static void RefreshHoardData() {
     if (!g_HoardDataAvailable) return;
@@ -531,6 +671,28 @@ static void RefreshHoardData() {
     };
     for (uint32_t cid : wallet_ids) {
         QueryHoardWallet(cid);
+    }
+
+    g_HoardRefreshNeeded = false;
+
+    // After all item queries, try to resolve current account from character→account map (multi-account only)
+    if (g_HoardAccountCount > 1 && !CraftyLegend::GW2API::HasCurrentAccount()) {
+        TryResolveCurrentAccount();
+    }
+
+    // Now query achievements/masteries for the current account
+    RefreshMasteriesAndAchievements();
+}
+
+// Helper: query achievements and masteries for the current account
+static void RefreshMasteriesAndAchievements() {
+    if (!g_HoardDataAvailable) return;
+    std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
+
+    // Skip if data is already cached for this account
+    if (!g_MasteryAchievementRefreshNeeded && !g_MasteryAchievementAccount.empty()
+        && g_MasteryAchievementAccount == currentAcct) {
+        return;
     }
 
     // Collect all achievement/mastery IDs needed from prerequisites
@@ -554,6 +716,7 @@ static void RefreshHoardData() {
         req.api_version = HOARD_API_VERSION;
         strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
         strncpy(req.response_event, CL_ACHIEVEMENT_RESPONSE, sizeof(req.response_event));
+        if (!currentAcct.empty()) strncpy(req.account_name, currentAcct.c_str(), sizeof(req.account_name));
         req.id_count = 0;
         for (uint32_t id : achIds) {
             req.ids[req.id_count++] = id;
@@ -573,6 +736,7 @@ static void RefreshHoardData() {
         req.api_version = HOARD_API_VERSION;
         strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
         strncpy(req.response_event, CL_MASTERY_RESPONSE, sizeof(req.response_event));
+        if (!currentAcct.empty()) strncpy(req.account_name, currentAcct.c_str(), sizeof(req.account_name));
         req.id_count = 0;
         for (uint32_t id : mastIds) {
             req.ids[req.id_count++] = id;
@@ -586,7 +750,8 @@ static void RefreshHoardData() {
         }
     }
 
-    g_HoardRefreshNeeded = false;
+    g_MasteryAchievementAccount = currentAcct;
+    g_MasteryAchievementRefreshNeeded = false;
 }
 
 // Forward declarations
@@ -639,10 +804,17 @@ void AddonLoad(AddonAPI_t* aApi) {
     APIDefs->Events_Subscribe(EV_HOARD_FETCH_PROGRESS, OnHoardFetchProgress);
     APIDefs->Events_Subscribe(EV_HOARD_FETCH_ERROR, OnHoardFetchError);
     APIDefs->Events_Subscribe(EV_HOARD_PONG, OnHoardPong);
+    APIDefs->Events_Subscribe(CL_ACCOUNTS_RESPONSE, OnAccountsResponse);
+    APIDefs->Events_Subscribe(EV_MUMBLE_IDENTITY_UPDATED, OnMumbleIdentityUpdated);
+    APIDefs->Events_Subscribe(EV_HOARD_ACCOUNTS_CHANGED, OnAccountsChanged);
     APIDefs->Log(LOGL_INFO, "CraftyLegend", "Subscribed to Hoard & Seek events");
+
+    // Get MumbleLink data pointer for identity polling fallback
+    g_MumbleData = static_cast<Mumble::Data*>(APIDefs->DataLink_Get(DL_MUMBLE_LINK));
 
     // Ping H&S to get current state (timestamps, has_data) if already loaded
     APIDefs->Events_Raise(EV_HOARD_PING, nullptr);
+    g_StartupPingRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(2);
 
     // Register render functions
     APIDefs->GUI_Register(RT_Render, AddonRender);
@@ -673,6 +845,9 @@ void AddonUnload() {
     APIDefs->Events_Unsubscribe(EV_HOARD_FETCH_PROGRESS, OnHoardFetchProgress);
     APIDefs->Events_Unsubscribe(EV_HOARD_FETCH_ERROR, OnHoardFetchError);
     APIDefs->Events_Unsubscribe(EV_HOARD_PONG, OnHoardPong);
+    APIDefs->Events_Unsubscribe(CL_ACCOUNTS_RESPONSE, OnAccountsResponse);
+    APIDefs->Events_Unsubscribe(EV_MUMBLE_IDENTITY_UPDATED, OnMumbleIdentityUpdated);
+    APIDefs->Events_Unsubscribe(EV_HOARD_ACCOUNTS_CHANGED, OnAccountsChanged);
 
     CraftyLegend::IconManager::Shutdown();
     APIDefs->QuickAccess_Remove(QA_ID);
@@ -857,6 +1032,20 @@ static void OpenWikiPage(const std::string& itemName) {
     ShellExecuteA(NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 
+// --- Binding-aware owned count ---
+// Account-bound items: show only current account's count
+// Unbound items: show total across all accounts
+static int GetEffectiveOwnedCount(uint32_t item_id) {
+    if (!CraftyLegend::GW2API::HasAccountData()) return 0;
+    const auto* item = CraftyLegend::DataManager::GetItem(item_id);
+    if (item && (item->binding == "account" || item->binding == "soul")
+        && CraftyLegend::GW2API::HasCurrentAccount()) {
+        return CraftyLegend::GW2API::GetOwnedCountForAccount(item_id,
+            CraftyLegend::GW2API::GetCurrentAccountName());
+    }
+    return CraftyLegend::GW2API::GetOwnedCount(item_id);
+}
+
 // --- Legendary completion % ---
 
 // Recursively collect total leaf material needs (no ownership subtraction)
@@ -894,7 +1083,7 @@ static float ComputeLegendaryCompletion(uint32_t legendary_id) {
 
     double totalNeeded = 0, totalHave = 0;
     for (const auto& [id, needed] : leafItems) {
-        int owned = CraftyLegend::GW2API::GetOwnedCount(id);
+        int owned = GetEffectiveOwnedCount(id);
         totalNeeded += needed;
         totalHave += std::min(owned, needed);
     }
@@ -932,7 +1121,7 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
     // Subtract owned from required at each level
     int remaining = count;
     if (CraftyLegend::GW2API::HasAccountData()) {
-        int owned = CraftyLegend::GW2API::GetOwnedCount(item_id);
+        int owned = GetEffectiveOwnedCount(item_id);
         remaining = std::max(0, remaining - owned);
     }
     if (remaining <= 0) return;
@@ -1046,7 +1235,7 @@ static bool IsReadyToCraft(uint32_t item_id, int count, std::unordered_set<uint3
     if (visited.count(item_id)) return false; // cycle guard
 
     // Check if we already own enough of this item directly
-    int owned = CraftyLegend::GW2API::GetOwnedCount(item_id);
+    int owned = GetEffectiveOwnedCount(item_id);
     int remaining = std::max(0, count - owned);
     if (remaining <= 0) return true;
 
@@ -1120,7 +1309,7 @@ static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_s
     // Account for owned items
     int remaining = count;
     if (CraftyLegend::GW2API::HasAccountData()) {
-        int owned = CraftyLegend::GW2API::GetOwnedCount(item_id);
+        int owned = GetEffectiveOwnedCount(item_id);
         remaining = std::max(0, remaining - owned);
     }
     if (remaining <= 0) return 0;
@@ -1203,7 +1392,7 @@ static std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat
                 owned = wallet_amount;
             }
         } else {
-            owned = CraftyLegend::GW2API::GetOwnedCount(mat.item_id);
+            owned = GetEffectiveOwnedCount(mat.item_id);
         }
     }
 
@@ -1275,9 +1464,40 @@ void AddonRender() {
         g_HoardRefreshNeeded = true;
     }
 
+    // Retry startup ping if H&S hasn't responded yet
+    if (!g_StartupPingDone && !g_HoardPingPending
+        && std::chrono::steady_clock::now() >= g_StartupPingRetryTime) {
+        APIDefs->Events_Raise(EV_HOARD_PING, nullptr);
+        g_StartupPingRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(2);
+    }
+
+    // Poll MumbleLink identity JSON if multi-account and we still don't have a valid character name
+    if (g_HoardAccountCount > 1 && g_CurrentCharacterName.empty() && g_MumbleData && g_MumbleData->UITick > 0) {
+        // Parse the wchar_t Identity[256] JSON for the "name" field
+        std::wstring wIdent(g_MumbleData->Identity);
+        std::string ident(wIdent.begin(), wIdent.end());
+        if (!ident.empty()) {
+            try {
+                auto j = nlohmann::json::parse(ident);
+                if (j.contains("name") && j["name"].is_string()) {
+                    std::string charName = j["name"].get<std::string>();
+                    if (!charName.empty() && charName != g_CurrentCharacterName) {
+                        g_CurrentCharacterName = charName;
+                        TryResolveCurrentAccount();
+                    }
+                }
+            } catch (...) {}
+        }
+    }
+
     // Trigger H&S batch query if needed
     if (g_HoardRefreshNeeded && g_HoardDataAvailable) {
         RefreshHoardData();
+    }
+
+    // Re-query masteries/achievements if account changed
+    if (g_MasteryAchievementRefreshNeeded && g_HoardDataAvailable) {
+        RefreshMasteriesAndAchievements();
     }
 
     // Recompute prerequisites when achievement/mastery data arrives
@@ -2076,7 +2296,7 @@ void AddonRender() {
                                 int wa = CraftyLegend::GW2API::GetWalletAmountByName(mat.name);
                                 if (wa >= 0) pOwned = wa;
                             } else {
-                                pOwned = CraftyLegend::GW2API::GetOwnedCount(mat.item_id);
+                                pOwned = GetEffectiveOwnedCount(mat.item_id);
                             }
                             float pct = std::min(1.0f, (float)pOwned / (float)mat.count);
                             if (pct > 0.0f) {
@@ -2263,7 +2483,7 @@ void AddonRender() {
                                 try {
                                     int drill_count = (int)mat.count;
                                     if (CraftyLegend::GW2API::HasAccountData()) {
-                                        int owned = CraftyLegend::GW2API::GetOwnedCount(mat.item_id);
+                                        int owned = GetEffectiveOwnedCount(mat.item_id);
                                         drill_count = std::max(0, drill_count - owned);
                                     }
                                     CraftyLegend::DataManager::UpdateColumn(col, mat.item_id, drill_count);
@@ -2279,6 +2499,30 @@ void AddonRender() {
                         }
                         if (g_ShowItemIcons) {
                             ImGui::PopStyleVar();
+                        }
+                        // Per-account tooltip for unbound items only
+                        if (mat.item_id != 0 && CraftyLegend::GW2API::HasAccountData()
+                            && ImGui::IsItemHovered()) {
+                            const auto* bItem = CraftyLegend::DataManager::GetItem(mat.item_id);
+                            bool isBound = bItem && (bItem->binding == "account" || bItem->binding == "soul");
+                            if (!isBound) {
+                                auto breakdown = CraftyLegend::GW2API::GetPerAccountCounts(mat.item_id);
+                                if (!breakdown.empty()) {
+                                    ImGui::BeginTooltip();
+                                    for (const auto& [acct, cnt] : breakdown) {
+                                        if (cnt <= 0) continue;
+                                        std::string displayName = GetAccountDisplayName(acct);
+                                        std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
+                                        bool isCurrent = (acct == currentAcct);
+                                        if (isCurrent) {
+                                            ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "%s: %d", displayName.c_str(), cnt);
+                                        } else {
+                                            ImGui::Text("%s: %d", displayName.c_str(), cnt);
+                                        }
+                                    }
+                                    ImGui::EndTooltip();
+                                }
+                            }
                         }
                         // Right-click context menu
                         if (mat.name != "Coin") {

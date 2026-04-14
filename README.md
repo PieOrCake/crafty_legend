@@ -23,6 +23,7 @@ If an LLM creating software upsets you, then perhaps this repo isn't for you. Mo
 - **117 legendaries** with complete crafting trees
 - Miller column UI (Like Mac OSX Finder) for navigating crafting trees
 - Account data tracking via [Hoard & Seek](https://github.com/PieOrCake/hoard_and_seek) — owned materials, wallet currencies, legendary armory, masteries, and achievements
+- **Multi-account support** — automatically detects the current account via MumbleLink and displays per-account data. Account-bound items show counts for the logged-in account only; unbound items show totals across all accounts. Per-account breakdowns shown in tooltips.
 - Trading Post and vendor gold prices from GW2 API
 - Vendor cost details with vendor names and currency requirements
 - Achievement and collection prerequisite tracking
@@ -48,7 +49,7 @@ The build produces `CraftyLegend.dll`.
 ## Requirements
 
 - [Raidcore Nexus](https://raidcore.gg/Nexus)
-- [Hoard & Seek](https://github.com/PieOrCake/hoard_and_seek) Nexus addon — required for account data (inventory, wallet, achievements, masteries, legendary armory). Crafty Legend does not use a GW2 API key directly; all account data is retrieved through Hoard & Seek.
+- [Hoard & Seek](https://github.com/PieOrCake/hoard_and_seek) Nexus addon (v3+) — required for account data (inventory, wallet, achievements, masteries, legendary armory). Crafty Legend does not use a GW2 API key directly; all account data is retrieved through Hoard & Seek. Multi-account setups are supported automatically.
 
 ## Installation
 

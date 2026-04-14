@@ -12,6 +12,8 @@ namespace CraftyLegend {
 
     // Static member initialization
     std::unordered_map<uint32_t, int> GW2API::s_owned_items;
+    std::unordered_map<uint32_t, std::map<std::string, int>> GW2API::s_owned_items_per_account;
+    std::string GW2API::s_current_account_name;
     std::unordered_map<int, int> GW2API::s_wallet;
     std::unordered_map<int, int> GW2API::s_masteries;
     std::unordered_map<int, bool> GW2API::s_achievements;
@@ -113,9 +115,55 @@ namespace CraftyLegend {
         }
     }
 
+    void GW2API::SetItemCountPerAccount(uint32_t item_id, const std::string& account_name, int count) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        if (count > 0) {
+            s_owned_items_per_account[item_id][account_name] = count;
+        } else {
+            auto it = s_owned_items_per_account.find(item_id);
+            if (it != s_owned_items_per_account.end()) {
+                it->second.erase(account_name);
+                if (it->second.empty()) s_owned_items_per_account.erase(it);
+            }
+        }
+    }
+
+    int GW2API::GetOwnedCountForAccount(uint32_t item_id, const std::string& account_name) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        auto it = s_owned_items_per_account.find(item_id);
+        if (it != s_owned_items_per_account.end()) {
+            auto ait = it->second.find(account_name);
+            if (ait != it->second.end()) return ait->second;
+        }
+        return 0;
+    }
+
+    std::map<std::string, int> GW2API::GetPerAccountCounts(uint32_t item_id) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        auto it = s_owned_items_per_account.find(item_id);
+        if (it != s_owned_items_per_account.end()) return it->second;
+        return {};
+    }
+
+    void GW2API::SetCurrentAccountName(const std::string& name) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_current_account_name = name;
+    }
+
+    std::string GW2API::GetCurrentAccountName() {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        return s_current_account_name;
+    }
+
+    bool GW2API::HasCurrentAccount() {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        return !s_current_account_name.empty();
+    }
+
     void GW2API::ClearItemsAndWallet() {
         std::lock_guard<std::mutex> lock(s_mutex);
         s_owned_items.clear();
+        s_owned_items_per_account.clear();
         s_wallet.clear();
     }
 

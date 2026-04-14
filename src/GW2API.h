@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
 #include <mutex>
@@ -23,10 +24,18 @@ namespace CraftyLegend {
 
         // Owned item counts (data set by H&S events)
         static int GetOwnedCount(uint32_t item_id);
+        static int GetOwnedCountForAccount(uint32_t item_id, const std::string& account_name);
+        static std::map<std::string, int> GetPerAccountCounts(uint32_t item_id);
         static void SetItemCount(uint32_t item_id, int count);
+        static void SetItemCountPerAccount(uint32_t item_id, const std::string& account_name, int count);
         static void ClearItemsAndWallet();
         static bool HasAccountData();
         static void SetHasAccountData(bool has_data);
+
+        // Current account detection
+        static void SetCurrentAccountName(const std::string& name);
+        static std::string GetCurrentAccountName();
+        static bool HasCurrentAccount();
 
         // Wallet (data set by H&S events)
         static int GetWalletAmount(int currency_id);
@@ -56,6 +65,8 @@ namespace CraftyLegend {
 
     private:
         static std::unordered_map<uint32_t, int> s_owned_items;
+        static std::unordered_map<uint32_t, std::map<std::string, int>> s_owned_items_per_account;
+        static std::string s_current_account_name;
         static std::unordered_map<int, int> s_wallet;
         static std::unordered_map<int, int> s_masteries;     // mastery_id -> level
         static std::unordered_map<int, bool> s_achievements;  // achievement_id -> done
