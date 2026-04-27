@@ -940,29 +940,29 @@
     },
     {
       "output_id": "19675",
-      "output_count": 1,
+      "output_count": 10,
       "disciplines": [],
       "rating": 0,
       "type": "mystic_forge",
       "ingredients": [
         {
           "item_id": "19925",
-          "count": 1,
+          "count": 10,
           "name": "Obsidian Shard"
         },
         {
           "item_id": "19976",
-          "count": 1,
+          "count": 10,
           "name": "Mystic Coin"
         },
         {
           "item_id": "19721",
-          "count": 1,
+          "count": 10,
           "name": "Glob of Ectoplasm"
         },
         {
           "item_id": "20796",
-          "count": 1,
+          "count": 10,
           "name": "Philosopher's Stone"
         }
       ]
@@ -7067,22 +7067,22 @@
       "ingredients": [
         {
           "item_id": "24357",
-          "count": 200,
+          "count": 100,
           "name": "Vicious Fang"
         },
         {
           "item_id": "24356",
-          "count": 500,
+          "count": 250,
           "name": "Large Fang"
         },
         {
           "item_id": "24355",
-          "count": 100,
+          "count": 50,
           "name": "Sharp Fang"
         },
         {
           "item_id": "24354",
-          "count": 100,
+          "count": 50,
           "name": "Fang"
         }
       ]
@@ -7100,22 +7100,22 @@
       "ingredients": [
         {
           "item_id": "24289",
-          "count": 200,
+          "count": 100,
           "name": "Armored Scale"
         },
         {
           "item_id": "24288",
-          "count": 500,
+          "count": 250,
           "name": "Large Scale"
         },
         {
           "item_id": "24287",
-          "count": 100,
+          "count": 50,
           "name": "Smooth Scale"
         },
         {
           "item_id": "24286",
-          "count": 100,
+          "count": 50,
           "name": "Scale"
         }
       ]
@@ -7133,22 +7133,22 @@
       "ingredients": [
         {
           "item_id": "24351",
-          "count": 200,
+          "count": 100,
           "name": "Vicious Claw"
         },
         {
           "item_id": "24350",
-          "count": 500,
+          "count": 250,
           "name": "Large Claw"
         },
         {
           "item_id": "24349",
-          "count": 100,
+          "count": 50,
           "name": "Sharp Claw"
         },
         {
           "item_id": "24348",
-          "count": 100,
+          "count": 50,
           "name": "Claw"
         }
       ]
@@ -7166,22 +7166,22 @@
       "ingredients": [
         {
           "item_id": "24358",
-          "count": 200,
+          "count": 100,
           "name": "Ancient Bone"
         },
         {
           "item_id": "24341",
-          "count": 500,
+          "count": 250,
           "name": "Large Bone"
         },
         {
           "item_id": "24345",
-          "count": 100,
+          "count": 50,
           "name": "Heavy Bone"
         },
         {
           "item_id": "24344",
-          "count": 100,
+          "count": 50,
           "name": "Bone"
         }
       ]
@@ -14877,6 +14877,64 @@
           "item_id": "19790",
           "count": 25,
           "name": "Spool of Gossamer Thread"
+        }
+      ]
+    },
+    {
+      "output_id": "105743",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "106712",
+          "count": 1,
+          "name": "Gift of the Survivors"
+        },
+        {
+          "item_id": "105804",
+          "count": 1,
+          "name": "Gift of the People"
+        },
+        {
+          "item_id": "105649",
+          "count": 1,
+          "name": "Gift of Castoran Mastery"
+        },
+        {
+          "item_id": "105738",
+          "count": 1,
+          "name": "Agaleus"
+        }
+      ]
+    },
+    {
+      "output_id": "105649",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "105979",
+          "count": 1,
+          "name": "Gift of Adventure"
+        },
+        {
+          "item_id": "106747",
+          "count": 1,
+          "name": "Gift of the Seas"
+        },
+        {
+          "item_id": "20797",
+          "count": 1,
+          "name": "Bloodstone Shard"
+        },
+        {
+          "item_id": "19925",
+          "count": 250,
+          "name": "Obsidian Shard"
         }
       ]
     }

@@ -38,7 +38,12 @@ set(IMGUI_SOURCES
 
 # Source files
 set(SOURCES
-    src/dllmain_hotkey.cpp
+    src/dllmain.cpp
+    src/settings.cpp
+    src/hoard.cpp
+    src/addon.cpp
+    src/ui_helpers.cpp
+    src/ui.cpp
     src/DataManager.cpp
     src/GW2API.cpp
     src/IconManager.cpp

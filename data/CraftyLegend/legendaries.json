@@ -1518,6 +1518,19 @@
         "mystic_forge"
       ],
       "generation": 15
+    },
+    {
+      "id": 105743,
+      "name": "Selachimorpha",
+      "icon": "https://render.guildwars2.com/file/340AA29452C4AF96F8434AF323E3747AAE020B34/3710799.png",
+      "description": "Legendary aquabreather container (VoE). Unlocks Selachimorpha in all armor weights.",
+      "type": "armor",
+      "armor_type": "Aquabreather",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 13
     }
   ]
 }

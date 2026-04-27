@@ -12217,6 +12217,71 @@
         "vendor"
       ],
       "rarity": "Exotic"
+    },
+    {
+      "id": "105743",
+      "name": "Selachimorpha",
+      "icon": "https://render.guildwars2.com/file/340AA29452C4AF96F8434AF323E3747AAE020B34/3710799.png",
+      "description": "Legendary aquabreather container. Unlocks Selachimorpha in all armor weights.",
+      "type": "armor",
+      "binding": "account",
+      "rarity": "Legendary",
+      "level": 0,
+      "acquisition": [
+        "mystic_forge"
+      ]
+    },
+    {
+      "id": "105649",
+      "name": "Gift of Castoran Mastery",
+      "icon": "https://render.guildwars2.com/file/C6C65B4E53FFADB18080A65A41EE67DB49AFDA58/3708955.png",
+      "description": "",
+      "type": "craftingmaterial",
+      "binding": "account",
+      "rarity": "Legendary",
+      "level": 0,
+      "acquisition": [
+        "mystic_forge"
+      ]
+    },
+    {
+      "id": "105979",
+      "name": "Gift of Adventure",
+      "icon": "https://render.guildwars2.com/file/A8F9EE089C04529FE505F5A7B006D1F571789D53/3708959.png",
+      "description": "",
+      "type": "craftingmaterial",
+      "binding": "account",
+      "rarity": "Legendary",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "106747",
+      "name": "Gift of the Seas",
+      "icon": "https://render.guildwars2.com/file/453BD7B902B5B10015D34DBD49015BFA01020941/3708960.png",
+      "description": "",
+      "type": "craftingmaterial",
+      "binding": "account",
+      "rarity": "Legendary",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "105738",
+      "name": "Agaleus",
+      "icon": "https://render.guildwars2.com/file/ECDAFD71183317EEC79C535C96DD579ED7F50998/3710800.png",
+      "description": "Legendary precursor aquabreather. Obtained via the Acquiring Agaleus achievement.",
+      "type": "armor",
+      "binding": "account",
+      "rarity": "Exotic",
+      "level": 80,
+      "acquisition": [
+        "collection"
+      ]
     }
   ]
 }

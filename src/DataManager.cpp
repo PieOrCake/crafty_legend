@@ -1608,6 +1608,47 @@ namespace CraftyLegend {
                 acq.purchase_requirements = {
                     {"Karma", "Unknown"}
                 };
+            // --- VoE (Visions of Eternity) Vendors ---
+            } else if (item && item->id == 105979) { // Gift of Adventure
+                acq.display_name = "Vendor - VoE Map Vendors";
+                acq.vendor_name = "Alliance Field Quartermaster";
+                acq.vendor_location = "Shipwreck Strand / Starlit Weald";
+                acq.purchase_requirements = {
+                    {"Vision Crystal", "2"},
+                    {"Mystic Clover", "55"},
+                    {"Tale of Adventure", "100"},
+                    {"Unusual Coin", "500"}
+                };
+            } else if (item && item->id == 106747) { // Gift of the Seas
+                acq.display_name = "Vendor - VoE Map Vendors";
+                acq.vendor_name = "Alliance Field Quartermaster";
+                acq.vendor_location = "Shipwreck Strand / Starlit Weald";
+                acq.purchase_requirements = {
+                    {"Gift of the Tides", "1"},
+                    {"Gift of Research", "2"},
+                    {"Gift of Condensed Might", "2"},
+                    {"Gift of Condensed Magic", "2"}
+                };
+            } else if (item && item->id == 106712) { // Gift of the Survivors
+                acq.display_name = "Vendor - Castaway Agnes";
+                acq.vendor_name = "Castaway Agnes";
+                acq.vendor_location = "Hullgarden, Shipwreck Strand";
+                acq.purchase_requirements = {
+                    {"Concentrated Chromatic Sap", "1"},
+                    {"Gift of Shipwreck Strand Exploration", "1"},
+                    {"Survivor's Enchanted Compass", "1"},
+                    {"Aether-Rich Sap", "500"}
+                };
+            } else if (item && item->id == 105804) { // Gift of the People
+                acq.display_name = "Vendor - Canach";
+                acq.vendor_name = "Canach";
+                acq.vendor_location = "Breezy Cay, Shipwreck Strand";
+                acq.purchase_requirements = {
+                    {"Patron of the Magical Arts Plaque", "1"},
+                    {"Gift of Starlit Weald Exploration", "1"},
+                    {"Seer Wreath of Service", "1"},
+                    {"Antiquated Ducat", "500"}
+                };
             } else {
                 // Generic vendor information
                 acq.display_name = "Vendor";
@@ -2567,19 +2608,19 @@ namespace CraftyLegend {
                 break;
             case 105848: // Concentrated Chromatic Sap
                 out.push_back(MakePrereq(PC::Achievement, "Shipwreck Strand Mastery",
-                    "Complete 36 map achievements throughout Shipwreck Strand (required to purchase)", item_id));
+                    "Complete 36 map achievements throughout Shipwreck Strand (required to purchase)", item_id, -1, -1, 8880));
                 break;
             case 105933: // Patron of the Magical Arts Plaque
                 out.push_back(MakePrereq(PC::Achievement, "Starlit Weald Mastery",
-                    "Complete 36 map achievements throughout Starlit Weald (required to purchase)", item_id));
+                    "Complete 36 map achievements throughout Starlit Weald (required to purchase)", item_id, -1, -1, 9057));
                 break;
             case 106370: // Survivor's Enchanted Compass
                 out.push_back(MakePrereq(PC::Achievement, "Shipwreck Strand Mastery",
-                    "Complete 36 map achievements throughout Shipwreck Strand", item_id));
+                    "Complete 36 map achievements throughout Shipwreck Strand", item_id, -1, -1, 8880));
                 break;
             case 106627: // Seer Wreath of Service
                 out.push_back(MakePrereq(PC::Achievement, "Starlit Weald Mastery",
-                    "Complete 36 map achievements throughout Starlit Weald", item_id));
+                    "Complete 36 map achievements throughout Starlit Weald", item_id, -1, -1, 9057));
                 break;
             case 106467: // Gift of Shipwreck Strand Exploration
                 out.push_back(MakePrereq(PC::MapCompletion, "Shipwreck Strand",
@@ -2654,6 +2695,11 @@ namespace CraftyLegend {
             case 103833: // Memory of the Bearkin's Victories
                 out.push_back(MakePrereq(PC::Achievement, "Klobjarne Geirr: Raid or Convergence Victories",
                     "Complete Raid or Convergence victories for Klobjarne Geirr", item_id, -1, -1, 8442));
+                break;
+            // --- Selachimorpha precursor ---
+            case 105738: // Agaleus (legendary precursor aquabreather)
+                out.push_back(MakePrereq(PC::Collection, "Acquiring Agaleus",
+                    "Complete the Acquiring Agaleus collection in Shipwreck Strand and Starlit Weald", item_id, -1, -1, 8869));
                 break;
             // --- Achievement reward legendaries ---
             case 95380: // Prismatic Champion's Regalia

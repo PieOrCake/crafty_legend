@@ -172,6 +172,11 @@ namespace CraftyLegend {
         s_wallet[currency_id] = amount;
     }
 
+    void GW2API::ClearWallet() {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_wallet.clear();
+    }
+
     int GW2API::GetWalletAmount(int currency_id) {
         std::lock_guard<std::mutex> lock(s_mutex);
         auto it = s_wallet.find(currency_id);
