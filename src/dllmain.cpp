@@ -4,7 +4,7 @@
 #define V_MAJOR    0
 #define V_MINOR    9
 #define V_BUILD    5
-#define V_REVISION 0
+#define V_REVISION 1
 
 // -------------------------------------------------------------------------
 // Global variable definitions (declared extern in globals.h)
@@ -97,6 +97,8 @@ std::string g_MasteryAchievementAccount;
 bool  g_MasteryAchievementRefreshNeeded = false;
 std::string g_WalletAccount;
 bool  g_WalletRefreshNeeded           = false;
+std::string g_ArmoryAccount;
+bool  g_ArmoryRefreshNeeded           = false;
 
 // Completion cache
 std::unordered_map<uint32_t, float> g_CompletionCache;

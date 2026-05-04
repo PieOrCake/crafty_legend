@@ -85,10 +85,6 @@ void OnHoardItemResponse(void* aEventArgs) {
     // Extract per-account counts from location entries
     std::map<std::string, int> perAccount;
     for (uint32_t i = 0; i < resp->location_count && i < 64; i++) {
-        // Detect legendary armory presence
-        if (strcmp(resp->locations[i].location, "Legendary Armory") == 0) {
-            CraftyLegend::GW2API::SetLegendaryUnlocked(resp->item_id);
-        }
         std::string acct = resp->locations[i].account_name;
         if (!acct.empty()) {
             perAccount[acct] += resp->locations[i].count;
@@ -286,6 +282,9 @@ void OnMumbleIdentityUpdated(void* aEventArgs) {
         g_MasteryAchievementAccount.clear();
         g_MasteryAchievementRefreshNeeded = true;
         g_WalletRefreshNeeded = true;
+        CraftyLegend::GW2API::ClearLegendaryArmory();
+        g_ArmoryAccount.clear();
+        g_ArmoryRefreshNeeded = true;
         g_PrereqDirty = true;
         g_CompletionCacheDirty = true;
     }
@@ -375,8 +374,9 @@ void RefreshHoardData() {
         TryResolveCurrentAccount();
     }
 
-    // Now query achievements/masteries for the current account
+    // Now query achievements/masteries and legendary armory for the current account
     RefreshMasteriesAndAchievements();
+    RefreshLegendaryArmory();
 }
 
 // Helper: query achievements and masteries for the current account
@@ -447,4 +447,36 @@ void RefreshMasteriesAndAchievements() {
 
     g_MasteryAchievementAccount = currentAcct;
     g_MasteryAchievementRefreshNeeded = false;
+}
+
+void OnHoardArmoryResponse(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardQueryApiResponse* resp = static_cast<HoardQueryApiResponse*>(aEventArgs);
+    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->status != HOARD_STATUS_OK) { delete resp; return; }
+    try {
+        auto j = json::parse(resp->json, nullptr, false);
+        if (!j.is_discarded() && j.is_array()) {
+            for (const auto& entry : j) {
+                CraftyLegend::GW2API::SetLegendaryUnlocked(entry["id"].get<uint32_t>());
+            }
+        }
+    } catch (...) {}
+    delete resp;
+    g_CompletionCacheDirty = true;
+}
+
+void RefreshLegendaryArmory() {
+    if (!g_HoardDataAvailable) return;
+    std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
+    if (!g_ArmoryRefreshNeeded && g_ArmoryAccount == currentAcct && !g_ArmoryAccount.empty()) return;
+    HoardQueryApiRequest req{};
+    req.api_version = HOARD_API_VERSION;
+    strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
+    strncpy(req.endpoint, "/v2/account/legendaryarmory", sizeof(req.endpoint));
+    strncpy(req.response_event, CL_ARMORY_RESPONSE, sizeof(req.response_event));
+    if (!currentAcct.empty()) strncpy(req.account_name, currentAcct.c_str(), sizeof(req.account_name));
+    APIDefs->Events_Raise(EV_HOARD_QUERY_API, &req);
+    g_ArmoryAccount = currentAcct;
+    g_ArmoryRefreshNeeded = false;
 }

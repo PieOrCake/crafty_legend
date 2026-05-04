@@ -643,6 +643,19 @@ void AddonRender() {
                             ImGui::GetWindowDrawList()->AddRect(iconScreenPos,
                                 ImVec2(iconScreenPos.x + ICON_SIZE, iconScreenPos.y + ICON_SIZE),
                                 rarityCol, 2.0f, 0, 1.5f);
+                            // Owned badge: green circle + white tick in bottom-right corner
+                            if (CraftyLegend::GW2API::IsLegendaryUnlocked(leg.id)) {
+                                auto* dl = ImGui::GetWindowDrawList();
+                                const float r = 5.0f;
+                                ImVec2 bc(iconScreenPos.x + ICON_SIZE - r - 1.0f, iconScreenPos.y + ICON_SIZE - r - 1.0f);
+                                dl->AddCircleFilled(bc, r, IM_COL32(40, 180, 40, 240));
+                                // Tick: down-stroke then up-stroke
+                                ImVec2 t0(bc.x - 2.8f, bc.y + 0.3f);
+                                ImVec2 t1(bc.x - 0.5f, bc.y + 2.8f);
+                                ImVec2 t2(bc.x + 3.2f, bc.y - 2.5f);
+                                dl->AddLine(t0, t1, IM_COL32(255, 255, 255, 240), 1.5f);
+                                dl->AddLine(t1, t2, IM_COL32(255, 255, 255, 240), 1.5f);
+                            }
                             ImGui::SameLine(0, ICON_GAP);
                         } else {
                             ImGui::Dummy(ImVec2(ICON_SIZE, ICON_SIZE));

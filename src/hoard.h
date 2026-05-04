@@ -13,12 +13,14 @@ void OnHoardFetchError(void* aEventArgs);
 void OnAccountsChanged(void* aEventArgs);
 void OnAccountsResponse(void* aEventArgs);
 void OnMumbleIdentityUpdated(void* aEventArgs);
+void OnHoardArmoryResponse(void* aEventArgs);
 
 // Refresh helpers called from the render loop (ui.cpp)
 void TryResolveCurrentAccount();
 void RefreshHoardData();
 void RefreshWallet();
 void RefreshMasteriesAndAchievements();
+void RefreshLegendaryArmory();
 
 // Account display helper called from ui.cpp
 std::string GetAccountDisplayName(const std::string& account_name);

@@ -21,6 +21,7 @@
 #define CL_ACHIEVEMENT_RESPONSE "CL_ACHIEVEMENT_RESPONSE"
 #define CL_MASTERY_RESPONSE     "CL_MASTERY_RESPONSE"
 #define CL_ACCOUNTS_RESPONSE    "CL_ACCOUNTS_RESPONSE"
+#define CL_ARMORY_RESPONSE      "CL_ARMORY_RESPONSE"
 
 // Shopping list entry
 struct ShoppingEntry {
@@ -132,6 +133,8 @@ extern std::string g_MasteryAchievementAccount;
 extern bool g_MasteryAchievementRefreshNeeded;
 extern std::string g_WalletAccount;
 extern bool g_WalletRefreshNeeded;
+extern std::string g_ArmoryAccount;
+extern bool g_ArmoryRefreshNeeded;
 
 // -------------------------------------------------------------------------
 // Completion cache
