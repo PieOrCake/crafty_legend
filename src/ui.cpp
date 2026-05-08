@@ -11,6 +11,39 @@
 #include <sstream>
 #include <shellapi.h>
 
+static void PushGW2Theme() {
+    ImGui::PushStyleColor(ImGuiCol_WindowBg,              ImVec4(0.08f, 0.06f, 0.12f, 0.95f));
+    ImGui::PushStyleColor(ImGuiCol_TitleBg,               ImVec4(0.14f, 0.08f, 0.20f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_TitleBgActive,         ImVec4(0.25f, 0.15f, 0.35f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_Border,                ImVec4(0.40f, 0.28f, 0.55f, 0.5f));
+    ImGui::PushStyleColor(ImGuiCol_Button,                ImVec4(0.25f, 0.15f, 0.35f, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered,         ImVec4(0.35f, 0.22f, 0.48f, 0.9f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive,          ImVec4(0.45f, 0.30f, 0.58f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_Header,                ImVec4(0.55f, 0.45f, 0.12f, 0.6f));
+    ImGui::PushStyleColor(ImGuiCol_HeaderHovered,         ImVec4(0.65f, 0.52f, 0.15f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_HeaderActive,          ImVec4(0.75f, 0.60f, 0.18f, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_Separator,             ImVec4(0.35f, 0.25f, 0.45f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBg,               ImVec4(0.14f, 0.10f, 0.20f, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered,        ImVec4(0.22f, 0.15f, 0.30f, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_ScrollbarBg,           ImVec4(0.08f, 0.06f, 0.12f, 0.5f));
+    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrab,         ImVec4(0.30f, 0.20f, 0.42f, 0.7f));
+    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrabHovered,  ImVec4(0.40f, 0.28f, 0.55f, 0.8f));
+    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrabActive,   ImVec4(0.50f, 0.35f, 0.65f, 1.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding,    6.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding,     3.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_ScrollbarRounding, 4.0f);
+}
+
+static void PopGW2Theme() {
+    ImGui::PopStyleVar(3);
+    ImGui::PopStyleColor(17);
+}
+
+struct ThemeGuard {
+    ThemeGuard()  { PushGW2Theme(); }
+    ~ThemeGuard() { PopGW2Theme(); }
+};
+
 void AddonRender() {
     // Process icon queue even when window is hidden so icons stay loaded
     CraftyLegend::IconManager::Tick();
@@ -141,29 +174,7 @@ void AddonRender() {
     ImVec4 readyColor(0.35f, 0.78f, 0.88f, 1.0f);          // Ready to craft
     ImVec4 dimTextColor(0.52f, 0.48f, 0.58f, 1.0f);        // Dimmed lavender
 
-    // Push purple and gold window and widget styling
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.08f, 0.06f, 0.12f, 0.95f));
-    ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.14f, 0.08f, 0.20f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.25f, 0.15f, 0.35f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.40f, 0.28f, 0.55f, 0.5f));
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.25f, 0.15f, 0.35f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.35f, 0.22f, 0.48f, 0.9f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.45f, 0.30f, 0.58f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.55f, 0.45f, 0.12f, 0.6f));
-    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.65f, 0.52f, 0.15f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_HeaderActive, ImVec4(0.75f, 0.60f, 0.18f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_Separator, separatorColor);
-    ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.14f, 0.10f, 0.20f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.22f, 0.15f, 0.30f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_ScrollbarBg, ImVec4(0.08f, 0.06f, 0.12f, 0.5f));
-    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrab, ImVec4(0.30f, 0.20f, 0.42f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrabHovered, ImVec4(0.40f, 0.28f, 0.55f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrabActive, ImVec4(0.50f, 0.35f, 0.65f, 1.0f));
-    const int styleColorCount = 17;
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 6.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_ScrollbarRounding, 4.0f);
-    const int styleVarCount = 3;
+    ThemeGuard themeGuard;
 
     ImGui::SetNextWindowSize(ImVec2(1100, 500), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Crafty Legend", &g_WindowVisible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
@@ -1261,8 +1272,6 @@ void AddonRender() {
         } // end else (legendaries not empty)
     }
     ImGui::End();
-    ImGui::PopStyleVar(styleVarCount);
-    ImGui::PopStyleColor(styleColorCount);
     
     // Render debug window if enabled
     if (g_ShowDebugWindow) {

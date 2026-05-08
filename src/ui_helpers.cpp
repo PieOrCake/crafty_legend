@@ -318,7 +318,23 @@ void BuildShoppingList(uint32_t legendary_id) {
     std::unordered_map<std::string, int> walletMats;
     std::unordered_set<uint32_t> visited;
 
-    FlattenCraftingTree(legendary_id, 1, itemMats, walletMats, visited);
+    // Recurse directly into the legendary's recipe ingredients, bypassing the
+    // owned-count check for the legendary itself. The shopping list always shows
+    // what's needed for the *next* craft, regardless of how many are already owned
+    // (relevant for Runes/Sigils that can be owned multiple times, and for any
+    // legendary that registers a count in the Legendary Armory).
+    const auto* top_recipe = CraftyLegend::DataManager::GetRecipe(legendary_id);
+    if (top_recipe && !top_recipe->ingredients.empty()) {
+        for (const auto& ing : top_recipe->ingredients) {
+            if (ing.item_id == 0) {
+                walletMats[ing.name] += static_cast<int>(ing.count);
+            } else {
+                FlattenCraftingTree(ing.item_id, static_cast<int>(ing.count), itemMats, walletMats, visited);
+            }
+        }
+    } else {
+        FlattenCraftingTree(legendary_id, 1, itemMats, walletMats, visited);
+    }
 
     // Convert to shopping entries
     // Note: FlattenCraftingTree already subtracts owned counts, so info.second

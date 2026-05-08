@@ -4,7 +4,7 @@
 #define V_MAJOR    0
 #define V_MINOR    9
 #define V_BUILD    5
-#define V_REVISION 1
+#define V_REVISION 2
 
 // -------------------------------------------------------------------------
 // Global variable definitions (declared extern in globals.h)
