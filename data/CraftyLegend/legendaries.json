@@ -1531,6 +1531,19 @@
         "mystic_forge"
       ],
       "generation": 13
+    },
+    {
+      "id": 109012,
+      "name": "Strife Unending",
+      "icon": "https://render.guildwars2.com/file/5B3A01AC083B965D2077F2D402D00847E2D41B01/3769860.png",
+      "description": "Legendary accessory (WvW/VoE).",
+      "type": "trinket",
+      "trinket_type": "Accessory",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 13
     }
   ]
 }

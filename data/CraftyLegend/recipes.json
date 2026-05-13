@@ -14937,6 +14937,217 @@
           "name": "Obsidian Shard"
         }
       ]
+    },
+    {
+      "output_id": "109012",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "109686",
+          "count": 1,
+          "name": "Gift of the Mist Warrior"
+        },
+        {
+          "item_id": "109618",
+          "count": 1,
+          "name": "Gift of the Mistwalker"
+        },
+        {
+          "item_id": "109363",
+          "count": 1,
+          "name": "Gift of the Warclaw"
+        }
+      ]
+    },
+    {
+      "output_id": "109686",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "106443", "count": 500, "name": "Testimony of Castoran Heroics" },
+        { "item_id": "87557",  "count": 50,  "name": "Grandmaster Mark Shard" },
+        { "item_id": "103913", "count": 25,  "name": "Pile of Recycled Siege Equipment" },
+        { "item_id": "82746",  "count": 3,   "name": "Gift of War Prosperity" }
+      ]
+    },
+    {
+      "output_id": "109618",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "99790",  "count": 1,  "name": "Mistwalker Infusion" },
+        { "item_id": "93075",  "count": 40, "name": "Emblem of the Avenger" },
+        { "item_id": "93146",  "count": 2,  "name": "Emblem of the Conqueror" },
+        { "item_id": "76427",  "count": 2,  "name": "Gift of the Mists" }
+      ]
+    },
+    {
+      "output_id": "70867",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "75744", "count": 1, "name": "Gift of Fangs" },
+        { "item_id": "75299", "count": 1, "name": "Gift of Scales" },
+        { "item_id": "70801", "count": 1, "name": "Gift of Claws" },
+        { "item_id": "71123", "count": 1, "name": "Gift of Bones" }
+      ]
+    },
+    {
+      "output_id": "76530",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "71655", "count": 1, "name": "Gift of Blood" },
+        { "item_id": "71787", "count": 1, "name": "Gift of Venom" },
+        { "item_id": "73236", "count": 1, "name": "Gift of Totems" },
+        { "item_id": "73196", "count": 1, "name": "Gift of Dust" }
+      ]
+    },
+    {
+      "output_id": "75744",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "24357", "count": 100, "name": "Vicious Fang" },
+        { "item_id": "24356", "count": 250, "name": "Large Fang" },
+        { "item_id": "24355", "count": 50,  "name": "Sharp Fang" },
+        { "item_id": "24354", "count": 50,  "name": "Fang" }
+      ]
+    },
+    {
+      "output_id": "75299",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "24289", "count": 100, "name": "Armored Scale" },
+        { "item_id": "24288", "count": 250, "name": "Large Scale" },
+        { "item_id": "24287", "count": 50,  "name": "Smooth Scale" },
+        { "item_id": "24286", "count": 50,  "name": "Scale" }
+      ]
+    },
+    {
+      "output_id": "70801",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "24351", "count": 100, "name": "Vicious Claw" },
+        { "item_id": "24350", "count": 250, "name": "Large Claw" },
+        { "item_id": "24349", "count": 50,  "name": "Sharp Claw" },
+        { "item_id": "24348", "count": 50,  "name": "Claw" }
+      ]
+    },
+    {
+      "output_id": "71123",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "24358", "count": 100, "name": "Ancient Bone" },
+        { "item_id": "24341", "count": 250, "name": "Large Bone" },
+        { "item_id": "24345", "count": 50,  "name": "Heavy Bone" },
+        { "item_id": "24344", "count": 50,  "name": "Bone" }
+      ]
+    },
+    {
+      "output_id": "71655",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "24295", "count": 100, "name": "Vial of Powerful Blood" },
+        { "item_id": "24294", "count": 250, "name": "Vial of Potent Blood" },
+        { "item_id": "24293", "count": 50,  "name": "Vial of Thick Blood" },
+        { "item_id": "24292", "count": 50,  "name": "Vial of Blood" }
+      ]
+    },
+    {
+      "output_id": "71787",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "24283", "count": 100, "name": "Powerful Venom Sac" },
+        { "item_id": "24282", "count": 250, "name": "Potent Venom Sac" },
+        { "item_id": "24281", "count": 50,  "name": "Full Venom Sac" },
+        { "item_id": "24280", "count": 50,  "name": "Venom Sac" }
+      ]
+    },
+    {
+      "output_id": "73236",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "24300", "count": 100, "name": "Elaborate Totem" },
+        { "item_id": "24299", "count": 250, "name": "Intricate Totem" },
+        { "item_id": "24363", "count": 50,  "name": "Engraved Totem" },
+        { "item_id": "24298", "count": 50,  "name": "Totem" }
+      ]
+    },
+    {
+      "output_id": "73196",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "24277", "count": 100, "name": "Pile of Crystalline Dust" },
+        { "item_id": "24276", "count": 250, "name": "Pile of Incandescent Dust" },
+        { "item_id": "24275", "count": 50,  "name": "Pile of Luminous Dust" },
+        { "item_id": "24274", "count": 50,  "name": "Pile of Radiant Dust" }
+      ]
+    },
+    {
+      "output_id": "70528",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "70820", "count": 500, "name": "Shard of Glory" }
+      ]
+    },
+    {
+      "output_id": "71008",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "71581", "count": 500, "name": "Memory of Battle" }
+      ]
+    },
+    {
+      "output_id": "73137",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "71994", "count": 1,  "name": "Ball of Dark Energy" },
+        { "item_id": "73248", "count": 75, "name": "Stabilizing Matrix" }
+      ]
     }
   ]
 }

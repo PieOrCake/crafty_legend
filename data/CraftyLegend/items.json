@@ -12282,6 +12282,90 @@
       "acquisition": [
         "collection"
       ]
+    },
+    {
+      "id": "109686",
+      "name": "Gift of the Mist Warrior",
+      "icon": "https://render.guildwars2.com/file/1404BD5F61AECA05FD06C8D89B9F98A20BF4CE7B/3770121.png",
+      "description": "",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "109618",
+      "name": "Gift of the Mistwalker",
+      "icon": "https://render.guildwars2.com/file/B6559537EFDA0EC9E50DF7CAEC74A2220EE114A4/3770120.png",
+      "description": "",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "109363",
+      "name": "Gift of the Warclaw",
+      "icon": "https://render.guildwars2.com/file/141392C30AB1E5790213F83837154969F74C791A/3770122.png",
+      "description": "Reward (x2) from the WvW achievement 'Mists Research: Strife Unending'.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "103913",
+      "name": "Pile of Recycled Siege Equipment",
+      "icon": "https://render.guildwars2.com/file/B3DF01B49E3C299B09FAC338E9383F13C1F43706/3442798.png",
+      "description": "",
+      "type": "crafting_material",
+      "binding": "none",
+      "rarity": "Basic",
+      "acquisition": [
+        "trading_post"
+      ]
+    },
+    {
+      "id": "99790",
+      "name": "Mistwalker Infusion",
+      "icon": "https://render.guildwars2.com/file/C6C9B44F9F460EF806B09729442A94D74CC8FA4C/3072496.png",
+      "description": "",
+      "type": "upgrade_component",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "trading_post"
+      ]
+    },
+    {
+      "id": "106443",
+      "name": "Testimony of Castoran Heroics",
+      "icon": "https://render.guildwars2.com/file/D6BC79630AFF64123ED10DF9D065CCA657E0767E/3710074.png",
+      "description": "",
+      "type": "consumable",
+      "binding": "account",
+      "rarity": "Fine",
+      "acquisition": [
+        "wvw"
+      ]
+    },
+    {
+      "id": "93075",
+      "name": "Emblem of the Avenger",
+      "icon": "https://render.guildwars2.com/file/C756AF2212663BAAB926E1EE064CFE7E2FF0EE97/2270824.png",
+      "description": "",
+      "type": "trophy",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "wvw"
+      ]
     }
   ]
 }

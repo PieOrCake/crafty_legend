@@ -72,3 +72,4 @@ IconManager → async icons → ImGui textures
 - MumbleLink identity JSON is only valid after the character fully loads. Character name validation (letters/spaces/hyphens) filters spurious values that appear during exe load.
 - `embedded_data.cpp` is ~4.7 MB. Editing it by hand is never correct — always regenerate via `embed_json.py`.
 - The DLL statically links all C++ runtime libraries. Do not introduce dependencies that require additional DLLs.
+- New legendary items do not appear in the GW2 API (`/v2/items`, `/v2/legendaryarmory`) until at least one player has crafted one. When a newly patched legendary is missing from the API, wait — it will appear once the first copy exists in the game.

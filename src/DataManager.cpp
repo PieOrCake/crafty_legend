@@ -2701,6 +2701,17 @@ namespace CraftyLegend {
                 out.push_back(MakePrereq(PC::Collection, "Acquiring Agaleus",
                     "Complete the Acquiring Agaleus collection in Shipwreck Strand and Starlit Weald", item_id, -1, -1, 8869));
                 break;
+            // --- Strife Unending (WvW accessory) ---
+            case 99790: // Mistwalker Infusion
+                out.push_back(MakePrereq(PC::Achievement, "Mists Research",
+                    "Complete the Mists Research WvW achievement to unlock the Mistwalker Infusion vendor (Dugan). Only needed if not buying from the Trading Post.",
+                    item_id, -1, -1, 6933));
+                break;
+            case 109363: // Gift of the Warclaw
+                out.push_back(MakePrereq(PC::Achievement, "Mists Research: Strife Unending",
+                    "Complete the Mists Research: Strife Unending WvW achievement. Rewards 2x Gift of the Warclaw.",
+                    item_id, -1, -1, 9244));
+                break;
             // --- Achievement reward legendaries ---
             case 95380: // Prismatic Champion's Regalia
                 out.push_back(MakePrereq(PC::Achievement, "Seasons of the Dragons",
