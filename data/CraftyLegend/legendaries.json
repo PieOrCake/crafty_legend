@@ -1544,6 +1544,19 @@
         "mystic_forge"
       ],
       "generation": 13
+    },
+    {
+      "id": 109070,
+      "name": "Stella Radians",
+      "icon": "https://render.guildwars2.com/file/2E4C9D4766C40BB9CBAE28749D78B7B32A9CE608/3769859.png",
+      "description": "Legendary accessory (VoE).",
+      "type": "trinket",
+      "trinket_type": "Accessory",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 13
     }
   ]
 }

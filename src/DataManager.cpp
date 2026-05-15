@@ -309,6 +309,67 @@ namespace CraftyLegend {
                 methods.push_back(wvw);
             }
             
+            // --- Strife Unending WvW leaf items (excluded from standard acquisition filter) ---
+            if (item.id == 109363) { // Gift of the Warclaw - achievement reward
+                AcquisitionMethod ach;
+                ach.method = "vendor";
+                ach.display_name = "Achievement - Mists Research: Strife Unending";
+                ach.description = "Awarded by completing the Mists Research: Strife Unending WvW achievement";
+                ach.vendor_name = "Dugan";
+                ach.vendor_location = "WvW (Eternal Battlegrounds / Borderlands)";
+                ach.purchase_requirements = {
+                    {"WvW Achievement", "Mists Research: Strife Unending — rewards 2x"}
+                };
+                methods.push_back(ach);
+            } else if (item.id == 106443) { // Testimony of Castoran Heroics - WvW currency
+                AcquisitionMethod wvw;
+                wvw.method = "vendor";
+                wvw.display_name = "WvW - Skirmish Chests";
+                wvw.description = "WvW currency earned by ranking up in World vs. World";
+                wvw.vendor_name = "WvW Skirmish Chests";
+                wvw.vendor_location = "WvW";
+                wvw.purchase_requirements = {
+                    {"WvW Rank-Up", "Awarded from Skirmish Chests"}
+                };
+                methods.push_back(wvw);
+            } else if (item.id == 93075) { // Emblem of the Avenger - WvW achievements/drops
+                AcquisitionMethod wvw;
+                wvw.method = "vendor";
+                wvw.display_name = "WvW - Achievements & Participation";
+                wvw.description = "Earned from WvW achievements and participation";
+                wvw.vendor_name = "WvW Participation";
+                wvw.vendor_location = "WvW";
+                wvw.purchase_requirements = {
+                    {"WvW Achievements", "Various WvW achievements reward these"}
+                };
+                methods.push_back(wvw);
+            } else if (item.id == 99790) { // Mistwalker Infusion - Dugan (requires Mists Research)
+                AcquisitionMethod dugan;
+                dugan.method = "vendor";
+                dugan.display_name = "Vendor - Dugan (WvW)";
+                dugan.description = "Purchased from Dugan after completing Mists Research";
+                dugan.vendor_name = "Dugan";
+                dugan.vendor_location = "WvW (Eternal Battlegrounds / Borderlands)";
+                dugan.purchase_requirements = {
+                    {"WvW Skirmish Claim Ticket", "3000"},
+                    {"Badge of Honor", "5000"},
+                    {"Emblem of the Avenger", "20"},
+                    {"Emblem of the Conqueror", "2"}
+                };
+                methods.push_back(dugan);
+            } else if (item.id == 103913) { // Pile of Recycled Siege Equipment - WvW collections
+                AcquisitionMethod wvw;
+                wvw.method = "vendor";
+                wvw.display_name = "WvW - Skirmish Supervisor Collections";
+                wvw.description = "Complete siege equipment purchase collections at the WvW Skirmish Supervisor";
+                wvw.vendor_name = "Skirmish Supervisor";
+                wvw.vendor_location = "WvW";
+                wvw.purchase_requirements = {
+                    {"WvW Collection", "Purchase each siege type from Skirmish Supervisor"}
+                };
+                methods.push_back(wvw);
+            }
+
             s_acquisition_methods[item.id] = methods;
             populated_count++;
         }
@@ -1425,6 +1486,34 @@ namespace CraftyLegend {
                 acq.purchase_requirements = {
                     {"Objective Captures", "500"}
                 };
+            } else if (item && item->id == 87557) { // Grandmaster Mark Shard
+                acq.display_name = "WvW - Skirmish Reward Track";
+                acq.vendor_name = "WvW Skirmish Track / T3 Objective Events";
+                acq.vendor_location = "WvW";
+                acq.purchase_requirements = {
+                    {"Skirmish Track", "Bronze/Silver/Gold pip reward"},
+                    {"T3 Objectives", "Gold/Silver participation in T3 towers, keeps, Stonemist"}
+                };
+            } else if (item && item->id == 109686) { // Gift of the Mist Warrior
+                acq.display_name = "Vendor - Dugan (WvW)";
+                acq.vendor_name = "Dugan";
+                acq.vendor_location = "WvW (Eternal Battlegrounds / Borderlands)";
+                acq.purchase_requirements = {
+                    {"Testimony of Castoran Heroics", "500"},
+                    {"Grandmaster Mark Shard", "50"},
+                    {"Pile of Recycled Siege Equipment", "25"},
+                    {"Gift of War Prosperity", "3"}
+                };
+            } else if (item && item->id == 109618) { // Gift of the Mistwalker
+                acq.display_name = "Vendor - Dugan (WvW)";
+                acq.vendor_name = "Dugan";
+                acq.vendor_location = "WvW (Eternal Battlegrounds / Borderlands)";
+                acq.purchase_requirements = {
+                    {"Mistwalker Infusion", "1"},
+                    {"Emblem of the Avenger", "40"},
+                    {"Emblem of the Conqueror", "2"},
+                    {"Gift of the Mists", "2"}
+                };
             // --- Gen2 Tributes (sold by various map vendors) ---
             } else if (item && (
                 item->id == 79453 ||  // Tribute to Endeavor
@@ -1649,6 +1738,54 @@ namespace CraftyLegend {
                     {"Seer Wreath of Service", "1"},
                     {"Antiquated Ducat", "500"}
                 };
+            // --- Stella Radians (VoE / Eternity's Garden) ---
+            } else if (item && item->id == 109469) { // Gift of Galdra
+                acq.display_name = "Vendor - Historian Meliza";
+                acq.vendor_name = "Historian Meliza";
+                acq.vendor_location = "Pilgrim's Rest, Eternity's Garden";
+                acq.purchase_requirements = {
+                    {"Gift of Research", "1"},
+                    {"Preserved Eidolon Hide", "1"},
+                    {"Gift of Eternity's Garden Exploration", "1"},
+                    {"Gift of Regrowth", "1"}
+                };
+            } else if (item && item->id == 109161) { // Gift of Shadowstones
+                acq.display_name = "Vendor - Steward Brizio";
+                acq.vendor_name = "Steward Brizio";
+                acq.vendor_location = "Artificer's Islet, Eternity's Garden";
+                acq.purchase_requirements = {
+                    {"Shadowstone Orb", "1"},
+                    {"Shadowstone Containment Frame", "1"},
+                    {"Gift of Restoration", "1"},
+                    {"Seer Runestone", "200"}
+                };
+            } else if (item && item->id == 109274) { // Shadowstone Orb
+                acq.display_name = "Vendor - Historian Meliza";
+                acq.vendor_name = "Historian Meliza";
+                acq.vendor_location = "Pilgrim's Rest, Eternity's Garden";
+                acq.purchase_requirements = {
+                    {"Shadowstone Fragment", "500"}
+                };
+            } else if (item && item->id == 109715) { // Shadowstone Containment Frame
+                acq.display_name = "Vendor - Steward Brizio";
+                acq.vendor_name = "Steward Brizio";
+                acq.vendor_location = "Artificer's Islet, Eternity's Garden";
+                acq.purchase_requirements = {
+                    {"Mithril Ingot", "2500"},
+                    {"Elder Wood Plank", "2500"},
+                    {"Cured Thick Leather Square", "2500"},
+                    {"Bolt of Silk", "2500"}
+                };
+            } else if (item && item->id == 109666) { // Seer Runestone
+                acq.display_name = "Vendor - Eternity's Garden Heart Vendors";
+                acq.vendor_name = "Historian Meliza / Steward Brizio";
+                acq.vendor_location = "Pilgrim's Rest or Artificer's Islet, Eternity's Garden";
+                acq.purchase_requirements = {
+                    {"Mystic Runestone", "1"},
+                    {"Glob of Ectoplasm", "10"},
+                    {"Research Note", "250"},
+                    {"Karma", "35000"}
+                };
             } else {
                 // Generic vendor information
                 acq.display_name = "Vendor";
@@ -1673,6 +1810,22 @@ namespace CraftyLegend {
                 acq.display_name = "World Completion";
                 acq.description = "100% map completion of all Central Tyrian maps";
                 acq.details = {"Explore all maps in Central Tyria", "Two gifts awarded per completion"};
+            } else if (item && item->id == 109141) { // Preserved Eidolon Hide
+                acq.display_name = "Achievement - Eternity's Garden Mastery";
+                acq.description = "Earned by completing the Eternity's Garden Mastery achievement";
+                acq.details = {"Complete the Eternity's Garden Mastery achievement", "Additional copies available from VoE map vendors"};
+            } else if (item && item->id == 109114) { // Gift of Eternity's Garden Exploration
+                acq.display_name = "Achievement - Map Exploration";
+                acq.description = "Earned by fully exploring Eternity's Garden";
+                acq.details = {"Complete 100% map exploration of Eternity's Garden", "Additional copies available from VoE map vendors"};
+            } else if (item && item->id == 109361) { // Gift of Regrowth
+                acq.display_name = "Achievement - Forge Guard's Armor Collection";
+                acq.description = "Earned by completing the Forge Guard's armor collection";
+                acq.details = {"Complete the Forge Guard's Armor Collection achievement", "Additional copies available from VoE map vendors"};
+            } else if (item && item->id == 109489) { // Gift of Restoration
+                acq.display_name = "Achievement - Glimmering Resin Weapon Collection";
+                acq.description = "Earned by completing the Glimmering Resin weapon collection";
+                acq.details = {"Complete the Glimmering Resin Weapon Collection achievement", "Additional copies available from VoE map vendors"};
             } else {
                 acq.details = {"Complete specific achievements"};
             }
@@ -2711,6 +2864,27 @@ namespace CraftyLegend {
                 out.push_back(MakePrereq(PC::Achievement, "Mists Research: Strife Unending",
                     "Complete the Mists Research: Strife Unending WvW achievement. Rewards 2x Gift of the Warclaw.",
                     item_id, -1, -1, 9244));
+                break;
+            // --- Stella Radians components ---
+            case 109141: // Preserved Eidolon Hide
+                out.push_back(MakePrereq(PC::Achievement, "Eternity's Garden Mastery",
+                    "Complete the Eternity's Garden Mastery achievement. Additional copies available from VoE map vendors.",
+                    item_id, -1, -1, 9265));
+                break;
+            case 109114: // Gift of Eternity's Garden Exploration
+                out.push_back(MakePrereq(PC::Achievement, "Eternity's Garden Explorer",
+                    "Explore all areas of Eternity's Garden. Additional copies available from VoE map vendors.",
+                    item_id, -1, -1, 8864));
+                break;
+            case 109361: // Gift of Regrowth
+                out.push_back(MakePrereq(PC::Achievement, "Forge Guard's Armor Collection",
+                    "Complete the Forge Guard's Armor Collection achievement. Additional copies available from VoE map vendors.",
+                    item_id, -1, -1, -1));
+                break;
+            case 109489: // Gift of Restoration
+                out.push_back(MakePrereq(PC::Achievement, "Glimmering Resin Weapon Collector",
+                    "Complete the Glimmering Resin Weapon Collector achievement. Additional copies available from VoE map vendors.",
+                    item_id, -1, -1, 9344));
                 break;
             // --- Achievement reward legendaries ---
             case 95380: // Prismatic Champion's Regalia

@@ -15148,6 +15148,19 @@
         { "item_id": "71994", "count": 1,  "name": "Ball of Dark Energy" },
         { "item_id": "73248", "count": 75, "name": "Stabilizing Matrix" }
       ]
+    },
+    {
+      "output_id": "109070",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        { "item_id": "71820",  "count": 1, "name": "Mystic Tribute" },
+        { "item_id": "109469", "count": 1, "name": "Gift of Galdra" },
+        { "item_id": "109161", "count": 1, "name": "Gift of Shadowstones" },
+        { "item_id": "109391", "count": 1, "name": "Vial of Liquid Shadowstone" }
+      ]
     }
   ]
 }

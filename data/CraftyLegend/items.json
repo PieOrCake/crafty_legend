@@ -12366,6 +12366,126 @@
       "acquisition": [
         "wvw"
       ]
+    },
+    {
+      "id": "109469",
+      "name": "Gift of Galdra",
+      "icon": "https://render.guildwars2.com/file/693C4E2B1494A297CA4E6F15B503AD22CAE8404E/3770115.png",
+      "description": "Purchased from renown heart vendor in Pilgrim's Rest (Eternity's Garden).",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "109161",
+      "name": "Gift of Shadowstones",
+      "icon": "https://render.guildwars2.com/file/54746B32C110D5303B56D4800C5B32C40DBF2EED/3770119.png",
+      "description": "Purchased from renown heart vendor in Artificer's Islet (Eternity's Garden).",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "109141",
+      "name": "Preserved Eidolon Hide",
+      "icon": "https://render.guildwars2.com/file/23BAF7DA1D44B145E1BCB4B97E50B1D9AFFC64F5/3771064.png",
+      "description": "Earned by completing the Eternity's Garden Mastery achievement.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "109114",
+      "name": "Gift of Eternity's Garden Exploration",
+      "icon": "https://render.guildwars2.com/file/365171412593DC2E1B0F4ED1C15874D2DF25E263/3770116.png",
+      "description": "Earned by fully exploring Eternity's Garden.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "109361",
+      "name": "Gift of Regrowth",
+      "icon": "https://render.guildwars2.com/file/3607916D32C495D82AD450020DDDD365F050FDD1/3770117.png",
+      "description": "Earned by completing the Forge Guard's armor collection achievement.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "109274",
+      "name": "Shadowstone Orb",
+      "icon": "https://render.guildwars2.com/file/653814587FD90F210CE9716D2DE3741ABADF0F9A/3771069.png",
+      "description": "Purchased from the renown heart vendor in Pilgrim's Rest (Eternity's Garden).",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "109715",
+      "name": "Shadowstone Containment Frame",
+      "icon": "https://render.guildwars2.com/file/31B61E164159B1FAC2561E5BC135072255A27512/3771068.png",
+      "description": "Purchased from the renown heart vendor in Artificer's Islet (Eternity's Garden).",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "109489",
+      "name": "Gift of Restoration",
+      "icon": "https://render.guildwars2.com/file/DEC4CE0CB767CF720977D103D95072FE976A917D/3770118.png",
+      "description": "Earned by completing the Glimmering Resin weapon collection achievement.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "109666",
+      "name": "Seer Runestone",
+      "icon": "https://render.guildwars2.com/file/EF7653289B033CBCAD3412370A930FA2001AE59F/3771072.png",
+      "description": "Purchased from Visions of Eternity map vendors.",
+      "type": "trophy",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "109391",
+      "name": "Vial of Liquid Shadowstone",
+      "icon": "https://render.guildwars2.com/file/E609A5B574AF97E4E74E9ED3250FCC7F6AFF28FF/3771060.png",
+      "description": "Rewarded for completing the story chapter \"So it is Written\".",
+      "type": "trinket",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "story_journal"
+      ]
     }
   ]
 }
