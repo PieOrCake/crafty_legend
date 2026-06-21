@@ -4,20 +4,21 @@
  * Include this header in your addon to communicate with Hoard & Seek
  * via Nexus events. No link-time dependency is required.
  *
- * Version: 3
+ * Version: 4
  */
 
 #pragma once
 
 #include <cstdint>
 
-#define HOARD_API_VERSION 3
+#define HOARD_API_VERSION 4
 #define HOARD_REFRESH_COOLDOWN 300  // Minimum seconds between refreshes (5 minutes)
 
 // Response status codes
 #define HOARD_STATUS_OK       0  // Request succeeded
 #define HOARD_STATUS_DENIED   1  // Permission denied by user
 #define HOARD_STATUS_PENDING  2  // Permission not yet decided (popup shown)
+#define HOARD_STATUS_BUSY     3  // v4+: proxy queue full or per-addon limit reached; retry after retry_after_ms
 
 // Permission flow:
 // - First time an addon queries H&S, the user sees a permission popup.
@@ -48,10 +49,15 @@
 // Nexus Events_Raise() dispatches SYNCHRONOUSLY to all subscribers on the
 // calling thread. This has important implications for H&S consumers:
 //
-// 1. When you call Events_Raise(EV_HOARD_QUERY_SKINS, &req), H&S processes
-//    the request and raises your response_event BEFORE Events_Raise returns.
-//    Your response handler runs inline on the same thread, inside the
-//    original Events_Raise call.
+// 1. Cache-served queries (EV_HOARD_QUERY_ITEM, EV_HOARD_QUERY_WALLET,
+//    EV_HOARD_QUERY_ACCOUNTS, EV_HOARD_PING) are answered SYNCHRONOUSLY:
+//    your response handler runs inside the Events_Raise call.
+//
+//    Network-served queries (EV_HOARD_QUERY_API, EV_HOARD_QUERY_ACHIEVEMENT,
+//    EV_HOARD_QUERY_MASTERY, EV_HOARD_QUERY_SKINS, EV_HOARD_QUERY_RECIPES,
+//    EV_HOARD_QUERY_WIZARDSVAULT) are ASYNCHRONOUS: H&S returns from
+//    Events_Raise immediately and your response_event fires later from
+//    H&S's worker thread. The same lock-handling rules still apply.
 //
 // 2. DO NOT hold any lock (mutex, critical section, etc.) when calling
 //    Events_Raise for any request event. If your response handler acquires
@@ -81,6 +87,13 @@
 //    creates recursive Events_Raise calls (one per batch). This works but
 //    be aware of stack depth. For very large queries, consider deferring
 //    the next batch to a frame tick instead.
+//
+// 6. Rate limiting (v4+): Network-served queries pass through a shared rate
+//    limiter and a bounded queue. If the queue is full or your addon already
+//    has too many in-flight requests, H&S immediately returns a response with
+//    status = HOARD_STATUS_BUSY and retry_after_ms set. Back off and retry --
+//    do NOT spin. Responses for cached endpoints (recently-fetched, same
+//    account + endpoint) return instantly with no queue cost.
 //
 // ============================================================================
 // Event Names
@@ -317,6 +330,10 @@ struct HoardQueryAchievementResponse {
     char account_name[64];      // Which account was queried (echoed from request)
     uint32_t entry_count;       // Number of entries returned
     HoardAchievementEntry entries[200];
+    // --- v4+ fields (only written when request->api_version >= 4) ---
+    uint32_t retry_after_ms;    // Suggested wait before retrying (0 = no advice)
+    uint32_t queue_depth;       // Approximate queue depth at dispatch time
+    uint32_t tokens_remaining;  // Reserved for future use; currently always 0
 };
 
 // Request: query account masteries (batch)
@@ -343,6 +360,10 @@ struct HoardQueryMasteryResponse {
     char account_name[64];      // Which account was queried (echoed from request)
     uint32_t entry_count;       // Number of entries returned
     HoardMasteryEntry entries[200];
+    // --- v4+ fields (only written when request->api_version >= 4) ---
+    uint32_t retry_after_ms;    // Suggested wait before retrying (0 = no advice)
+    uint32_t queue_depth;       // Approximate queue depth at dispatch time
+    uint32_t tokens_remaining;  // Reserved for future use; currently always 0
 };
 
 // Request: query account skin unlocks (batch)
@@ -369,6 +390,10 @@ struct HoardQuerySkinsResponse {
     char account_name[64];      // Which account was queried (echoed from request)
     uint32_t entry_count;       // Number of entries returned
     HoardSkinEntry entries[200];
+    // --- v4+ fields (only written when request->api_version >= 4) ---
+    uint32_t retry_after_ms;    // Suggested wait before retrying (0 = no advice)
+    uint32_t queue_depth;       // Approximate queue depth at dispatch time
+    uint32_t tokens_remaining;  // Reserved for future use; currently always 0
 };
 
 // Request: query account recipe unlocks (batch)
@@ -395,6 +420,10 @@ struct HoardQueryRecipesResponse {
     char account_name[64];      // Which account was queried (echoed from request)
     uint32_t entry_count;       // Number of entries returned
     HoardRecipeEntry entries[200];
+    // --- v4+ fields (only written when request->api_version >= 4) ---
+    uint32_t retry_after_ms;    // Suggested wait before retrying (0 = no advice)
+    uint32_t queue_depth;       // Approximate queue depth at dispatch time
+    uint32_t tokens_remaining;  // Reserved for future use; currently always 0
 };
 
 // Request: query Wizard's Vault progress
@@ -430,6 +459,10 @@ struct HoardQueryWizardsVaultResponse {
     uint8_t meta_reward_claimed;
     uint32_t objective_count;   // Number of objectives returned
     HoardWizardsVaultObjective objectives[16]; // Up to 16 objectives
+    // --- v4+ fields (only written when request->api_version >= 4) ---
+    uint32_t retry_after_ms;    // Suggested wait before retrying (0 = no advice)
+    uint32_t queue_depth;       // Approximate queue depth at dispatch time
+    uint32_t tokens_remaining;  // Reserved for future use; currently always 0
 };
 
 // Request: generic authenticated API proxy query
@@ -451,6 +484,10 @@ struct HoardQueryApiResponse {
     uint32_t json_length;       // Actual length of the JSON data (may exceed buffer if truncated)
     uint8_t truncated;          // 1 if response was truncated to fit buffer, 0 otherwise
     char json[65536];           // Raw JSON response (up to 64KB, null-terminated)
+    // --- v4+ fields (only written when request->api_version >= 4) ---
+    uint32_t retry_after_ms;    // Suggested wait before retrying (0 = no advice)
+    uint32_t queue_depth;       // Approximate queue depth at dispatch time
+    uint32_t tokens_remaining;  // Reserved for future use; currently always 0
 };
 
 // Register a custom right-click context menu item

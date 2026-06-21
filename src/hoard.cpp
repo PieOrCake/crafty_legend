@@ -10,6 +10,16 @@
 // Forward declaration (defined later in this file)
 static void StartAccountDetection();
 
+// Schedule a backoff retry when H&S reports HOARD_STATUS_BUSY (rate-limited).
+static void ScheduleBusyBackoff(uint32_t retry_after_ms) {
+    uint32_t delay = retry_after_ms > 0 ? retry_after_ms : 500;
+    auto target = std::chrono::steady_clock::now() + std::chrono::milliseconds(delay);
+    if (!g_HoardBusyBackoff || target > g_HoardBusyRetryAt) {
+        g_HoardBusyRetryAt = target;
+    }
+    g_HoardBusyBackoff = true;
+}
+
 // --- Hoard & Seek event callbacks ---
 
 void OnHoardPong(void* aEventArgs) {
@@ -18,7 +28,7 @@ void OnHoardPong(void* aEventArgs) {
 
     if (!aEventArgs) return; // Backward compat with older H&S
     HoardPongPayload* pong = static_cast<HoardPongPayload*>(aEventArgs);
-    if (pong->api_version != HOARD_API_VERSION) return;
+    if (pong->api_version < HOARD_API_VERSION) return;
 
     g_HoardLastUpdated = pong->last_updated;
     g_HoardRefreshAvailableAt = pong->refresh_available_at;
@@ -38,7 +48,7 @@ void OnHoardPong(void* aEventArgs) {
 void OnHoardDataUpdated(void* aEventArgs) {
     if (aEventArgs) {
         HoardDataReadyPayload* payload = static_cast<HoardDataReadyPayload*>(aEventArgs);
-        if (payload->api_version == HOARD_API_VERSION) {
+        if (payload->api_version >= HOARD_API_VERSION) {
             g_HoardLastUpdated = payload->last_updated;
             g_HoardRefreshAvailableAt = payload->refresh_available_at;
             g_HoardAccountCount = payload->account_count;
@@ -67,7 +77,7 @@ void OnHoardDataUpdated(void* aEventArgs) {
 void OnHoardItemResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryItemResponse* resp = static_cast<HoardQueryItemResponse*>(aEventArgs);
-    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
     if (resp->status == HOARD_STATUS_PENDING) {
         g_HoardPermissionPending = true;
         g_HoardPermissionRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(3);
@@ -115,7 +125,7 @@ void OnHoardItemResponse(void* aEventArgs) {
 void OnHoardWalletResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryWalletResponse* resp = static_cast<HoardQueryWalletResponse*>(aEventArgs);
-    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
     if (resp->status == HOARD_STATUS_PENDING) {
         g_HoardPermissionPending = true;
         g_HoardPermissionRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(3);
@@ -138,7 +148,7 @@ void OnHoardWalletResponse(void* aEventArgs) {
 void OnAchievementResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryAchievementResponse* resp = static_cast<HoardQueryAchievementResponse*>(aEventArgs);
-    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
     if (resp->status == HOARD_STATUS_PENDING) {
         g_HoardPermissionPending = true;
         g_HoardPermissionRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(3);
@@ -148,6 +158,12 @@ void OnAchievementResponse(void* aEventArgs) {
     }
     if (resp->status == HOARD_STATUS_DENIED) {
         g_HoardPermissionDenied = true;
+        delete resp;
+        return;
+    }
+    if (resp->status == HOARD_STATUS_BUSY) {
+        ScheduleBusyBackoff(resp->retry_after_ms);
+        g_MasteryAchievementRefreshNeeded = true;
         delete resp;
         return;
     }
@@ -163,7 +179,7 @@ void OnAchievementResponse(void* aEventArgs) {
 void OnMasteryResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryMasteryResponse* resp = static_cast<HoardQueryMasteryResponse*>(aEventArgs);
-    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
     if (resp->status == HOARD_STATUS_PENDING) {
         g_HoardPermissionPending = true;
         g_HoardPermissionRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(3);
@@ -173,6 +189,12 @@ void OnMasteryResponse(void* aEventArgs) {
     }
     if (resp->status == HOARD_STATUS_DENIED) {
         g_HoardPermissionDenied = true;
+        delete resp;
+        return;
+    }
+    if (resp->status == HOARD_STATUS_BUSY) {
+        ScheduleBusyBackoff(resp->retry_after_ms);
+        g_MasteryAchievementRefreshNeeded = true;
         delete resp;
         return;
     }
@@ -188,7 +210,7 @@ void OnMasteryResponse(void* aEventArgs) {
 void OnHoardFetchProgress(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardFetchProgressPayload* payload = static_cast<HoardFetchProgressPayload*>(aEventArgs);
-    if (payload->api_version != HOARD_API_VERSION) return;
+    if (payload->api_version < HOARD_API_VERSION) return;
     g_HoardFetchMessage = payload->message;
     g_HoardFetching = true;
     g_HoardFetchError = false;
@@ -198,7 +220,7 @@ void OnHoardFetchProgress(void* aEventArgs) {
 void OnHoardFetchError(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardFetchErrorPayload* payload = static_cast<HoardFetchErrorPayload*>(aEventArgs);
-    if (payload->api_version != HOARD_API_VERSION) return;
+    if (payload->api_version < HOARD_API_VERSION) return;
     g_HoardFetchError = true;
     g_HoardFetching = false;
     g_HoardRefreshPending = false;
@@ -452,7 +474,13 @@ void RefreshMasteriesAndAchievements() {
 void OnHoardArmoryResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryApiResponse* resp = static_cast<HoardQueryApiResponse*>(aEventArgs);
-    if (resp->api_version != HOARD_API_VERSION) { delete resp; return; }
+    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
+    if (resp->status == HOARD_STATUS_BUSY) {
+        ScheduleBusyBackoff(resp->retry_after_ms);
+        g_ArmoryRefreshNeeded = true;
+        delete resp;
+        return;
+    }
     if (resp->status != HOARD_STATUS_OK) { delete resp; return; }
     try {
         auto j = json::parse(resp->json, nullptr, false);

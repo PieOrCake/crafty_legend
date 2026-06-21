@@ -118,6 +118,8 @@ extern std::unordered_set<uint32_t> g_HoardQueriedWallets;
 extern bool g_HoardPermissionPending;
 extern bool g_HoardPermissionDenied;
 extern std::chrono::steady_clock::time_point g_HoardPermissionRetryTime;
+extern bool g_HoardBusyBackoff;
+extern std::chrono::steady_clock::time_point g_HoardBusyRetryAt;
 
 // -------------------------------------------------------------------------
 // Account detection (MumbleLink + H&S)

@@ -20,6 +20,9 @@ If an LLM creating software upsets you, then perhaps this repo isn't for you. Mo
 - Progress bars showing how close you are to completion
 - **Shopping list** — aggregates all needed materials, with TP prices, vendor costs, and coin totals
 - **Multi-account support** — detects the active account via MumbleLink; account-bound items show per-account counts, unbound items total across all accounts
+- **Favourites** — star any legendary to pin it to a section at the top of the list
+- Search bar for quickly finding any legendary
+- Right-click any legendary or material to open it on the wiki or look it up in Hoard & Seek
 - Achievement and mastery prerequisite tracking
 - Item icons with rarity borders, owned badges, and TP price tooltips
 

@@ -3,8 +3,8 @@
 // Version constants
 #define V_MAJOR    0
 #define V_MINOR    9
-#define V_BUILD    5
-#define V_REVISION 4
+#define V_BUILD    6
+#define V_REVISION 0
 
 // -------------------------------------------------------------------------
 // Global variable definitions (declared extern in globals.h)
@@ -84,6 +84,8 @@ std::unordered_set<uint32_t> g_HoardQueriedWallets;
 bool  g_HoardPermissionPending = false;
 bool  g_HoardPermissionDenied  = false;
 std::chrono::steady_clock::time_point g_HoardPermissionRetryTime;
+bool  g_HoardBusyBackoff       = false;
+std::chrono::steady_clock::time_point g_HoardBusyRetryAt;
 
 // Account detection
 uint32_t g_HoardAccountCount = 0;

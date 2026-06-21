@@ -103,18 +103,26 @@ void AddonRender() {
         }
     }
 
+    // While H&S has signalled rate-limit backoff, defer all retries until the
+    // suggested retry time has passed.
+    bool busyBlocked = g_HoardBusyBackoff
+        && std::chrono::steady_clock::now() < g_HoardBusyRetryAt;
+    if (g_HoardBusyBackoff && !busyBlocked) {
+        g_HoardBusyBackoff = false;
+    }
+
     // Trigger H&S batch query if needed
-    if (g_HoardRefreshNeeded && g_HoardDataAvailable) {
+    if (g_HoardRefreshNeeded && g_HoardDataAvailable && !busyBlocked) {
         RefreshHoardData();
     }
 
     // Re-query masteries/achievements if account changed
-    if (g_MasteryAchievementRefreshNeeded && g_HoardDataAvailable) {
+    if (g_MasteryAchievementRefreshNeeded && g_HoardDataAvailable && !busyBlocked) {
         RefreshMasteriesAndAchievements();
     }
 
     // Re-query wallet if account changed
-    if (g_WalletRefreshNeeded && g_HoardDataAvailable) {
+    if (g_WalletRefreshNeeded && g_HoardDataAvailable && !busyBlocked) {
         RefreshWallet();
     }
 
@@ -706,7 +714,7 @@ void AddonRender() {
                     }
                     // Right-click context menu for legendaries
                     {
-                        std::string legPopupId = "LegCtx##" + std::to_string(i);
+                        std::string legPopupId = std::string("LegCtx##") + label + "##" + std::to_string(leg.id);
                         if (ImGui::BeginPopupContextItem(legPopupId.c_str())) {
                             if (ImGui::MenuItem("Open on Wiki")) {
                                 OpenWikiPage(leg.name);
