@@ -40,6 +40,7 @@ namespace CraftyLegend {
         std::vector<std::string> disciplines;
         uint32_t rating;
         std::string type;
+        std::string vendor; // for type=="vendor": merchant name (e.g. "Dugan")
     };
     
     // Currency structure

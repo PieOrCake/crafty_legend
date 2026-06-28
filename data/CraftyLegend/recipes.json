@@ -14967,9 +14967,10 @@
       "output_count": 1,
       "disciplines": [],
       "rating": 0,
-      "type": "mystic_forge",
+      "type": "vendor",
+      "vendor": "Dugan",
       "ingredients": [
-        { "item_id": "106443", "count": 500, "name": "Testimony of Castoran Heroics" },
+        { "item_id": "0", "count": 500, "name": "Testimony of Castoran Heroics" },
         { "item_id": "87557",  "count": 50,  "name": "Grandmaster Mark Shard" },
         { "item_id": "103913", "count": 25,  "name": "Pile of Recycled Siege Equipment" },
         { "item_id": "82746",  "count": 3,   "name": "Gift of War Prosperity" }
@@ -14980,7 +14981,8 @@
       "output_count": 1,
       "disciplines": [],
       "rating": 0,
-      "type": "mystic_forge",
+      "type": "vendor",
+      "vendor": "Dugan",
       "ingredients": [
         { "item_id": "99790",  "count": 1,  "name": "Mistwalker Infusion" },
         { "item_id": "93075",  "count": 40, "name": "Emblem of the Avenger" },

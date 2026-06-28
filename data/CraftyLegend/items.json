@@ -12340,7 +12340,91 @@
       "binding": "account",
       "rarity": "Exotic",
       "acquisition": [
-        "trading_post"
+        "vendor"
+      ]
+    },
+    {
+      "id": "99784",
+      "name": "Mistwalker Infusion",
+      "icon": "https://render.guildwars2.com/file/C6C9B44F9F460EF806B09729442A94D74CC8FA4C/3072496.png",
+      "description": "",
+      "type": "upgrade_component",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "99789",
+      "name": "Mistwalker Infusion",
+      "icon": "https://render.guildwars2.com/file/C6C9B44F9F460EF806B09729442A94D74CC8FA4C/3072496.png",
+      "description": "",
+      "type": "upgrade_component",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "99809",
+      "name": "Mistwalker Infusion",
+      "icon": "https://render.guildwars2.com/file/C6C9B44F9F460EF806B09729442A94D74CC8FA4C/3072496.png",
+      "description": "",
+      "type": "upgrade_component",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "99824",
+      "name": "Mistwalker Infusion",
+      "icon": "https://render.guildwars2.com/file/C6C9B44F9F460EF806B09729442A94D74CC8FA4C/3072496.png",
+      "description": "",
+      "type": "upgrade_component",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "99839",
+      "name": "Mistwalker Infusion",
+      "icon": "https://render.guildwars2.com/file/C6C9B44F9F460EF806B09729442A94D74CC8FA4C/3072496.png",
+      "description": "",
+      "type": "upgrade_component",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "99848",
+      "name": "Mistwalker Infusion",
+      "icon": "https://render.guildwars2.com/file/C6C9B44F9F460EF806B09729442A94D74CC8FA4C/3072496.png",
+      "description": "",
+      "type": "upgrade_component",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "99850",
+      "name": "Mistwalker Infusion",
+      "icon": "https://render.guildwars2.com/file/C6C9B44F9F460EF806B09729442A94D74CC8FA4C/3072496.png",
+      "description": "",
+      "type": "upgrade_component",
+      "binding": "account",
+      "rarity": "Exotic",
+      "acquisition": [
+        "vendor"
       ]
     },
     {

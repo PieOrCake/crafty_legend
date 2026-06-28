@@ -89,8 +89,30 @@ namespace CraftyLegend {
 
     // --- Owned counts ---
 
+    // Some items share one name but have a distinct ID per selectable stat
+    // (e.g. Mistwalker Infusion). Any variant satisfies the same recipe role,
+    // so ownership is pooled across the whole group. The recipe references the
+    // first ID; querying the group returns the summed count of all variants.
+    static const std::vector<uint32_t>* GetAliasGroup(uint32_t item_id) {
+        static const std::unordered_map<uint32_t, std::vector<uint32_t>> groups = {
+            // Mistwalker Infusion — all stat variants
+            {99790, {99790, 99784, 99789, 99809, 99824, 99839, 99848, 99850}},
+        };
+        auto it = groups.find(item_id);
+        return it != groups.end() ? &it->second : nullptr;
+    }
+
     int GW2API::GetOwnedCount(uint32_t item_id) {
         std::lock_guard<std::mutex> lock(s_mutex);
+        const std::vector<uint32_t>* group = GetAliasGroup(item_id);
+        if (group) {
+            int total = 0;
+            for (uint32_t id : *group) {
+                auto it = s_owned_items.find(id);
+                if (it != s_owned_items.end()) total += it->second;
+            }
+            return total;
+        }
         auto it = s_owned_items.find(item_id);
         if (it != s_owned_items.end()) return it->second;
         return 0;
@@ -130,6 +152,18 @@ namespace CraftyLegend {
 
     int GW2API::GetOwnedCountForAccount(uint32_t item_id, const std::string& account_name) {
         std::lock_guard<std::mutex> lock(s_mutex);
+        const std::vector<uint32_t>* group = GetAliasGroup(item_id);
+        if (group) {
+            int total = 0;
+            for (uint32_t id : *group) {
+                auto it = s_owned_items_per_account.find(id);
+                if (it != s_owned_items_per_account.end()) {
+                    auto ait = it->second.find(account_name);
+                    if (ait != it->second.end()) total += ait->second;
+                }
+            }
+            return total;
+        }
         auto it = s_owned_items_per_account.find(item_id);
         if (it != s_owned_items_per_account.end()) {
             auto ait = it->second.find(account_name);

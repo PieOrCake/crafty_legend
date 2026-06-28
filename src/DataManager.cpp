@@ -344,6 +344,9 @@ namespace CraftyLegend {
                 };
                 methods.push_back(wvw);
             } else if (item.id == 99790) { // Mistwalker Infusion - Dugan (requires Mists Research)
+                // Replace the generic vendor method (from items.json acquisition) with the specific Dugan one
+                methods.erase(std::remove_if(methods.begin(), methods.end(),
+                    [](const AcquisitionMethod& m) { return m.method == "vendor"; }), methods.end());
                 AcquisitionMethod dugan;
                 dugan.method = "vendor";
                 dugan.display_name = "Vendor - Dugan (WvW)";
@@ -507,6 +510,7 @@ namespace CraftyLegend {
                 recipe.output_item_id = recipe.id;
                 recipe.output_count = recipe_json["output_count"];
                 recipe.type = recipe_json["type"];
+                recipe.vendor = recipe_json.value("vendor", "");
                 recipe.rating = recipe_json["rating"];
                 
                 // Parse disciplines
@@ -2116,6 +2120,8 @@ namespace CraftyLegend {
                     // Single or no acquisition method - show recipe directly
                     if (recipe->type == "mystic_forge") {
                         next_column.title = "Mystic Forge";
+                    } else if (recipe->type == "vendor") {
+                        next_column.title = recipe->vendor.empty() ? "Vendor" : "Vendor - " + recipe->vendor;
                     } else if (recipe->type == "crafting" && !recipe->disciplines.empty()) {
                         next_column.title = "Craft (" + FormatDisciplines(recipe->disciplines) + " " + std::to_string(recipe->rating) + ")";
                     } else {
@@ -2204,6 +2210,8 @@ namespace CraftyLegend {
                             }
                             if (item_recipe->type == "mystic_forge") {
                                 next_column.title = "Mystic Forge";
+                            } else if (item_recipe->type == "vendor") {
+                                next_column.title = item_recipe->vendor.empty() ? "Vendor" : "Vendor - " + item_recipe->vendor;
                             } else if (item_recipe->type == "crafting" && !item_recipe->disciplines.empty()) {
                                 next_column.title = "Craft (" + FormatDisciplines(item_recipe->disciplines) + " " + std::to_string(item_recipe->rating) + ")";
                             } else {
