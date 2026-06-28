@@ -163,6 +163,9 @@ namespace CraftyLegend {
         
         // Prerequisites
         static std::vector<Prerequisite> GetPrerequisites(uint32_t legendary_id);
+        // Achievement gates for a single item (non-recursive), completion resolved.
+        // Used by the UI to mark/tooltip rows whose acquisition is locked behind an achievement.
+        static std::vector<Prerequisite> GetItemAchievementGates(uint32_t item_id);
         
         // TP Prices - collect all non-bound item IDs across all crafting trees
         static std::vector<uint32_t> GetAllTradeableItemIds();

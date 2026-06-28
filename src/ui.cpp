@@ -892,6 +892,11 @@ void AddonRender() {
                         float rowBaseX = ImGui::GetCursorPosX();
                         float rowBaseY = ImGui::GetCursorPosY();
 
+                        // Achievement gate(s) on this material (drives lock marker + tooltip)
+                        std::vector<CraftyLegend::Prerequisite> matGates;
+                        if (mat.item_id != 0)
+                            matGates = CraftyLegend::DataManager::GetItemAchievementGates(mat.item_id);
+
                         // Row dimensions
                         ImVec2 rowPos = ImGui::GetCursorScreenPos();
                         float rowH = g_ShowItemIcons ? (ICON_SIZE + 2.0f) : ImGui::GetTextLineHeightWithSpacing();
@@ -1115,28 +1120,69 @@ void AddonRender() {
                         if (g_ShowItemIcons) {
                             ImGui::PopStyleVar();
                         }
-                        // Per-account tooltip for unbound items only
-                        if (mat.item_id != 0 && CraftyLegend::GW2API::HasAccountData()
-                            && ImGui::IsItemHovered()) {
-                            const auto* bItem = CraftyLegend::DataManager::GetItem(mat.item_id);
-                            bool isBound = bItem && (bItem->binding == "account" || bItem->binding == "soul");
-                            if (!isBound) {
-                                auto breakdown = CraftyLegend::GW2API::GetPerAccountCounts(mat.item_id);
-                                if (!breakdown.empty()) {
-                                    ImGui::BeginTooltip();
+                        // Lock marker on achievement-gated rows (drawn after Selectable so it overlays)
+                        if (!matGates.empty()) {
+                            bool haveData = CraftyLegend::GW2API::HasAccountData();
+                            bool allDone = true;
+                            for (const auto& g : matGates) if (!g.completed) { allDone = false; break; }
+                            ImU32 lockCol = !haveData ? IM_COL32(160, 160, 160, 210)
+                                          : (allDone ? IM_COL32(80, 200, 80, 235)
+                                                     : IM_COL32(235, 175, 45, 235));
+                            float lh = ImGui::GetTextLineHeight() * 0.72f;
+                            float scrollbarW = ImGui::GetStyle().ScrollbarSize;
+                            ImVec2 lc(rowPos.x + colW - textPadX * 2 - scrollbarW - lh * 0.5f,
+                                      rowPos.y + rowH * 0.5f);
+                            ImDrawList* dl = ImGui::GetWindowDrawList();
+                            float bw = lh * 0.66f, bh = lh * 0.52f;
+                            ImVec2 bMin(lc.x - bw * 0.5f, lc.y - bh * 0.5f + lh * 0.16f);
+                            ImVec2 bMax(lc.x + bw * 0.5f, lc.y + bh * 0.5f + lh * 0.16f);
+                            dl->AddRectFilled(bMin, bMax, lockCol, 1.5f);
+                            dl->PathArcTo(ImVec2(lc.x, bMin.y), bw * 0.34f, 3.14159265f, 6.2831853f, 10);
+                            dl->PathStroke(lockCol, 0, 1.6f);
+                        }
+                        // Hover tooltip: per-account breakdown (unbound) + achievement gate(s)
+                        if (mat.item_id != 0 && ImGui::IsItemHovered()) {
+                            std::map<std::string, int> breakdown;
+                            if (CraftyLegend::GW2API::HasAccountData()) {
+                                const auto* bItem = CraftyLegend::DataManager::GetItem(mat.item_id);
+                                bool isBound = bItem && (bItem->binding == "account" || bItem->binding == "soul");
+                                if (!isBound) breakdown = CraftyLegend::GW2API::GetPerAccountCounts(mat.item_id);
+                            }
+                            bool showAcct = false;
+                            for (const auto& pc : breakdown) if (pc.second > 0) { showAcct = true; break; }
+                            if (showAcct || !matGates.empty()) {
+                                ImGui::BeginTooltip();
+                                if (showAcct) {
+                                    std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
                                     for (const auto& [acct, cnt] : breakdown) {
                                         if (cnt <= 0) continue;
                                         std::string displayName = GetAccountDisplayName(acct);
-                                        std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
-                                        bool isCurrent = (acct == currentAcct);
-                                        if (isCurrent) {
+                                        if (acct == currentAcct) {
                                             ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "%s: %d", displayName.c_str(), cnt);
                                         } else {
                                             ImGui::Text("%s: %d", displayName.c_str(), cnt);
                                         }
                                     }
-                                    ImGui::EndTooltip();
                                 }
+                                if (!matGates.empty()) {
+                                    if (showAcct) ImGui::Separator();
+                                    bool haveData = CraftyLegend::GW2API::HasAccountData();
+                                    for (const auto& g : matGates) {
+                                        ImVec4 gc = !haveData ? ImVec4(0.82f, 0.82f, 0.82f, 1.0f)
+                                                  : (g.completed ? ImVec4(0.5f, 1.0f, 0.5f, 1.0f)
+                                                                 : ImVec4(1.0f, 0.75f, 0.25f, 1.0f));
+                                        const char* tag = !haveData ? "Requires achievement"
+                                                        : (g.completed ? "Achievement complete"
+                                                                       : "Locked - requires achievement");
+                                        ImGui::TextColored(gc, "%s: %s", tag, g.name.c_str());
+                                        if (!g.description.empty()) {
+                                            ImGui::PushTextWrapPos(320.0f);
+                                            ImGui::TextColored(ImVec4(0.65f, 0.65f, 0.65f, 1.0f), "%s", StripMarkup(g.description).c_str());
+                                            ImGui::PopTextWrapPos();
+                                        }
+                                    }
+                                }
+                                ImGui::EndTooltip();
                             }
                         }
                         // Right-click context menu

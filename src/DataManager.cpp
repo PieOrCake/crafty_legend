@@ -3191,6 +3191,19 @@ namespace CraftyLegend {
         return unique;
     }
 
+    std::vector<Prerequisite> DataManager::GetItemAchievementGates(uint32_t item_id) {
+        std::vector<Prerequisite> all;
+        GetItemPrereqs(item_id, all);
+        std::vector<Prerequisite> gates;
+        for (auto& p : all) {
+            if (p.category == PrereqCategory::Achievement) {
+                CheckPrereqCompletion(p);
+                gates.push_back(std::move(p));
+            }
+        }
+        return gates;
+    }
+
     std::vector<uint32_t> DataManager::GetAllTradeableItemIds() {
         std::unordered_set<uint32_t> visited;
         std::unordered_set<uint32_t> tradeable;
