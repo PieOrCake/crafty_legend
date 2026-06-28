@@ -2873,6 +2873,16 @@ namespace CraftyLegend {
                     "Complete the Mists Research: Strife Unending WvW achievement. Rewards 2x Gift of the Warclaw.",
                     item_id, -1, -1, 9244));
                 break;
+            case 109686: // Gift of the Mist Warrior (Dugan exchange)
+                out.push_back(MakePrereq(PC::Achievement, "Mists Research: Strife Unending",
+                    "Complete the Mists Research: Strife Unending WvW achievement to unlock this exchange at Dugan.",
+                    item_id, -1, -1, 9244));
+                break;
+            case 109618: // Gift of the Mistwalker (Dugan exchange)
+                out.push_back(MakePrereq(PC::Achievement, "Mists Research: Strife Unending",
+                    "Complete the Mists Research: Strife Unending WvW achievement to unlock this exchange at Dugan.",
+                    item_id, -1, -1, 9244));
+                break;
             // --- Stella Radians components ---
             case 109141: // Preserved Eidolon Hide
                 out.push_back(MakePrereq(PC::Achievement, "Eternity's Garden Mastery",
