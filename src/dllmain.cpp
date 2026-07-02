@@ -23,6 +23,7 @@ char g_SearchFilter[256]  = "";
 bool g_ShowItemIcons      = false;
 bool g_ShowOwnedLegendaries = true;
 bool g_ShowQAIcon         = true;
+bool g_UsePieTheme        = true;
 
 // Debug window
 bool g_ShowDebugWindow = false;

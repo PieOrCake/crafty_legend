@@ -9,34 +9,69 @@
 #include <algorithm>
 #include <map>
 #include <sstream>
+#include <vector>
 #include <shellapi.h>
+#include "PieTheme.h"
+
+// Crafty Legend's built-in purple/gold style, built once from the ambient ImGui
+// style plus CL's colour and rounding customisations. Keeping a full ImGuiStyle
+// lets us overlay Pie UI's entire colour palette in a single assignment when the
+// Pie theme is active, rather than stacking a second set of PushStyleColor calls
+// on top of our own. When Pie is absent/off this reproduces the original look.
+static ImGuiStyle              g_BaseStyle;
+static bool                    g_BaseStyleBuilt = false;
+static std::vector<ImGuiStyle> g_StyleStack;
+
+static void BuildBaseStyle() {
+    g_BaseStyle = ImGui::GetStyle();
+    ImGuiStyle& s = g_BaseStyle;
+    s.Colors[ImGuiCol_WindowBg]             = ImVec4(0.08f, 0.06f, 0.12f, 0.95f);
+    s.Colors[ImGuiCol_TitleBg]              = ImVec4(0.14f, 0.08f, 0.20f, 1.0f);
+    s.Colors[ImGuiCol_TitleBgActive]        = ImVec4(0.25f, 0.15f, 0.35f, 1.0f);
+    s.Colors[ImGuiCol_Border]               = ImVec4(0.40f, 0.28f, 0.55f, 0.5f);
+    s.Colors[ImGuiCol_Button]               = ImVec4(0.25f, 0.15f, 0.35f, 0.8f);
+    s.Colors[ImGuiCol_ButtonHovered]        = ImVec4(0.35f, 0.22f, 0.48f, 0.9f);
+    s.Colors[ImGuiCol_ButtonActive]         = ImVec4(0.45f, 0.30f, 0.58f, 1.0f);
+    s.Colors[ImGuiCol_Header]               = ImVec4(0.55f, 0.45f, 0.12f, 0.6f);
+    s.Colors[ImGuiCol_HeaderHovered]        = ImVec4(0.65f, 0.52f, 0.15f, 0.7f);
+    s.Colors[ImGuiCol_HeaderActive]         = ImVec4(0.75f, 0.60f, 0.18f, 0.8f);
+    s.Colors[ImGuiCol_Separator]            = ImVec4(0.35f, 0.25f, 0.45f, 1.0f);
+    s.Colors[ImGuiCol_FrameBg]              = ImVec4(0.14f, 0.10f, 0.20f, 0.8f);
+    s.Colors[ImGuiCol_FrameBgHovered]       = ImVec4(0.22f, 0.15f, 0.30f, 0.8f);
+    s.Colors[ImGuiCol_ScrollbarBg]          = ImVec4(0.08f, 0.06f, 0.12f, 0.5f);
+    s.Colors[ImGuiCol_ScrollbarGrab]        = ImVec4(0.30f, 0.20f, 0.42f, 0.7f);
+    s.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.40f, 0.28f, 0.55f, 0.8f);
+    s.Colors[ImGuiCol_ScrollbarGrabActive]  = ImVec4(0.50f, 0.35f, 0.65f, 1.0f);
+    s.WindowRounding    = 6.0f;
+    s.FrameRounding     = 3.0f;
+    s.ScrollbarRounding = 4.0f;
+    g_BaseStyleBuilt = true;
+}
 
 static void PushGW2Theme() {
-    ImGui::PushStyleColor(ImGuiCol_WindowBg,              ImVec4(0.08f, 0.06f, 0.12f, 0.95f));
-    ImGui::PushStyleColor(ImGuiCol_TitleBg,               ImVec4(0.14f, 0.08f, 0.20f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_TitleBgActive,         ImVec4(0.25f, 0.15f, 0.35f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_Border,                ImVec4(0.40f, 0.28f, 0.55f, 0.5f));
-    ImGui::PushStyleColor(ImGuiCol_Button,                ImVec4(0.25f, 0.15f, 0.35f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered,         ImVec4(0.35f, 0.22f, 0.48f, 0.9f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive,          ImVec4(0.45f, 0.30f, 0.58f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_Header,                ImVec4(0.55f, 0.45f, 0.12f, 0.6f));
-    ImGui::PushStyleColor(ImGuiCol_HeaderHovered,         ImVec4(0.65f, 0.52f, 0.15f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_HeaderActive,          ImVec4(0.75f, 0.60f, 0.18f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_Separator,             ImVec4(0.35f, 0.25f, 0.45f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_FrameBg,               ImVec4(0.14f, 0.10f, 0.20f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered,        ImVec4(0.22f, 0.15f, 0.30f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_ScrollbarBg,           ImVec4(0.08f, 0.06f, 0.12f, 0.5f));
-    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrab,         ImVec4(0.30f, 0.20f, 0.42f, 0.7f));
-    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrabHovered,  ImVec4(0.40f, 0.28f, 0.55f, 0.8f));
-    ImGui::PushStyleColor(ImGuiCol_ScrollbarGrabActive,   ImVec4(0.50f, 0.35f, 0.65f, 1.0f));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding,    6.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding,     3.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_ScrollbarRounding, 4.0f);
+    if (!g_BaseStyleBuilt) BuildBaseStyle();
+    g_StyleStack.push_back(ImGui::GetStyle());
+    ImGuiStyle themed = g_BaseStyle;
+    if (PieTheme::Active()) {
+        // Pie ships its entire ImGui colour array; copy it straight into the
+        // style (indexed by ImGuiCol_). Clamp to the smaller of both counts so a
+        // version skew leaves trailing controls at our defaults, never OOB. Style
+        // geometry (rounding/padding) from g_BaseStyle is kept as-is.
+        const PieUiTheme p = PieTheme::Palette();
+        int n = (int)p.count;
+        if (n > ImGuiCol_COUNT)         n = ImGuiCol_COUNT;
+        if (n > PIEUI_THEME_MAX_COLORS) n = PIEUI_THEME_MAX_COLORS;
+        for (int i = 0; i < n; ++i)
+            themed.Colors[i] = ImGui::ColorConvertU32ToFloat4(p.colors[i]);
+    }
+    ImGui::GetStyle() = themed;
 }
 
 static void PopGW2Theme() {
-    ImGui::PopStyleVar(3);
-    ImGui::PopStyleColor(17);
+    if (!g_StyleStack.empty()) {
+        ImGui::GetStyle() = g_StyleStack.back();
+        g_StyleStack.pop_back();
+    }
 }
 
 struct ThemeGuard {
@@ -181,6 +216,30 @@ void AddonRender() {
     ImVec4 completedColor(0.35f, 0.82f, 0.35f, 1.0f);      // Completed items
     ImVec4 readyColor(0.35f, 0.78f, 0.88f, 1.0f);          // Ready to craft
     ImVec4 dimTextColor(0.52f, 0.48f, 0.58f, 1.0f);        // Dimmed lavender
+
+    // Custom-drawn Miller-column panels/headers/titles use the raw literals
+    // above rather than the ImGui style, so they don't pick up the Pie palette
+    // automatically. When the Pie UI theme is active, remap these decorative
+    // colours from the already-applied Pie style (ThemeGuard ran before us) plus
+    // Pie's accent. Semantic status colours (completed/ready/errors) are left
+    // alone so green/cyan/red keep their meaning under any theme.
+    ImU32 headerAccentLine = IM_COL32(200, 170, 60, 120);  // gold line under column headers
+    if (PieTheme::Active()) {
+        const ImGuiStyle& st = ImGui::GetStyle();
+        // Pie's themes are all dark: window/child/title backgrounds stay near-black
+        // across themes and only the accent (trim colour) changes. So derive the
+        // signature column band + panel from the accent, mirroring CL's original
+        // purple band, so they track the active theme instead of looking static.
+        ImVec4 acc         = PieTheme::Unpack(PieTheme::Accent());
+        titleColor         = ImVec4(acc.x, acc.y, acc.z, 1.0f);                 // title text = bright trim
+        sectionHeaderColor = ImVec4(acc.x, acc.y, acc.z, 1.0f);
+        colHeaderBg        = ImVec4(acc.x * 0.38f, acc.y * 0.38f, acc.z * 0.38f, 0.92f); // dimmed trim band
+        colBgColor         = ImVec4(acc.x * 0.14f, acc.y * 0.14f, acc.z * 0.14f, 0.55f); // faint trim panel
+        separatorColor     = st.Colors[ImGuiCol_Border];
+        subtypeColor       = st.Colors[ImGuiCol_TextDisabled];
+        dimTextColor       = st.Colors[ImGuiCol_TextDisabled];
+        headerAccentLine   = PieTheme::AccentU32(headerAccentLine);            // bright trim underline
+    }
 
     ThemeGuard themeGuard;
 
@@ -561,7 +620,7 @@ void AddonRender() {
             // Gold accent line under header
             drawList->AddLine(ImVec2(headerStart.x + 2, headerStart.y + headerH),
                 ImVec2(headerStart.x + col0W - 2, headerStart.y + headerH),
-                IM_COL32(200, 170, 60, 120), 1.0f);
+                headerAccentLine, 1.0f);
             ImGui::Indent(textPadX);
             ImGui::TextColored(titleColor, "Legendary Items");
             ImGui::Separator();
@@ -860,7 +919,7 @@ void AddonRender() {
                 // Gold accent line under header
                 drawList->AddLine(ImVec2(colHdrStart.x + 2, colHdrStart.y + headerH),
                     ImVec2(colHdrStart.x + colW - 2, colHdrStart.y + headerH),
-                    IM_COL32(200, 170, 60, 120), 1.0f);
+                    headerAccentLine, 1.0f);
                 ImGui::Indent(textPadX);
                 ImGui::TextColored(titleColor, "%s", colData.title.c_str());
                 ImGui::Separator();
@@ -1411,6 +1470,17 @@ void AddonOptions() {
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
         ImGui::Text("Show the anvil icon in the Nexus Quick Access toolbar");
+        ImGui::EndTooltip();
+    }
+
+    if (ImGui::Checkbox("Use Pie UI theme (if available)", &g_UsePieTheme)) {
+        SaveDisplaySettings();
+    }
+    ImGui::SameLine();
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::Text("Match Crafty Legend's colours to the Pie UI addon's theme when it is installed.\nWhen off or when Pie UI is absent, the built-in theme is used.");
         ImGui::EndTooltip();
     }
 

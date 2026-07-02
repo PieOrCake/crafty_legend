@@ -4,6 +4,7 @@
 #include "GW2API.h"
 #include "DataManager.h"
 #include "IconManager.h"
+#include "PieTheme.h"
 #include "../include/HoardAndSeekAPI.h"
 #include <sstream>
 
@@ -380,6 +381,9 @@ void AddonLoad(AddonAPI_t* aApi) {
     APIDefs->Events_Subscribe(EV_HOARD_ACCOUNTS_CHANGED, OnAccountsChanged);
     APIDefs->Log(LOGL_INFO, "CraftyLegend", "Subscribed to Hoard & Seek events");
 
+    // Optional Pie UI theme integration (soft dependency)
+    PieTheme::Init();
+
     // Get MumbleLink data pointer for identity polling fallback
     g_MumbleData = static_cast<Mumble::Data*>(APIDefs->DataLink_Get(DL_MUMBLE_LINK));
 
@@ -420,6 +424,7 @@ void AddonUnload() {
     APIDefs->Events_Unsubscribe(CL_ARMORY_RESPONSE, OnHoardArmoryResponse);
     APIDefs->Events_Unsubscribe(EV_MUMBLE_IDENTITY_UPDATED, OnMumbleIdentityUpdated);
     APIDefs->Events_Unsubscribe(EV_HOARD_ACCOUNTS_CHANGED, OnAccountsChanged);
+    PieTheme::Shutdown();
 
     CraftyLegend::IconManager::Shutdown();
     APIDefs->QuickAccess_Remove(QA_ID);

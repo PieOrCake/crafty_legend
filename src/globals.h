@@ -53,6 +53,7 @@ extern char g_SearchFilter[256];
 extern bool g_ShowItemIcons;
 extern bool g_ShowOwnedLegendaries;
 extern bool g_ShowQAIcon;
+extern bool g_UsePieTheme;
 
 // Debug window
 extern bool g_ShowDebugWindow;

@@ -16,7 +16,8 @@ void SaveDisplaySettings() {
     file << "  \"show_item_icons\": " << (g_ShowItemIcons ? "true" : "false") << ",\n";
     file << "  \"show_debug_window\": " << (g_ShowDebugWindow ? "true" : "false") << ",\n";
     file << "  \"show_owned_legendaries\": " << (g_ShowOwnedLegendaries ? "true" : "false") << ",\n";
-    file << "  \"show_qa_icon\": " << (g_ShowQAIcon ? "true" : "false") << "\n";
+    file << "  \"show_qa_icon\": " << (g_ShowQAIcon ? "true" : "false") << ",\n";
+    file << "  \"use_pie_theme\": " << (g_UsePieTheme ? "true" : "false") << "\n";
     file << "}\n";
 }
 
@@ -56,4 +57,6 @@ void LoadDisplaySettings() {
     else if (content.find("\"show_owned_legendaries\": false") != std::string::npos) g_ShowOwnedLegendaries = false;
     if (content.find("\"show_qa_icon\": true") != std::string::npos) g_ShowQAIcon = true;
     else if (content.find("\"show_qa_icon\": false") != std::string::npos) g_ShowQAIcon = false;
+    if (content.find("\"use_pie_theme\": true") != std::string::npos) g_UsePieTheme = true;
+    else if (content.find("\"use_pie_theme\": false") != std::string::npos) g_UsePieTheme = false;
 }
