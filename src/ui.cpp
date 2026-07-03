@@ -225,20 +225,32 @@ void AddonRender() {
     // alone so green/cyan/red keep their meaning under any theme.
     ImU32 headerAccentLine = IM_COL32(200, 170, 60, 120);  // gold line under column headers
     if (PieTheme::Active()) {
-        const ImGuiStyle& st = ImGui::GetStyle();
-        // Pie's themes are all dark: window/child/title backgrounds stay near-black
-        // across themes and only the accent (trim colour) changes. So derive the
-        // signature column band + panel from the accent, mirroring CL's original
-        // purple band, so they track the active theme instead of looking static.
+        // IMPORTANT: this block runs BEFORE ThemeGuard applies the Pie palette to
+        // ImGui's style (a dozen lines below), so ImGui::GetStyle() here is still
+        // the default washed-out style — reading colours from it produces a pale
+        // blue-grey. Read straight from Pie's palette instead.
+        //
+        // Drive the Miller-column header band and its border from Pie's Button
+        // colour: Pie's resting button is a dark, saturated dimmed-accent (not the
+        // muted tab or the bright trim), which reads well as a solid band. Heading
+        // text stays white for guaranteed contrast on that band. The faint panel
+        // behind the rows keeps a dark accent-derived tint so it sits below the
+        // band. Semantic status colours are left alone.
+        const PieUiTheme p = PieTheme::Palette();
+        auto slot = [&](int i, const ImVec4& fb) {
+            return (i >= 0 && (uint32_t)i < p.count) ? PieTheme::Unpack(p.colors[i]) : fb;
+        };
         ImVec4 acc         = PieTheme::Unpack(PieTheme::Accent());
-        titleColor         = ImVec4(acc.x, acc.y, acc.z, 1.0f);                 // title text = bright trim
-        sectionHeaderColor = ImVec4(acc.x, acc.y, acc.z, 1.0f);
-        colHeaderBg        = ImVec4(acc.x * 0.38f, acc.y * 0.38f, acc.z * 0.38f, 0.92f); // dimmed trim band
-        colBgColor         = ImVec4(acc.x * 0.14f, acc.y * 0.14f, acc.z * 0.14f, 0.55f); // faint trim panel
-        separatorColor     = st.Colors[ImGuiCol_Border];
-        subtypeColor       = st.Colors[ImGuiCol_TextDisabled];
-        dimTextColor       = st.Colors[ImGuiCol_TextDisabled];
-        headerAccentLine   = PieTheme::AccentU32(headerAccentLine);            // bright trim underline
+        ImVec4 btn         = slot(ImGuiCol_Button, ImVec4(acc.x * 0.38f, acc.y * 0.38f, acc.z * 0.38f, 1.0f)); // dark dimmed-accent band
+        ImVec4 dis         = slot(ImGuiCol_TextDisabled, dimTextColor);
+        titleColor         = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);                          // white heading text
+        sectionHeaderColor = ImVec4(acc.x, acc.y, acc.z, 1.0f);                       // category labels = trim
+        colHeaderBg        = ImVec4(btn.x, btn.y, btn.z, 0.95f);                      // button-colour header band
+        colBgColor         = ImVec4(acc.x * 0.14f, acc.y * 0.14f, acc.z * 0.14f, 0.55f); // faint panel
+        separatorColor     = ImVec4(btn.x, btn.y, btn.z, 1.0f);                       // button-colour border
+        subtypeColor       = dis;
+        dimTextColor       = dis;
+        headerAccentLine   = ImGui::ColorConvertFloat4ToU32(ImVec4(btn.x, btn.y, btn.z, 1.0f)); // button-colour under-line
     }
 
     ThemeGuard themeGuard;
