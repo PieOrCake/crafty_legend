@@ -25,11 +25,13 @@ If an LLM creating software upsets you, then perhaps this repo isn't for you. Mo
 - Right-click any legendary or material to open it on the wiki or look it up in Hoard & Seek
 - Achievement and mastery prerequisite tracking
 - Item icons with rarity borders, owned badges, and TP price tooltips
+- **Localization** — follows your game language (English, German, French, Spanish). Item, currency, achievement, map, and mastery names come from the game's own data via [Decoder Ring](https://github.com/PieOrCake/decoder_ring); the rest of the UI is translated too (some strings provisional, pending native-speaker review)
 
 ## Requirements
 
 - [Raidcore Nexus](https://raidcore.gg/Nexus)
 - [Hoard & Seek](https://github.com/PieOrCake/hoard_and_seek) (v3+) — provides all account data (inventory, wallet, legendary armory, achievements, masteries). No GW2 API key needed in Crafty Legend itself.
+- [Decoder Ring](https://github.com/PieOrCake/decoder_ring) (optional) — provides localized item and legendary names for non-English clients. Without it, names stay English.
 
 ## Installation
 

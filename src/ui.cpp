@@ -12,6 +12,8 @@
 #include <vector>
 #include <shellapi.h>
 #include "PieTheme.h"
+#include "Localization.h"
+#include <cstring>
 
 // Crafty Legend's built-in purple/gold style, built once from the ambient ImGui
 // style plus CL's colour and rounding customisations. Keeping a full ImGuiStyle
@@ -79,10 +81,81 @@ struct ThemeGuard {
     ~ThemeGuard() { PopGW2Theme(); }
 };
 
+// First-run notice: if the user is missing an optional dependency — Hoard & Seek
+// (item counts) or Decoder Ring (name translations) — show a one-time modal over
+// the Crafty Legend window pointing them at the Nexus library. If BOTH are present
+// it is never shown. Dismissal is persisted so it appears at most once.
+// Call from inside the main window's Begin/End scope.
+static void HandleFirstRunNotice() {
+    if (g_FirstRunNoticeDone) return;
+
+    static bool s_timerStarted = false;
+    static std::chrono::steady_clock::time_point s_firstVisible;
+    if (!s_timerStarted) { s_firstVisible = std::chrono::steady_clock::now(); s_timerStarted = true; }
+
+    static bool s_missHS = false, s_missDR = false, s_opened = false;
+
+    if (!s_opened) {
+        bool hs = g_HoardDetected;
+        bool dr = Localization::DecoderPresent();
+        if (hs && dr) {
+            // Both dependencies present: never bother the user.
+            g_FirstRunNoticeDone = true;
+            SaveDisplaySettings();
+            return;
+        }
+        // H&S is detected via an async ping with no "absent" signal — give it a few
+        // seconds to pong before judging it missing (Decoder Ring is synchronous, so
+        // once H&S is known present we can decide immediately).
+        bool graceElapsed = (std::chrono::steady_clock::now() - s_firstVisible) >= std::chrono::seconds(5);
+        bool hsResolved = hs || graceElapsed;
+        if (!hsResolved) return;
+        s_missHS = !hs;
+        s_missDR = !dr;
+        s_opened = true;
+        ImGui::OpenPopup("Optional Add-ons");
+    }
+
+    // Center the modal over the Crafty Legend window.
+    ImVec2 wpos = ImGui::GetWindowPos();
+    ImVec2 wsz  = ImGui::GetWindowSize();
+    ImGui::SetNextWindowPos(ImVec2(wpos.x + wsz.x * 0.5f, wpos.y + wsz.y * 0.5f),
+                            ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    ImGui::SetNextWindowSize(ImVec2(430, 0), ImGuiCond_Appearing);
+
+    if (ImGui::BeginPopupModal("Optional Add-ons", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::TextWrapped("Crafty Legend works best with these optional add-ons:");
+        ImGui::Spacing();
+        // Always list both dependencies so users learn about both, even if only one is missing.
+        ImGui::BulletText("Hoard & Seek%s", s_missHS ? "" : " (installed)");
+        ImGui::Indent();
+        ImGui::TextWrapped("Reads your account so Crafty Legend can show how many of each material you already own.");
+        ImGui::Unindent();
+        ImGui::Spacing();
+        ImGui::BulletText("Decoder Ring%s", s_missDR ? "" : " (installed)");
+        ImGui::Indent();
+        ImGui::TextWrapped("Translates item and legendary names into your game language (German, French, Spanish).");
+        ImGui::Unindent();
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::TextWrapped("Both can be installed from the Nexus add-on library.");
+        ImGui::Spacing();
+        if (ImGui::Button("Got it", ImVec2(120, 0))) {
+            g_FirstRunNoticeDone = true;
+            SaveDisplaySettings();
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+}
+
 void AddonRender() {
     // Process icon queue even when window is hidden so icons stay loaded
     CraftyLegend::IconManager::Tick();
-    
+
+    // Re-check active language (Decoder Ring / Nexus); refreshes localized caches on change
+    Localization::Poll();
+
     if (!g_WindowVisible) return;
 
     // Check if ping got a pong — allow up to 2 seconds for H&S to respond
@@ -258,6 +331,9 @@ void AddonRender() {
     ImGui::SetNextWindowSize(ImVec2(1100, 500), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Crafty Legend", &g_WindowVisible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
 
+        // First-run optional-dependency notice (shown once if H&S or Decoder Ring is missing)
+        HandleFirstRunNotice();
+
         // Account data & TP prices button row
         {
             auto priceFetchStatus = CraftyLegend::GW2API::GetPriceFetchStatus();
@@ -267,7 +343,7 @@ void AddonRender() {
             {
                 bool canShow = (g_PrereqLegendaryId != 0);
                 if (!canShow) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.4f);
-                if (ImGui::SmallButton(g_ShowShoppingList ? "Hide Shopping List" : "Show Shopping List") && canShow) {
+                if (ImGui::SmallButton(g_ShowShoppingList ? Localization::Tr("Hide Shopping List") : Localization::Tr("Show Shopping List")) && canShow) {
                     g_ShowShoppingList = !g_ShowShoppingList;
                     if (g_ShowShoppingList) g_ShoppingListDirty = true;
                 }
@@ -279,7 +355,7 @@ void AddonRender() {
             bool onCooldown = (g_HoardRefreshAvailableAt > 0 && std::time(nullptr) < (time_t)g_HoardRefreshAvailableAt);
             bool busy = priceFetching || g_HoardRefreshPending || g_HoardPingPending || onCooldown;
             if (busy) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
-            if (ImGui::SmallButton("Update Account Data") && !busy) {
+            if (ImGui::SmallButton(Localization::Tr("Update Account Data")) && !busy) {
                 // Always ping to verify H&S is still loaded
                 g_HoardDetected = false;
                 APIDefs->Events_Raise(EV_HOARD_PING, nullptr);
@@ -288,7 +364,7 @@ void AddonRender() {
                 g_HoardPingTime = std::chrono::steady_clock::now();
             }
             ImGui::SameLine();
-            if (ImGui::SmallButton("Refresh TP Prices") && !priceFetching && !g_HoardRefreshPending) {
+            if (ImGui::SmallButton(Localization::Tr("Refresh TP Prices")) && !priceFetching && !g_HoardRefreshPending) {
                 auto ids = CraftyLegend::DataManager::GetAllTradeableItemIds();
                 CraftyLegend::GW2API::FetchPricesAsync(ids);
             }
@@ -301,26 +377,26 @@ void AddonRender() {
             // Status message
             if (g_HoardPingPending) {
                 ImGui::SameLine();
-                ImGui::TextColored(titleColor, "Looking for Hoard & Seek...");
+                ImGui::TextColored(titleColor, "%s", Localization::Tr("Looking for Hoard & Seek..."));
             } else if (g_HoardFetching && !g_HoardFetchMessage.empty()) {
                 ImGui::SameLine();
                 ImGui::TextColored(titleColor, "%s", g_HoardFetchMessage.c_str());
             } else if (g_HoardRefreshPending) {
                 ImGui::SameLine();
-                ImGui::TextColored(titleColor, "Waiting for Hoard & Seek...");
+                ImGui::TextColored(titleColor, "%s", Localization::Tr("Waiting for Hoard & Seek..."));
             } else if (priceFetching) {
                 ImGui::SameLine();
                 ImGui::TextColored(titleColor, "%s",
                     CraftyLegend::GW2API::GetPriceFetchMessage().c_str());
             } else if (g_HoardPermissionPending) {
                 ImGui::SameLine();
-                ImGui::TextColored(titleColor, "Waiting for Hoard & Seek permission...");
+                ImGui::TextColored(titleColor, "%s", Localization::Tr("Waiting for Hoard & Seek permission..."));
             } else if (g_HoardPermissionDenied) {
                 ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Hoard & Seek permission denied");
+                ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s", Localization::Tr("Hoard & Seek permission denied"));
             } else if (!statusExpired && g_HoardPingFailed) {
                 ImGui::SameLine();
-                ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "Hoard & Seek addon not found");
+                ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s", Localization::Tr("Hoard & Seek addon not found"));
             } else if (!statusExpired && g_HoardFetchError) {
                 ImGui::SameLine();
                 ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), "%s", g_HoardErrorMessage.c_str());
@@ -350,10 +426,10 @@ void AddonRender() {
                 }
             } else if (g_HoardDataAvailable) {
                 ImGui::SameLine();
-                ImGui::TextColored(dimTextColor, "(Hoard & Seek connected)");
+                ImGui::TextColored(dimTextColor, "%s", Localization::Tr("(Hoard & Seek connected)"));
             } else if (CraftyLegend::GW2API::HasPriceData()) {
                 ImGui::SameLine();
-                ImGui::TextColored(dimTextColor, "(cached prices loaded)");
+                ImGui::TextColored(dimTextColor, "%s", Localization::Tr("(cached prices loaded)"));
             }
 
             // Detect price fetch completion and start status timer
@@ -372,7 +448,7 @@ void AddonRender() {
 
         const auto& legendaries = CraftyLegend::DataManager::GetLegendaries();
         if (legendaries.empty()) {
-            ImGui::Text("No legendary items loaded.");
+            ImGui::Text("%s", Localization::Tr("No legendary items loaded."));
         } else {
             float totalAvailHeight = ImGui::GetContentRegionAvail().y;
             float prereqPanelHeight = g_Prerequisites.empty() ? 0.0f : 120.0f;
@@ -393,7 +469,7 @@ void AddonRender() {
             float legIconExtra = g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 0.0f;
             for (const auto& leg : legendaries) {
                 std::string subtype = !leg.weapon_type.empty() ? leg.weapon_type : (!leg.armor_type.empty() ? leg.armor_type : leg.trinket_type);
-                std::string fullLabel = leg.name + (subtype.empty() ? "" : " (" + subtype + ")") + " >";
+                std::string fullLabel = leg.name + (subtype.empty() ? "" : " (" + std::string(Localization::Tr(subtype.c_str())) + ")") + " >";
                 float pctExtra = CraftyLegend::GW2API::HasAccountData() ? ImGui::CalcTextSize("100%").x + 8.0f : 0.0f;
                 float w = ImGui::CalcTextSize(fullLabel.c_str()).x + legIconExtra + pctExtra + textPadX * 2 + 8;
                 if (w > col0W) col0W = w;
@@ -405,7 +481,7 @@ void AddonRender() {
                 const auto& colData = g_Columns[col];
                 if (colData.title.empty()) break;
                 float colW = columnWidth;
-                float titleW = ImGui::CalcTextSize(colData.title.c_str()).x;
+                float titleW = ImGui::CalcTextSize(Localization::ColumnTitle(colData.title).c_str()).x;
                 if (titleW + textPadX * 2 + 8 > colW) colW = titleW + textPadX * 2 + 8;
                 float colMaxPriceW = 0.0f;
                 for (const auto& mat : colData.materials) {
@@ -415,7 +491,7 @@ void AddonRender() {
                 float iconExtra = g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 0.0f;
                 for (const auto& mat : colData.materials) {
                     if (mat.name == "Coin") {
-                        float w = ImGui::CalcTextSize("Gold Cost").x + 4 + colMaxPriceW;
+                        float w = ImGui::CalcTextSize(Localization::Tr("Gold Cost")).x + 4 + colMaxPriceW;
                         if (w + textPadX * 2 + 8 > colW) colW = w + textPadX * 2 + 8;
                         continue;
                     }
@@ -448,7 +524,7 @@ void AddonRender() {
                     std::string qtyStr = std::to_string(e.required);
                     float qw = ImGui::CalcTextSize(qtyStr.c_str()).x;
                     if (qw > qtyColW) qtyColW = qw;
-                    float nw = ImGui::CalcTextSize(e.name.c_str()).x;
+                    float nw = ImGui::CalcTextSize(Localization::ItemName(e.item_id, e.name).c_str()).x;
                     if (nw > nameColW) nameColW = nw;
                     if (e.tp_price > 0 && e.required > 0) {
                         float pw = CalcPriceWidth(e.tp_price * e.required);
@@ -479,7 +555,7 @@ void AddonRender() {
 
                 ImGui::BeginChild("ShoppingPanel", ImVec2(shoppingPanelW, availHeight + scrollbarHeight), false);
                 ImGui::Indent(textPadX);
-                ImGui::TextColored(titleColor, "Shopping List");
+                ImGui::TextColored(titleColor, "%s", Localization::Tr("Shopping List"));
                 ImGui::SameLine();
                 ImGui::TextColored(dimTextColor, "(%d)", tpCount + vendorCount);
 
@@ -488,31 +564,31 @@ void AddonRender() {
                 ImGui::TextColored(dimTextColor, " | ");
                 ImGui::SameLine(0, 0);
                 if (g_ShoppingSort == ShoppingSort::Name) {
-                    ImGui::TextColored(sectionHeaderColor, "Name");
+                    ImGui::TextColored(sectionHeaderColor, "%s", Localization::Tr("Name"));
                 } else {
-                    if (ImGui::SmallButton("Name")) {
+                    if (ImGui::SmallButton(Localization::Tr("Name"))) {
                         g_ShoppingSort = ShoppingSort::Name;
                         g_ShoppingListDirty = true;
                     }
                 }
                 ImGui::SameLine(0, 4);
                 if (g_ShoppingSort == ShoppingSort::Price) {
-                    ImGui::TextColored(sectionHeaderColor, "Price");
+                    ImGui::TextColored(sectionHeaderColor, "%s", Localization::Tr("Price"));
                 } else {
-                    if (ImGui::SmallButton("Price")) {
+                    if (ImGui::SmallButton(Localization::Tr("Price"))) {
                         g_ShoppingSort = ShoppingSort::Price;
                         g_ShoppingListDirty = true;
                     }
                 }
 
                 if (tpCost > 0) {
-                    ImGui::TextColored(dimTextColor, "Total TP: ");
+                    ImGui::TextColored(dimTextColor, "%s", Localization::Tr("Total TP: "));
                     ImGui::SameLine(0, 0);
                     RenderPrice((int)std::min(tpCost, (long long)INT_MAX));
                     ImGui::NewLine();
                 }
                 if (vendorCost > 0) {
-                    ImGui::TextColored(dimTextColor, "Total Vendor: ");
+                    ImGui::TextColored(dimTextColor, "%s", Localization::Tr("Total Vendor: "));
                     ImGui::SameLine(0, 0);
                     RenderPrice((int)std::min(vendorCost, (long long)INT_MAX));
                     ImGui::NewLine();
@@ -531,7 +607,7 @@ void AddonRender() {
 
                         // Name column
                         ImGui::SameLine(qtyEnd);
-                        ImGui::Text("%s", e.name.c_str());
+                        ImGui::Text("%s", Localization::ItemName(e.item_id, e.name).c_str());
 
                         // Price (right-aligned)
                         if (e.tp_price > 0 && e.required > 0) {
@@ -544,7 +620,7 @@ void AddonRender() {
 
                 // TP Purchases section
                 if (tpCount > 0) {
-                    ImGui::TextColored(readyColor, "Trading Post");
+                    ImGui::TextColored(readyColor, "%s", Localization::Tr("Trading Post"));
                     ImGui::SameLine();
                     ImGui::TextColored(dimTextColor, "(%d)", tpCount);
                     renderEntries(false);
@@ -553,7 +629,7 @@ void AddonRender() {
                 // Vendor Purchases section
                 if (vendorCount > 0) {
                     if (tpCount > 0) ImGui::Spacing();
-                    ImGui::TextColored(sectionHeaderColor, "Vendor");
+                    ImGui::TextColored(sectionHeaderColor, "%s", Localization::Tr("Vendor"));
                     ImGui::SameLine();
                     ImGui::TextColored(dimTextColor, "(%d)", vendorCount);
                     renderEntries(true);
@@ -634,7 +710,7 @@ void AddonRender() {
                 ImVec2(headerStart.x + col0W - 2, headerStart.y + headerH),
                 headerAccentLine, 1.0f);
             ImGui::Indent(textPadX);
-            ImGui::TextColored(titleColor, "Legendary Items");
+            ImGui::TextColored(titleColor, "%s", Localization::Tr("Legendary Items"));
             ImGui::Separator();
             ImGui::Spacing();
 
@@ -754,7 +830,7 @@ void AddonRender() {
                     }
 
                     std::string subtype = !leg.weapon_type.empty() ? leg.weapon_type : (!leg.armor_type.empty() ? leg.armor_type : (!leg.trinket_type.empty() ? leg.trinket_type : leg.back_type));
-                    std::string subtypeSuffix = subtype.empty() ? "" : " (" + subtype + ")";
+                    std::string subtypeSuffix = subtype.empty() ? "" : " (" + std::string(Localization::Tr(subtype.c_str())) + ")";
                     // Compute star size for favourites (drawn as overlay after Selectable)
                     float starSize = 0.0f;
                     ImVec2 starAnchor = ImGui::GetCursorScreenPos();
@@ -762,14 +838,15 @@ void AddonRender() {
                         float sz = ImGui::GetTextLineHeight() * 0.5f;
                         starSize = sz * 2.0f + 4.0f;
                     }
-                    std::string lbl = (isFav ? "     " : "") + leg.name + subtypeSuffix + " >";
+                    std::string dispName = Localization::ItemName(leg.id, leg.name);
+                    std::string lbl = (isFav ? "     " : "") + dispName + subtypeSuffix + " >";
                     ImVec2 itemPos = ImGui::GetCursorScreenPos();
                     float selH = g_ShowItemIcons ? ICON_SIZE : 0;
                     if (g_ShowItemIcons) {
                         ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.0f, 0.5f));
                     }
                     if (ImGui::Selectable(lbl.c_str(), isSel, 0, ImVec2(0, selH))) {
-                        if (g_Columns.empty()) { g_Columns.resize(1); g_Columns[0].title = "Legendary Items"; }
+                        if (g_Columns.empty()) { g_Columns.resize(1); g_Columns[0].title = Localization::Tr("Legendary Items"); }
                         g_Columns[0].selected_index = static_cast<int>(i);
                         try {
                             CraftyLegend::DataManager::UpdateColumn(0, leg.id);
@@ -787,14 +864,14 @@ void AddonRender() {
                     {
                         std::string legPopupId = std::string("LegCtx##") + label + "##" + std::to_string(leg.id);
                         if (ImGui::BeginPopupContextItem(legPopupId.c_str())) {
-                            if (ImGui::MenuItem("Open on Wiki")) {
+                            if (ImGui::MenuItem(Localization::Tr("Open on Wiki"))) {
                                 OpenWikiPage(leg.name);
                             }
-                            if (ImGui::MenuItem(isFav ? "Remove Favourite" : "Add Favourite")) {
+                            if (ImGui::MenuItem(isFav ? Localization::Tr("Remove Favourite") : Localization::Tr("Add Favourite"))) {
                                 CraftyLegend::DataManager::ToggleFavourite(leg.id);
                             }
                             if (CraftyLegend::GW2API::HasAccountData() && CraftyLegend::GW2API::GetOwnedCount(leg.id) > 0) {
-                                if (ImGui::MenuItem("Search in Hoard & Seek")) {
+                                if (ImGui::MenuItem(Localization::Tr("Search in Hoard & Seek"))) {
                                     APIDefs->Events_Raise(EV_HOARD_SEARCH, (void*)leg.name.c_str());
                                 }
                             }
@@ -822,7 +899,7 @@ void AddonRender() {
                     }
                     if (!subtypeSuffix.empty()) {
                         float padW = isFav ? ImGui::CalcTextSize("     ").x : 0.0f;
-                        float nameW = ImGui::CalcTextSize(leg.name.c_str()).x + padW;
+                        float nameW = ImGui::CalcTextSize(dispName.c_str()).x + padW;
                         float textVOff = g_ShowItemIcons ? (ICON_SIZE - ImGui::GetTextLineHeight()) * 0.5f : 0.0f;
                         ImVec2 subtypePos(itemPos.x + nameW, itemPos.y + textVOff);
                         ImGui::GetWindowDrawList()->AddText(subtypePos, ImGui::ColorConvertFloat4ToU32(subtypeColor), subtypeSuffix.c_str());
@@ -844,19 +921,19 @@ void AddonRender() {
             };
 
             // Favourites: all favourited legendaries pinned at the top
-            renderSection("Favourites", [](const CraftyLegend::Legendary& l) {
+            renderSection(Localization::Tr("Favourites"), [](const CraftyLegend::Legendary& l) {
                 return CraftyLegend::DataManager::IsFavourite(l.id);
             }, true);
             // Weapons: Gen 1-3 + Spear (15) + Sigil (18)
-            renderSection("Weapons", [](const CraftyLegend::Legendary& l) {
+            renderSection(Localization::Tr("Weapons"), [](const CraftyLegend::Legendary& l) {
                 return l.generation >= 1 && l.generation <= 3 || l.generation == 15 || l.generation == 18;
             });
             // Armour: Gen 4-7 + Rune (17)
-            renderSection("Armour", [](const CraftyLegend::Legendary& l) {
+            renderSection(Localization::Tr("Armour"), [](const CraftyLegend::Legendary& l) {
                 return l.generation >= 4 && l.generation <= 7 || l.generation == 17;
             });
             // Trinkets: Trinkets (8-13) + Backpieces (14) + Relic (16)
-            renderSection("Trinkets", [](const CraftyLegend::Legendary& l) {
+            renderSection(Localization::Tr("Trinkets"), [](const CraftyLegend::Legendary& l) {
                 return l.generation >= 8 && l.generation <= 14 || l.generation == 16;
             });
 
@@ -874,7 +951,7 @@ void AddonRender() {
 
                 // Compute column width: max of default and widest content
                 float colW = columnWidth;
-                float titleW = ImGui::CalcTextSize(colData.title.c_str()).x;
+                float titleW = ImGui::CalcTextSize(Localization::ColumnTitle(colData.title).c_str()).x;
                 if (titleW + textPadX * 2 + 8 > colW) colW = titleW + textPadX * 2 + 8;
                 // Compute max price width first for consistent offset
                 float colMaxPriceW = 0.0f;
@@ -888,7 +965,7 @@ void AddonRender() {
                 float iconExtraR = g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 0.0f;
                 for (const auto& mat : colData.materials) {
                     if (mat.name == "Coin") {
-                        float w = ImGui::CalcTextSize("Gold Cost").x + 4 + colMaxPriceW;
+                        float w = ImGui::CalcTextSize(Localization::Tr("Gold Cost")).x + 4 + colMaxPriceW;
                         if (w + textPadX * 2 + 8 > colW) colW = w + textPadX * 2 + 8;
                         continue;
                     }
@@ -933,7 +1010,7 @@ void AddonRender() {
                     ImVec2(colHdrStart.x + colW - 2, colHdrStart.y + headerH),
                     headerAccentLine, 1.0f);
                 ImGui::Indent(textPadX);
-                ImGui::TextColored(titleColor, "%s", colData.title.c_str());
+                ImGui::TextColored(titleColor, "%s", Localization::ColumnTitle(colData.title).c_str());
                 ImGui::Separator();
                 ImGui::Spacing();
 
@@ -1023,7 +1100,7 @@ void AddonRender() {
                         // Coin materials: show price with label, not selectable
                         if (mat.name == "Coin") {
                             ImGui::SetCursorPosX(rowBaseX + labelStartX);
-                            ImGui::TextColored(dimTextColor, "Gold Cost");
+                            ImGui::TextColored(dimTextColor, "%s", Localization::Tr("Gold Cost"));
                             continue;
                         }
 
@@ -1113,23 +1190,24 @@ void AddonRender() {
                                                     ? ImGui::ColorConvertU32ToFloat4(rarityCol)
                                                     : ImVec4(1,1,1,1);
                                                 nameCol.w = 1.0f;
-                                                ImGui::TextColored(nameCol, "%s", tipItem->name.c_str());
+                                                ImGui::TextColored(nameCol, "%s", Localization::ItemName(mat.item_id, tipItem->name).c_str());
                                                 if (!tipItem->rarity.empty()) {
-                                                    ImGui::TextColored(ImVec4(0.7f,0.7f,0.7f,1), "%s", tipItem->rarity.c_str());
+                                                    ImGui::TextColored(ImVec4(0.7f,0.7f,0.7f,1), "%s", Localization::Tr(tipItem->rarity.c_str()));
                                                 }
-                                                if (!tipItem->description.empty()) {
+                                                std::string rawDesc = Localization::ItemDescription(mat.item_id, tipItem->description);
+                                                if (!rawDesc.empty()) {
                                                     ImGui::PushTextWrapPos(300.0f);
-                                                    std::string cleanDesc = StripMarkup(tipItem->description);
+                                                    std::string cleanDesc = StripMarkup(rawDesc);
                                                     ImGui::TextColored(ImVec4(0.6f,0.6f,0.6f,1), "%s", cleanDesc.c_str());
                                                     ImGui::PopTextWrapPos();
                                                 }
                                             } else {
-                                                ImGui::Text("%s", mat.name.c_str());
+                                                ImGui::Text("%s", Localization::ItemName(mat.item_id, mat.name).c_str());
                                             }
                                         } else {
                                             // Wallet currency
-                                            ImGui::Text("%s", mat.name.c_str());
-                                            ImGui::TextColored(ImVec4(0.7f,0.7f,0.7f,1), "Wallet Currency");
+                                            ImGui::Text("%s", CraftyLegend::GW2API::LocalizeCurrencyName(mat.name).c_str());
+                                            ImGui::TextColored(ImVec4(0.7f,0.7f,0.7f,1), "%s", Localization::Tr("Wallet Currency"));
                                         }
                                         ImGui::EndGroup();
                                         ImGui::EndTooltip();
@@ -1238,14 +1316,20 @@ void AddonRender() {
                                 if (!matGates.empty()) {
                                     if (showAcct) ImGui::Separator();
                                     bool haveData = CraftyLegend::GW2API::HasAccountData();
+                                    const char* gateLang = Localization::ActiveLang();
                                     for (const auto& g : matGates) {
                                         ImVec4 gc = !haveData ? ImVec4(0.82f, 0.82f, 0.82f, 1.0f)
                                                   : (g.completed ? ImVec4(0.5f, 1.0f, 0.5f, 1.0f)
                                                                  : ImVec4(1.0f, 0.75f, 0.25f, 1.0f));
-                                        const char* tag = !haveData ? "Requires achievement"
-                                                        : (g.completed ? "Achievement complete"
-                                                                       : "Locked - requires achievement");
-                                        ImGui::TextColored(gc, "%s: %s", tag, g.name.c_str());
+                                        const char* tag = !haveData ? Localization::Tr("Requires achievement")
+                                                        : (g.completed ? Localization::Tr("Achievement complete")
+                                                                       : Localization::Tr("Locked - requires achievement"));
+                                        std::string gName = g.name;
+                                        if (g.achievement_id > 0 && std::strcmp(gateLang, "en") != 0) {
+                                            CraftyLegend::GW2API::EnsureAchievementNames({g.achievement_id}, gateLang);
+                                            gName = CraftyLegend::GW2API::LocalizeAchievementName(g.achievement_id, g.name);
+                                        }
+                                        ImGui::TextColored(gc, "%s: %s", tag, gName.c_str());
                                         if (!g.description.empty()) {
                                             ImGui::PushTextWrapPos(320.0f);
                                             ImGui::TextColored(ImVec4(0.65f, 0.65f, 0.65f, 1.0f), "%s", StripMarkup(g.description).c_str());
@@ -1265,11 +1349,11 @@ void AddonRender() {
                                     const auto* wItem = CraftyLegend::DataManager::GetItem(mat.item_id);
                                     if (wItem) wikiName = wItem->name;
                                 }
-                                if (ImGui::MenuItem("Open on Wiki")) {
+                                if (ImGui::MenuItem(Localization::Tr("Open on Wiki"))) {
                                     OpenWikiPage(wikiName);
                                 }
                                 if (mat.item_id != 0 && CraftyLegend::GW2API::HasAccountData() && CraftyLegend::GW2API::GetOwnedCount(mat.item_id) > 0) {
-                                    if (ImGui::MenuItem("Search in Hoard & Seek")) {
+                                    if (ImGui::MenuItem(Localization::Tr("Search in Hoard & Seek"))) {
                                         APIDefs->Events_Raise(EV_HOARD_SEARCH, (void*)wikiName.c_str());
                                     }
                                 }
@@ -1344,7 +1428,7 @@ void AddonRender() {
             if (!g_Prerequisites.empty()) {
                 ImGui::Spacing();
                 ImGui::Separator();
-                ImGui::TextColored(titleColor, "Prerequisites");
+                ImGui::TextColored(titleColor, "%s", Localization::Tr("Prerequisites"));
                 ImGui::BeginChild("PrereqPanel", ImVec2(0, prereqPanelHeight - 20.0f), false);
 
                 CraftyLegend::PrereqCategory lastCat = (CraftyLegend::PrereqCategory)-1;
@@ -1373,7 +1457,7 @@ void AddonRender() {
                                 catName = "Map Currencies"; catColor = ImVec4(0.3f, 0.85f, 0.7f, 1.0f); break;
                             default: break;
                         }
-                        ImGui::TextColored(catColor, "%s:", catName);
+                        ImGui::TextColored(catColor, "%s:", Localization::Tr(catName));
                         ImGui::SameLine();
                     } else {
                         ImGui::SameLine();
@@ -1381,7 +1465,18 @@ void AddonRender() {
                         ImGui::SameLine();
                     }
                     if (p.completed) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.85f, 0.3f, 1.0f));
-                    ImGui::Text("%s", p.name.c_str());
+                    std::string pName = p.name;
+                    if (std::strcmp(Localization::ActiveLang(), "en") != 0) {
+                        if (p.achievement_id > 0) {
+                            // Achievements AND collections (both are GW2 achievements): authoritative API name
+                            CraftyLegend::GW2API::EnsureAchievementNames({p.achievement_id}, Localization::ActiveLang());
+                            pName = CraftyLegend::GW2API::LocalizeAchievementName(p.achievement_id, p.name);
+                        } else {
+                            // No achievement id: best-effort chrome table (English fallback)
+                            pName = Localization::Tr(p.name.c_str());
+                        }
+                    }
+                    ImGui::Text("%s", pName.c_str());
                     if (p.completed) ImGui::PopStyleColor();
                     if (ImGui::IsItemHovered()) {
                         ImGui::BeginTooltip();
@@ -1417,7 +1512,9 @@ void AddonRender() {
                 }
                 ImGui::SetClipboardText(ss.str().c_str());
             }
-            
+
+            ImGui::Separator();
+            ImGui::TextColored(ImVec4(0.6f, 0.85f, 1.0f, 1.0f), "%s", Localization::DiagStatus().c_str());
             ImGui::Separator();
             ImGui::BeginChild("ScrollingRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
             for (const auto& line : g_DebugLog) {
@@ -1433,20 +1530,20 @@ void AddonRender() {
 }
 
 void AddonOptions() {
-    ImGui::TextColored(ImVec4(1.0f, 0.85f, 0.0f, 1.0f), "CraftyLegend Settings");
-    if (ImGui::SmallButton("Homepage")) {
+    ImGui::TextColored(ImVec4(1.0f, 0.85f, 0.0f, 1.0f), "%s", Localization::Tr("CraftyLegend Settings"));
+    if (ImGui::SmallButton(Localization::Tr("Homepage"))) {
         ShellExecuteA(NULL, "open", "https://pie.rocks.cc/", NULL, NULL, SW_SHOWNORMAL);
     }
     ImGui::SameLine();
-    if (ImGui::SmallButton("Buy me a coffee!")) {
+    if (ImGui::SmallButton(Localization::Tr("Buy me a coffee!"))) {
         ShellExecuteA(NULL, "open", "https://ko-fi.com/pieorcake", NULL, NULL, SW_SHOWNORMAL);
     }
     ImGui::Separator();
 
     // Icon settings (always visible at top)
-    ImGui::Text("Display Settings");
+    ImGui::Text("%s", Localization::Tr("Display Settings"));
     bool compactMode = !g_ShowItemIcons;
-    if (ImGui::Checkbox("Compact Mode", &compactMode)) {
+    if (ImGui::Checkbox(Localization::Tr("Compact Mode"), &compactMode)) {
         g_ShowItemIcons = !compactMode;
         SaveDisplaySettings();
     }
@@ -1458,7 +1555,7 @@ void AddonOptions() {
         ImGui::EndTooltip();
     }
     
-    if (ImGui::Checkbox("Show Owned Legendaries", &g_ShowOwnedLegendaries)) {
+    if (ImGui::Checkbox(Localization::Tr("Show Owned Legendaries"), &g_ShowOwnedLegendaries)) {
         SaveDisplaySettings();
     }
     ImGui::SameLine();
@@ -1469,7 +1566,7 @@ void AddonOptions() {
         ImGui::EndTooltip();
     }
 
-    if (ImGui::Checkbox("Show Quick Access Icon", &g_ShowQAIcon)) {
+    if (ImGui::Checkbox(Localization::Tr("Show Quick Access Icon"), &g_ShowQAIcon)) {
         if (g_ShowQAIcon) {
             APIDefs->QuickAccess_Add(QA_ID, TEX_ANVIL, TEX_ANVIL_HOVER, "KB_CRAFTY_TOGGLE", "CraftyLegend");
         } else {
@@ -1485,7 +1582,7 @@ void AddonOptions() {
         ImGui::EndTooltip();
     }
 
-    if (ImGui::Checkbox("Use Pie UI theme (if available)", &g_UsePieTheme)) {
+    if (ImGui::Checkbox(Localization::Tr("Use Pie UI theme (if available)"), &g_UsePieTheme)) {
         SaveDisplaySettings();
     }
     ImGui::SameLine();

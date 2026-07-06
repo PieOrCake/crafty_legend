@@ -3,7 +3,7 @@
 // Version constants
 #define V_MAJOR    0
 #define V_MINOR    9
-#define V_BUILD    6
+#define V_BUILD    7
 #define V_REVISION 0
 
 // -------------------------------------------------------------------------
@@ -24,6 +24,7 @@ bool g_ShowItemIcons      = false;
 bool g_ShowOwnedLegendaries = true;
 bool g_ShowQAIcon         = true;
 bool g_UsePieTheme        = true;
+bool g_FirstRunNoticeDone = false;
 
 // Debug window
 bool g_ShowDebugWindow = false;

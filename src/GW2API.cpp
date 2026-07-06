@@ -24,6 +24,11 @@ namespace CraftyLegend {
     FetchStatus GW2API::s_price_fetch_status = FetchStatus::Idle;
     std::string GW2API::s_price_fetch_message;
     std::mutex GW2API::s_mutex;
+    std::unordered_map<int, std::string> GW2API::s_currency_names;
+    std::unordered_map<int, std::string> GW2API::s_achievement_names;
+    std::unordered_set<int> GW2API::s_achievement_requested;
+    std::string GW2API::s_localized_lang;
+    bool GW2API::s_currency_fetch_inflight = false;
 
     // Helper: get the DLL directory (same logic as DataManager)
     static std::string GetDllDir() {
@@ -233,8 +238,9 @@ namespace CraftyLegend {
         s_legendary_armory.clear();
     }
 
-    int GW2API::GetWalletAmountByName(const std::string& name) {
-        // Map currency display names to GW2 API wallet currency IDs
+    // Map currency display names (English, singular + plural) to GW2 wallet ids.
+    // Shared by GetWalletAmountByName (counting) and GetCurrencyIdByName (i18n).
+    static const std::unordered_map<std::string, int>& CurrencyNameToId() {
         static const std::unordered_map<std::string, int> name_to_id = {
             // Core currencies
             {"Coin", 1}, {"Gold", 1},
@@ -329,9 +335,20 @@ namespace CraftyLegend {
             {"Antiquated Ducat", 81}, {"Antiquated Ducats", 81},
             {"Aether-Rich Sap", 83},
         };
+        return name_to_id;
+    }
+
+    int GW2API::GetWalletAmountByName(const std::string& name) {
+        const auto& name_to_id = CurrencyNameToId();
         auto it = name_to_id.find(name);
         if (it == name_to_id.end()) return -1; // Not a wallet currency
         return GetWalletAmount(it->second);
+    }
+
+    int GW2API::GetCurrencyIdByName(const std::string& name) {
+        const auto& name_to_id = CurrencyNameToId();
+        auto it = name_to_id.find(name);
+        return it == name_to_id.end() ? -1 : it->second;
     }
 
     // --- Masteries & Achievements ---
@@ -513,6 +530,106 @@ namespace CraftyLegend {
         } catch (...) {
             return false;
         }
+    }
+
+    // --- Localized names (i18n) ---
+
+    void GW2API::FetchCurrencyNamesAsync(const std::string& lang) {
+        {
+            std::lock_guard<std::mutex> lock(s_mutex);
+            if (s_localized_lang == lang && !s_currency_names.empty()) return; // already have it
+            // New language: drop all localized caches so they refetch.
+            s_localized_lang = lang;
+            s_currency_names.clear();
+            s_achievement_names.clear();
+            s_achievement_requested.clear();
+        }
+        std::string l = lang;
+        std::thread([l]() {
+            try {
+                std::string url = "https://api.guildwars2.com/v2/currencies?ids=all&lang=" + l;
+                std::string resp = HttpGet(url);
+                std::unordered_map<int, std::string> parsed;
+                if (!resp.empty()) {
+                    json j = json::parse(resp);
+                    if (j.is_array()) {
+                        for (const auto& e : j) {
+                            if (!e.contains("id") || !e.contains("name")) continue;
+                            parsed[e["id"].get<int>()] = e["name"].get<std::string>();
+                        }
+                    }
+                }
+                std::lock_guard<std::mutex> lock(s_mutex);
+                if (s_localized_lang == l) s_currency_names = std::move(parsed);
+            } catch (...) {}
+        }).detach();
+    }
+
+    std::string GW2API::LocalizeCurrencyName(const std::string& englishName) {
+        int id = GetCurrencyIdByName(englishName);
+        if (id < 0) return englishName;
+        std::lock_guard<std::mutex> lock(s_mutex);
+        auto it = s_currency_names.find(id);
+        return it != s_currency_names.end() ? it->second : englishName;
+    }
+
+    void GW2API::EnsureAchievementNames(const std::vector<int>& ids, const std::string& lang) {
+        std::vector<int> missing;
+        {
+            std::lock_guard<std::mutex> lock(s_mutex);
+            if (s_localized_lang != lang) {
+                s_localized_lang = lang;
+                s_currency_names.clear();
+                s_achievement_names.clear();
+                s_achievement_requested.clear();
+            }
+            for (int id : ids) {
+                if (id > 0 && !s_achievement_requested.count(id)) {
+                    s_achievement_requested.insert(id);
+                    missing.push_back(id);
+                }
+            }
+        }
+        if (missing.empty()) return;
+        std::string l = lang;
+        std::thread([missing, l]() {
+            try {
+                std::unordered_map<int, std::string> parsed;
+                for (size_t off = 0; off < missing.size(); off += 200) {
+                    size_t end = std::min(off + 200, missing.size());
+                    std::string idList;
+                    for (size_t i = off; i < end; i++) {
+                        if (!idList.empty()) idList += ",";
+                        idList += std::to_string(missing[i]);
+                    }
+                    std::string url = "https://api.guildwars2.com/v2/achievements?ids=" + idList + "&lang=" + l;
+                    std::string resp = HttpGet(url);
+                    if (resp.empty()) continue;
+                    json j = json::parse(resp);
+                    if (!j.is_array()) continue;
+                    for (const auto& e : j) {
+                        if (!e.contains("id") || !e.contains("name")) continue;
+                        parsed[e["id"].get<int>()] = e["name"].get<std::string>();
+                    }
+                }
+                std::lock_guard<std::mutex> lock(s_mutex);
+                if (s_localized_lang == l)
+                    for (auto& kv : parsed) s_achievement_names[kv.first] = kv.second;
+            } catch (...) {}
+        }).detach();
+    }
+
+    std::string GW2API::LocalizeAchievementName(int achievement_id, const std::string& englishFallback) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        auto it = s_achievement_names.find(achievement_id);
+        return it != s_achievement_names.end() ? it->second : englishFallback;
+    }
+
+    std::string GW2API::LocalizedDiag() {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        return "loc[" + (s_localized_lang.empty() ? std::string("-") : s_localized_lang) +
+               "] cur=" + std::to_string(s_currency_names.size()) +
+               " ach=" + std::to_string(s_achievement_names.size());
     }
 
 }

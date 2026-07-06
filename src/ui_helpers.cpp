@@ -2,6 +2,7 @@
 #include "ui_helpers.h"
 #include "GW2API.h"
 #include "DataManager.h"
+#include "Localization.h"
 #include <algorithm>
 #include <climits>
 #include <cmath>
@@ -349,7 +350,7 @@ void BuildShoppingList(uint32_t legendary_id) {
         if (!is_bound && CraftyLegend::GW2API::HasPriceData() && tp_price <= 0 && vendor_coin <= 0) continue; // not purchasable
         ShoppingEntry e;
         e.item_id = id;
-        e.name = info.first;
+        e.name = info.first; // English canonical; localized at render time so it updates live
         e.required = info.second; // net amount to purchase
         e.owned = 0;
         e.is_vendor = (tp_price <= 0 && vendor_coin > 0);
@@ -532,6 +533,11 @@ std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool*
     std::string label;
     bool hasData = CraftyLegend::GW2API::HasAccountData();
 
+    // Localized display name (display-only; mat.name stays English for wallet/logic lookups)
+    std::string dispName = mat.item_id != 0
+        ? Localization::ItemName(mat.item_id, mat.name)
+        : CraftyLegend::GW2API::LocalizeCurrencyName(mat.name);
+
     // Determine owned count: check wallet for vendor costs (item_id==0), items otherwise
     int owned = 0;
     if (hasData) {
@@ -547,7 +553,7 @@ std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool*
     }
 
     if (hasData && mat.count > 0) {
-        label = std::to_string(owned) + "/" + std::to_string(mat.count) + " " + mat.name;
+        label = std::to_string(owned) + "/" + std::to_string(mat.count) + " " + dispName;
         bool complete = (owned >= (int)mat.count);
         if (out_complete) *out_complete = complete;
         // Check ready-to-craft: not directly owned enough, but all sub-materials are met
@@ -561,16 +567,16 @@ std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool*
         }
     } else if (hasData && mat.count == 0) {
         // Non-numeric vendor cost (displayed as "Currency: cost_string")
-        label = mat.name;
+        label = dispName;
         if (out_complete) *out_complete = false;
         if (out_ready) *out_ready = false;
     } else {
         if (mat.count > 1) {
-            label = std::to_string(mat.count) + " " + mat.name;
+            label = std::to_string(mat.count) + " " + dispName;
         } else if (mat.count == 1) {
-            label = mat.name;
+            label = dispName;
         } else {
-            label = mat.name;
+            label = dispName;
         }
         if (out_complete) *out_complete = false;
         if (out_ready) *out_ready = false;

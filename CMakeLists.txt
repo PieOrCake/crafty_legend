@@ -48,6 +48,7 @@ set(SOURCES
     src/GW2API.cpp
     src/IconManager.cpp
     src/PieTheme.cpp
+    src/Localization.cpp
     src/embedded_data.cpp
     ${IMGUI_SOURCES}
 )

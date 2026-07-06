@@ -17,7 +17,8 @@ void SaveDisplaySettings() {
     file << "  \"show_debug_window\": " << (g_ShowDebugWindow ? "true" : "false") << ",\n";
     file << "  \"show_owned_legendaries\": " << (g_ShowOwnedLegendaries ? "true" : "false") << ",\n";
     file << "  \"show_qa_icon\": " << (g_ShowQAIcon ? "true" : "false") << ",\n";
-    file << "  \"use_pie_theme\": " << (g_UsePieTheme ? "true" : "false") << "\n";
+    file << "  \"use_pie_theme\": " << (g_UsePieTheme ? "true" : "false") << ",\n";
+    file << "  \"first_run_notice_done\": " << (g_FirstRunNoticeDone ? "true" : "false") << "\n";
     file << "}\n";
 }
 
@@ -59,4 +60,6 @@ void LoadDisplaySettings() {
     else if (content.find("\"show_qa_icon\": false") != std::string::npos) g_ShowQAIcon = false;
     if (content.find("\"use_pie_theme\": true") != std::string::npos) g_UsePieTheme = true;
     else if (content.find("\"use_pie_theme\": false") != std::string::npos) g_UsePieTheme = false;
+    if (content.find("\"first_run_notice_done\": true") != std::string::npos) g_FirstRunNoticeDone = true;
+    else if (content.find("\"first_run_notice_done\": false") != std::string::npos) g_FirstRunNoticeDone = false;
 }

@@ -64,6 +64,15 @@ namespace CraftyLegend {
         static bool HasPriceData();
         static bool LoadPriceData();
 
+        // Localized names (i18n; display-only). Fetched from the public /v2 API
+        // with ?lang=. English keys/ids remain the internal matchers.
+        static int GetCurrencyIdByName(const std::string& name); // -1 if unknown
+        static void FetchCurrencyNamesAsync(const std::string& lang); // all currencies; also resets achiev cache
+        static std::string LocalizeCurrencyName(const std::string& englishName);
+        static void EnsureAchievementNames(const std::vector<int>& ids, const std::string& lang);
+        static std::string LocalizeAchievementName(int achievement_id, const std::string& englishFallback);
+        static std::string LocalizedDiag(); // "loc[fr] cur=79 ach=3" for the debug readout
+
     private:
         static std::unordered_map<uint32_t, int> s_owned_items;
         static std::unordered_map<uint32_t, std::map<std::string, int>> s_owned_items_per_account;
@@ -78,6 +87,13 @@ namespace CraftyLegend {
         static FetchStatus s_price_fetch_status;
         static std::string s_price_fetch_message;
         static std::mutex s_mutex;
+
+        // Localized-name caches (per active language; keyed by id)
+        static std::unordered_map<int, std::string> s_currency_names;
+        static std::unordered_map<int, std::string> s_achievement_names;
+        static std::unordered_set<int> s_achievement_requested; // ids fetched/in-flight this lang
+        static std::string s_localized_lang;                    // lang the caches hold
+        static bool s_currency_fetch_inflight;
 
         // HTTP helper
         static std::string HttpGet(const std::string& url);
