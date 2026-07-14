@@ -75,6 +75,19 @@ static bool DrawArrow(bool expanded) {
     return clicked;
 }
 
+// Forward declarations for the multi-route chooser (defined after RenderNode,
+// since RenderMethodChildren recurses back into RenderNode).
+static bool RenderMethodRow(uint32_t item_id,
+                            const CraftyLegend::AcquisitionMethod& method,
+                            int count, int depth,
+                            const std::string& nodeKey, const std::string& mKey,
+                            bool expanded, bool active);
+static void RenderMethodChildren(uint32_t item_id,
+                                 const CraftyLegend::AcquisitionMethod& method,
+                                 int count, int depth,
+                                 const std::string& nodeKey,
+                                 std::unordered_set<uint32_t>& onPath);
+
 // Recursively render one crafting-tree node. `depth` 0 == a direct component of
 // the legendary. `path` is the "/"-joined chain of item ids from the legendary
 // down to (and including) this item; it doubles as the node's expand-state key.
@@ -138,18 +151,220 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     ImGui::PopID();
 
     if (expanded) {
-        onPath.insert(item_id);
+        auto methods = MeaningfulMethods(item_id);
+        if (methods.size() >= 2) {
+            // Multi-route chooser: a dim sub-heading, then one accordion node per
+            // acquisition method. Expanding a method makes it active and collapses
+            // its siblings (handled inside RenderMethodRow via SetActiveMethod).
+            ImGui::SetCursorPosX(DrawRails(depth + 1));
+            ImGui::TextColored(ImVec4(0.40f, 0.47f, 0.55f, 1.0f), "%s",
+                Localization::Tr("Choose one of these acquisition methods"));
+
+            int active = ResolveActiveMethodIndex(item_id, nodeKey);
+            for (size_t i = 0; i < methods.size(); ++i) {
+                std::string mKey = nodeKey + "#m:" + std::to_string(i);
+                bool mExpanded = CraftyLegend::DataManager::IsNodeExpanded(mKey);
+                mExpanded = RenderMethodRow(item_id, methods[i], count, depth + 1,
+                                            nodeKey, mKey, mExpanded, (int)i == active);
+                if (mExpanded) {
+                    onPath.insert(item_id);
+                    RenderMethodChildren(item_id, methods[i], count, depth + 2,
+                                         nodeKey, onPath);
+                    onPath.erase(item_id);
+                }
+            }
+        } else {
+            // Single-route (Task 5): recurse straight into the recipe ingredients.
+            onPath.insert(item_id);
+            const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
+            if (recipe) {
+                uint32_t out = recipe->output_count > 0 ? recipe->output_count : 1;
+                int crafts = (count + static_cast<int>(out) - 1) / static_cast<int>(out);
+                if (crafts < 1) crafts = 1;
+                for (const auto& ing : recipe->ingredients) {
+                    RenderNode(ing.item_id, static_cast<int>(ing.count) * crafts, depth + 1,
+                               nodeKey + "/" + std::to_string(ing.item_id), onPath);
+                }
+            }
+            onPath.erase(item_id);
+        }
+    }
+}
+
+// Friendly, translatable label for an acquisition method row.
+static std::string MethodLabel(const CraftyLegend::AcquisitionMethod& m) {
+    if (!m.display_name.empty()) return m.display_name;
+    if (m.method == "vendor")       return Localization::Tr("Vendor");
+    if (m.method == "mystic_forge") return Localization::Tr("Mystic Forge");
+    if (m.method == "crafting")     return Localization::Tr("Craft");
+    if (m.method == "trading_post") return Localization::Tr("Trading Post");
+    return m.method.empty() ? "?" : m.method;
+}
+
+// Parse a purchase-requirement amount string ("500", "500 (per stack)") into a
+// positive integer, mirroring BuildVendorCostMaterials' convention. Returns
+// false when the string is not a plain leading integer (a descriptive cost).
+static bool ParseReqAmount(const std::string& s, int& out) {
+    try {
+        size_t pos = 0;
+        int v = std::stoi(s, &pos);
+        if (pos == s.size() || (pos < s.size() && s[pos] == ' ')) { out = v; return true; }
+    } catch (...) {}
+    return false;
+}
+
+// A basic right-edge cost summary for a vendor route that isn't gold-comparable
+// (uses wallet currencies). Task 7 owns the authoritative roll-up; this is a
+// simple readable hint only.
+static std::string VendorCostSummary(
+    const std::vector<std::pair<std::string, std::string>>& reqs, int count) {
+    if (count < 1) count = 1;
+    std::string out;
+    for (const auto& req : reqs) {
+        std::string piece;
+        int parsed = 0;
+        if (ParseReqAmount(req.second, parsed) && parsed > 0) {
+            long long total = static_cast<long long>(parsed) * count;
+            piece = std::to_string(total) + " " + req.first;
+        } else {
+            piece = req.first;
+        }
+        if (!out.empty()) out += "  +  ";
+        out += piece;
+    }
+    return out;
+}
+
+// Draw a non-expandable leaf row (rails + empty arrow slot + shared row body),
+// used for a vendor method's currency/item requirements. Wallet currencies keep
+// item_id 0 so DrawItemRow tallies them from the wallet.
+static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
+                        const std::string& idKey) {
+    ImGui::PushID(idKey.c_str());
+    float contentX = DrawRails(depth);
+    ImGui::SetCursorPosX(contentX);
+    ImGui::Dummy(ImVec2(12.0f, TreeRowHeight()));
+    ImGui::SameLine(0, 2);
+
+    std::vector<CraftyLegend::Prerequisite> gates =
+        mat.item_id ? CraftyLegend::DataManager::GetItemAchievementGates(mat.item_id)
+                    : std::vector<CraftyLegend::Prerequisite>{};
+
+    RowVisual v{};
+    v.mat            = &mat;
+    v.hasAccountData = CraftyLegend::GW2API::HasAccountData();
+    v.showIcons      = g_ShowItemIcons;
+    v.rowWidth       = ImGui::GetContentRegionAvail().x;
+    v.labelStartX    = g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 4.0f;
+    v.priceMaxW      = 0.0f;
+    v.priceGap       = 0.0f;
+    v.selected       = false;
+    v.altTint        = false;
+    v.gates          = &gates;
+    DrawItemRow(v);
+    ImGui::PopID();
+}
+
+// One accordion method row: rails + arrow, method label, an "in total" tag when
+// active, inactive rows dimmed, and the route cost on the right edge. Returns the
+// (possibly toggled) expand state for this method. Clicking the arrow to expand
+// makes this method active (collapsing siblings); collapsing just clears it.
+static bool RenderMethodRow(uint32_t item_id,
+                            const CraftyLegend::AcquisitionMethod& method,
+                            int count, int depth,
+                            const std::string& nodeKey, const std::string& mKey,
+                            bool expanded, bool active) {
+    ImGui::PushID(mKey.c_str());
+
+    float contentX = DrawRails(depth);
+    ImGui::SetCursorPosX(contentX);
+    if (DrawArrow(expanded)) {
+        if (!expanded) {
+            CraftyLegend::DataManager::SetActiveMethod(nodeKey, mKey); // accordion
+            expanded = true;
+        } else {
+            CraftyLegend::DataManager::SetNodeExpanded(mKey, false);
+            expanded = false;
+        }
+        CraftyLegend::DataManager::SaveSession();
+    }
+    ImGui::SameLine(0, 2);
+
+    float  alpha = active ? 1.0f : 0.42f;
+    ImVec4 labelCol(0.85f, 0.72f, 0.42f, alpha); // dim gold
+    std::string label = MethodLabel(method);
+    ImGui::TextColored(labelCol, "%s", label.c_str());
+
+    if (active) {
+        ImGui::SameLine(0, 6);
+        ImGui::TextColored(ImVec4(0.45f, 0.78f, 0.52f, 1.0f), "%s",
+            Localization::Tr("in total"));
+    }
+
+    // Right-edge route cost (basic; Task 7 owns the authoritative roll-up).
+    float rightEdge = ImGui::GetWindowContentRegionMax().x;
+    long long gold = RouteGoldCost(item_id, method, count);
+    if (gold >= 0) {
+        int copper = gold > 0x7fffffffLL ? 0x7fffffff : static_cast<int>(gold);
+        float w = CalcPriceWidth(copper);
+        if (w > 0.0f) {
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(std::max(contentX, rightEdge - w));
+            if (!active) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.42f);
+            RenderPrice(copper);
+            if (!active) ImGui::PopStyleVar();
+        }
+    } else if (method.method == "vendor" && !method.purchase_requirements.empty()) {
+        std::string txt = VendorCostSummary(method.purchase_requirements, count);
+        if (!txt.empty()) {
+            float w = ImGui::CalcTextSize(txt.c_str()).x;
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(std::max(contentX, rightEdge - w));
+            ImGui::TextColored(ImVec4(0.72f, 0.74f, 0.80f, alpha), "%s", txt.c_str());
+        }
+    }
+
+    ImGui::PopID();
+    return expanded;
+}
+
+// Children of an expanded method: forge/crafting recurses into the recipe
+// ingredients (as Task 5); a vendor lists its purchase requirements as leaves.
+static void RenderMethodChildren(uint32_t item_id,
+                                 const CraftyLegend::AcquisitionMethod& method,
+                                 int count, int depth,
+                                 const std::string& nodeKey,
+                                 std::unordered_set<uint32_t>& onPath) {
+    if (method.method == "vendor") {
+        int qty = count < 1 ? 1 : count;
+        int idx = 0;
+        for (const auto& req : method.purchase_requirements) {
+            CraftyLegend::RecipeIngredient mat;
+            mat.item_id = CraftyLegend::DataManager::ResolveItemIdByName(req.first);
+            int parsed = 0;
+            if (ParseReqAmount(req.second, parsed) && parsed > 0) {
+                mat.count = static_cast<uint32_t>(static_cast<long long>(parsed) * qty);
+                mat.name  = req.first;
+            } else {
+                // Descriptive (non-numeric) cost: keep as a zero-count label row.
+                mat.count = 0;
+                mat.name  = (qty > 1)
+                    ? req.first + ": " + std::to_string(qty) + " x " + req.second
+                    : req.first + ": " + req.second;
+            }
+            DrawLeafRow(mat, depth, nodeKey + "#vreq:" + std::to_string(idx++));
+        }
+    } else {
         const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
         if (recipe) {
             uint32_t out = recipe->output_count > 0 ? recipe->output_count : 1;
             int crafts = (count + static_cast<int>(out) - 1) / static_cast<int>(out);
             if (crafts < 1) crafts = 1;
             for (const auto& ing : recipe->ingredients) {
-                RenderNode(ing.item_id, static_cast<int>(ing.count) * crafts, depth + 1,
+                RenderNode(ing.item_id, static_cast<int>(ing.count) * crafts, depth,
                            nodeKey + "/" + std::to_string(ing.item_id), onPath);
             }
         }
-        onPath.erase(item_id);
     }
 }
 
