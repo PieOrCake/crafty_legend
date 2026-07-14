@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <mutex>
+#include <atomic>
+#include <cstdint>
 #include <nlohmann/json.hpp>
 
 namespace CraftyLegend {
@@ -64,6 +66,10 @@ namespace CraftyLegend {
         static int GetSellPrice(uint32_t item_id);  // unit price in copper, 0 if not on TP
         static bool HasPriceData();
         static bool LoadPriceData();
+        // Monotonic counter bumped every time the price cache is written (fetch
+        // or load from disk). Lock-free read so render code can poll it cheaply
+        // to invalidate cost caches when live TP prices change.
+        static uint64_t GetPriceRevision();
 
         // Localized names (i18n; display-only). Fetched from the public /v2 API
         // with ?lang=. English keys/ids remain the internal matchers.
@@ -87,6 +93,7 @@ namespace CraftyLegend {
         static bool s_has_price_data;
         static FetchStatus s_price_fetch_status;
         static std::string s_price_fetch_message;
+        static std::atomic<uint64_t> s_price_revision;
         static std::mutex s_mutex;
 
         // Localized-name caches (per active language; keyed by id)

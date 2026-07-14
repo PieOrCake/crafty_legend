@@ -23,6 +23,7 @@ namespace CraftyLegend {
     bool GW2API::s_has_price_data = false;
     FetchStatus GW2API::s_price_fetch_status = FetchStatus::Idle;
     std::string GW2API::s_price_fetch_message;
+    std::atomic<uint64_t> GW2API::s_price_revision{0};
     std::mutex GW2API::s_mutex;
     std::unordered_map<int, std::string> GW2API::s_currency_names;
     std::unordered_map<int, std::string> GW2API::s_achievement_names;
@@ -460,6 +461,7 @@ namespace CraftyLegend {
                     std::lock_guard<std::mutex> lock(s_mutex);
                     s_tp_prices = prices;
                     s_has_price_data = true;
+                    s_price_revision.fetch_add(1, std::memory_order_relaxed);
                     s_price_fetch_status = FetchStatus::Success;
                     s_price_fetch_message = "Prices loaded (" +
                         std::to_string(prices.size()) + " items)";
@@ -492,6 +494,10 @@ namespace CraftyLegend {
     bool GW2API::HasPriceData() {
         std::lock_guard<std::mutex> lock(s_mutex);
         return s_has_price_data;
+    }
+
+    uint64_t GW2API::GetPriceRevision() {
+        return s_price_revision.load(std::memory_order_relaxed);
     }
 
     bool GW2API::SavePriceData(const std::unordered_map<uint32_t, int>& prices) {
@@ -531,6 +537,7 @@ namespace CraftyLegend {
             }
 
             s_has_price_data = true;
+            s_price_revision.fetch_add(1, std::memory_order_relaxed);
             return true;
         } catch (...) {
             return false;

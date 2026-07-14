@@ -451,15 +451,19 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
     {
         static uint32_t s_cachedLegendaryId = 0;
         static uint64_t s_cachedExpandRevision = static_cast<uint64_t>(-1);
+        static uint64_t s_cachedPriceRevision = static_cast<uint64_t>(-1);
         static long long s_cachedHeadingGold = -1;
 
         uint64_t curRevision = CraftyLegend::DataManager::GetExpandRevision();
-        if (legendaryId != s_cachedLegendaryId || curRevision != s_cachedExpandRevision) {
+        uint64_t curPriceRevision = CraftyLegend::GW2API::GetPriceRevision();
+        if (legendaryId != s_cachedLegendaryId || curRevision != s_cachedExpandRevision ||
+            curPriceRevision != s_cachedPriceRevision) {
             std::unordered_set<uint32_t> costVisited;
             s_cachedHeadingGold = ActiveRouteGoldCost(
                 legendaryId, 1, std::to_string(legendaryId), costVisited);
             s_cachedLegendaryId = legendaryId;
             s_cachedExpandRevision = curRevision;
+            s_cachedPriceRevision = curPriceRevision;
         }
         long long headingGold = s_cachedHeadingGold;
         if (headingGold > 0) {
