@@ -41,6 +41,7 @@ namespace CraftyLegend {
         static int GetWalletAmount(int currency_id);
         static void SetWalletAmount(int currency_id, int amount);
         static void ClearWallet();
+        static bool HasWalletData();
         static int GetWalletAmountByName(const std::string& currency_name);
 
         // Legendary Armory (data set by H&S events)

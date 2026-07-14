@@ -367,8 +367,12 @@ static const uint32_t k_WalletIds[] = {
 void RefreshWallet() {
     if (!g_HoardDataAvailable) return;
     std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
-    // Skip if already queried for this account (single-account: empty == empty is fine)
-    if (!g_WalletRefreshNeeded && g_WalletAccount == currentAcct && !g_WalletAccount.empty()) return;
+    // Skip only once we actually hold wallet data for this account. If the first
+    // attempt populated nothing (H&S still PENDING/BUSY at that moment), the wallet
+    // stays empty and must keep re-querying on each refresh until it fills — mirroring
+    // how item queries self-heal. Without the HasWalletData() check this latched empty.
+    if (!g_WalletRefreshNeeded && g_WalletAccount == currentAcct && !g_WalletAccount.empty()
+        && CraftyLegend::GW2API::HasWalletData()) return;
     g_HoardQueriedWallets.clear();
     CraftyLegend::GW2API::ClearWallet();
     for (uint32_t cid : k_WalletIds) {
