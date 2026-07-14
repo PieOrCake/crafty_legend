@@ -1,18 +1,188 @@
 #include "ui_tree.h"
 #include "ui_helpers.h"
+#include "GW2API.h"
+#include "globals.h"
+#include "Localization.h"
 #include "imgui.h"
 #include <algorithm>
+#include <string>
 #include <unordered_set>
 
 namespace CraftyLegend { namespace UI {
+
+// ---------------------------------------------------------------------------
+// Layout constants
+// ---------------------------------------------------------------------------
+static const float INDENT_STEP    = 14.0f; // horizontal step per tree depth
+static const int   MAX_TREE_DEPTH = 12;    // backstop against pathological recursion
+
+// Row height matches DrawItemRow's own computation so rails/arrow line up with
+// the row body (icon rows are taller than text rows).
+static float TreeRowHeight() {
+    return g_ShowItemIcons ? (ICON_SIZE + 2.0f)
+                           : ImGui::GetTextLineHeightWithSpacing();
+}
+
+// Draw one dotted vertical rail per ancestor depth at the current row's left,
+// then return the window-relative x where this node's content should begin.
+static float DrawRails(int depth) {
+    ImVec2 origin   = ImGui::GetCursorScreenPos(); // screen-space row top-left
+    float  originWX = ImGui::GetCursorPosX();      // window-relative x
+    float  rowH     = TreeRowHeight();
+
+    ImDrawList* dl  = ImGui::GetWindowDrawList();
+    const ImU32 col = IM_COL32(52, 80, 106, 255);
+
+    for (int i = 0; i < depth; ++i) {
+        float x = origin.x + i * INDENT_STEP + 6.0f;
+        // Dotted rail: short 2px segments with 2px gaps down the row height.
+        for (float y = origin.y; y < origin.y + rowH; y += 4.0f) {
+            float y2 = std::min(y + 2.0f, origin.y + rowH);
+            dl->AddLine(ImVec2(x, y), ImVec2(x, y2), col, 1.0f);
+        }
+    }
+    return originWX + depth * INDENT_STEP;
+}
+
+// A borderless, clickable expand/collapse arrow (▸ collapsed, ▾ expanded).
+// Reserves a fixed-width slot the full row height so it vertically aligns with
+// the row body. Returns true when clicked.
+static bool DrawArrow(bool expanded) {
+    const float slotW = 12.0f;
+    float rowH = TreeRowHeight();
+    ImVec2 p   = ImGui::GetCursorScreenPos();
+
+    bool clicked = ImGui::InvisibleButton("##arrow", ImVec2(slotW, rowH));
+    bool hovered = ImGui::IsItemHovered();
+    ImU32 col    = hovered ? IM_COL32(235, 235, 235, 255)
+                           : IM_COL32(150, 160, 175, 255);
+
+    ImDrawList* dl = ImGui::GetWindowDrawList();
+    float cx = p.x + slotW * 0.5f;
+    float cy = p.y + rowH * 0.5f;
+    float r  = 3.5f;
+    if (expanded) {
+        // ▾ pointing down
+        dl->AddTriangleFilled(ImVec2(cx - r, cy - r * 0.6f),
+                              ImVec2(cx + r, cy - r * 0.6f),
+                              ImVec2(cx,     cy + r * 0.7f), col);
+    } else {
+        // ▸ pointing right
+        dl->AddTriangleFilled(ImVec2(cx - r * 0.6f, cy - r),
+                              ImVec2(cx - r * 0.6f, cy + r),
+                              ImVec2(cx + r * 0.7f, cy),     col);
+    }
+    return clicked;
+}
+
+// Recursively render one crafting-tree node. `depth` 0 == a direct component of
+// the legendary. `path` is the "/"-joined chain of item ids from the legendary
+// down to (and including) this item; it doubles as the node's expand-state key.
+// `onPath` holds the ancestor item ids so a true cycle cannot loop forever
+// (a diamond, where an item legitimately appears in two branches, is allowed).
+static void RenderNode(uint32_t item_id, int count, int depth,
+                       const std::string& path,
+                       std::unordered_set<uint32_t>& onPath) {
+    if (depth > MAX_TREE_DEPTH) return;
+
+    const std::string& nodeKey = path; // already includes this item's id
+    bool expandable = CanDrillInto(item_id) && onPath.find(item_id) == onPath.end();
+    bool expanded   = expandable && CraftyLegend::DataManager::IsNodeExpanded(nodeKey);
+
+    // Rails + indentation, then the arrow slot.
+    float contentX = DrawRails(depth);
+    ImGui::SetCursorPosX(contentX);
+    if (expandable) {
+        if (DrawArrow(expanded)) {
+            CraftyLegend::DataManager::SetNodeExpanded(nodeKey, !expanded);
+            CraftyLegend::DataManager::SaveSession();
+            expanded = !expanded;
+        }
+        ImGui::SameLine(0, 2);
+    } else {
+        ImGui::Dummy(ImVec2(12.0f, TreeRowHeight()));
+        ImGui::SameLine(0, 2);
+    }
+
+    // Build a synthetic ingredient for the shared row renderer.
+    CraftyLegend::RecipeIngredient mat;
+    mat.item_id = item_id;
+    mat.count   = static_cast<uint32_t>(count < 0 ? 0 : count);
+    const auto* item = CraftyLegend::DataManager::GetItem(item_id);
+    mat.name = item ? item->name : "";
+
+    std::vector<CraftyLegend::Prerequisite> gates =
+        CraftyLegend::DataManager::GetItemAchievementGates(item_id);
+
+    // rowBaseX is the current cursor x (just past the arrow slot). DrawItemRow
+    // places the icon at rowBaseX and the label at rowBaseX + labelStartX, so
+    // labelStartX is the icon-column width (no price column in Task 5).
+    RowVisual v{};
+    v.mat            = &mat;
+    v.hasAccountData = CraftyLegend::GW2API::HasAccountData();
+    v.showIcons      = g_ShowItemIcons;
+    v.rowWidth       = ImGui::GetContentRegionAvail().x;
+    v.labelStartX    = g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 4.0f;
+    v.priceMaxW      = 0.0f;
+    v.priceGap       = 0.0f;
+    v.selected       = false;
+    v.altTint        = false;
+    v.gates          = &gates;
+
+    ImGui::PushID(static_cast<int>(item_id));
+    DrawItemRow(v);
+    ImGui::PopID();
+
+    if (expanded) {
+        onPath.insert(item_id);
+        const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
+        if (recipe) {
+            uint32_t out = recipe->output_count > 0 ? recipe->output_count : 1;
+            int crafts = (count + static_cast<int>(out) - 1) / static_cast<int>(out);
+            if (crafts < 1) crafts = 1;
+            for (const auto& ing : recipe->ingredients) {
+                RenderNode(ing.item_id, static_cast<int>(ing.count) * crafts, depth + 1,
+                           nodeKey + "/" + std::to_string(ing.item_id), onPath);
+            }
+        }
+        onPath.erase(item_id);
+    }
+}
 
 void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
     ImGui::BeginChild("TreeView", ImVec2(availWidth, availHeight), false);
     if (legendaryId == 0) {
         ImGui::TextDisabled("Select a legendary to see its crafting tree.");
-    } else {
-        ImGui::TextDisabled("Tree layout — placeholder (legendary %u)", legendaryId);
+        ImGui::EndChild();
+        return;
     }
+
+    // Locate the legendary for its heading name.
+    const CraftyLegend::Legendary* leg = nullptr;
+    for (const auto& l : CraftyLegend::DataManager::GetLegendaries()) {
+        if (l.id == legendaryId) { leg = &l; break; }
+    }
+
+    // Heading: the legendary as a title row with no arrow, then a separator.
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(199, 155, 240, 255));
+    ImGui::TextUnformatted(leg ? Localization::ItemName(legendaryId, leg->name).c_str() : "");
+    ImGui::PopStyleColor();
+    ImGui::Separator();
+
+    // Direct crafting components (the legendary recipe's ingredients) are depth 0.
+    const auto* recipe = CraftyLegend::DataManager::GetRecipe(legendaryId);
+    std::unordered_set<uint32_t> onPath;
+    onPath.insert(legendaryId);
+    if (recipe) {
+        std::string root = std::to_string(legendaryId);
+        for (const auto& ing : recipe->ingredients) {
+            RenderNode(ing.item_id, static_cast<int>(ing.count), 0,
+                       root + "/" + std::to_string(ing.item_id), onPath);
+        }
+    } else {
+        ImGui::TextDisabled("No crafting recipe available for this legendary.");
+    }
+
     ImGui::EndChild();
 }
 
