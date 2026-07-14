@@ -50,6 +50,7 @@ set(SOURCES
     src/IconManager.cpp
     src/PieTheme.cpp
     src/Localization.cpp
+    src/FontManager.cpp
     src/embedded_data.cpp
     ${IMGUI_SOURCES}
 )

@@ -3,6 +3,7 @@
 #include "GW2API.h"
 #include "globals.h"
 #include "Localization.h"
+#include "FontManager.h"
 #include "imgui.h"
 #include <algorithm>
 #include <string>
@@ -45,12 +46,21 @@ static void DrawRightPinnedCost(float rowBaseY, float leftBound, int copper) {
     ImGui::SetCursorPos(saved);
 }
 
-// Nexus' large default font (ImFont*), or nullptr if unavailable. Used for the
-// tree heading. When TTF support lands this can switch to a custom font.
+// Nexus' large default font (ImFont*), or nullptr if unavailable.
 static ImFont* NexusFontBig() {
     if (!APIDefs || !APIDefs->DataLink_Get) return nullptr;
     auto* nl = static_cast<NexusLinkData_t*>(APIDefs->DataLink_Get(DL_NEXUS_LINK));
     return nl ? static_cast<ImFont*>(nl->FontBig) : nullptr;
+}
+
+// Font for the tree heading: the bundled font at 1.4x the body size when the
+// custom font is enabled and ready, otherwise Nexus' large font.
+static ImFont* TreeHeadingFont() {
+    if (g_UseCustomFont) {
+        if (ImFont* f = CraftyLegend::FontManager::GetBundled(g_CustomFontSize * 1.4f))
+            return f;
+    }
+    return NexusFontBig();
 }
 
 // Row height matches DrawItemRow's own computation so rails/arrow line up with
@@ -427,7 +437,7 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
     // Heading: the legendary as a title row with no arrow, then a separator.
     // Rendered in Nexus' large font for prominence (falls back to the normal
     // font if FontBig is unavailable).
-    ImFont* headingFont = NexusFontBig();
+    ImFont* headingFont = TreeHeadingFont();
     if (headingFont) ImGui::PushFont(headingFont);
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(199, 155, 240, 255));
     ImGui::TextUnformatted(leg ? Localization::ItemName(legendaryId, leg->name).c_str() : "");

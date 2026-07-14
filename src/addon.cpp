@@ -5,6 +5,7 @@
 #include "DataManager.h"
 #include "IconManager.h"
 #include "PieTheme.h"
+#include "FontManager.h"
 #include "Localization.h"
 #include "../include/HoardAndSeekAPI.h"
 #include <sstream>
@@ -388,6 +389,9 @@ void AddonLoad(AddonAPI_t* aApi) {
     // Internationalization: language detection + Decoder Ring name consumer (soft dependency)
     Localization::Init();
 
+    // Bundled TTF font (auto-downloaded on first use when enabled)
+    CraftyLegend::FontManager::Initialize(APIDefs, CraftyLegend::GW2API::GetDataDirectory());
+
     // Get MumbleLink data pointer for identity polling fallback
     g_MumbleData = static_cast<Mumble::Data*>(APIDefs->DataLink_Get(DL_MUMBLE_LINK));
 
@@ -430,6 +434,7 @@ void AddonUnload() {
     APIDefs->Events_Unsubscribe(EV_HOARD_ACCOUNTS_CHANGED, OnAccountsChanged);
     PieTheme::Shutdown();
     Localization::Shutdown();
+    CraftyLegend::FontManager::Shutdown();
 
     CraftyLegend::IconManager::Shutdown();
     APIDefs->QuickAccess_Remove(QA_ID);

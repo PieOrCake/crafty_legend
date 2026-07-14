@@ -27,7 +27,9 @@ void SaveDisplaySettings() {
     file << "  \"tree_win_x\": " << g_TreeGeom.x << ",\n";
     file << "  \"tree_win_y\": " << g_TreeGeom.y << ",\n";
     file << "  \"tree_win_w\": " << g_TreeGeom.w << ",\n";
-    file << "  \"tree_win_h\": " << g_TreeGeom.h << "\n";
+    file << "  \"tree_win_h\": " << g_TreeGeom.h << ",\n";
+    file << "  \"use_custom_font\": " << (g_UseCustomFont ? "true" : "false") << ",\n";
+    file << "  \"custom_font_size\": " << g_CustomFontSize << "\n";
     file << "}\n";
 }
 
@@ -91,4 +93,9 @@ void LoadDisplaySettings() {
     readFloat("tree_win_y", g_TreeGeom.y);
     readFloat("tree_win_w", g_TreeGeom.w);
     readFloat("tree_win_h", g_TreeGeom.h);
+
+    if (content.find("\"use_custom_font\": true") != std::string::npos) g_UseCustomFont = true;
+    else if (content.find("\"use_custom_font\": false") != std::string::npos) g_UseCustomFont = false;
+    readFloat("custom_font_size", g_CustomFontSize);
+    if (g_CustomFontSize < 8.0f || g_CustomFontSize > 48.0f) g_CustomFontSize = 18.0f; // sanity clamp
 }

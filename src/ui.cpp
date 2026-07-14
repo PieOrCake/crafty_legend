@@ -14,6 +14,7 @@
 #include "PieTheme.h"
 #include "Localization.h"
 #include "ui_tree.h"
+#include "FontManager.h"
 #include <cstring>
 
 // Crafty Legend's built-in purple/gold style, built once from the ambient ImGui
@@ -356,6 +357,17 @@ void AddonRender() {
             ImVec2 ws = ImGui::GetWindowSize();
             WindowGeom& cur = g_UseTreeLayout ? g_TreeGeom : g_MillerGeom;
             cur.x = wp.x; cur.y = wp.y; cur.w = ws.x; cur.h = ws.y;
+        }
+
+        // Bundled custom font (main window only). Pushed here and popped just
+        // before End; nullptr (still downloading / disabled) leaves the ambient
+        // Nexus font in place. Balanced within the window's Begin/End.
+        bool pushedFont = false;
+        if (g_UseCustomFont) {
+            if (ImFont* bodyFont = CraftyLegend::FontManager::GetBundled(g_CustomFontSize)) {
+                ImGui::PushFont(bodyFont);
+                pushedFont = true;
+            }
         }
 
         // First-run optional-dependency notice (shown once if H&S or Decoder Ring is missing)
@@ -1374,6 +1386,8 @@ void AddonRender() {
             }
 
         } // end else (legendaries not empty)
+
+        if (pushedFont) ImGui::PopFont();
     }
     ImGui::End();
     
@@ -1464,6 +1478,27 @@ void AddonOptions() {
         ImGui::BeginTooltip();
         ImGui::Text("Show legendaries you already own in the list (requires Hoard & Seek)");
         ImGui::EndTooltip();
+    }
+
+    // Bundled custom font (downloaded on first enable). Size slider appears when on.
+    if (ImGui::Checkbox(Localization::Tr("Use custom font"), &g_UseCustomFont)) {
+        SaveDisplaySettings();
+    }
+    ImGui::SameLine();
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        ImGui::Text("Render Crafty Legend's main window in a bundled Inter font.\nDownloaded once on first use; falls back to the default font until ready.");
+        ImGui::EndTooltip();
+    }
+    if (g_UseCustomFont) {
+        ImGui::SetNextItemWidth(160.0f);
+        if (ImGui::SliderFloat(Localization::Tr("Font size"), &g_CustomFontSize, 12.0f, 28.0f, "%.0f")) {
+            // Live while dragging; persist when the drag finishes.
+        }
+        if (ImGui::IsItemDeactivatedAfterEdit()) {
+            SaveDisplaySettings();
+        }
     }
 
     if (ImGui::Checkbox(Localization::Tr("Show Quick Access Icon"), &g_ShowQAIcon)) {
