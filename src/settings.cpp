@@ -19,7 +19,15 @@ void SaveDisplaySettings() {
     file << "  \"show_qa_icon\": " << (g_ShowQAIcon ? "true" : "false") << ",\n";
     file << "  \"use_pie_theme\": " << (g_UsePieTheme ? "true" : "false") << ",\n";
     file << "  \"use_tree_layout\": " << (g_UseTreeLayout ? "true" : "false") << ",\n";
-    file << "  \"first_run_notice_done\": " << (g_FirstRunNoticeDone ? "true" : "false") << "\n";
+    file << "  \"first_run_notice_done\": " << (g_FirstRunNoticeDone ? "true" : "false") << ",\n";
+    file << "  \"miller_win_x\": " << g_MillerGeom.x << ",\n";
+    file << "  \"miller_win_y\": " << g_MillerGeom.y << ",\n";
+    file << "  \"miller_win_w\": " << g_MillerGeom.w << ",\n";
+    file << "  \"miller_win_h\": " << g_MillerGeom.h << ",\n";
+    file << "  \"tree_win_x\": " << g_TreeGeom.x << ",\n";
+    file << "  \"tree_win_y\": " << g_TreeGeom.y << ",\n";
+    file << "  \"tree_win_w\": " << g_TreeGeom.w << ",\n";
+    file << "  \"tree_win_h\": " << g_TreeGeom.h << "\n";
     file << "}\n";
 }
 
@@ -65,4 +73,22 @@ void LoadDisplaySettings() {
     else if (content.find("\"use_tree_layout\": false") != std::string::npos) g_UseTreeLayout = false;
     if (content.find("\"first_run_notice_done\": true") != std::string::npos) g_FirstRunNoticeDone = true;
     else if (content.find("\"first_run_notice_done\": false") != std::string::npos) g_FirstRunNoticeDone = false;
+
+    // Per-layout window geometry (floats). Leaves the field untouched if absent,
+    // so an older settings file simply keeps the "not yet recorded" default.
+    auto readFloat = [&](const char* key, float& out) {
+        std::string needle = std::string("\"") + key + "\":";
+        size_t p = content.find(needle);
+        if (p == std::string::npos) return;
+        p += needle.size();
+        try { out = std::stof(content.substr(p)); } catch (...) {}
+    };
+    readFloat("miller_win_x", g_MillerGeom.x);
+    readFloat("miller_win_y", g_MillerGeom.y);
+    readFloat("miller_win_w", g_MillerGeom.w);
+    readFloat("miller_win_h", g_MillerGeom.h);
+    readFloat("tree_win_x", g_TreeGeom.x);
+    readFloat("tree_win_y", g_TreeGeom.y);
+    readFloat("tree_win_w", g_TreeGeom.w);
+    readFloat("tree_win_h", g_TreeGeom.h);
 }

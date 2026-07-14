@@ -439,6 +439,9 @@ void AddonUnload() {
     // Save final scroll positions before shutdown
     CraftyLegend::DataManager::SetSessionScrollState(g_TrackedScrollX, g_TrackedCol0ScrollY, g_TrackedColScrollY);
     CraftyLegend::DataManager::SaveSession();
+
+    // Persist the active layout's final window geometry.
+    SaveDisplaySettings();
     
     // Cleanup data manager
     CraftyLegend::DataManager::Shutdown();

@@ -57,6 +57,14 @@ extern bool g_UsePieTheme;
 extern bool g_UseTreeLayout; // false = Miller columns (default), true = expanding tree
 extern bool g_FirstRunNoticeDone;  // one-time missing-dependency notice shown
 
+// Per-layout window geometry. The Miller and Tree layouts each remember their own
+// window position and size; the main window is restored to the active layout's
+// geometry whenever the layout is switched. w<=0 or h<=0 means "not yet recorded".
+struct WindowGeom { float x = 0.0f, y = 0.0f, w = 0.0f, h = 0.0f;
+                    bool valid() const { return w > 0.0f && h > 0.0f; } };
+extern WindowGeom g_MillerGeom;
+extern WindowGeom g_TreeGeom;
+
 // Debug window
 extern bool g_ShowDebugWindow;
 extern std::vector<std::string> g_DebugLog;

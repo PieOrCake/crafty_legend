@@ -329,8 +329,34 @@ void AddonRender() {
 
     ThemeGuard themeGuard;
 
+    // Default first-use geometry. Must come BEFORE the per-layout override below:
+    // ImGui keeps only the most recent SetNextWindowSize before Begin, so the
+    // Always override has to be the last size call to win.
     ImGui::SetNextWindowSize(ImVec2(1100, 500), ImGuiCond_FirstUseEver);
+
+    // Per-layout window geometry: when the layout changes, restore the incoming
+    // layout's remembered position/size (the outgoing one was captured live below).
+    static bool s_lastLayoutTree = g_UseTreeLayout;
+    if (g_UseTreeLayout != s_lastLayoutTree) {
+        s_lastLayoutTree = g_UseTreeLayout;
+        const WindowGeom& incoming = g_UseTreeLayout ? g_TreeGeom : g_MillerGeom;
+        if (incoming.valid()) {
+            ImGui::SetNextWindowPos(ImVec2(incoming.x, incoming.y), ImGuiCond_Always);
+            ImGui::SetNextWindowSize(ImVec2(incoming.w, incoming.h), ImGuiCond_Always);
+        }
+        SaveDisplaySettings(); // persist the layout switch + latest geometries
+    }
+
     if (ImGui::Begin("Crafty Legend", &g_WindowVisible, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse)) {
+
+        // Capture this frame's geometry into the active layout's slot so it can be
+        // restored when the user switches away and back.
+        {
+            ImVec2 wp = ImGui::GetWindowPos();
+            ImVec2 ws = ImGui::GetWindowSize();
+            WindowGeom& cur = g_UseTreeLayout ? g_TreeGeom : g_MillerGeom;
+            cur.x = wp.x; cur.y = wp.y; cur.w = ws.x; cur.h = ws.y;
+        }
 
         // First-run optional-dependency notice (shown once if H&S or Decoder Ring is missing)
         HandleFirstRunNotice();
@@ -1398,6 +1424,22 @@ void AddonOptions() {
     }
     ImGui::Separator();
 
+    // Layout chooser: Miller columns vs. expanding tree. Radio buttons so it's
+    // clear the two are mutually exclusive; each layout keeps its own window
+    // geometry (restored on switch by AddonRender).
+    ImGui::TextUnformatted(Localization::Tr("Layout"));
+    ImGui::SameLine();
+    if (ImGui::RadioButton(Localization::Tr("Miller Columns"), !g_UseTreeLayout) && g_UseTreeLayout) {
+        g_UseTreeLayout = false;
+        SaveDisplaySettings();
+    }
+    ImGui::SameLine();
+    if (ImGui::RadioButton(Localization::Tr("Tree View"), g_UseTreeLayout) && !g_UseTreeLayout) {
+        g_UseTreeLayout = true;
+        SaveDisplaySettings();
+    }
+    ImGui::Separator();
+
     // Icon settings (always visible at top)
     ImGui::Text("%s", Localization::Tr("Display Settings"));
     bool compactMode = !g_ShowItemIcons;
@@ -1449,10 +1491,6 @@ void AddonOptions() {
         ImGui::BeginTooltip();
         ImGui::Text("Match Crafty Legend's colours to the Pie UI addon's theme when it is installed.\nWhen off or when Pie UI is absent, the built-in theme is used.");
         ImGui::EndTooltip();
-    }
-
-    if (ImGui::Checkbox(Localization::Tr("Use expanding tree layout"), &g_UseTreeLayout)) {
-        SaveDisplaySettings();
     }
 
     if (ImGui::Checkbox("Show Debug Window", &g_ShowDebugWindow)) {

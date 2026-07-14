@@ -13,7 +13,11 @@ namespace CraftyLegend { namespace UI {
 // ---------------------------------------------------------------------------
 // Layout constants
 // ---------------------------------------------------------------------------
-static const float INDENT_STEP    = 14.0f; // horizontal step per tree depth
+// Horizontal step per tree depth. Set to ICON_SIZE so a child row's icon left
+// edge lines up with the right edge of its parent's icon: parent and child both
+// reserve the same arrow-slot width before the icon, so a per-depth shift of one
+// icon width places the child icon exactly one parent-icon to the right.
+static const float INDENT_STEP    = ICON_SIZE; // = 28px (see ui_helpers.h)
 static const int   MAX_TREE_DEPTH = 12;    // backstop against pathological recursion
 
 // Matches ui.cpp's Miller-column convention (see ui.cpp ~line 463/1048): internal
@@ -39,6 +43,14 @@ static void DrawRightPinnedCost(float rowBaseY, float leftBound, int copper) {
     ImGui::SetCursorPosX(std::max(leftBound, rightEdge - w));
     RenderPrice(copper);
     ImGui::SetCursorPos(saved);
+}
+
+// Nexus' large default font (ImFont*), or nullptr if unavailable. Used for the
+// tree heading. When TTF support lands this can switch to a custom font.
+static ImFont* NexusFontBig() {
+    if (!APIDefs || !APIDefs->DataLink_Get) return nullptr;
+    auto* nl = static_cast<NexusLinkData_t*>(APIDefs->DataLink_Get(DL_NEXUS_LINK));
+    return nl ? static_cast<ImFont*>(nl->FontBig) : nullptr;
 }
 
 // Row height matches DrawItemRow's own computation so rails/arrow line up with
@@ -262,28 +274,6 @@ static bool ParseReqAmount(const std::string& s, int& out) {
     return false;
 }
 
-// A basic right-edge cost summary for a vendor route that isn't gold-comparable
-// (uses wallet currencies). Task 7 owns the authoritative roll-up; this is a
-// simple readable hint only.
-static std::string VendorCostSummary(
-    const std::vector<std::pair<std::string, std::string>>& reqs, int count) {
-    if (count < 1) count = 1;
-    std::string out;
-    for (const auto& req : reqs) {
-        std::string piece;
-        int parsed = 0;
-        if (ParseReqAmount(req.second, parsed) && parsed > 0) {
-            long long total = static_cast<long long>(parsed) * count;
-            piece = std::to_string(total) + " " + req.first;
-        } else {
-            piece = req.first;
-        }
-        if (!out.empty()) out += "  +  ";
-        out += piece;
-    }
-    return out;
-}
-
 // Draw a non-expandable leaf row (rails + empty arrow slot + shared row body),
 // used for a vendor method's currency/item requirements. Wallet currencies keep
 // item_id 0 so DrawItemRow tallies them from the wallet.
@@ -357,6 +347,9 @@ static bool RenderMethodRow(uint32_t item_id,
     }
 
     // Right-edge route cost (basic; Task 7 owns the authoritative roll-up).
+    // Only a gold-comparable total is shown here; a vendor's individual
+    // wallet/material requirements are intentionally NOT summarised next to the
+    // name (they already appear as leaf rows when the method is expanded).
     float rightEdge = ImGui::GetWindowContentRegionMax().x;
     long long gold = RouteGoldCost(item_id, method, count);
     if (gold >= 0) {
@@ -368,14 +361,6 @@ static bool RenderMethodRow(uint32_t item_id,
             if (!active) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.42f);
             RenderPrice(copper);
             if (!active) ImGui::PopStyleVar();
-        }
-    } else if (method.method == "vendor" && !method.purchase_requirements.empty()) {
-        std::string txt = VendorCostSummary(method.purchase_requirements, count);
-        if (!txt.empty()) {
-            float w = ImGui::CalcTextSize(txt.c_str()).x;
-            ImGui::SameLine();
-            ImGui::SetCursorPosX(std::max(contentX, rightEdge - w));
-            ImGui::TextColored(ImVec4(0.72f, 0.74f, 0.80f, alpha), "%s", txt.c_str());
         }
     }
 
@@ -440,9 +425,14 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
     }
 
     // Heading: the legendary as a title row with no arrow, then a separator.
+    // Rendered in Nexus' large font for prominence (falls back to the normal
+    // font if FontBig is unavailable).
+    ImFont* headingFont = NexusFontBig();
+    if (headingFont) ImGui::PushFont(headingFont);
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(199, 155, 240, 255));
     ImGui::TextUnformatted(leg ? Localization::ItemName(legendaryId, leg->name).c_str() : "");
     ImGui::PopStyleColor();
+    if (headingFont) ImGui::PopFont();
 
     // Route-aware rolled-up total cost, right-aligned on the heading line. Follows
     // the active acquisition route at every multi-route node in the tree. Only

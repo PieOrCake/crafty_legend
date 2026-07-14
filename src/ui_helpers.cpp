@@ -680,6 +680,7 @@ RowResult DrawItemRow(const RowVisual& v) {
                 iconUrl = currency->icon;
                 iconName = currency->name;
                 if (g_LoggedIconRequests.find(iconId) == g_LoggedIconRequests.end()) {
+                    g_LoggedIconRequests.insert(iconId); // log once per currency, not every frame
                     std::stringstream dbg;
                     dbg << "[CurrIcon] \"" << mat.name << "\" -> currency " << currency->id
                         << " (" << currency->name << ") iconUrl=" << (iconUrl.empty() ? "EMPTY" : "yes")

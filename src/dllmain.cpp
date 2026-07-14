@@ -26,6 +26,8 @@ bool g_ShowQAIcon         = true;
 bool g_UsePieTheme        = true;
 bool g_UseTreeLayout      = false;
 bool g_FirstRunNoticeDone = false;
+WindowGeom g_MillerGeom;
+WindowGeom g_TreeGeom;
 
 // Debug window
 bool g_ShowDebugWindow = false;
