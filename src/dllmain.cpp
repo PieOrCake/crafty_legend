@@ -24,6 +24,7 @@ bool g_ShowItemIcons      = false;
 bool g_ShowOwnedLegendaries = true;
 bool g_ShowQAIcon         = true;
 bool g_UsePieTheme        = true;
+bool g_UseTreeLayout      = false;
 bool g_FirstRunNoticeDone = false;
 
 // Debug window

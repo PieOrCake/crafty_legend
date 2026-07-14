@@ -13,6 +13,7 @@
 #include <shellapi.h>
 #include "PieTheme.h"
 #include "Localization.h"
+#include "ui_tree.h"
 #include <cstring>
 
 // Crafty Legend's built-in purple/gold style, built once from the ambient ImGui
@@ -943,6 +944,19 @@ void AddonRender() {
             drawList->AddRect(col0Pos, ImVec2(col0Pos.x + col0W, col0Pos.y + availHeight),
                 borderColor, cornerRounding);
 
+            uint32_t selectedLegId = 0;
+            if (!g_Columns.empty() && g_Columns[0].selected_index >= 0 &&
+                g_Columns[0].selected_index < (int)g_Columns[0].items.size()) {
+                selectedLegId = g_Columns[0].items[g_Columns[0].selected_index].id;
+            }
+
+            if (g_UseTreeLayout) {
+                ImGui::SameLine(0.0f, columnPadding);
+                float treeAvailWidth = columnsScrollW - col0W - columnPadding;
+                if (treeAvailWidth < 0.0f) treeAvailWidth = 0.0f;
+                CraftyLegend::UI::RenderTree(selectedLegId, treeAvailWidth, availHeight);
+            } else {
+
             // Dynamic columns 1+
             bool columnsDirty = false;
             for (size_t col = 1; col < g_Columns.size() && !columnsDirty; col++) {
@@ -1396,6 +1410,8 @@ void AddonRender() {
                     borderColor, cornerRounding);
             }
 
+            } // !g_UseTreeLayout
+
             // Redirect vertical mouse wheel to smooth horizontal scroll over dynamic columns (not Col0)
             if (ImGui::IsWindowHovered(ImGuiHoveredFlags_ChildWindows)) {
                 float mouseX = ImGui::GetIO().MousePos.x;
@@ -1591,6 +1607,10 @@ void AddonOptions() {
         ImGui::BeginTooltip();
         ImGui::Text("Match Crafty Legend's colours to the Pie UI addon's theme when it is installed.\nWhen off or when Pie UI is absent, the built-in theme is used.");
         ImGui::EndTooltip();
+    }
+
+    if (ImGui::Checkbox(Localization::Tr("Use expanding tree layout"), &g_UseTreeLayout)) {
+        SaveDisplaySettings();
     }
 
     if (ImGui::Checkbox("Show Debug Window", &g_ShowDebugWindow)) {

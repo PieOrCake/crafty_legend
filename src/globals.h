@@ -54,6 +54,7 @@ extern bool g_ShowItemIcons;
 extern bool g_ShowOwnedLegendaries;
 extern bool g_ShowQAIcon;
 extern bool g_UsePieTheme;
+extern bool g_UseTreeLayout; // false = Miller columns (default), true = expanding tree
 extern bool g_FirstRunNoticeDone;  // one-time missing-dependency notice shown
 
 // Debug window

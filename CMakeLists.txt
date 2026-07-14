@@ -44,6 +44,7 @@ set(SOURCES
     src/addon.cpp
     src/ui_helpers.cpp
     src/ui.cpp
+    src/ui_tree.cpp
     src/DataManager.cpp
     src/GW2API.cpp
     src/IconManager.cpp
