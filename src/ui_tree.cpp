@@ -88,6 +88,14 @@ static void RenderMethodChildren(uint32_t item_id,
                                  const std::string& nodeKey,
                                  std::unordered_set<uint32_t>& onPath);
 
+// Route-aware rolled-up gold cost (copper) for `count` of item_id, following the
+// ACTIVE acquisition route at every multi-route node (mirrors the expand-tree in
+// RenderNode). Returns -1 if any followed leaf can't be priced in gold. Defined
+// near the bottom of the file; forward-declared here for RenderTree.
+static long long ActiveRouteGoldCost(uint32_t item_id, int count,
+                                     const std::string& nodeKey,
+                                     std::unordered_set<uint32_t>& visited);
+
 // Recursively render one crafting-tree node. `depth` 0 == a direct component of
 // the legendary. `path` is the "/"-joined chain of item ids from the legendary
 // down to (and including) this item; it doubles as the node's expand-state key.
@@ -386,6 +394,27 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(199, 155, 240, 255));
     ImGui::TextUnformatted(leg ? Localization::ItemName(legendaryId, leg->name).c_str() : "");
     ImGui::PopStyleColor();
+
+    // Route-aware rolled-up total cost, right-aligned on the heading line. Follows
+    // the active acquisition route at every multi-route node in the tree. Only
+    // shown when the whole tree prices out in gold (>0). (Task 8 owns alignment
+    // polish; this is functional and simple.)
+    {
+        std::unordered_set<uint32_t> costVisited;
+        long long headingGold = ActiveRouteGoldCost(
+            legendaryId, 1, std::to_string(legendaryId), costVisited);
+        if (headingGold > 0) {
+            int copper = headingGold > 0x7fffffffLL ? 0x7fffffff
+                                                    : static_cast<int>(headingGold);
+            float w = CalcPriceWidth(copper);
+            if (w > 0.0f) {
+                float rightEdge = ImGui::GetWindowContentRegionMax().x;
+                ImGui::SameLine();
+                ImGui::SetCursorPosX(std::max(ImGui::GetCursorPosX(), rightEdge - w));
+                RenderPrice(copper);
+            }
+        }
+    }
     ImGui::Separator();
 
     // Direct crafting components (the legendary recipe's ingredients) are depth 0.
@@ -533,6 +562,72 @@ int ResolveActiveMethodIndex(uint32_t item_id, const std::string& nodeKey) {
     if (allGold && bestIdx >= 0) return bestIdx;
     if (craftIdx >= 0) return craftIdx;
     return 0;
+}
+
+// Route-aware rolled-up gold cost. At a multi-route node (>=2 meaningful methods)
+// it follows the ACTIVE method (per ResolveActiveMethodIndex, honouring tree
+// expand-state); a vendor/trading_post active route is terminal and priced via
+// RouteGoldCost (the same routine the method row shows). Otherwise it recurses the
+// item's recipe (single-route items and the chosen craft/forge route), pricing
+// wallet/Coin ingredients as leaves and drilling item ingredients route-aware so a
+// nested multi-route child follows its own active route. Ignores owned counts
+// (gross craft cost), matching the per-route figures on the method rows. Returns
+// -1 whenever any followed portion isn't gold-comparable (wallet currency, no TP
+// price, or a cycle). nodeKey mirrors RenderNode's key derivation so the resolver
+// sees the same expand-state the tree does.
+static long long ActiveRouteGoldCost(uint32_t item_id, int count,
+                                     const std::string& nodeKey,
+                                     std::unordered_set<uint32_t>& visited) {
+    if (count <= 0) return 0;
+    if (item_id == 0) return 0;
+    if (visited.count(item_id)) return -1; // cycle => not gold-comparable
+
+    // Multi-route node: follow the active route.
+    auto methods = MeaningfulMethods(item_id);
+    if (methods.size() >= 2) {
+        int active = ResolveActiveMethodIndex(item_id, nodeKey);
+        if (active < 0 || active >= static_cast<int>(methods.size())) return -1;
+        const auto& method = methods[active];
+        if (method.method == "vendor" || method.method == "trading_post") {
+            // Terminal route in the tree; price exactly as the method row does.
+            return RouteGoldCost(item_id, method, count);
+        }
+        // crafting / mystic_forge: fall through and recurse the recipe below.
+    }
+
+    // Recurse the recipe (single-route item, or a chosen craft/forge route).
+    const CraftyLegend::Recipe* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
+    if (recipe && !recipe->ingredients.empty()) {
+        visited.insert(item_id);
+        uint32_t output = std::max<uint32_t>(1, recipe->output_count);
+        int numCrafts = (count + static_cast<int>(output) - 1) / static_cast<int>(output);
+        long long total = 0;
+        for (const auto& ing : recipe->ingredients) {
+            long long effCount = static_cast<long long>(ing.count) * numCrafts;
+            long long c;
+            if (ing.item_id == 0) {
+                // Wallet currency or a "Coin" copper amount - price as a leaf.
+                CraftyLegend::RecipeIngredient scaled = ing;
+                scaled.count = static_cast<uint32_t>(effCount);
+                c = GoldCostForIngredient(scaled);
+            } else {
+                c = ActiveRouteGoldCost(ing.item_id, static_cast<int>(effCount),
+                                        nodeKey + "/" + std::to_string(ing.item_id),
+                                        visited);
+            }
+            if (c < 0) { visited.erase(item_id); return -1; }
+            total += c;
+        }
+        visited.erase(item_id);
+        return total;
+    }
+
+    // Leaf with no recipe: price on the trading post.
+    CraftyLegend::RecipeIngredient leaf;
+    leaf.item_id = item_id;
+    leaf.count   = static_cast<uint32_t>(count);
+    leaf.name    = CraftyLegend::DataManager::GetItemName(item_id);
+    return GoldCostForIngredient(leaf);
 }
 
 }}
