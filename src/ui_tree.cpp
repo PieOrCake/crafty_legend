@@ -24,7 +24,7 @@ std::vector<CraftyLegend::AcquisitionMethod> MeaningfulMethods(uint32_t item_id)
         CraftyLegend::DataManager::GetAcquisitionMethods(item_id);
 
     const CraftyLegend::Recipe* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
-    if (recipe) {
+    if (recipe && !recipe->ingredients.empty()) {
         methods.erase(
             std::remove_if(methods.begin(), methods.end(),
                 [](const CraftyLegend::AcquisitionMethod& a) { return a.method == "trading_post"; }),
@@ -87,6 +87,10 @@ long long RouteGoldCost(uint32_t item_id, const CraftyLegend::AcquisitionMethod&
             ingredients.push_back(ing);
         }
     } else if (method.method == "trading_post") {
+        // GetMaterialTotalPrice (via GoldCostForIngredient below) returns the best/cheapest
+        // price across routes, not a TP-only price. That's safe here only because
+        // MeaningfulMethods never exposes trading_post for recipe-bearing items - callers
+        // must not invoke RouteGoldCost with an explicit trading_post method on such an item.
         CraftyLegend::RecipeIngredient ing;
         ing.item_id = item_id;
         ing.count = static_cast<uint32_t>(count);
