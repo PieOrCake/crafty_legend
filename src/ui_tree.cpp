@@ -16,6 +16,31 @@ namespace CraftyLegend { namespace UI {
 static const float INDENT_STEP    = 14.0f; // horizontal step per tree depth
 static const int   MAX_TREE_DEPTH = 12;    // backstop against pathological recursion
 
+// Matches ui.cpp's Miller-column convention (see ui.cpp ~line 463/1048): internal
+// text padding from a column/content edge. Tree rows have no left-hand price
+// column (Task 8 pins cost to the panel's right edge instead), so the tree's
+// analogue of Miller's `labelStartX = textPadX + maxPriceW + priceGap + iconColW`
+// simplifies to `textPadX + iconColW` (maxPriceW and priceGap both 0 here).
+static const float textPadX = 6.0f;
+
+// Right-pinned acquisition-cost column: draws `copper` right-aligned to the
+// tree panel's content-region right edge, at `rowBaseY`, without disturbing the
+// caller's layout cursor (it saves and restores the cursor position). Used for
+// every row so costs line up in a column regardless of indentation depth.
+// Draws nothing when there's no priceable cost (copper <= 0), per Task 8's
+// "don't render a 0 or garbage" requirement.
+static void DrawRightPinnedCost(float rowBaseY, float leftBound, int copper) {
+    if (copper <= 0) return;
+    float w = CalcPriceWidth(copper);
+    if (w <= 0.0f) return;
+    float rightEdge = ImGui::GetWindowContentRegionMax().x;
+    ImVec2 saved = ImGui::GetCursorPos();
+    ImGui::SetCursorPosY(rowBaseY);
+    ImGui::SetCursorPosX(std::max(leftBound, rightEdge - w));
+    RenderPrice(copper);
+    ImGui::SetCursorPos(saved);
+}
+
 // Row height matches DrawItemRow's own computation so rails/arrow line up with
 // the row body (icon rows are taller than text rows).
 static float TreeRowHeight() {
@@ -85,7 +110,7 @@ static bool RenderMethodRow(uint32_t item_id,
 static void RenderMethodChildren(uint32_t item_id,
                                  const CraftyLegend::AcquisitionMethod& method,
                                  int count, int depth,
-                                 const std::string& nodeKey,
+                                 const std::string& nodeKey, const std::string& mKey,
                                  std::unordered_set<uint32_t>& onPath);
 
 // Route-aware rolled-up gold cost (copper) for `count` of item_id, following the
@@ -94,7 +119,8 @@ static void RenderMethodChildren(uint32_t item_id,
 // near the bottom of the file; forward-declared here for RenderTree.
 static long long ActiveRouteGoldCost(uint32_t item_id, int count,
                                      const std::string& nodeKey,
-                                     std::unordered_set<uint32_t>& visited);
+                                     std::unordered_set<uint32_t>& visited,
+                                     int depth = 0);
 
 // Recursively render one crafting-tree node. `depth` 0 == a direct component of
 // the legendary. `path` is the "/"-joined chain of item ids from the legendary
@@ -143,12 +169,20 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     // rowBaseX is the current cursor x (just past the arrow slot). DrawItemRow
     // places the icon at rowBaseX and the label at rowBaseX + labelStartX, so
     // labelStartX is the icon-column width (no price column in Task 5).
+    // Right-pinned acquisition cost (Task 8): computed once so we can both
+    // reserve room for it (narrowing the Selectable) and draw it afterwards at
+    // a fixed x, consistent across all depths.
+    float rowBaseY = ImGui::GetCursorPosY();
+    int   rowCost  = GetMaterialTotalPrice(mat);
+    float costW    = rowCost > 0 ? CalcPriceWidth(rowCost) : 0.0f;
+    const float costGap = 8.0f;
+
     RowVisual v{};
     v.mat            = &mat;
     v.hasAccountData = CraftyLegend::GW2API::HasAccountData();
     v.showIcons      = g_ShowItemIcons;
-    v.rowWidth       = ImGui::GetContentRegionAvail().x;
-    v.labelStartX    = g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 4.0f;
+    v.rowWidth       = ImGui::GetContentRegionAvail().x - (costW > 0.0f ? costW + costGap : 0.0f);
+    v.labelStartX    = textPadX + (g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 0.0f);
     v.priceMaxW      = 0.0f;
     v.priceGap       = 0.0f;
     v.selected       = false;
@@ -156,6 +190,7 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     v.gates          = &gates;
 
     DrawItemRow(v);
+    DrawRightPinnedCost(rowBaseY, contentX, rowCost);
     ImGui::PopID();
 
     if (expanded) {
@@ -177,7 +212,7 @@ static void RenderNode(uint32_t item_id, int count, int depth,
                 if (mExpanded) {
                     onPath.insert(item_id);
                     RenderMethodChildren(item_id, methods[i], count, depth + 2,
-                                         nodeKey, onPath);
+                                         nodeKey, mKey, onPath);
                     onPath.erase(item_id);
                 }
             }
@@ -258,18 +293,24 @@ static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
         mat.item_id ? CraftyLegend::DataManager::GetItemAchievementGates(mat.item_id)
                     : std::vector<CraftyLegend::Prerequisite>{};
 
+    float rowBaseY = ImGui::GetCursorPosY();
+    int   rowCost  = GetMaterialTotalPrice(mat);
+    float costW    = rowCost > 0 ? CalcPriceWidth(rowCost) : 0.0f;
+    const float costGap = 8.0f;
+
     RowVisual v{};
     v.mat            = &mat;
     v.hasAccountData = CraftyLegend::GW2API::HasAccountData();
     v.showIcons      = g_ShowItemIcons;
-    v.rowWidth       = ImGui::GetContentRegionAvail().x;
-    v.labelStartX    = g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 4.0f;
+    v.rowWidth       = ImGui::GetContentRegionAvail().x - (costW > 0.0f ? costW + costGap : 0.0f);
+    v.labelStartX    = textPadX + (g_ShowItemIcons ? (ICON_SIZE + ICON_GAP) : 0.0f);
     v.priceMaxW      = 0.0f;
     v.priceGap       = 0.0f;
     v.selected       = false;
     v.altTint        = false;
     v.gates          = &gates;
     DrawItemRow(v);
+    DrawRightPinnedCost(rowBaseY, contentX, rowCost);
     ImGui::PopID();
 }
 
@@ -341,7 +382,7 @@ static bool RenderMethodRow(uint32_t item_id,
 static void RenderMethodChildren(uint32_t item_id,
                                  const CraftyLegend::AcquisitionMethod& method,
                                  int count, int depth,
-                                 const std::string& nodeKey,
+                                 const std::string& nodeKey, const std::string& mKey,
                                  std::unordered_set<uint32_t>& onPath) {
     if (method.method == "vendor") {
         int qty = count < 1 ? 1 : count;
@@ -360,7 +401,9 @@ static void RenderMethodChildren(uint32_t item_id,
                     ? req.first + ": " + std::to_string(qty) + " x " + req.second
                     : req.first + ": " + req.second;
             }
-            DrawLeafRow(mat, depth, nodeKey + "#vreq:" + std::to_string(idx++));
+            // Keyed on the method (mKey), not just the item's node path, so two
+            // methods on the same item can never collide on ImGui IDs.
+            DrawLeafRow(mat, depth, mKey + "#vreq:" + std::to_string(idx++));
         }
     } else {
         const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
@@ -577,7 +620,9 @@ int ResolveActiveMethodIndex(uint32_t item_id, const std::string& nodeKey) {
 // sees the same expand-state the tree does.
 static long long ActiveRouteGoldCost(uint32_t item_id, int count,
                                      const std::string& nodeKey,
-                                     std::unordered_set<uint32_t>& visited) {
+                                     std::unordered_set<uint32_t>& visited,
+                                     int depth) {
+    if (depth > MAX_TREE_DEPTH) return -1; // backstop, mirrors RenderNode's guard
     if (count <= 0) return 0;
     if (item_id == 0) return 0;
     if (visited.count(item_id)) return -1; // cycle => not gold-comparable
@@ -613,7 +658,7 @@ static long long ActiveRouteGoldCost(uint32_t item_id, int count,
             } else {
                 c = ActiveRouteGoldCost(ing.item_id, static_cast<int>(effCount),
                                         nodeKey + "/" + std::to_string(ing.item_id),
-                                        visited);
+                                        visited, depth + 1);
             }
             if (c < 0) { visited.erase(item_id); return -1; }
             total += c;
