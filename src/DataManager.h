@@ -184,6 +184,10 @@ namespace CraftyLegend {
         // (any expanded key beginning with parentKey + "#m:") except methodKey.
         static void SetActiveMethod(const std::string& parentKey, const std::string& methodKey);
         static const std::set<std::string>& GetExpandedNodes();
+        // Monotonic counter bumped on any expand-state mutation (SetNodeExpanded,
+        // SetActiveMethod, session restore). Lets callers memoize work derived from
+        // the expanded set without recomputing every frame.
+        static uint64_t GetExpandRevision();
 
     private:
         // JSON loading

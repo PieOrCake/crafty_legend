@@ -2488,12 +2488,15 @@ namespace CraftyLegend {
         col_scroll_y = s_session_col_scroll_y;
     }
 
+    static uint64_t s_expandRevision = 0;
+
     bool DataManager::IsNodeExpanded(const std::string& key) {
         return s_expandedNodes.count(key) > 0;
     }
     void DataManager::SetNodeExpanded(const std::string& key, bool expanded) {
         if (expanded) s_expandedNodes.insert(key);
         else          s_expandedNodes.erase(key);
+        ++s_expandRevision;
     }
     void DataManager::SetActiveMethod(const std::string& parentKey, const std::string& methodKey) {
         const std::string prefix = parentKey + "#m:";
@@ -2502,8 +2505,10 @@ namespace CraftyLegend {
             else ++it;
         }
         s_expandedNodes.insert(methodKey);
+        ++s_expandRevision;
     }
     const std::set<std::string>& DataManager::GetExpandedNodes() { return s_expandedNodes; }
+    uint64_t DataManager::GetExpandRevision() { return s_expandRevision; }
 
     void DataManager::SaveSession() {
         try {
@@ -2618,6 +2623,7 @@ namespace CraftyLegend {
                     s_expandedNodes.insert(v.get<std::string>());
                 }
             }
+            ++s_expandRevision;
         } catch (...) {}
     }
 

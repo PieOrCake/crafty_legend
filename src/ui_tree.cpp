@@ -228,6 +228,12 @@ static void RenderNode(uint32_t item_id, int count, int depth,
                     RenderNode(ing.item_id, static_cast<int>(ing.count) * crafts, depth + 1,
                                nodeKey + "/" + std::to_string(ing.item_id), onPath);
                 }
+            } else if (methods.size() == 1) {
+                // No recipe but a single meaningful acquisition method (e.g. a
+                // vendor-only component): render that method's children directly
+                // so the node doesn't expand to nothing.
+                RenderMethodChildren(item_id, methods[0], count, depth + 1,
+                                     nodeKey, nodeKey, onPath);
             }
             onPath.erase(item_id);
         }
@@ -443,9 +449,19 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
     // shown when the whole tree prices out in gold (>0). (Task 8 owns alignment
     // polish; this is functional and simple.)
     {
-        std::unordered_set<uint32_t> costVisited;
-        long long headingGold = ActiveRouteGoldCost(
-            legendaryId, 1, std::to_string(legendaryId), costVisited);
+        static uint32_t s_cachedLegendaryId = 0;
+        static uint64_t s_cachedExpandRevision = static_cast<uint64_t>(-1);
+        static long long s_cachedHeadingGold = -1;
+
+        uint64_t curRevision = CraftyLegend::DataManager::GetExpandRevision();
+        if (legendaryId != s_cachedLegendaryId || curRevision != s_cachedExpandRevision) {
+            std::unordered_set<uint32_t> costVisited;
+            s_cachedHeadingGold = ActiveRouteGoldCost(
+                legendaryId, 1, std::to_string(legendaryId), costVisited);
+            s_cachedLegendaryId = legendaryId;
+            s_cachedExpandRevision = curRevision;
+        }
+        long long headingGold = s_cachedHeadingGold;
         if (headingGold > 0) {
             int copper = headingGold > 0x7fffffffLL ? 0x7fffffff
                                                     : static_cast<int>(headingGold);
