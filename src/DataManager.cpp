@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <unordered_set>
+#include <set>
 #include <functional>
 #include <windows.h>
 #include <filesystem>
@@ -200,7 +201,10 @@ namespace CraftyLegend {
     
     // Favourites
     std::unordered_set<uint32_t> DataManager::s_favourites;
-    
+
+    // Tree expand-state
+    std::set<std::string> DataManager::s_expandedNodes;
+
     bool DataManager::Initialize() {
         // Load all JSON data
         bool legendaries_loaded = LoadLegendaries();
@@ -2484,6 +2488,23 @@ namespace CraftyLegend {
         col_scroll_y = s_session_col_scroll_y;
     }
 
+    bool DataManager::IsNodeExpanded(const std::string& key) {
+        return s_expandedNodes.count(key) > 0;
+    }
+    void DataManager::SetNodeExpanded(const std::string& key, bool expanded) {
+        if (expanded) s_expandedNodes.insert(key);
+        else          s_expandedNodes.erase(key);
+    }
+    void DataManager::SetActiveMethod(const std::string& parentKey, const std::string& methodKey) {
+        const std::string prefix = parentKey + "#m:";
+        for (auto it = s_expandedNodes.begin(); it != s_expandedNodes.end(); ) {
+            if (it->rfind(prefix, 0) == 0 && *it != methodKey) it = s_expandedNodes.erase(it);
+            else ++it;
+        }
+        s_expandedNodes.insert(methodKey);
+    }
+    const std::set<std::string>& DataManager::GetExpandedNodes() { return s_expandedNodes; }
+
     void DataManager::SaveSession() {
         try {
             std::string dllDir = GetDllDirectory();
@@ -2519,6 +2540,11 @@ namespace CraftyLegend {
             json scrollArr = json::array();
             for (float sy : s_session_col_scroll_y) scrollArr.push_back(sy);
             session["col_scroll_y"] = scrollArr;
+
+            // Save tree expand-state
+            json expandedArr = json::array();
+            for (const std::string& key : s_expandedNodes) expandedArr.push_back(key);
+            session["tree_expanded"] = expandedArr;
 
             std::ofstream f(path);
             if (f.is_open()) {
@@ -2582,6 +2608,14 @@ namespace CraftyLegend {
             if (session.contains("col_scroll_y") && session["col_scroll_y"].is_array()) {
                 for (const auto& v : session["col_scroll_y"]) {
                     s_session_col_scroll_y.push_back(v.get<float>());
+                }
+            }
+
+            // Restore tree expand-state
+            s_expandedNodes.clear();
+            if (session.contains("tree_expanded") && session["tree_expanded"].is_array()) {
+                for (const auto& v : session["tree_expanded"]) {
+                    s_expandedNodes.insert(v.get<std::string>());
                 }
             }
         } catch (...) {}

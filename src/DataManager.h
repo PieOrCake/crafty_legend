@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <set>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <cstdint>
@@ -175,7 +176,15 @@ namespace CraftyLegend {
         static void ToggleFavourite(uint32_t legendary_id);
         static void LoadFavourites();
         static void SaveFavourites();
-        
+
+        // Tree expand-state (persisted alongside session data)
+        static bool IsNodeExpanded(const std::string& key);
+        static void SetNodeExpanded(const std::string& key, bool expanded);
+        // Accordion: mark methodKey active under parentKey, collapsing sibling method keys
+        // (any expanded key beginning with parentKey + "#m:") except methodKey.
+        static void SetActiveMethod(const std::string& parentKey, const std::string& methodKey);
+        static const std::set<std::string>& GetExpandedNodes();
+
     private:
         // JSON loading
         static bool LoadLegendaries();
@@ -216,7 +225,10 @@ namespace CraftyLegend {
         // Favourites data
         static std::unordered_set<uint32_t> s_favourites;
         static std::string GetFavouritesPath();
-    
+
+        // Tree expand-state data (persisted in session.json under "tree_expanded")
+        static std::set<std::string> s_expandedNodes;
+
     };
     
 }
