@@ -89,6 +89,11 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     bool expandable = CanDrillInto(item_id) && onPath.find(item_id) == onPath.end();
     bool expanded   = expandable && CraftyLegend::DataManager::IsNodeExpanded(nodeKey);
 
+    // Unique per-node ID scope, keyed on the full node path so diamonds (the
+    // same item_id reachable via two branches) don't collide on ImGui IDs.
+    // Must wrap both the arrow's InvisibleButton and DrawItemRow's Selectable.
+    ImGui::PushID(nodeKey.c_str());
+
     // Rails + indentation, then the arrow slot.
     float contentX = DrawRails(depth);
     ImGui::SetCursorPosX(contentX);
@@ -129,7 +134,6 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     v.altTint        = false;
     v.gates          = &gates;
 
-    ImGui::PushID(static_cast<int>(item_id));
     DrawItemRow(v);
     ImGui::PopID();
 
