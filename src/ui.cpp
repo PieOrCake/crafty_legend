@@ -1046,58 +1046,35 @@ void AddonRender() {
                     float iconGap = g_ShowItemIcons ? 4.0f : 0.0f;
                     // labelStart = textPadX + maxPriceW + priceGap + iconColW
                     float labelStartX = textPadX + maxPriceW + priceGap + iconColW;
-                    float selectW = colW - labelStartX - textPadX;
-                    if (selectW < 50.0f) selectW = 50.0f;
 
                     for (size_t i = 0; i < colData.materials.size(); i++) {
                         const auto& mat = colData.materials[i];
-                        float rowBaseX = ImGui::GetCursorPosX();
-                        float rowBaseY = ImGui::GetCursorPosY();
 
                         // Achievement gate(s) on this material (drives lock marker + tooltip)
                         std::vector<CraftyLegend::Prerequisite> matGates;
                         if (mat.item_id != 0)
                             matGates = CraftyLegend::DataManager::GetItemAchievementGates(mat.item_id);
 
-                        // Row dimensions
-                        ImVec2 rowPos = ImGui::GetCursorScreenPos();
-                        float rowH = g_ShowItemIcons ? (ICON_SIZE + 2.0f) : ImGui::GetTextLineHeightWithSpacing();
+                        bool isSel = (colData.selected_material_index == static_cast<int>(i));
 
-                        // Alternating row tinting for readability
-                        if (i % 2 == 1) {
-                            ImGui::GetWindowDrawList()->AddRectFilled(
-                                ImVec2(rowPos.x - textPadX, rowPos.y),
-                                ImVec2(rowPos.x + colW - textPadX, rowPos.y + rowH),
-                                IM_COL32(255, 255, 255, 8));
-                        }
-
-                        // Progress bar behind row (if account data available)
-                        if (CraftyLegend::GW2API::HasAccountData() && mat.count > 0 && mat.name != "Coin") {
-                            int pOwned = 0;
-                            if (mat.item_id == 0) {
-                                int wa = CraftyLegend::GW2API::GetWalletAmountByName(mat.name);
-                                if (wa >= 0) pOwned = wa;
-                            } else {
-                                pOwned = GetEffectiveOwnedCount(mat.item_id);
-                            }
-                            float pct = std::min(1.0f, (float)pOwned / (float)mat.count);
-                            if (pct > 0.0f) {
-                                float barLeft = rowPos.x - textPadX;
-                                float barFullW = colW; // full column width
-                                ImU32 barCol = (pOwned >= (int)mat.count)
-                                    ? IM_COL32(50, 180, 50, 35)   // green = complete
-                                    : IM_COL32(60, 140, 200, 25); // blue = partial
+                        // Coin materials render a dimmed, non-selectable label. Kept here in
+                        // the caller (not in DrawItemRow) because the label uses the
+                        // theme-adjusted dimTextColor, which the shared helper cannot see.
+                        if (mat.name == "Coin") {
+                            float rowBaseX = ImGui::GetCursorPosX();
+                            float rowBaseY = ImGui::GetCursorPosY();
+                            ImVec2 rowPos = ImGui::GetCursorScreenPos();
+                            float rowH = g_ShowItemIcons ? (ICON_SIZE + 2.0f) : ImGui::GetTextLineHeightWithSpacing();
+                            // Alternating row tinting for readability
+                            if (i % 2 == 1) {
                                 ImGui::GetWindowDrawList()->AddRectFilled(
-                                    ImVec2(barLeft, rowPos.y),
-                                    ImVec2(barLeft + barFullW * pct, rowPos.y + rowH),
-                                    barCol, 2.0f);
+                                    ImVec2(rowPos.x - textPadX, rowPos.y),
+                                    ImVec2(rowPos.x + colW - textPadX, rowPos.y + rowH),
+                                    IM_COL32(255, 255, 255, 8));
                             }
-                        }
-
-                        // Render price (right-aligned within maxPriceW, vertically centered)
-                        int totalPrice = GetMaterialTotalPrice(mat);
-                        if (maxPriceW > 0.0f) {
-                            if (totalPrice > 0) {
+                            // Render price (right-aligned within maxPriceW, vertically centered)
+                            int totalPrice = GetMaterialTotalPrice(mat);
+                            if (maxPriceW > 0.0f && totalPrice > 0) {
                                 float thisPW = CalcPriceWidth(totalPrice);
                                 float padLeft = maxPriceW - thisPW;
                                 if (padLeft > 0) ImGui::SetCursorPosX(rowBaseX + padLeft);
@@ -1107,160 +1084,33 @@ void AddonRender() {
                                 }
                                 RenderPrice(totalPrice);
                                 ImGui::SameLine(0, 0);
-                                ImGui::SetCursorPosY(rowBaseY); // reset Y so icon isn't pushed down
+                                ImGui::SetCursorPosY(rowBaseY);
                             }
-                        }
-
-                        // Coin materials: show price with label, not selectable
-                        if (mat.name == "Coin") {
                             ImGui::SetCursorPosX(rowBaseX + labelStartX);
                             ImGui::TextColored(dimTextColor, "%s", Localization::Tr("Gold Cost"));
                             continue;
                         }
 
-                        // Request icon if enabled
-                        Texture_t* icon = nullptr;
-                        if (g_ShowItemIcons) {
-                            uint32_t iconId = mat.item_id;
-                            std::string iconUrl;
-                            std::string iconName;
-                            
-                            if (iconId != 0) {
-                                // Normal item icon
-                                const auto* item = CraftyLegend::DataManager::GetItem(iconId);
-                                if (item) {
-                                    iconUrl = item->icon;
-                                    iconName = item->name;
-                                }
-                            } else {
-                                // Wallet currency - use synthetic ID (0x80000000 + currency_id)
-                                const auto* currency = CraftyLegend::DataManager::GetCurrencyByName(mat.name);
-                                if (currency) {
-                                    iconId = 0x80000000 | currency->id;
-                                    iconUrl = currency->icon;
-                                    iconName = currency->name;
-                                    if (g_LoggedIconRequests.find(iconId) == g_LoggedIconRequests.end()) {
-                                        std::stringstream dbg;
-                                        dbg << "[CurrIcon] \"" << mat.name << "\" -> currency " << currency->id
-                                            << " (" << currency->name << ") iconUrl=" << (iconUrl.empty() ? "EMPTY" : "yes")
-                                            << " syntheticId=" << iconId;
-                                        AddDebugLog(dbg.str());
-                                    }
-                                } else {
-                                    static std::unordered_set<std::string> loggedMisses;
-                                    if (loggedMisses.find(mat.name) == loggedMisses.end()) {
-                                        loggedMisses.insert(mat.name);
-                                        std::stringstream dbg;
-                                        dbg << "[CurrIcon] MISS: \"" << mat.name << "\" not found in currencies";
-                                        AddDebugLog(dbg.str());
-                                    }
-                                }
-                            }
-                            
-                            if (iconId != 0) {
-                                try {
-                                    icon = CraftyLegend::IconManager::GetIcon(iconId);
-                                } catch (...) {
-                                    icon = nullptr;
-                                }
-                                
-                                if (!icon && !CraftyLegend::IconManager::IsIconLoaded(iconId)) {
-                                    if (g_LoggedIconRequests.find(iconId) == g_LoggedIconRequests.end()) {
-                                        g_LoggedIconRequests.insert(iconId);
-                                        std::stringstream logMsg;
-                                        logMsg << "Requesting icon for " << iconId << " (" << mat.name << ")";
-                                        AddDebugLog(logMsg.str());
-                                    }
-                                    
-                                    if (!iconUrl.empty()) {
-                                        CraftyLegend::IconManager::RequestIcon(iconId, iconUrl);
-                                    } else if (!iconName.empty()) {
-                                        CraftyLegend::IconManager::RequestIconById(iconId, iconName);
-                                    }
-                                }
-                            }
-                        }
+                        // Draw the row visuals through the shared helper. PushID keeps each
+                        // row's Selectable ID unique so identity is preserved (and stays
+                        // correct once the tree layout reuses the same helper).
+                        RowVisual rv;
+                        rv.mat            = &mat;
+                        rv.hasAccountData = CraftyLegend::GW2API::HasAccountData();
+                        rv.showIcons      = g_ShowItemIcons;
+                        rv.rowWidth       = colW;
+                        rv.labelStartX    = labelStartX;
+                        rv.priceMaxW      = maxPriceW;
+                        rv.priceGap       = priceGap;
+                        rv.selected       = isSel;
+                        rv.altTint        = (i % 2 == 1);
+                        rv.gates          = &matGates;
 
-                        // Render icon at fixed position with rarity border
-                        if (g_ShowItemIcons) {
-                            float iconX = rowBaseX + maxPriceW + priceGap;
-                            ImGui::SetCursorPosX(iconX);
-                            if (icon && icon->Resource) {
-                                try {
-                                    ImVec2 iconScreenPos = ImGui::GetCursorScreenPos();
-                                    ImGui::Image(icon->Resource, ImVec2(ICON_SIZE, ICON_SIZE));
-                                    // Tooltip on icon hover
-                                    if (ImGui::IsItemHovered()) {
-                                        ImGui::BeginTooltip();
-                                        // Show larger icon in tooltip
-                                        ImGui::Image(icon->Resource, ImVec2(48, 48));
-                                        ImGui::SameLine();
-                                        ImGui::BeginGroup();
-                                        if (mat.item_id != 0) {
-                                            const auto* tipItem = CraftyLegend::DataManager::GetItem(mat.item_id);
-                                            if (tipItem) {
-                                                ImU32 rarityCol = GetRarityBorderColor(tipItem->rarity);
-                                                ImVec4 nameCol = rarityCol != 0
-                                                    ? ImGui::ColorConvertU32ToFloat4(rarityCol)
-                                                    : ImVec4(1,1,1,1);
-                                                nameCol.w = 1.0f;
-                                                ImGui::TextColored(nameCol, "%s", Localization::ItemName(mat.item_id, tipItem->name).c_str());
-                                                if (!tipItem->rarity.empty()) {
-                                                    ImGui::TextColored(ImVec4(0.7f,0.7f,0.7f,1), "%s", Localization::Tr(tipItem->rarity.c_str()));
-                                                }
-                                                std::string rawDesc = Localization::ItemDescription(mat.item_id, tipItem->description);
-                                                if (!rawDesc.empty()) {
-                                                    ImGui::PushTextWrapPos(300.0f);
-                                                    std::string cleanDesc = StripMarkup(rawDesc);
-                                                    ImGui::TextColored(ImVec4(0.6f,0.6f,0.6f,1), "%s", cleanDesc.c_str());
-                                                    ImGui::PopTextWrapPos();
-                                                }
-                                            } else {
-                                                ImGui::Text("%s", Localization::ItemName(mat.item_id, mat.name).c_str());
-                                            }
-                                        } else {
-                                            // Wallet currency
-                                            ImGui::Text("%s", CraftyLegend::GW2API::LocalizeCurrencyName(mat.name).c_str());
-                                            ImGui::TextColored(ImVec4(0.7f,0.7f,0.7f,1), "%s", Localization::Tr("Wallet Currency"));
-                                        }
-                                        ImGui::EndGroup();
-                                        ImGui::EndTooltip();
-                                    }
-                                    // Rarity border
-                                    if (mat.item_id != 0) {
-                                        const auto* matItem = CraftyLegend::DataManager::GetItem(mat.item_id);
-                                        if (matItem) {
-                                            ImU32 rarityCol = GetRarityBorderColor(matItem->rarity);
-                                            if (rarityCol != 0) {
-                                                ImGui::GetWindowDrawList()->AddRect(iconScreenPos,
-                                                    ImVec2(iconScreenPos.x + ICON_SIZE, iconScreenPos.y + ICON_SIZE),
-                                                    rarityCol, 2.0f, 0, 1.5f);
-                                            }
-                                        }
-                                    }
-                                    ImGui::SameLine(0, 0);
-                                } catch (...) {}
-                            }
-                        }
+                        ImGui::PushID(static_cast<int>(i));
+                        RowResult rowResult = DrawItemRow(rv);
+                        ImGui::PopID();
 
-                        bool isSel = (colData.selected_material_index == static_cast<int>(i));
-                        bool isComplete = false;
-                        bool isReady = false;
-                        std::string label = FormatMaterialLabel(mat, &isComplete, &isReady);
-
-                        if (isComplete) {
-                            ImGui::PushStyleColor(ImGuiCol_Text, completedColor);
-                        } else if (isReady) {
-                            ImGui::PushStyleColor(ImGuiCol_Text, readyColor);
-                        }
-
-                        // Label at fixed position, full-height selectable with centered text
-                        ImGui::SetCursorPosX(rowBaseX + labelStartX);
-                        ImGui::SetCursorPosY(rowBaseY); // align to row top
-                        if (g_ShowItemIcons) {
-                            ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.0f, 0.5f));
-                        }
-                        if (ImGui::Selectable(label.c_str(), isSel, 0, ImVec2(selectW, rowH))) {
+                        if (rowResult.clicked) {
                             CraftyLegend::DataManager::SetSelectedMaterial(col, static_cast<int>(i));
                             if (mat.item_id != 0) {
                                 try {
@@ -1280,28 +1130,20 @@ void AddonRender() {
                             g_ScrollToEnd = true;
                             g_ScrollAnimating = false;
                         }
-                        if (g_ShowItemIcons) {
-                            ImGui::PopStyleVar();
-                        }
-                        // Lock marker on achievement-gated rows (drawn after Selectable so it overlays)
-                        if (!matGates.empty()) {
-                            bool haveData = CraftyLegend::GW2API::HasAccountData();
-                            bool allDone = true;
-                            for (const auto& g : matGates) if (!g.completed) { allDone = false; break; }
-                            ImU32 lockCol = !haveData ? IM_COL32(160, 160, 160, 210)
-                                          : (allDone ? IM_COL32(80, 200, 80, 235)
-                                                     : IM_COL32(235, 175, 45, 235));
-                            float lh = ImGui::GetTextLineHeight() * 0.72f;
-                            float scrollbarW = ImGui::GetStyle().ScrollbarSize;
-                            ImVec2 lc(rowPos.x + colW - textPadX * 2 - scrollbarW - lh * 0.5f,
-                                      rowPos.y + rowH * 0.5f);
-                            ImDrawList* dl = ImGui::GetWindowDrawList();
-                            float bw = lh * 0.66f, bh = lh * 0.52f;
-                            ImVec2 bMin(lc.x - bw * 0.5f, lc.y - bh * 0.5f + lh * 0.16f);
-                            ImVec2 bMax(lc.x + bw * 0.5f, lc.y + bh * 0.5f + lh * 0.16f);
-                            dl->AddRectFilled(bMin, bMax, lockCol, 1.5f);
-                            dl->PathArcTo(ImVec2(lc.x, bMin.y), bw * 0.34f, 3.14159265f, 6.2831853f, 10);
-                            dl->PathStroke(lockCol, 0, 1.6f);
+
+                        // Re-apply the completed/ready text colour around the retained hover
+                        // tooltip + right-click menu so they inherit it exactly as before.
+                        // In the original linear code a single PushStyleColor spanned from the
+                        // Selectable through the tooltip and menu; DrawItemRow now balances
+                        // that push internally, so re-derive the state and wrap the pieces
+                        // that stayed in the caller. FormatMaterialLabel is a pure read.
+                        bool isComplete = false;
+                        bool isReady = false;
+                        FormatMaterialLabel(mat, &isComplete, &isReady);
+                        if (isComplete) {
+                            ImGui::PushStyleColor(ImGuiCol_Text, completedColor);
+                        } else if (isReady) {
+                            ImGui::PushStyleColor(ImGuiCol_Text, readyColor);
                         }
                         // Hover tooltip: per-account breakdown (unbound) + achievement gate(s)
                         if (mat.item_id != 0 && ImGui::IsItemHovered()) {

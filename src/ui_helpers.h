@@ -44,3 +44,23 @@ void AddDebugLog(const std::string& message);
 std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat,
                                 bool* out_complete = nullptr,
                                 bool* out_ready    = nullptr);
+
+// Shared per-material row renderer (used by the Miller layout and, later, the
+// tree layout). Draws visuals only: alternating tint, progress bar, price,
+// icon + rarity border + hover tooltip, label Selectable and the achievement
+// lock marker. It does NOT handle clicks, selection, drilling or session state
+// — the caller owns those, driven by RowResult::clicked.
+struct RowVisual {
+    const CraftyLegend::RecipeIngredient* mat; // item_id, count, name
+    bool  hasAccountData;
+    bool  showIcons;
+    float rowWidth;     // full row width, for the progress bar
+    float labelStartX;  // window-x where the label/selectable begins
+    float priceMaxW;    // width reserved for right-aligned price (0 = none)
+    float priceGap;     // gap after price column
+    bool  selected;
+    bool  altTint;      // alternating-row background
+    const std::vector<CraftyLegend::Prerequisite>* gates; // achievement gates (may be null/empty)
+};
+struct RowResult { bool clicked; };
+RowResult DrawItemRow(const RowVisual& v);
