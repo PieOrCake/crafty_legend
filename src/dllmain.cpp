@@ -27,7 +27,8 @@ bool g_UsePieTheme        = true;
 bool g_UseTreeLayout      = false;
 bool g_FirstRunNoticeDone = false;
 bool  g_UseCustomFont     = false;
-float g_CustomFontSize    = 18.0f;
+float g_CustomFontSize    = 16.0f;
+float g_PrereqPanelHeight = 120.0f;
 WindowGeom g_MillerGeom;
 WindowGeom g_TreeGeom;
 

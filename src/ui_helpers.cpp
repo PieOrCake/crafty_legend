@@ -531,7 +531,7 @@ void AddDebugLog(const std::string& message) {
 }
 
 // Helper: format a material label like "42/77 Mystic Clover >" or "77 Mystic Clover >"
-std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool* out_complete, bool* out_ready) {
+std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool* out_complete, bool* out_ready, bool append_drill_arrow) {
     std::string label;
     bool hasData = CraftyLegend::GW2API::HasAccountData();
 
@@ -583,7 +583,7 @@ std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool*
         if (out_complete) *out_complete = false;
         if (out_ready) *out_ready = false;
     }
-    if (CanDrillInto(mat.item_id)) {
+    if (append_drill_arrow && CanDrillInto(mat.item_id)) {
         label += " >";
     }
     return label;
@@ -786,7 +786,7 @@ RowResult DrawItemRow(const RowVisual& v) {
 
     bool isComplete = false;
     bool isReady = false;
-    std::string label = FormatMaterialLabel(mat, &isComplete, &isReady);
+    std::string label = FormatMaterialLabel(mat, &isComplete, &isReady, v.drillArrow);
 
     if (isComplete) {
         ImGui::PushStyleColor(ImGuiCol_Text, completedColor);

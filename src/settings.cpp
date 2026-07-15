@@ -29,7 +29,8 @@ void SaveDisplaySettings() {
     file << "  \"tree_win_w\": " << g_TreeGeom.w << ",\n";
     file << "  \"tree_win_h\": " << g_TreeGeom.h << ",\n";
     file << "  \"use_custom_font\": " << (g_UseCustomFont ? "true" : "false") << ",\n";
-    file << "  \"custom_font_size\": " << g_CustomFontSize << "\n";
+    file << "  \"custom_font_size\": " << g_CustomFontSize << ",\n";
+    file << "  \"prereq_panel_height\": " << g_PrereqPanelHeight << "\n";
     file << "}\n";
 }
 
@@ -97,5 +98,7 @@ void LoadDisplaySettings() {
     if (content.find("\"use_custom_font\": true") != std::string::npos) g_UseCustomFont = true;
     else if (content.find("\"use_custom_font\": false") != std::string::npos) g_UseCustomFont = false;
     readFloat("custom_font_size", g_CustomFontSize);
-    if (g_CustomFontSize < 8.0f || g_CustomFontSize > 48.0f) g_CustomFontSize = 18.0f; // sanity clamp
+    if (g_CustomFontSize < 8.0f || g_CustomFontSize > 48.0f) g_CustomFontSize = 16.0f; // sanity clamp
+    readFloat("prereq_panel_height", g_PrereqPanelHeight);
+    if (g_PrereqPanelHeight < 60.0f || g_PrereqPanelHeight > 2000.0f) g_PrereqPanelHeight = 120.0f;
 }

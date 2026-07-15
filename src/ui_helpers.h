@@ -43,7 +43,8 @@ void AddDebugLog(const std::string& message);
 // Material label formatter
 std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat,
                                 bool* out_complete = nullptr,
-                                bool* out_ready    = nullptr);
+                                bool* out_ready    = nullptr,
+                                bool  append_drill_arrow = true);
 
 // Shared per-material row renderer (used by the Miller layout and, later, the
 // tree layout). Draws visuals only: alternating tint, progress bar, price,
@@ -61,6 +62,7 @@ struct RowVisual {
     bool  selected;
     bool  altTint;      // alternating-row background
     const std::vector<CraftyLegend::Prerequisite>* gates; // achievement gates (may be null/empty)
+    bool  drillArrow = true; // append " >" for drillable items (Miller yes, tree no)
 };
 struct RowResult { bool clicked; };
 RowResult DrawItemRow(const RowVisual& v);

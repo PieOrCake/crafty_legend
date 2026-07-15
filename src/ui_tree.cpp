@@ -210,6 +210,7 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     v.selected       = false;
     v.altTint        = false;
     v.gates          = &gates;
+    v.drillArrow     = false; // the twisty already signals expandability in tree mode
 
     DrawItemRow(v);
     DrawRightPinnedCost(rowBaseY, contentX, rowCost);
@@ -315,6 +316,7 @@ static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
     v.selected       = false;
     v.altTint        = false;
     v.gates          = &gates;
+    v.drillArrow     = false; // the twisty already signals expandability in tree mode
     DrawItemRow(v);
     DrawRightPinnedCost(rowBaseY, contentX, rowCost);
     ImGui::PopID();

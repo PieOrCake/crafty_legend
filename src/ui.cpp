@@ -490,7 +490,15 @@ void AddonRender() {
             ImGui::Text("%s", Localization::Tr("No legendary items loaded."));
         } else {
             float totalAvailHeight = ImGui::GetContentRegionAvail().y;
-            float prereqPanelHeight = g_Prerequisites.empty() ? 0.0f : 120.0f;
+            // Clamp the user-resizable prereq pane so the content area always
+            // keeps a usable minimum (both layouts share this height).
+            if (!g_Prerequisites.empty()) {
+                float maxPanel = totalAvailHeight - 140.0f;
+                if (maxPanel < 60.0f) maxPanel = 60.0f;
+                if (g_PrereqPanelHeight < 60.0f)      g_PrereqPanelHeight = 60.0f;
+                if (g_PrereqPanelHeight > maxPanel)   g_PrereqPanelHeight = maxPanel;
+            }
+            float prereqPanelHeight = g_Prerequisites.empty() ? 0.0f : g_PrereqPanelHeight;
             float scrollbarHeight = 14.0f; // Reserve space for horizontal scrollbar
             float availHeight = totalAvailHeight - prereqPanelHeight - (prereqPanelHeight > 0 ? 6.0f : 0.0f) - scrollbarHeight;
             if (availHeight < 100.0f) availHeight = 100.0f;
@@ -1323,7 +1331,24 @@ void AddonRender() {
             // Prerequisites panel
             if (!g_Prerequisites.empty()) {
                 ImGui::Spacing();
-                ImGui::Separator();
+
+                // Draggable splitter: resize the prereq pane by its top border.
+                // Drag up = taller pane, drag down = shorter. Persisted on release.
+                {
+                    ImVec4 sc = separatorColor;
+                    ImGui::PushStyleColor(ImGuiCol_Button,        ImVec4(sc.x, sc.y, sc.z, 0.35f));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(sc.x, sc.y, sc.z, 0.65f));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonActive,  ImVec4(sc.x, sc.y, sc.z, 1.0f));
+                    ImGui::Button("##prereqSplitter", ImVec2(-1.0f, 5.0f));
+                    ImGui::PopStyleColor(3);
+                    if (ImGui::IsItemHovered() || ImGui::IsItemActive())
+                        ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+                    if (ImGui::IsItemActive())
+                        g_PrereqPanelHeight -= ImGui::GetIO().MouseDelta.y; // clamped next frame
+                    if (ImGui::IsItemDeactivated())
+                        SaveDisplaySettings();
+                }
+
                 ImGui::TextColored(titleColor, "%s", Localization::Tr("Prerequisites"));
                 ImGui::BeginChild("PrereqPanel", ImVec2(0, prereqPanelHeight - 20.0f), false);
 

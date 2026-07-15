@@ -58,6 +58,7 @@ extern bool g_UseTreeLayout; // false = Miller columns (default), true = expandi
 extern bool g_FirstRunNoticeDone;  // one-time missing-dependency notice shown
 extern bool  g_UseCustomFont;  // use the bundled Inter TTF instead of the Nexus font
 extern float g_CustomFontSize; // body pixel size for the bundled font
+extern float g_PrereqPanelHeight; // user-resizable prerequisites pane height (px)
 
 // Per-layout window geometry. The Miller and Tree layouts each remember their own
 // window position and size; the main window is restored to the active layout's
