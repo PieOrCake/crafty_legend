@@ -860,9 +860,9 @@
           "name": "Gift of Lightning"
         },
         {
-          "item_id": "19631",
+          "item_id": "19621",
           "count": 1,
-          "name": "Gift of Darkness"
+          "name": "Gift of Metal"
         },
         {
           "item_id": "19676",
@@ -870,9 +870,9 @@
           "name": "Icy Runestone"
         },
         {
-          "item_id": "24572",
+          "item_id": "24554",
           "count": 1,
-          "name": "Superior Sigil of Nullification"
+          "name": "Superior Sigil of Air"
         }
       ]
     },
@@ -961,9 +961,9 @@
           "name": "Glob of Ectoplasm"
         },
         {
-          "item_id": "20796",
+          "item_id": "20799",
           "count": 10,
-          "name": "Philosopher's Stone"
+          "name": "Mystic Crystal"
         }
       ]
     },
@@ -975,14 +975,14 @@
       "type": "mystic_forge",
       "ingredients": [
         {
-          "item_id": "19632",
+          "item_id": "19622",
           "count": 1,
-          "name": "Gift of Light"
+          "name": "Gift of Wood"
         },
         {
-          "item_id": "19638",
+          "item_id": "19628",
           "count": 1,
-          "name": "Gift of Color"
+          "name": "Unicorn Statue"
         },
         {
           "item_id": "19676",
@@ -990,9 +990,9 @@
           "name": "Icy Runestone"
         },
         {
-          "item_id": "24572",
+          "item_id": "24571",
           "count": 1,
-          "name": "Superior Sigil of Nullification"
+          "name": "Superior Sigil of Purity"
         }
       ]
     },
@@ -6976,12 +6976,12 @@
       "ingredients": [
         {
           "item_id": "76530",
-          "count": 1,
+          "count": 2,
           "name": "Gift of Condensed Magic"
         },
         {
           "item_id": "70867",
-          "count": 1,
+          "count": 2,
           "name": "Gift of Condensed Might"
         },
         {
@@ -7653,7 +7653,7 @@
         },
         {
           "item_id": "79445",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Endeavor"
         },
         {
@@ -7682,7 +7682,7 @@
         },
         {
           "item_id": "79784",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Friendship"
         },
         {
@@ -7711,7 +7711,7 @@
         },
         {
           "item_id": "80380",
-          "count": 1,
+          "count": 100,
           "name": "Shard o' War"
         },
         {
@@ -7740,7 +7740,7 @@
         },
         {
           "item_id": "81051",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Liturgy"
         },
         {
@@ -7769,7 +7769,7 @@
         },
         {
           "item_id": "82069",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Arah"
         },
         {
@@ -7798,7 +7798,7 @@
         },
         {
           "item_id": "81961",
-          "count": 1,
+          "count": 100,
           "name": "Shard of the Crown"
         },
         {
@@ -7827,7 +7827,7 @@
         },
         {
           "item_id": "86120",
-          "count": 1,
+          "count": 100,
           "name": "Shard of the Dark Arts"
         },
         {
@@ -7856,7 +7856,7 @@
         },
         {
           "item_id": "87031",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Resolution"
         },
         {
@@ -7885,7 +7885,7 @@
         },
         {
           "item_id": "87711",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Call of the Void"
         },
         {
@@ -7914,7 +7914,7 @@
         },
         {
           "item_id": "88738",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Tlehco"
         },
         {
@@ -7943,7 +7943,7 @@
         },
         {
           "item_id": "89947",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Spero"
         },
         {
@@ -7972,7 +7972,7 @@
         },
         {
           "item_id": "90390",
-          "count": 1,
+          "count": 100,
           "name": "Shard of Exitare"
         },
         {
@@ -10954,9 +10954,9 @@
       "type": "mystic_forge",
       "ingredients": [
         {
-          "item_id": "80516",
+          "item_id": "80387",
           "count": 1,
-          "name": "Envoy Insignia"
+          "name": "Refined Envoy Helmet"
         },
         {
           "item_id": "78866",
@@ -10983,9 +10983,9 @@
       "type": "mystic_forge",
       "ingredients": [
         {
-          "item_id": "80516",
+          "item_id": "80236",
           "count": 1,
-          "name": "Envoy Insignia"
+          "name": "Refined Envoy Pauldrons"
         },
         {
           "item_id": "78866",
@@ -11012,9 +11012,9 @@
       "type": "mystic_forge",
       "ingredients": [
         {
-          "item_id": "80516",
+          "item_id": "80648",
           "count": 1,
-          "name": "Envoy Insignia"
+          "name": "Refined Envoy Breastplate"
         },
         {
           "item_id": "78866",
@@ -11041,9 +11041,9 @@
       "type": "mystic_forge",
       "ingredients": [
         {
-          "item_id": "80516",
+          "item_id": "80673",
           "count": 1,
-          "name": "Envoy Insignia"
+          "name": "Refined Envoy Gauntlets"
         },
         {
           "item_id": "78866",
@@ -11070,9 +11070,9 @@
       "type": "mystic_forge",
       "ingredients": [
         {
-          "item_id": "80516",
+          "item_id": "80427",
           "count": 1,
-          "name": "Envoy Insignia"
+          "name": "Refined Envoy Tassets"
         },
         {
           "item_id": "78866",
@@ -11099,9 +11099,9 @@
       "type": "mystic_forge",
       "ingredients": [
         {
-          "item_id": "80516",
+          "item_id": "80127",
           "count": 1,
-          "name": "Envoy Insignia"
+          "name": "Refined Envoy Greaves"
         },
         {
           "item_id": "78866",
@@ -11346,9 +11346,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11375,9 +11375,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11404,9 +11404,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11433,9 +11433,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11462,9 +11462,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11491,9 +11491,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11520,9 +11520,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11549,9 +11549,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11578,9 +11578,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11607,9 +11607,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11636,9 +11636,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11665,9 +11665,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11694,9 +11694,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11723,9 +11723,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11752,9 +11752,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11781,9 +11781,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11810,9 +11810,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -11839,9 +11839,9 @@
           "name": "Gift of Competitive Prowess"
         },
         {
-          "item_id": "77451",
+          "item_id": "84203",
           "count": 1,
-          "name": "Gift of Craftsmanship"
+          "name": "Gift of Competitive Dedication"
         }
       ]
     },
@@ -12434,7 +12434,7 @@
       "ingredients": [
         {
           "item_id": "46683",
-          "count": 250,
+          "count": 1,
           "name": "Crystalline Ingot"
         },
         {
@@ -13851,7 +13851,7 @@
           "count": 1
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -13880,7 +13880,7 @@
           "count": 250
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -13909,7 +13909,7 @@
           "count": 250
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -13938,7 +13938,7 @@
           "count": 250
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -13967,7 +13967,7 @@
           "count": 10
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -13996,7 +13996,7 @@
           "count": 1
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14047,7 +14047,7 @@
           "count": 1
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14076,7 +14076,7 @@
           "count": 1
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14105,7 +14105,7 @@
           "count": 100
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14134,7 +14134,7 @@
           "count": 250
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14163,7 +14163,7 @@
           "count": 1
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14192,7 +14192,7 @@
           "count": 100
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14221,7 +14221,7 @@
           "count": 5
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14250,7 +14250,7 @@
           "count": 5
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14279,7 +14279,7 @@
           "count": 5
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14308,7 +14308,7 @@
           "count": 5
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14337,7 +14337,7 @@
           "count": 250
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14366,7 +14366,7 @@
           "count": 250
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14395,7 +14395,7 @@
           "count": 250
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -14424,7 +14424,7 @@
           "count": 10
         }
       ],
-      "type": "MysticForge",
+      "type": "mystic_forge",
       "rating": 0
     },
     {
@@ -15033,7 +15033,7 @@
       "rating": 0,
       "type": "mystic_forge",
       "ingredients": [
-        { "item_id": "70820", "count": 500, "name": "Shard of Glory" }
+        { "item_id": "70820", "count": 250, "name": "Shard of Glory" }
       ]
     },
     {
@@ -15043,7 +15043,7 @@
       "rating": 0,
       "type": "mystic_forge",
       "ingredients": [
-        { "item_id": "71581", "count": 500, "name": "Memory of Battle" }
+        { "item_id": "71581", "count": 250, "name": "Memory of Battle" }
       ]
     },
     {
@@ -15057,6 +15057,241 @@
         { "item_id": "109469", "count": 1, "name": "Gift of Galdra" },
         { "item_id": "109161", "count": 1, "name": "Gift of Shadowstones" },
         { "item_id": "109391", "count": 1, "name": "Vial of Liquid Shadowstone" }
+      ]
+    },
+    {
+      "output_id": "80387",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "49523", "count": 1, "name": "Lesser Vision Crystal" },
+        { "item_id": "80516", "count": 1, "name": "Envoy Insignia" },
+        { "item_id": "45874", "count": 1, "name": "Deldrimor Steel Helmet Lining" },
+        { "item_id": "45880", "count": 1, "name": "Deldrimor Steel Helmet Casing" }
+      ]
+    },
+    {
+      "output_id": "80236",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "49523", "count": 1, "name": "Lesser Vision Crystal" },
+        { "item_id": "80516", "count": 1, "name": "Envoy Insignia" },
+        { "item_id": "45876", "count": 1, "name": "Deldrimor Steel Pauldron Lining" },
+        { "item_id": "45882", "count": 1, "name": "Deldrimor Steel Pauldron Casing" }
+      ]
+    },
+    {
+      "output_id": "80648",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46746", "count": 1, "name": "Vision Crystal" },
+        { "item_id": "80516", "count": 1, "name": "Envoy Insignia" },
+        { "item_id": "45872", "count": 1, "name": "Deldrimor Steel Chestplate Padding" },
+        { "item_id": "45878", "count": 1, "name": "Deldrimor Steel Chestplate Panel" }
+      ]
+    },
+    {
+      "output_id": "80673",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "49523", "count": 1, "name": "Lesser Vision Crystal" },
+        { "item_id": "80516", "count": 1, "name": "Envoy Insignia" },
+        { "item_id": "45873", "count": 1, "name": "Deldrimor Steel Gauntlet Lining" },
+        { "item_id": "45879", "count": 1, "name": "Deldrimor Steel Gauntlet Plates" }
+      ]
+    },
+    {
+      "output_id": "80427",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "49523", "count": 1, "name": "Lesser Vision Crystal" },
+        { "item_id": "80516", "count": 1, "name": "Envoy Insignia" },
+        { "item_id": "45875", "count": 1, "name": "Deldrimor Steel Legging Lining" },
+        { "item_id": "45881", "count": 1, "name": "Deldrimor Steel Legging Panel" }
+      ]
+    },
+    {
+      "output_id": "80127",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "49523", "count": 1, "name": "Lesser Vision Crystal" },
+        { "item_id": "80516", "count": 1, "name": "Envoy Insignia" },
+        { "item_id": "45871", "count": 1, "name": "Deldrimor Steel Boot Lining" },
+        { "item_id": "45877", "count": 1, "name": "Deldrimor Steel Boot Casing" }
+      ]
+    },
+    {
+      "output_id": "45871",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46741", "count": 1, "name": "Bolt of Damask" },
+        { "item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45872",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46741", "count": 1, "name": "Bolt of Damask" },
+        { "item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45873",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46741", "count": 1, "name": "Bolt of Damask" },
+        { "item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45874",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46741", "count": 2, "name": "Bolt of Damask" },
+        { "item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45875",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46741", "count": 1, "name": "Bolt of Damask" },
+        { "item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45876",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46741", "count": 1, "name": "Bolt of Damask" },
+        { "item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45877",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46738", "count": 2, "name": "Deldrimor Steel Ingot" },
+        { "item_id": "46747", "count": 25, "name": "Thermocatalytic Reagent" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45878",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46738", "count": 5, "name": "Deldrimor Steel Ingot" },
+        { "item_id": "46747", "count": 25, "name": "Thermocatalytic Reagent" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45879",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46738", "count": 2, "name": "Deldrimor Steel Ingot" },
+        { "item_id": "46747", "count": 25, "name": "Thermocatalytic Reagent" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45880",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46738", "count": 1, "name": "Deldrimor Steel Ingot" },
+        { "item_id": "46747", "count": 25, "name": "Thermocatalytic Reagent" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45881",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46738", "count": 4, "name": "Deldrimor Steel Ingot" },
+        { "item_id": "46747", "count": 25, "name": "Thermocatalytic Reagent" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "45882",
+      "output_count": 1,
+      "disciplines": ["Armorsmith"],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "46738", "count": 2, "name": "Deldrimor Steel Ingot" },
+        { "item_id": "46747", "count": 25, "name": "Thermocatalytic Reagent" },
+        { "item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust" }
+      ]
+    },
+    {
+      "output_id": "46741",
+      "output_count": 1,
+      "disciplines": ["Leatherworker", "Armorsmith", "Tailor"],
+      "rating": 450,
+      "type": "crafting",
+      "ingredients": [
+        { "item_id": "19740", "count": 20, "name": "Bolt of Wool" },
+        { "item_id": "19742", "count": 10, "name": "Bolt of Cotton" },
+        { "item_id": "19744", "count": 20, "name": "Bolt of Linen" },
+        { "item_id": "46740", "count": 1, "name": "Spool of Silk Weaving Thread" }
       ]
     }
   ]
