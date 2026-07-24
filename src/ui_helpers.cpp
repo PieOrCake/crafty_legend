@@ -303,7 +303,7 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
                 if (pos != req.second.size() && req.second[pos] != ' ') sub_count = 0;
             } catch (...) { sub_count = 0; }
             if (sub_count <= 0) continue;
-            uint32_t sub_id = CraftyLegend::DataManager::ResolveItemIdByName(req.first);
+            uint32_t sub_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
             if (sub_id != 0) {
                 FlattenCraftingTree(sub_id, sub_count * remaining, itemMats, walletMats, visited);
             }
@@ -435,7 +435,7 @@ static long long GetVendorPrice(uint32_t item_id, int remaining, std::unordered_
                 continue;
             }
             if (CraftyLegend::GW2API::GetWalletAmountByName(req.first) >= 0) continue;
-            uint32_t sub_id = CraftyLegend::DataManager::ResolveItemIdByName(req.first);
+            uint32_t sub_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
             if (sub_id == 0) continue;
             int sub_count = 0;
             try { sub_count = std::stoi(req.second); } catch (...) { continue; }
@@ -804,6 +804,9 @@ RowResult DrawItemRow(const RowVisual& v) {
         ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.0f, 0.5f));
     }
     bool clicked = ImGui::Selectable(label.c_str(), v.selected, 0, ImVec2(selectW, rowH));
+    // Double-click is reported separately (the tree toggles expand on it). Read it
+    // straight after the Selectable so IsItemHovered still refers to that widget.
+    bool doubleClicked = ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left);
     if (v.showIcons) {
         ImGui::PopStyleVar();
     }
@@ -832,6 +835,6 @@ RowResult DrawItemRow(const RowVisual& v) {
         ImGui::PopStyleColor();
     }
 
-    return { clicked };
+    return { clicked, doubleClicked };
 }
 

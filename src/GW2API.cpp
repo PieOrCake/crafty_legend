@@ -229,9 +229,30 @@ namespace CraftyLegend {
         return 0;
     }
 
+    // A few legendaries are tracked in our data under the id of the *container*
+    // that grants them (double-click to acquire the account-bound forms). The
+    // Legendary Armory only ever lists the equipment ids the container unlocks,
+    // so ownership must be resolved through this map. Owning any one form counts.
+    static const std::vector<uint32_t>* GetArmoryAliasGroup(uint32_t item_id) {
+        static const std::unordered_map<uint32_t, std::vector<uint32_t>> groups = {
+            // Selachimorpha Container -> the light/heavy/medium aquabreathers
+            {105743, {105921, 106178, 106658}},
+            // Aetheric Anchor -> the Ancora spear forms (staff + harpoon)
+            {105497, {105653, 106273}},
+        };
+        auto it = groups.find(item_id);
+        return it != groups.end() ? &it->second : nullptr;
+    }
+
     bool GW2API::IsLegendaryUnlocked(uint32_t item_id) {
         std::lock_guard<std::mutex> lock(s_mutex);
-        return s_legendary_armory.count(item_id) > 0;
+        if (s_legendary_armory.count(item_id) > 0) return true;
+        if (const std::vector<uint32_t>* group = GetArmoryAliasGroup(item_id)) {
+            for (uint32_t id : *group) {
+                if (s_legendary_armory.count(id) > 0) return true;
+            }
+        }
+        return false;
     }
 
     void GW2API::SetLegendaryUnlocked(uint32_t item_id) {

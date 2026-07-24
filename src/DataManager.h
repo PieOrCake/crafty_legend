@@ -144,6 +144,13 @@ namespace CraftyLegend {
         static std::string GetItemName(uint32_t id);
         static std::string GetLegendaryName(uint32_t id);
         static uint32_t ResolveItemIdByName(const std::string& name);
+        // Discipline names -> short codes ("Huntsman" -> "HNT"), used in column
+        // headers and the tree's acquisition-method heading.
+        static std::string FormatDisciplines(const std::vector<std::string>& disciplines);
+        // Resolve a vendor purchase-requirement name to an item id, returning 0 for
+        // anything the wallet knows (vendors charge the wallet, even for costs that
+        // also exist as an inventory item — e.g. Testimony of Castoran Heroics).
+        static uint32_t ResolveRequirementItemId(const std::string& name);
         
         // Column management
         static void InitializeColumns();
@@ -224,8 +231,7 @@ namespace CraftyLegend {
         // Helper methods
         static AcquisitionMethod CreateAcquisitionMethod(const std::string& method, const Item* item);
         static std::vector<std::string> ParseAcquisitionArray(const std::vector<std::string>& acquisition);
-        static std::string FormatDisciplines(const std::vector<std::string>& disciplines);
-        
+
         // Favourites data
         static std::unordered_set<uint32_t> s_favourites;
         static std::string GetFavouritesPath();

@@ -64,5 +64,8 @@ struct RowVisual {
     const std::vector<CraftyLegend::Prerequisite>* gates; // achievement gates (may be null/empty)
     bool  drillArrow = true; // append " >" for drillable items (Miller yes, tree no)
 };
-struct RowResult { bool clicked; };
+struct RowResult {
+    bool clicked;
+    bool doubleClicked; // left double-click on the row label (tree uses it to expand)
+};
 RowResult DrawItemRow(const RowVisual& v);

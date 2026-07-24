@@ -1470,9 +1470,9 @@
       "weapon_type": "Spear"
     },
     {
-      "id": 100153,
+      "id": 101582,
       "name": "Legendary Relic",
-      "icon": "https://render.guildwars2.com/file/B2D409644147BF18935A95A52505ABCB9EECE142/3122351.png",
+      "icon": "https://render.guildwars2.com/file/08DED07BF6DF37E69A08D1C49D9C45D81BD8A5CA/3255567.png",
       "description": "Legendary relic (Fractals/SotO).",
       "type": "trinket",
       "binding": "account",

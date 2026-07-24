@@ -10835,14 +10835,14 @@
       ]
     },
     {
-      "id": "100153",
-      "name": "Relic of the Fractal",
-      "icon": "https://render.guildwars2.com/file/B2D409644147BF18935A95A52505ABCB9EECE142/3122351.png",
-      "description": "",
+      "id": "101582",
+      "name": "Legendary Relic",
+      "icon": "https://render.guildwars2.com/file/08DED07BF6DF37E69A08D1C49D9C45D81BD8A5CA/3255567.png",
+      "description": "Unused Relic Effect Slot",
       "type": "relic",
       "binding": "account",
-      "rarity": "Exotic",
-      "level": 60,
+      "rarity": "Legendary",
+      "level": 80,
       "acquisition": [
         "mystic_forge"
       ]
@@ -12590,6 +12590,10 @@
     {"id": "80387", "name": "Refined Envoy Helmet", "icon": "https://render.guildwars2.com/file/08BD6169AA1807487D2D025CA92459D3655B9B53/1634571.png", "description": "This armor attempts to channel the power of the envoys.", "type": "armor", "binding": "account", "acquisition": ["crafting"], "rarity": "Ascended", "level": 80},
     {"id": "80427", "name": "Refined Envoy Tassets", "icon": "https://render.guildwars2.com/file/33BB05D56F5C0F79151F07EFBF4BB0D952346C0E/1634572.png", "description": "This armor attempts to channel the power of the envoys.", "type": "armor", "binding": "account", "acquisition": ["crafting"], "rarity": "Ascended", "level": 80},
     {"id": "80648", "name": "Refined Envoy Breastplate", "icon": "https://render.guildwars2.com/file/2AA96D63CFBA41DD5FE805D94A073BB22E7EBC57/1634569.png", "description": "This armor attempts to channel the power of the envoys.", "type": "armor", "binding": "account", "acquisition": ["crafting"], "rarity": "Ascended", "level": 80},
-    {"id": "80673", "name": "Refined Envoy Gauntlets", "icon": "https://render.guildwars2.com/file/A0B07A2BE147AA0D9C960BD877029DEDCF59B479/1634570.png", "description": "This armor attempts to channel the power of the envoys.", "type": "armor", "binding": "account", "acquisition": ["crafting"], "rarity": "Ascended", "level": 80}
+    {"id": "80673", "name": "Refined Envoy Gauntlets", "icon": "https://render.guildwars2.com/file/A0B07A2BE147AA0D9C960BD877029DEDCF59B479/1634570.png", "description": "This armor attempts to channel the power of the envoys.", "type": "armor", "binding": "account", "acquisition": ["crafting"], "rarity": "Ascended", "level": 80},
+    {"id": "43766", "name": "Tome of Knowledge", "icon": "https://render.guildwars2.com/file/1932B731E2F70F2F1E3D453A4B7C26B24CF647C0/603246.png", "description": "Grants one character level if below level 80 or one spirit shard if level 80.", "type": "consumable", "binding": "account", "acquisition": ["reward_track"], "rarity": "Exotic"},
+    {"id": "79280", "name": "Blood Ruby", "icon": "https://render.guildwars2.com/file/0DA92F9059C30EF00DBC6CB0D233F235E17F12DD/1465570.png", "description": "Bloodstone Fen map currency.", "type": "consumable", "binding": "account", "acquisition": ["map_currency"], "rarity": "Exotic"},
+    {"id": "81127", "name": "Fire Orchid Blossom", "icon": "https://render.guildwars2.com/file/D667F038D601D31EC35F08E96EB1C832026E3A21/1677062.png", "description": "Draconis Mons map currency.", "type": "consumable", "binding": "account", "acquisition": ["map_currency"], "rarity": "Exotic"},
+    {"id": "109459", "name": "Shadowstone Fragment", "icon": "https://render.guildwars2.com/file/E775F80195D7B835E4C81CA47EB19A5924E4ADF1/3771067.png", "description": "Map currency.", "type": "crafting_material", "binding": "account", "acquisition": ["map_currency"], "rarity": "Basic"}
   ]
 }

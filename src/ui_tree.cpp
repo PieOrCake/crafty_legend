@@ -135,6 +135,14 @@ static void RenderMethodChildren(uint32_t item_id,
                                  const std::string& nodeKey, const std::string& mKey,
                                  std::unordered_set<uint32_t>& onPath);
 
+// How a single-route item is made/obtained ("Mystic Forge", "Craft (WPN 500)",
+// "Vendor - Dugan"), mirroring the Miller column header built in
+// DataManager::UpdateColumn. `out_where` receives the vendor location when there
+// is one. Returns an empty string when there is nothing useful to say.
+static std::string SourceHeading(uint32_t item_id,
+                                 const std::vector<CraftyLegend::AcquisitionMethod>& methods,
+                                 std::string& out_where);
+
 // Route-aware rolled-up gold cost (copper) for `count` of item_id, following the
 // ACTIVE acquisition route at every multi-route node (mirrors the expand-tree in
 // RenderNode). Returns -1 if any followed leaf can't be priced in gold. Defined
@@ -212,9 +220,17 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     v.gates          = &gates;
     v.drillArrow     = false; // the twisty already signals expandability in tree mode
 
-    DrawItemRow(v);
+    RowResult row = DrawItemRow(v);
     DrawRightPinnedCost(rowBaseY, contentX, rowCost);
     ImGui::PopID();
+
+    // Double-clicking the row is a second way to expand/collapse it (the arrow
+    // stays the primary affordance).
+    if (expandable && row.doubleClicked) {
+        CraftyLegend::DataManager::SetNodeExpanded(nodeKey, !expanded);
+        CraftyLegend::DataManager::SaveSession();
+        expanded = !expanded;
+    }
 
     if (expanded) {
         auto methods = MeaningfulMethods(item_id);
@@ -240,7 +256,19 @@ static void RenderNode(uint32_t item_id, int count, int depth,
                 }
             }
         } else {
-            // Single-route (Task 5): recurse straight into the recipe ingredients.
+            // Single-route: name HOW this item is obtained first — the tree's
+            // equivalent of the Miller column header — then recurse into the
+            // recipe ingredients / vendor requirements below it.
+            std::string where;
+            std::string how = SourceHeading(item_id, methods, where);
+            if (!how.empty()) {
+                ImGui::SetCursorPosX(DrawRails(depth + 1));
+                ImGui::TextColored(ImVec4(0.85f, 0.72f, 0.42f, 0.85f), "%s", how.c_str());
+                if (!where.empty()) {
+                    ImGui::SameLine(0, 6);
+                    ImGui::TextColored(ImVec4(0.40f, 0.47f, 0.55f, 1.0f), "(%s)", where.c_str());
+                }
+            }
             onPath.insert(item_id);
             const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
             if (recipe) {
@@ -265,12 +293,46 @@ static void RenderNode(uint32_t item_id, int count, int depth,
 
 // Friendly, translatable label for an acquisition method row.
 static std::string MethodLabel(const CraftyLegend::AcquisitionMethod& m) {
-    if (!m.display_name.empty()) return m.display_name;
+    if (!m.display_name.empty()) return Localization::ColumnTitle(m.display_name);
     if (m.method == "vendor")       return Localization::Tr("Vendor");
     if (m.method == "mystic_forge") return Localization::Tr("Mystic Forge");
     if (m.method == "crafting")     return Localization::Tr("Craft");
     if (m.method == "trading_post") return Localization::Tr("Trading Post");
     return m.method.empty() ? "?" : m.method;
+}
+
+static std::string SourceHeading(uint32_t item_id,
+                                 const std::vector<CraftyLegend::AcquisitionMethod>& methods,
+                                 std::string& out_where) {
+    out_where.clear();
+    std::string title;
+
+    // Recipe-first, exactly like DataManager::UpdateColumn's single-method branch.
+    const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
+    if (recipe && !recipe->ingredients.empty()) {
+        if (recipe->type == "mystic_forge") {
+            title = "Mystic Forge";
+        } else if (recipe->type == "vendor") {
+            title = recipe->vendor.empty() ? "Vendor" : "Vendor - " + recipe->vendor;
+        } else if (recipe->type == "crafting" && !recipe->disciplines.empty()) {
+            title = "Craft (" + CraftyLegend::DataManager::FormatDisciplines(recipe->disciplines)
+                  + " " + std::to_string(recipe->rating) + ")";
+        } else {
+            title = "Materials";
+        }
+        title = Localization::ColumnTitle(title);
+    } else if (methods.size() == 1) {
+        const auto& m = methods[0];
+        title = (m.method == "vendor" && m.display_name.empty() && !m.vendor_name.empty())
+            ? Localization::ColumnTitle("Vendor - " + m.vendor_name)
+            : MethodLabel(m);
+    }
+
+    if (title.empty()) return title;
+    for (const auto& m : methods) {
+        if (m.method == "vendor" && !m.vendor_location.empty()) { out_where = m.vendor_location; break; }
+    }
+    return title;
 }
 
 // Parse a purchase-requirement amount string ("500", "500 (per stack)") into a
@@ -295,6 +357,22 @@ static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
     ImGui::SetCursorPosX(contentX);
     ImGui::Dummy(ImVec2(12.0f, TreeRowHeight()));
     ImGui::SameLine(0, 2);
+
+    // A "Coin" cost is a raw copper amount, not a countable material: render it the
+    // way Miller does — a dim "Gold Cost" label with the amount as gold/silver/copper
+    // on the right — instead of "2236980/20000 Coin".
+    if (mat.name == "Coin") {
+        float coinRowY = ImGui::GetCursorPosY();
+        float labelX   = ImGui::GetCursorPosX() + textPadX;
+        ImGui::SetCursorPosX(labelX);
+        if (g_ShowItemIcons) {
+            ImGui::SetCursorPosY(coinRowY + (TreeRowHeight() - ImGui::GetTextLineHeight()) * 0.5f);
+        }
+        ImGui::TextColored(ImVec4(0.60f, 0.60f, 0.65f, 1.0f), "%s", Localization::Tr("Gold Cost"));
+        DrawRightPinnedCost(coinRowY, contentX, GetMaterialTotalPrice(mat));
+        ImGui::PopID();
+        return;
+    }
 
     std::vector<CraftyLegend::Prerequisite> gates =
         mat.item_id ? CraftyLegend::DataManager::GetItemAchievementGates(mat.item_id)
@@ -352,6 +430,13 @@ static bool RenderMethodRow(uint32_t item_id,
     std::string label = MethodLabel(method);
     ImGui::TextColored(labelCol, "%s", label.c_str());
 
+    // Where to buy it — Miller shows this in the column header; the tree used to
+    // drop it entirely.
+    if (method.method == "vendor" && !method.vendor_location.empty()) {
+        ImGui::SameLine(0, 6);
+        ImGui::TextColored(ImVec4(0.40f, 0.47f, 0.55f, alpha), "(%s)", method.vendor_location.c_str());
+    }
+
     if (active) {
         ImGui::SameLine(0, 6);
         ImGui::TextColored(ImVec4(0.45f, 0.78f, 0.52f, 1.0f), "%s",
@@ -392,7 +477,7 @@ static void RenderMethodChildren(uint32_t item_id,
         int idx = 0;
         for (const auto& req : method.purchase_requirements) {
             CraftyLegend::RecipeIngredient mat;
-            mat.item_id = CraftyLegend::DataManager::ResolveItemIdByName(req.first);
+            mat.item_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
             int parsed = 0;
             if (ParseReqAmount(req.second, parsed) && parsed > 0) {
                 mat.count = static_cast<uint32_t>(static_cast<long long>(parsed) * qty);
@@ -552,7 +637,7 @@ long long RouteGoldCost(uint32_t item_id, const CraftyLegend::AcquisitionMethod&
                     return -1;
                 }
             } else {
-                uint32_t resolved = CraftyLegend::DataManager::ResolveItemIdByName(req.first);
+                uint32_t resolved = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
                 if (resolved == 0) {
                     // Unknown item name => a wallet/currency requirement, not gold-comparable.
                     return -1;

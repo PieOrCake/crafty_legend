@@ -13499,7 +13499,7 @@
       ]
     },
     {
-      "output_id": "100153",
+      "output_id": "101582",
       "output_count": 1,
       "disciplines": [],
       "rating": 0,
@@ -15031,7 +15031,8 @@
       "output_count": 1,
       "disciplines": [],
       "rating": 0,
-      "type": "mystic_forge",
+      "type": "vendor",
+      "vendor": "Miyani",
       "ingredients": [
         { "item_id": "70820", "count": 250, "name": "Shard of Glory" }
       ]
@@ -15041,7 +15042,8 @@
       "output_count": 1,
       "disciplines": [],
       "rating": 0,
-      "type": "mystic_forge",
+      "type": "vendor",
+      "vendor": "Miyani",
       "ingredients": [
         { "item_id": "71581", "count": 250, "name": "Memory of Battle" }
       ]

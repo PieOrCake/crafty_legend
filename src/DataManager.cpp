@@ -16,9 +16,9 @@ namespace CraftyLegend {
     // Shared name-to-item-ID map for resolving vendor purchase requirement names (handles plurals)
     static const std::unordered_map<std::string, uint32_t>& GetNameToItemIdMap() {
         static const std::unordered_map<std::string, uint32_t> name_to_item_id = {
-            {"Mystic Coins", 19976},
             {"Mystic Coin", 19976},
-            {"Obsidian Shards", 19925},
+            {"Mystic Coin", 19976},
+            {"Obsidian Shard", 19925},
             {"Obsidian Shard", 19925},
             {"Glob of Ectoplasm", 19721},
             {"Mystic Clover", 19675},
@@ -33,13 +33,13 @@ namespace CraftyLegend {
             {"Antique Summoning Stone", 96978},
             {"Antique Summoning Stones", 96978},
             {"Jade Runestone", 96722},
-            {"Jade Runestones", 96722},
+            {"Jade Runestone", 96722},
             {"Chunk of Pure Jade", 97102},
-            {"Chunks of Pure Jade", 97102},
+            {"Chunk of Pure Jade", 97102},
             {"Chunk of Ancient Ambergris", 96347},
-            {"Chunks of Ancient Ambergris", 96347},
+            {"Chunk of Ancient Ambergris", 96347},
             {"Blessing of the Jade Empress", 97829},
-            {"Blessings of the Jade Empress", 97829},
+            {"Blessing of the Jade Empress", 97829},
             {"Memory of Aurene", 96088},
             {"Memories of Aurene", 96088},
             {"Hydrocatalytic Reagent", 95813},
@@ -97,6 +97,10 @@ namespace CraftyLegend {
             {"Blood Rubies", 79280},
             {"Fire Orchid Blossom", 81127},
             {"Fire Orchid Blossoms", 81127},
+            {"Shadowstone Fragment", 109459},
+            {"Shadowstone Fragments", 109459},
+            {"Tome of Knowledge", 43766},
+            {"Tomes of Knowledge", 43766},
             // Grandmaster Marks
             {"Grandmaster Armorsmith's Mark", 80685},
             {"Grandmaster Leatherworker's Mark", 80799},
@@ -118,13 +122,26 @@ namespace CraftyLegend {
         return 0;
     }
 
+    uint32_t DataManager::ResolveRequirementItemId(const std::string& name) {
+        // Some costs are dual-natured: they exist BOTH as an inventory item and as a
+        // wallet currency (Testimony of Castoran Heroics, the SotO map currencies,
+        // Legendary Insight, the rift essences...). Vendors always charge the WALLET,
+        // so a name the wallet knows must resolve to 0 even when an item shares it.
+        if (CraftyLegend::GW2API::GetCurrencyIdByName(name) >= 0) return 0;
+        return ResolveItemIdByName(name);
+    }
+
     // Helper: build vendor cost materials from purchase requirements, handling non-numeric costs
     static void BuildVendorCostMaterials(std::vector<RecipeIngredient>& out,
         const std::vector<std::pair<std::string, std::string>>& requirements, int qty) {
         for (const auto& req : requirements) {
             RecipeIngredient material;
-            // Set real item ID if this is a known item, otherwise 0 (wallet/currency)
-            material.item_id = DataManager::ResolveItemIdByName(req.first);
+            // Set real item ID if this is a known item, otherwise 0 (wallet/currency).
+            // Some costs are dual-natured: they exist BOTH as an inventory item and as a
+            // wallet currency (Testimony of Castoran Heroics, the SotO map currencies,
+            // Legendary Insight, the rift essences...). Vendors always charge the WALLET,
+            // so a name the wallet knows must resolve to 0 even when an item shares it.
+            material.item_id = DataManager::ResolveRequirementItemId(req.first);
             // Try to parse as pure integer for multiplication
             bool is_numeric = !req.second.empty() && req.second != "Unknown";
             int parsed = 0;
@@ -600,8 +617,8 @@ namespace CraftyLegend {
                 acq.vendor_name = "Lyhr";
                 acq.vendor_location = "Wizard's Tower";
                 acq.purchase_requirements = {
-                    {"Mystic Coins", "3"},
-                    {"Obsidian Shards", "3"},
+                    {"Mystic Coin", "3"},
+                    {"Obsidian Shard", "3"},
                     {"Spirit Shards", "3"},
                     {"Glob of Ectoplasm", "5"}
                 };
@@ -633,7 +650,7 @@ namespace CraftyLegend {
                 acq.vendor_name = "Mystic Forge Attendant";
                 acq.vendor_location = "Lion's Arch, Mystic Forge";
                 acq.purchase_requirements = {
-                    {"Mystic Coins", "3"}
+                    {"Mystic Coin", "3"}
                 };
             } else if (item && item->id == 3) { // Laurel
                 acq.display_name = "Laurel Vendor";
@@ -665,12 +682,14 @@ namespace CraftyLegend {
                     {"Coin", "10000"}
                 };
             } else if (item && item->id == 86093) { // Funerary Incense
-                acq.display_name = "Vendor - Palawa Joko's Valet";
-                acq.vendor_name = "Palawa Joko's Valet";
-                acq.vendor_location = "Domain of Vabbi";
+                acq.display_name = "Vendor - Awakened Servant Tooraj";
+                acq.vendor_name = "Awakened Servant Tooraj";
+                acq.vendor_location = "Vehjin Mines, Domain of Vabbi";
                 acq.purchase_requirements = {
-                    {"Trade Contracts", "25"},
-                    {"Elegy Mosaic", "1"}
+                    {"Trade Contract", "5"},
+                    {"Amalgamated Gemstone", "1"},
+                    {"Glob of Ectoplasm", "1"},
+                    {"Obsidian Shard", "1"}
                 };
             // --- HoT Mastery Gifts ---
             } else if (item && item->id == 73469) { // Gift of the Itzel
@@ -723,32 +742,32 @@ namespace CraftyLegend {
                 };
             // --- PoF Map Gifts ---
             } else if (item && item->id == 86010) { // Gift of the Desolation
-                acq.display_name = "Vendor - The Desolation";
-                acq.vendor_name = "Heart Vendor";
+                acq.display_name = "Vendor - Kisha Odili";
+                acq.vendor_name = "Kisha Odili";
                 acq.vendor_location = "The Desolation";
                 acq.purchase_requirements = {
-                    {"Trade Contracts", "250"}
+                    {"Karma", "23331"}
                 };
             } else if (item && item->id == 86018) { // Gift of the Highlands
-                acq.display_name = "Vendor - Desert Highlands";
-                acq.vendor_name = "Heart Vendor";
+                acq.display_name = "Vendor - Tendaji";
+                acq.vendor_name = "Tendaji";
                 acq.vendor_location = "Desert Highlands";
                 acq.purchase_requirements = {
-                    {"Trade Contracts", "250"}
+                    {"Karma", "23331"}
                 };
             } else if (item && item->id == 85961) { // Gift of the Oasis
-                acq.display_name = "Vendor - Crystal Oasis";
-                acq.vendor_name = "Heart Vendor";
+                acq.display_name = "Vendor - Priestess Karima";
+                acq.vendor_name = "Priestess Karima";
                 acq.vendor_location = "Crystal Oasis";
                 acq.purchase_requirements = {
-                    {"Trade Contracts", "250"}
+                    {"Karma", "23331"}
                 };
             } else if (item && item->id == 86241) { // Gift of the Riverlands
-                acq.display_name = "Vendor - Elon Riverlands";
-                acq.vendor_name = "Heart Vendor";
+                acq.display_name = "Vendor - Follower Xunn";
+                acq.vendor_name = "Follower Xunn";
                 acq.vendor_location = "Elon Riverlands";
                 acq.purchase_requirements = {
-                    {"Trade Contracts", "250"}
+                    {"Karma", "23331"}
                 };
             } else if (item && item->id == 86330) { // Gift of the Rider
                 acq.display_name = "Vendor - PoF Mastery";
@@ -786,9 +805,7 @@ namespace CraftyLegend {
                 acq.vendor_name = "Miyani";
                 acq.vendor_location = "Trader's Forum, Lion's Arch";
                 acq.purchase_requirements = {
-                    {"Spirit Shards", "20"},
-                    {"Obsidian Shards", "6"},
-                    {"Coin", "100000"}
+                    {"Spirit Shard", "20"}
                 };
             // --- EoD Poems (Arborstone vendor) ---
             } else if (item && (item->id == 97160 || item->id == 96187 || item->id == 96035 ||
@@ -810,10 +827,10 @@ namespace CraftyLegend {
                 acq.vendor_name = "Leivas";
                 acq.vendor_location = "Arborstone, Echovald Wilds";
                 acq.purchase_requirements = {
-                    {"Jade Runestones", "100"},
-                    {"Chunks of Pure Jade", "200"},
-                    {"Chunks of Ancient Ambergris", "100"},
-                    {"Blessings of the Jade Empress", "5"},
+                    {"Jade Runestone", "100"},
+                    {"Chunk of Pure Jade", "200"},
+                    {"Chunk of Ancient Ambergris", "100"},
+                    {"Blessing of the Jade Empress", "5"},
                     {"Imperial Favor", "2500"}
                 };
             } else if (item && item->id == 96993) { // Gift of Seitung Province
@@ -974,25 +991,25 @@ namespace CraftyLegend {
                     {"Inner Nayos", "Map Completion"}
                 };
             } else if (item && item->id == 100267) { // Case of Captured Lightning
-                acq.display_name = "Vendor - Skywatch Archipelago";
-                acq.vendor_name = "Renown Heart Vendors";
-                acq.vendor_location = "Skywatch Archipelago";
+                acq.display_name = "Vendor - Astral Ward Protector";
+                acq.vendor_name = "Astral Ward Protector";
+                acq.vendor_location = "Wizard's Ascent, Skywatch Archipelago";
                 acq.purchase_requirements = {
-                    {"Karma", "14000"}
+                    {"Static Charge", "250"}
                 };
             } else if (item && item->id == 100098) { // Clot of Congealed Screams
-                acq.display_name = "Vendor - Inner Nayos";
-                acq.vendor_name = "Renown Heart Vendors";
-                acq.vendor_location = "Inner Nayos";
+                acq.display_name = "Vendor - Astral Ward Mage";
+                acq.vendor_name = "Astral Ward Mage";
+                acq.vendor_location = "The Commons, Inner Nayos";
                 acq.purchase_requirements = {
-                    {"Karma", "14000"}
+                    {"Calcified Gasp", "250"}
                 };
             } else if (item && item->id == 99964) { // Pouch of Stardust
-                acq.display_name = "Vendor - Amnytas";
-                acq.vendor_name = "Renown Heart Vendors";
-                acq.vendor_location = "Amnytas";
+                acq.display_name = "Vendor - Astral Ward Mage";
+                acq.vendor_name = "Astral Ward Mage";
+                acq.vendor_location = "Bastion of Balance, Amnytas";
                 acq.purchase_requirements = {
-                    {"Karma", "14000"}
+                    {"Pinch of Stardust", "250"}
                 };
             } else if (item && item->id == 88926) { // Provisioner Token
                 acq.display_name = "Vendor - Faction Provisioner";
@@ -1017,11 +1034,13 @@ namespace CraftyLegend {
                     {"Raid Boss Kill", "1 per boss per week"}
                 };
             } else if (item && item->id == 78793) { // Gift of the Pact
-                acq.display_name = "Vendor - Scholar Glenna";
-                acq.vendor_name = "Scholar Glenna";
-                acq.vendor_location = "Raid Lobby";
+                acq.display_name = "Vendor - Whispers Keeper";
+                acq.vendor_name = "Whispers Keeper";
+                acq.vendor_location = "Dragon's Stand";
                 acq.purchase_requirements = {
-                    {"Magnetite Shard", "500"}
+                    {"Airship Part", "250"},
+                    {"Ley Line Crystal", "250"},
+                    {"Lump of Aurillium", "250"}
                 };
             // --- WvW Ascended Precursors (all weights) ---
             // Heavy: Warhelm(81330) Pauldrons(81333) Breastplate(81304) Gauntlets(81349) Legplates(81418) Wargreaves(81336)
@@ -1121,40 +1140,44 @@ namespace CraftyLegend {
                 };
             // Transcendence (PvP)
             } else if (item && item->id == 79980) { // Mist Pendant
-                acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "Ascended Trinket League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.display_name = "Vendor - Ascended Armor League Vendor";
+                acq.vendor_name = "Ascended Armor League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
-                    {"PvP League Ticket", "15"},
-                    {"Ascended Shard of Glory", "100"}
+                    {"Ascended Shard of Glory", "125"},
+                    {"Shard of Glory", "170"}
                 };
             } else if (item && item->id == 93284) { // Tome of the Mists
-                acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "Tournament Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.display_name = "Vendor - League Vendor";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
-                    {"PvP Tournament Voucher", "50"}
+                    {"Tome of Knowledge", "100"}
                 };
             } else if (item && item->id == 93034) { // Mist Diamond
-                acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "Tournament Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.display_name = "Vendor - League Vendor";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
-                    {"PvP Tournament Voucher", "200"}
+                    {"PvP League Ticket", "25"},
+                    {"Ascended Shard of Glory", "250"},
+                    {"Shard of Glory", "250"}
                 };
             } else if (item && item->id == 93151) { // Mist-Enhanced Orichalcum
-                acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "Tournament Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.display_name = "Vendor - League Vendor";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
-                    {"PvP Tournament Voucher", "100"}
+                    {"Orichalcum Ingot", "250"},
+                    {"Ascended Shard of Glory", "250"},
+                    {"Shard of Glory", "250"}
                 };
             } else if (item && item->id == 77486) { // Certificate of Support
-                acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.display_name = "Vendor - League Vendor";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
-                    {"Ascended Shard of Glory", "100"}
+                    {"PvP League Ticket", "5"}
                 };
             } else if (item && item->id == 83872) { // Star of Glory
                 acq.display_name = "Vendor - PvP";
@@ -1165,11 +1188,11 @@ namespace CraftyLegend {
                     {"Ascended Shard of Glory", "200"}
                 };
             } else if (item && item->id == 83082) { // Glob of Condensed Spirit Energy
-                acq.display_name = "Vendor - PvP/WvW";
-                acq.vendor_name = "Competitive Vendor";
-                acq.vendor_location = "Heart of the Mists / WvW";
+                acq.display_name = "Vendor - Legendary Commander War Razor";
+                acq.vendor_name = "Legendary Commander War Razor";
+                acq.vendor_location = "WvW spawn areas";
                 acq.purchase_requirements = {
-                    {"Ascended Shard of Glory", "200"}
+                    {"Spirit Shard", "100"}
                 };
             } else if (item && item->id == 82926) { // Jar of Distilled Glory
                 acq.display_name = "Vendor - PvP";
@@ -1236,34 +1259,34 @@ namespace CraftyLegend {
                     {"WvW Skirmish Claim Ticket", "1"}
                 };
             } else if (item && item->id == 93147) { // Mist Pearl
-                acq.display_name = "Vendor - WvW";
-                acq.vendor_name = "Skirmish Supervisor";
-                acq.vendor_location = "WvW";
+                acq.display_name = "Vendor - Legendary Commander War Razor";
+                acq.vendor_name = "Legendary Commander War Razor";
+                acq.vendor_location = "WvW spawn areas";
                 acq.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "200"}
+                    {"WvW Skirmish Claim Ticket", "750"},
+                    {"Memory of Battle", "250"}
                 };
             } else if (item && item->id == 93248) { // Mist-Enhanced Mithril
-                acq.display_name = "Vendor - WvW";
-                acq.vendor_name = "Skirmish Supervisor";
-                acq.vendor_location = "WvW";
+                acq.display_name = "Vendor - Legendary Commander War Razor";
+                acq.vendor_name = "Legendary Commander War Razor";
+                acq.vendor_location = "WvW spawn areas";
                 acq.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "100"}
+                    {"WvW Skirmish Claim Ticket", "750"},
+                    {"Memory of Battle", "250"}
                 };
             } else if (item && item->id == 83620) { // Certificate of Honor
-                acq.display_name = "Vendor - WvW";
-                acq.vendor_name = "Skirmish Supervisor";
-                acq.vendor_location = "WvW";
+                acq.display_name = "Vendor - Legendary Commander War Razor";
+                acq.vendor_name = "Legendary Commander War Razor";
+                acq.vendor_location = "WvW spawn areas";
                 acq.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "100"},
-                    {"Memory of Battle", "250"}
+                    {"Badge of Honor", "500"}
                 };
             } else if (item && item->id == 84099) { // Certificate of Heroics
-                acq.display_name = "Vendor - WvW";
-                acq.vendor_name = "Skirmish Supervisor";
-                acq.vendor_location = "WvW";
+                acq.display_name = "Vendor - Legendary Commander War Razor";
+                acq.vendor_name = "Legendary Commander War Razor";
+                acq.vendor_location = "WvW spawn areas";
                 acq.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "175"},
-                    {"Memory of Battle", "250"}
+                    {"Testimony of Castoran Heroics", "250"}
                 };
             } else if (item && item->id == 81296) { // Legendary Spike
                 acq.display_name = "WvW Drop";
@@ -1314,7 +1337,7 @@ namespace CraftyLegend {
                 acq.vendor_name = "Legendary Commander War Razor";
                 acq.vendor_location = "WvW spawn areas";
                 acq.purchase_requirements = {
-                    {"Testimony of Jade Heroics", "40"}
+                    {"Testimony of Castoran Heroics", "500"}
                 };
             } else if (item && item->id == 81469) { // Essence of Carnage
                 acq.display_name = "Vendor - WvW";
@@ -1416,18 +1439,21 @@ namespace CraftyLegend {
                     {"Spirit Shards", "50"}
                 };
             } else if (item && item->id == 95813) { // Hydrocatalytic Reagent
+                // Wiki: 50 Research Notes per 10, i.e. 5 each.
                 acq.display_name = "Vendor - Master Craftsman";
-                acq.vendor_name = "Master Craftsman";
+                acq.vendor_name = "Master Craftsman / Research Merchant";
                 acq.vendor_location = "Crafting Stations";
                 acq.purchase_requirements = {
-                    {"Coin", "150"}
+                    {"Research Note", "5"}
                 };
             } else if (item && item->id == 20799) { // Mystic Crystal
+                // Wiki: 5 crystals for 3 Spirit Shards. purchase_requirements is a
+                // per-unit integer model, so this rounds 0.6 up to 1.
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
                 acq.vendor_location = "Trader's Forum, Lion's Arch";
                 acq.purchase_requirements = {
-                    {"Spirit Shard", "3"}
+                    {"Spirit Shard", "1"}
                 };
             } else if (item && item->id == 20796) { // Philosopher's Stone
                 acq.display_name = "Vendor - Miyani";
@@ -1645,7 +1671,8 @@ namespace CraftyLegend {
                 acq.vendor_name = "INFUZ-5959";
                 acq.vendor_location = "Mistlock Observatory";
                 acq.purchase_requirements = {
-                    {"Fractal Relics", "75"}
+                    {"Fractal Relic", "30"},
+                    {"Coin", "3200"}
                 };
             // --- Laurel Merchant ---
             } else if (item && item->id == 39125) { // Mystic Binding Agent
