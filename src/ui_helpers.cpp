@@ -185,46 +185,132 @@ int GetEffectiveOwnedCount(uint32_t item_id) {
 
 // --- Legendary completion % ---
 
-// Recursively collect total leaf material needs (no ownership subtraction)
-static void CollectLeafMaterials(uint32_t item_id, int count,
-    std::unordered_map<uint32_t, int>& leafItems,
-    std::unordered_set<uint32_t>& visited) {
-    if (item_id == 0 || count <= 0) return;
-    if (visited.count(item_id)) return;
+// One step down the tree for completion purposes. `per_unit` is how many of the
+// child are needed per ONE of the parent (fractional when a recipe yields a stack),
+// which keeps the weights exact instead of rounding a craft count at every level.
+struct CompletionChild {
+    uint32_t item_id;
+    double   per_unit;
+};
 
+// Children of an item: recipe ingredients when it has a recipe, otherwise the first
+// acquisition method's purchase requirements — mirroring FlattenCraftingTree, so a
+// vendor-bought gift is no longer a dead end. Wallet currencies (item_id 0) are
+// skipped; they can't be normalised against material counts. Recipes and vendor
+// data are immutable after load, so the result is cached permanently.
+static const std::vector<CompletionChild>& CompletionChildren(uint32_t item_id) {
+    static std::unordered_map<uint32_t, std::vector<CompletionChild>> cache;
+    auto it = cache.find(item_id);
+    if (it != cache.end()) return it->second;
+
+    std::vector<CompletionChild> kids;
     const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
     if (recipe && !recipe->ingredients.empty()) {
-        visited.insert(item_id);
-        int output = std::max(1u, recipe->output_count);
-        int numCrafts = (count + output - 1) / output;
+        double output = std::max(1u, recipe->output_count);
         for (const auto& ing : recipe->ingredients) {
-            if (ing.item_id != 0) {
-                CollectLeafMaterials(ing.item_id, static_cast<int>(ing.count) * numCrafts,
-                    leafItems, visited);
-            }
-            // Skip wallet currencies for completion % (hard to normalize)
+            if (ing.item_id != 0 && ing.count > 0)
+                kids.push_back({ing.item_id, static_cast<double>(ing.count) / output});
         }
-        visited.erase(item_id);
+    } else {
+        for (const auto& acq : CraftyLegend::DataManager::GetAcquisitionMethods(item_id)) {
+            if (acq.purchase_requirements.empty()) continue;
+            for (const auto& req : acq.purchase_requirements) {
+                if (req.first == "Coin") continue; // gold, not a material
+                int amount = 0;
+                try {
+                    size_t pos = 0;
+                    amount = std::stoi(req.second, &pos);
+                    if (pos != req.second.size() && req.second[pos] != ' ') amount = 0;
+                } catch (...) { amount = 0; }
+                if (amount <= 0) continue;
+                uint32_t sub_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
+                if (sub_id != 0) kids.push_back({sub_id, static_cast<double>(amount)});
+            }
+            break; // first acquisition method with requirements wins
+        }
+    }
+    return cache.emplace(item_id, std::move(kids)).first->second;
+}
+
+// Total base-material units behind ONE of `item_id` — the weight its subtree carries
+// in the completion percentage. A true leaf weighs 1. Without this, a vendor-bought
+// gift standing in for hundreds of materials counted the same as a single ore.
+// `blocked` is set when a cycle truncated the walk; such a result is context-
+// dependent and must not be cached.
+static double LeafWeight(uint32_t item_id, std::unordered_set<uint32_t>& onPath,
+                         bool& blocked) {
+    static std::unordered_map<uint32_t, double> cache;
+    auto it = cache.find(item_id);
+    if (it != cache.end()) return it->second;
+
+    if (onPath.count(item_id)) { blocked = true; return 1.0; }
+    const auto& kids = CompletionChildren(item_id);
+    if (kids.empty()) return 1.0; // base material
+
+    onPath.insert(item_id);
+    double total = 0.0;
+    bool childBlocked = false;
+    for (const auto& k : kids) total += k.per_unit * LeafWeight(k.item_id, onPath, childBlocked);
+    onPath.erase(item_id);
+
+    if (total <= 0.0) total = 1.0;
+    if (childBlocked) { blocked = true; return total; }
+    cache[item_id] = total;
+    return total;
+}
+
+static double LeafWeight(uint32_t item_id) {
+    std::unordered_set<uint32_t> onPath;
+    bool blocked = false;
+    return LeafWeight(item_id, onPath, blocked);
+}
+
+// Accumulate needed/have weights for `count` of an item. Anything you already own is
+// credited at that item's full subtree weight — so a finished gift counts for
+// everything it took to make, not zero — and only the shortfall is expanded further.
+// `pool` holds each item's still-unspent owned count: an item needed in two branches
+// (Obsidian Shard turns up all over a tree) must not have the same stack credited
+// against both, so ownership is consumed greedily as the walk encounters it.
+static void WalkCompletion(uint32_t item_id, double count,
+                           std::unordered_set<uint32_t>& onPath,
+                           std::unordered_map<uint32_t, double>& pool,
+                           double& need, double& have) {
+    if (item_id == 0 || count <= 0.0) return;
+
+    double w = LeafWeight(item_id);
+
+    auto pit = pool.find(item_id);
+    if (pit == pool.end())
+        pit = pool.emplace(item_id, static_cast<double>(GetEffectiveOwnedCount(item_id))).first;
+    double owned = std::min(pit->second, count);
+    pit->second -= owned;
+    if (owned > 0.0) {
+        need += w * owned;
+        have += w * owned;
+    }
+
+    double remaining = count - owned;
+    if (remaining <= 0.0) return;
+
+    const auto& kids = CompletionChildren(item_id);
+    if (kids.empty() || onPath.count(item_id)) {
+        need += w * remaining; // base material (or a cycle) — nothing left to expand
         return;
     }
-    // Leaf material
-    leafItems[item_id] += count;
+
+    onPath.insert(item_id);
+    for (const auto& k : kids)
+        WalkCompletion(k.item_id, k.per_unit * remaining, onPath, pool, need, have);
+    onPath.erase(item_id);
 }
 
 static float ComputeLegendaryCompletion(uint32_t legendary_id) {
-    std::unordered_map<uint32_t, int> leafItems;
-    std::unordered_set<uint32_t> visited;
-    CollectLeafMaterials(legendary_id, 1, leafItems, visited);
-
-    if (leafItems.empty()) return 0.0f;
-
-    double totalNeeded = 0, totalHave = 0;
-    for (const auto& [id, needed] : leafItems) {
-        int owned = GetEffectiveOwnedCount(id);
-        totalNeeded += needed;
-        totalHave += std::min(owned, needed);
-    }
-    return (totalNeeded > 0) ? static_cast<float>(totalHave / totalNeeded) : 0.0f;
+    double need = 0.0, have = 0.0;
+    std::unordered_set<uint32_t> onPath;
+    std::unordered_map<uint32_t, double> pool;
+    WalkCompletion(legendary_id, 1.0, onPath, pool, need, have);
+    if (need <= 0.0) return 0.0f;
+    return static_cast<float>(std::min(1.0, have / need));
 }
 
 // Process a batch of queued completion recomputations per frame
@@ -510,6 +596,22 @@ int GetMaterialTotalPrice(const CraftyLegend::RecipeIngredient& mat) {
     // Cap to int range
     if (price > INT_MAX) return INT_MAX;
     return static_cast<int>(price);
+}
+
+// A "Coin" cost is rendered as a dim "Gold Cost" label plus the amount, rather than
+// the usual "owned/needed" material row — but the affordability signal must survive:
+// green when the wallet covers the cost, matching the green a normal material row
+// gets when you own enough of it.
+bool CanAffordCoinCost(int total_copper) {
+    if (total_copper <= 0 || !CraftyLegend::GW2API::HasAccountData()) return false;
+    int wallet = CraftyLegend::GW2API::GetWalletAmountByName("Coin");
+    return wallet >= total_copper;
+}
+
+ImVec4 GoldCostLabelColor(int total_copper) {
+    return CanAffordCoinCost(total_copper)
+        ? ImVec4(0.35f, 0.82f, 0.35f, 1.0f)  // completedColor, matches DrawItemRow
+        : ImVec4(0.60f, 0.60f, 0.65f, 1.0f);
 }
 
 // Helper: add a timestamped debug log entry

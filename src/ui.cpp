@@ -1133,7 +1133,11 @@ void AddonRender() {
                                 ImGui::SetCursorPosY(rowBaseY);
                             }
                             ImGui::SetCursorPosX(rowBaseX + labelStartX);
-                            ImGui::TextColored(dimTextColor, "%s", Localization::Tr("Gold Cost"));
+                            // Green when the wallet covers it, else the theme-adjusted dim label.
+                            ImGui::TextColored(CanAffordCoinCost(totalPrice)
+                                                   ? GoldCostLabelColor(totalPrice)
+                                                   : dimTextColor,
+                                               "%s", Localization::Tr("Gold Cost"));
                             continue;
                         }
 

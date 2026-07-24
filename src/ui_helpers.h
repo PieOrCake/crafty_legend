@@ -20,6 +20,11 @@ float RenderPrice(int total_copper);
 // Vendor cost helper
 int GetVendorCoinCost(uint32_t item_id);
 
+// True when account data is loaded and the wallet holds at least `total_copper`.
+bool CanAffordCoinCost(int total_copper);
+// Colour for a "Gold Cost" row label: green when affordable, dim grey otherwise.
+ImVec4 GoldCostLabelColor(int total_copper);
+
 // Text helpers
 std::string StripMarkup(const std::string& text);
 void        OpenWikiPage(const std::string& itemName);

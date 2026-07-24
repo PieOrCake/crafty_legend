@@ -364,12 +364,13 @@ static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
     if (mat.name == "Coin") {
         float coinRowY = ImGui::GetCursorPosY();
         float labelX   = ImGui::GetCursorPosX() + textPadX;
+        int   cost     = GetMaterialTotalPrice(mat);
         ImGui::SetCursorPosX(labelX);
         if (g_ShowItemIcons) {
             ImGui::SetCursorPosY(coinRowY + (TreeRowHeight() - ImGui::GetTextLineHeight()) * 0.5f);
         }
-        ImGui::TextColored(ImVec4(0.60f, 0.60f, 0.65f, 1.0f), "%s", Localization::Tr("Gold Cost"));
-        DrawRightPinnedCost(coinRowY, contentX, GetMaterialTotalPrice(mat));
+        ImGui::TextColored(GoldCostLabelColor(cost), "%s", Localization::Tr("Gold Cost"));
+        DrawRightPinnedCost(coinRowY, contentX, cost);
         ImGui::PopID();
         return;
     }
@@ -489,9 +490,17 @@ static void RenderMethodChildren(uint32_t item_id,
                     ? req.first + ": " + std::to_string(qty) + " x " + req.second
                     : req.first + ": " + req.second;
             }
-            // Keyed on the method (mKey), not just the item's node path, so two
-            // methods on the same item can never collide on ImGui IDs.
-            DrawLeafRow(mat, depth, mKey + "#vreq:" + std::to_string(idx++));
+            // A purchase requirement that is itself craftable (e.g. Gift of the Seas
+            // is bought with Gift of Condensed Might, which is a forge combine) must
+            // be a full expandable node, not a dead-end leaf — otherwise the tree
+            // stops at the vendor counter.
+            std::string reqKey = mKey + "#vreq:" + std::to_string(idx++);
+            if (mat.item_id != 0 && CanDrillInto(mat.item_id) && mat.count > 0) {
+                RenderNode(mat.item_id, static_cast<int>(mat.count), depth,
+                           reqKey + "/" + std::to_string(mat.item_id), onPath);
+            } else {
+                DrawLeafRow(mat, depth, reqKey);
+            }
         }
     } else {
         const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
