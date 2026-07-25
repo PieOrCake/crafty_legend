@@ -744,11 +744,11 @@
     },
     {
       "id": 101544,
-      "name": "Obsidian Helm",
+      "name": "Obsidian Heavy Helmet",
       "icon": "https://render.guildwars2.com/file/C905E4515CFB4AA52C7C57DF2F98D4DB0D04055D/3256184.png",
-      "description": "Legendary helm armor (all weight classes).",
+      "description": "Legendary helm armor (heavy).",
       "type": "armor",
-      "armor_type": "Helm",
+      "armor_type": "Heavy Helm",
       "binding": "account",
       "acquisition": [
         "crafting"
@@ -758,11 +758,11 @@
     },
     {
       "id": 101551,
-      "name": "Obsidian Shoulders",
+      "name": "Obsidian Heavy Pauldrons",
       "icon": "https://render.guildwars2.com/file/BAC307B13FD2A4A803CA5CED056916D7B34DDFF8/3256186.png",
-      "description": "Legendary shoulders armor (all weight classes).",
+      "description": "Legendary shoulder armor (heavy).",
       "type": "armor",
-      "armor_type": "Shoulders",
+      "armor_type": "Heavy Shoulders",
       "binding": "account",
       "acquisition": [
         "crafting"
@@ -772,11 +772,11 @@
     },
     {
       "id": 101521,
-      "name": "Obsidian Chest",
+      "name": "Obsidian Heavy Breastplate",
       "icon": "https://render.guildwars2.com/file/0E039364A11D5B9A0F40ADB9D0A7FD6FEDB64DB0/3256182.png",
-      "description": "Legendary coat armor (all weight classes).",
+      "description": "Legendary coat armor (heavy).",
       "type": "armor",
-      "armor_type": "Coat",
+      "armor_type": "Heavy Coat",
       "binding": "account",
       "acquisition": [
         "crafting"
@@ -786,11 +786,11 @@
     },
     {
       "id": 101609,
-      "name": "Obsidian Gloves",
+      "name": "Obsidian Heavy Gauntlets",
       "icon": "https://render.guildwars2.com/file/78A5446DC86D5FDE540B45102F973D94A2EDC3C0/3256183.png",
-      "description": "Legendary gloves armor (all weight classes).",
+      "description": "Legendary glove armor (heavy).",
       "type": "armor",
-      "armor_type": "Gloves",
+      "armor_type": "Heavy Gloves",
       "binding": "account",
       "acquisition": [
         "crafting"
@@ -800,11 +800,11 @@
     },
     {
       "id": 101568,
-      "name": "Obsidian Leggings",
+      "name": "Obsidian Heavy Cuisses",
       "icon": "https://render.guildwars2.com/file/22BED3680AC1A1AB6B3ED4F8922891077DADF361/3256185.png",
-      "description": "Legendary leggings armor (all weight classes).",
+      "description": "Legendary leg armor (heavy).",
       "type": "armor",
-      "armor_type": "Leggings",
+      "armor_type": "Heavy Leggings",
       "binding": "account",
       "acquisition": [
         "crafting"
@@ -814,11 +814,11 @@
     },
     {
       "id": 101460,
-      "name": "Obsidian Boots",
+      "name": "Obsidian Heavy Greaves",
       "icon": "https://render.guildwars2.com/file/0EB6787B05B90E21D7982A3B2E75460166C6520D/3256181.png",
-      "description": "Legendary boots armor (all weight classes).",
+      "description": "Legendary boot armor (heavy).",
       "type": "armor",
-      "armor_type": "Boots",
+      "armor_type": "Heavy Boots",
       "binding": "account",
       "acquisition": [
         "crafting"
@@ -828,11 +828,11 @@
     },
     {
       "id": 80384,
-      "name": "Perfected Envoy Helm",
+      "name": "Perfected Envoy Helmet",
       "icon": "https://render.guildwars2.com/file/2695A8E44B7F07EF15A20857790EFCA91513F5F0/1634565.png",
-      "description": "Legendary raid helm armor.",
+      "description": "Legendary raid helm armor (heavy).",
       "type": "armor",
-      "armor_type": "Helm",
+      "armor_type": "Heavy Helm",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -842,11 +842,11 @@
     },
     {
       "id": 80435,
-      "name": "Perfected Envoy Shoulders",
+      "name": "Perfected Envoy Pauldrons",
       "icon": "https://render.guildwars2.com/file/0F0F4BE73C9316BAA4956A3AA622CB0AE84D9CEA/1634567.png",
-      "description": "Legendary raid shoulders armor.",
+      "description": "Legendary raid shoulder armor (heavy).",
       "type": "armor",
-      "armor_type": "Shoulders",
+      "armor_type": "Heavy Shoulders",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -856,11 +856,11 @@
     },
     {
       "id": 80254,
-      "name": "Perfected Envoy Coat",
+      "name": "Perfected Envoy Breastplate",
       "icon": "https://render.guildwars2.com/file/DACF9B1ACBE8687B6B31ABC0CF295301120D7A67/1634563.png",
-      "description": "Legendary raid coat armor.",
+      "description": "Legendary raid coat armor (heavy).",
       "type": "armor",
-      "armor_type": "Coat",
+      "armor_type": "Heavy Coat",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -870,11 +870,11 @@
     },
     {
       "id": 80205,
-      "name": "Perfected Envoy Gloves",
+      "name": "Perfected Envoy Gauntlets",
       "icon": "https://render.guildwars2.com/file/A5DD0D661970F02CC26D04B510C7C94259B99520/1634564.png",
-      "description": "Legendary raid gloves armor.",
+      "description": "Legendary raid glove armor (heavy).",
       "type": "armor",
-      "armor_type": "Gloves",
+      "armor_type": "Heavy Gloves",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -884,11 +884,11 @@
     },
     {
       "id": 80277,
-      "name": "Perfected Envoy Leggings",
+      "name": "Perfected Envoy Tassets",
       "icon": "https://render.guildwars2.com/file/EA9294557C175A43567906721E43962EC4B12D34/1634566.png",
-      "description": "Legendary raid leggings armor.",
+      "description": "Legendary raid leg armor (heavy).",
       "type": "armor",
-      "armor_type": "Leggings",
+      "armor_type": "Heavy Leggings",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -898,11 +898,11 @@
     },
     {
       "id": 80557,
-      "name": "Perfected Envoy Boots",
+      "name": "Perfected Envoy Greaves",
       "icon": "https://render.guildwars2.com/file/E895D40AE0D1A500FFFDB955C27A98FF687AA4C1/1634562.png",
-      "description": "Legendary raid boots armor.",
+      "description": "Legendary raid boot armor (heavy).",
       "type": "armor",
-      "armor_type": "Boots",
+      "armor_type": "Heavy Boots",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -1677,6 +1677,342 @@
       ],
       "generation": 13,
       "max_count": 2
+    },
+    {
+      "id": 101516,
+      "name": "Obsidian Light Crown",
+      "icon": "https://render.guildwars2.com/file/1CC5E39F6362AD5B25081C090CBCB4F12512EB22/3256197.png",
+      "description": "Legendary helm armor (light).",
+      "type": "armor",
+      "armor_type": "Light Helm",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101462,
+      "name": "Obsidian Light Mantle",
+      "icon": "https://render.guildwars2.com/file/0CAFA9029802161CF256331DC94480C76F413B5A/3256199.png",
+      "description": "Legendary shoulder armor (light).",
+      "type": "armor",
+      "armor_type": "Light Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101499,
+      "name": "Obsidian Light Regalia",
+      "icon": "https://render.guildwars2.com/file/46F1D0D780A0930E936B48B9B9BF720A7B239339/3256195.png",
+      "description": "Legendary coat armor (light).",
+      "type": "armor",
+      "armor_type": "Light Coat",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101536,
+      "name": "Obsidian Light Gloves",
+      "icon": "https://render.guildwars2.com/file/C2EAC99A1F38707E4533C86F1AC45F6802D4F2AC/3256196.png",
+      "description": "Legendary glove armor (light).",
+      "type": "armor",
+      "armor_type": "Light Gloves",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101501,
+      "name": "Obsidian Light Pants",
+      "icon": "https://render.guildwars2.com/file/CE032615F504521DC30C6F780C09FBF137A5FA7A/3256198.png",
+      "description": "Legendary leg armor (light).",
+      "type": "armor",
+      "armor_type": "Light Leggings",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101535,
+      "name": "Obsidian Light Shoes",
+      "icon": "https://render.guildwars2.com/file/4D52B43E294580DD05592E1402F75D5F07CD7DE9/3256194.png",
+      "description": "Legendary boot armor (light).",
+      "type": "armor",
+      "armor_type": "Light Boots",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101614,
+      "name": "Obsidian Medium Mask",
+      "icon": "https://render.guildwars2.com/file/297112AF99D72E081010FE01DFD0EF4649192654/3256203.png",
+      "description": "Legendary helm armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Helm",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101645,
+      "name": "Obsidian Medium Shoulders",
+      "icon": "https://render.guildwars2.com/file/B2EE31E7095A7028CABB9462EA27433CDB340C48/3256205.png",
+      "description": "Legendary shoulder armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101556,
+      "name": "Obsidian Medium Jacket",
+      "icon": "https://render.guildwars2.com/file/A7DB4B5B5244D8B9D6CC6F5ED9303CE63BE06BF2/3256201.png",
+      "description": "Legendary coat armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Coat",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101570,
+      "name": "Obsidian Medium Gloves",
+      "icon": "https://render.guildwars2.com/file/743805FF0EE34E1DA26EE45E0B075A6A3D47723F/3256202.png",
+      "description": "Legendary glove armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Gloves",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101579,
+      "name": "Obsidian Medium Leggings",
+      "icon": "https://render.guildwars2.com/file/A021E1194C612DC313D62F73EA5799ED021C3D4F/3256204.png",
+      "description": "Legendary leg armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Leggings",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 101602,
+      "name": "Obsidian Medium Boots",
+      "icon": "https://render.guildwars2.com/file/DBDB22ABE39D5BAA76C2F4FC9B294B7AF9FFF81B/3256200.png",
+      "description": "Legendary boot armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Boots",
+      "binding": "account",
+      "acquisition": [
+        "crafting"
+      ],
+      "generation": 4,
+      "max_count": 1
+    },
+    {
+      "id": 80248,
+      "name": "Perfected Envoy Cowl",
+      "icon": "https://render.guildwars2.com/file/06146C9BD029041178F50B5D9ACD0A76E7051408/1634576.png",
+      "description": "Legendary raid helm armor (light).",
+      "type": "armor",
+      "armor_type": "Light Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80131,
+      "name": "Perfected Envoy Mantle",
+      "icon": "https://render.guildwars2.com/file/A77403E5F0EB03E46E686B12297A04707AF50278/1634579.png",
+      "description": "Legendary raid shoulder armor (light).",
+      "type": "armor",
+      "armor_type": "Light Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80190,
+      "name": "Perfected Envoy Vestments",
+      "icon": "https://render.guildwars2.com/file/C8FB494379CC98171EFB0F13923CACFD047743B3/1634574.png",
+      "description": "Legendary raid coat armor (light).",
+      "type": "armor",
+      "armor_type": "Light Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80111,
+      "name": "Perfected Envoy Gloves",
+      "icon": "https://render.guildwars2.com/file/9703DBC0926F6BB4072032E6B55BE593F6B750CD/1634575.png",
+      "description": "Legendary raid glove armor (light).",
+      "type": "armor",
+      "armor_type": "Light Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80356,
+      "name": "Perfected Envoy Pants",
+      "icon": "https://render.guildwars2.com/file/65A4D3A41592D10EEABD0BC0D611F13A383B0261/1634577.png",
+      "description": "Legendary raid leg armor (light).",
+      "type": "armor",
+      "armor_type": "Light Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80399,
+      "name": "Perfected Envoy Shoes",
+      "icon": "https://render.guildwars2.com/file/FD60D4E3986FA46F4FEBB8131B65159195260B19/1634578.png",
+      "description": "Legendary raid boot armor (light).",
+      "type": "armor",
+      "armor_type": "Light Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80296,
+      "name": "Perfected Envoy Mask",
+      "icon": "https://render.guildwars2.com/file/49092A1358E528DEC67EFA1C090546ED034642E2/1634588.png",
+      "description": "Legendary raid helm armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Helm",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80145,
+      "name": "Perfected Envoy Shoulderpads",
+      "icon": "https://render.guildwars2.com/file/CF7609512FC6527D805F2B74F26AF4549FF4E808/1634591.png",
+      "description": "Legendary raid shoulder armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Shoulders",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80578,
+      "name": "Perfected Envoy Jerkin",
+      "icon": "https://render.guildwars2.com/file/57360F35D1210D12010F6AE772382450A07D08F6/1634586.png",
+      "description": "Legendary raid coat armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Coat",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80161,
+      "name": "Perfected Envoy Vambraces",
+      "icon": "https://render.guildwars2.com/file/C57E5E5FA69261A2503CBB50080A6C023A155C49/1634587.png",
+      "description": "Legendary raid glove armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Gloves",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80252,
+      "name": "Perfected Envoy Leggings",
+      "icon": "https://render.guildwars2.com/file/EBD907C061747927AE062D1B41BC13D0EAF14AD5/1634589.png",
+      "description": "Legendary raid leg armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Leggings",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
+    },
+    {
+      "id": 80281,
+      "name": "Perfected Envoy Boots",
+      "icon": "https://render.guildwars2.com/file/BF4C6A48BA02BD6D6AC32F1E9C3F32A50399E336/1634590.png",
+      "description": "Legendary raid boot armor (medium).",
+      "type": "armor",
+      "armor_type": "Medium Boots",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 5,
+      "max_count": 1
     }
   ]
 }

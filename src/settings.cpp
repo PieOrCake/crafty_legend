@@ -15,7 +15,7 @@ void SaveDisplaySettings() {
     file << "{\n";
     file << "  \"show_item_icons\": " << (g_ShowItemIcons ? "true" : "false") << ",\n";
     file << "  \"show_debug_window\": " << (g_ShowDebugWindow ? "true" : "false") << ",\n";
-    file << "  \"show_owned_legendaries\": " << (g_ShowOwnedLegendaries ? "true" : "false") << ",\n";
+    file << "  \"owned_filter_mode\": " << g_OwnedFilterMode << ",\n";
     file << "  \"show_qa_icon\": " << (g_ShowQAIcon ? "true" : "false") << ",\n";
     file << "  \"use_pie_theme\": " << (g_UsePieTheme ? "true" : "false") << ",\n";
     file << "  \"use_tree_layout\": " << (g_UseTreeLayout ? "true" : "false") << ",\n";
@@ -66,8 +66,21 @@ void LoadDisplaySettings() {
     else if (content.find("\"show_item_icons\": false") != std::string::npos) g_ShowItemIcons = false;
     if (content.find("\"show_debug_window\": true") != std::string::npos) g_ShowDebugWindow = true;
     else if (content.find("\"show_debug_window\": false") != std::string::npos) g_ShowDebugWindow = false;
-    if (content.find("\"show_owned_legendaries\": true") != std::string::npos) g_ShowOwnedLegendaries = true;
-    else if (content.find("\"show_owned_legendaries\": false") != std::string::npos) g_ShowOwnedLegendaries = false;
+    // Legacy key: the old boolean only distinguished "show everything" from
+    // "hide anything I own one of". Read it first so an existing settings file
+    // migrates, then let the new key win if it is also present.
+    if (content.find("\"show_owned_legendaries\": true") != std::string::npos) g_OwnedFilterMode = OWNED_FILTER_SHOW_ALL;
+    else if (content.find("\"show_owned_legendaries\": false") != std::string::npos) g_OwnedFilterMode = OWNED_FILTER_HIDE_ANY;
+    {
+        std::string needle = "\"owned_filter_mode\":";
+        size_t p = content.find(needle);
+        if (p != std::string::npos) {
+            try {
+                int mode = std::stoi(content.substr(p + needle.size()));
+                if (mode >= OWNED_FILTER_SHOW_ALL && mode <= OWNED_FILTER_HIDE_FULL) g_OwnedFilterMode = mode;
+            } catch (...) {}
+        }
+    }
     if (content.find("\"show_qa_icon\": true") != std::string::npos) g_ShowQAIcon = true;
     else if (content.find("\"show_qa_icon\": false") != std::string::npos) g_ShowQAIcon = false;
     if (content.find("\"use_pie_theme\": true") != std::string::npos) g_UsePieTheme = true;

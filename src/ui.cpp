@@ -803,10 +803,12 @@ void AddonRender() {
                     // Armoury capacity for this item: runes 7, sigils 8, one-handed
                     // weapons 4, rings and two-handers 2, armour and amulets 1.
                     int legCap = leg.max_count > 0 ? leg.max_count : 1;
-                    // Hide owned legendaries if the setting is off — "owned" meaning the
-                    // armoury holds every copy it can hold.
-                    if (!g_ShowOwnedLegendaries && CraftyLegend::GW2API::HasAccountData()) {
-                        if (CraftyLegend::GW2API::GetArmoryCount(leg.id) >= legCap) continue;
+                    // Hide owned legendaries per the user's chosen meaning of "owned":
+                    // either a single armoury copy, or a full armoury.
+                    if (g_OwnedFilterMode != OWNED_FILTER_SHOW_ALL && CraftyLegend::GW2API::HasAccountData()) {
+                        int held = CraftyLegend::GW2API::GetArmoryCount(leg.id);
+                        int threshold = (g_OwnedFilterMode == OWNED_FILTER_HIDE_FULL) ? legCap : 1;
+                        if (held >= threshold) continue;
                     }
                     if (!filterLower.empty()) {
                         std::string nameLower = leg.name;
@@ -1521,16 +1523,32 @@ void AddonOptions() {
         ImGui::EndTooltip();
     }
     
-    if (ImGui::Checkbox(Localization::Tr("Show Owned Legendaries"), &g_ShowOwnedLegendaries)) {
-        SaveDisplaySettings();
-    }
+    // Owned-legendary filter. Three-way because the Legendary Armoury holds
+    // multiple copies of most items, so "owned" can mean either the first copy
+    // or a full set.
+    ImGui::TextUnformatted(Localization::Tr("Owned legendaries"));
     ImGui::SameLine();
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
-        ImGui::Text("Show legendaries you already own in the list (requires Hoard & Seek)");
+        ImGui::Text("Controls which legendaries you already have are hidden from the list (requires Hoard & Seek).\n"
+                    "The armoury holds several copies of most items, so \"owned\" can mean the first copy or a full set.");
         ImGui::EndTooltip();
     }
+    struct OwnedModeOption { int mode; const char* label; };
+    static const OwnedModeOption kOwnedModes[] = {
+        { OWNED_FILTER_SHOW_ALL,  "Show all" },
+        { OWNED_FILTER_HIDE_ANY,  "Hide once I own one" },
+        { OWNED_FILTER_HIDE_FULL, "Hide only when armoury is full" }
+    };
+    ImGui::Indent();
+    for (const auto& opt : kOwnedModes) {
+        if (ImGui::RadioButton(Localization::Tr(opt.label), g_OwnedFilterMode == opt.mode) && g_OwnedFilterMode != opt.mode) {
+            g_OwnedFilterMode = opt.mode;
+            SaveDisplaySettings();
+        }
+    }
+    ImGui::Unindent();
 
     // Bundled custom font (downloaded on first enable). Size slider appears when on.
     if (ImGui::Checkbox(Localization::Tr("Use custom font"), &g_UseCustomFont)) {

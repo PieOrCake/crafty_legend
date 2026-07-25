@@ -51,7 +51,15 @@ extern bool g_ShowAcquisition;
 extern bool g_ShowRecipes;
 extern char g_SearchFilter[256];
 extern bool g_ShowItemIcons;
-extern bool g_ShowOwnedLegendaries;
+// How the legendary list treats items you already have. The armoury holds more
+// than one copy of most things (4 one-handers, 7 runes...), so "owned" is
+// ambiguous — the user picks which meaning they want.
+enum OwnedFilterMode {
+    OWNED_FILTER_SHOW_ALL = 0,  // never hide anything
+    OWNED_FILTER_HIDE_ANY = 1,  // hide once the armoury holds a single copy
+    OWNED_FILTER_HIDE_FULL = 2  // hide only once the armoury is full
+};
+extern int g_OwnedFilterMode;
 extern bool g_ShowQAIcon;
 extern bool g_UsePieTheme;
 extern bool g_UseTreeLayout; // false = Miller columns (default), true = expanding tree
