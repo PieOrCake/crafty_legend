@@ -24,6 +24,11 @@ int GetVendorCoinCost(uint32_t item_id);
 bool CanAffordCoinCost(int total_copper);
 // Colour for a "Gold Cost" row label: green when affordable, dim grey otherwise.
 ImVec4 GoldCostLabelColor(int total_copper);
+// Behind-the-row affordability bar for a coin cost, matching DrawItemRow's bar.
+void DrawCoinCostBar(const ImVec2& rowPos, float rowWidth, float rowHeight, int total_copper);
+
+// "12/40" for an achievement that is underway, "" when done/unknown/not started.
+std::string AchievementProgressText(int achievement_id);
 
 // Text helpers
 std::string StripMarkup(const std::string& text);

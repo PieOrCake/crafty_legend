@@ -16,8 +16,8 @@ namespace CraftyLegend {
     std::string GW2API::s_current_account_name;
     std::unordered_map<int, int> GW2API::s_wallet;
     std::unordered_map<int, int> GW2API::s_masteries;
-    std::unordered_map<int, bool> GW2API::s_achievements;
-    std::unordered_set<uint32_t> GW2API::s_legendary_armory;
+    std::unordered_map<int, GW2API::AchievementProgress> GW2API::s_achievements;
+    std::unordered_map<uint32_t, int> GW2API::s_legendary_armory;
     bool GW2API::s_has_account_data = false;
     std::unordered_map<uint32_t, int> GW2API::s_tp_prices;
     bool GW2API::s_has_price_data = false;
@@ -244,20 +244,35 @@ namespace CraftyLegend {
         return it != groups.end() ? &it->second : nullptr;
     }
 
-    bool GW2API::IsLegendaryUnlocked(uint32_t item_id) {
-        std::lock_guard<std::mutex> lock(s_mutex);
-        if (s_legendary_armory.count(item_id) > 0) return true;
+    // Unlocked with the lock already held, so GetArmoryCount and IsLegendaryUnlocked can
+    // share it without double-locking.
+    static int ArmoryCountLocked(const std::unordered_map<uint32_t, int>& armory,
+                                 uint32_t item_id) {
+        int total = 0;
+        auto it = armory.find(item_id);
+        if (it != armory.end()) total += it->second;
         if (const std::vector<uint32_t>* group = GetArmoryAliasGroup(item_id)) {
             for (uint32_t id : *group) {
-                if (s_legendary_armory.count(id) > 0) return true;
+                auto gt = armory.find(id);
+                if (gt != armory.end()) total += gt->second;
             }
         }
-        return false;
+        return total;
     }
 
-    void GW2API::SetLegendaryUnlocked(uint32_t item_id) {
+    bool GW2API::IsLegendaryUnlocked(uint32_t item_id) {
         std::lock_guard<std::mutex> lock(s_mutex);
-        s_legendary_armory.insert(item_id);
+        return ArmoryCountLocked(s_legendary_armory, item_id) > 0;
+    }
+
+    int GW2API::GetArmoryCount(uint32_t item_id) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        return ArmoryCountLocked(s_legendary_armory, item_id);
+    }
+
+    void GW2API::SetLegendaryUnlocked(uint32_t item_id, int count) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_legendary_armory[item_id] = count > 0 ? count : 1;
     }
 
     void GW2API::ClearLegendaryArmory() {
@@ -390,8 +405,16 @@ namespace CraftyLegend {
     bool GW2API::IsAchievementDone(int achievement_id) {
         std::lock_guard<std::mutex> lock(s_mutex);
         auto it = s_achievements.find(achievement_id);
-        if (it != s_achievements.end()) return it->second;
+        if (it != s_achievements.end()) return it->second.done;
         return false;
+    }
+
+    bool GW2API::GetAchievementProgress(int achievement_id, AchievementProgress& out) {
+        std::lock_guard<std::mutex> lock(s_mutex);
+        auto it = s_achievements.find(achievement_id);
+        if (it == s_achievements.end()) return false;
+        out = it->second;
+        return true;
     }
 
     void GW2API::SetMasteryLevel(int mastery_id, int level) {
@@ -399,9 +422,12 @@ namespace CraftyLegend {
         s_masteries[mastery_id] = level;
     }
 
-    void GW2API::SetAchievementDone(int achievement_id, bool done) {
+    void GW2API::SetAchievementProgress(int achievement_id, int current, int max, bool done) {
         std::lock_guard<std::mutex> lock(s_mutex);
-        s_achievements[achievement_id] = done;
+        AchievementProgress& p = s_achievements[achievement_id];
+        p.current = current;
+        p.max     = max;
+        p.done    = done;
     }
 
     void GW2API::ClearMasteriesAndAchievements() {

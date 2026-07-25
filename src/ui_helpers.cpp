@@ -304,12 +304,58 @@ static void WalkCompletion(uint32_t item_id, double count,
     onPath.erase(item_id);
 }
 
+// A legendary with no crafting tree at all has no materials to measure — Prismatic
+// Champion's Regalia is awarded for the Seasons of the Dragons achievement, not crafted,
+// so its bar would sit at 0% until the moment it appears in the armoury. Fall back to how
+// far along its achievement gates are, which is the only progress that exists for it.
+static float AchievementGateCompletion(uint32_t legendary_id) {
+    std::vector<CraftyLegend::Prerequisite> prereqs =
+        CraftyLegend::DataManager::GetPrerequisites(legendary_id);
+    double sum = 0.0;
+    int n = 0;
+    for (const auto& p : prereqs) {
+        if (p.category != CraftyLegend::PrereqCategory::Achievement || p.achievement_id <= 0)
+            continue;
+        n++;
+        if (p.completed) { sum += 1.0; continue; }
+        CraftyLegend::GW2API::AchievementProgress ap;
+        if (CraftyLegend::GW2API::GetAchievementProgress(p.achievement_id, ap)
+            && ap.max > 0 && ap.current > 0)
+            sum += std::min(1.0, static_cast<double>(ap.current) / static_cast<double>(ap.max));
+    }
+    if (n == 0) return 0.0f;
+    return static_cast<float>(std::min(1.0, sum / n));
+}
+
+// The bar measures materials for the NEXT copy, and reads 100% only when the Legendary
+// Armory is full for this item (max_count copies: 1 for armour and amulets, 2 for
+// two-handed weapons and rings, 4 for one-handed weapons, 7 runes, 8 sigils).
+//
+// Deliberately NOT (copies + progress) / max_count: that would show a one-handed weapon
+// you can forge right now as 25% just because the armoury could hold four. The copies
+// you already have are surfaced as a "3/7" count on the row instead, so the bar stays a
+// straight answer to "how close am I to the next one".
+//
+// Only armoury-bound copies count as owned — an unbound legendary in inventory can still
+// be sold. That is also why the walk starts at the legendary's children rather than the
+// legendary itself: self-crediting from the inventory pool is what made an owned
+// legendary read 100% no matter what the armoury held.
 static float ComputeLegendaryCompletion(uint32_t legendary_id) {
+    int maxCount = 1;
+    if (const CraftyLegend::Legendary* leg =
+            CraftyLegend::DataManager::GetLegendaryById(legendary_id)) {
+        maxCount = leg->max_count > 0 ? leg->max_count : 1;
+    }
+    if (CraftyLegend::GW2API::GetArmoryCount(legendary_id) >= maxCount) return 1.0f;
+
     double need = 0.0, have = 0.0;
     std::unordered_set<uint32_t> onPath;
     std::unordered_map<uint32_t, double> pool;
-    WalkCompletion(legendary_id, 1.0, onPath, pool, need, have);
-    if (need <= 0.0) return 0.0f;
+    onPath.insert(legendary_id);
+    for (const auto& k : CompletionChildren(legendary_id))
+        WalkCompletion(k.item_id, k.per_unit, onPath, pool, need, have);
+
+    if (need <= 0.0) return AchievementGateCompletion(legendary_id);
     return static_cast<float>(std::min(1.0, have / need));
 }
 
@@ -612,6 +658,39 @@ ImVec4 GoldCostLabelColor(int total_copper) {
     return CanAffordCoinCost(total_copper)
         ? ImVec4(0.35f, 0.82f, 0.35f, 1.0f)  // completedColor, matches DrawItemRow
         : ImVec4(0.60f, 0.60f, 0.65f, 1.0f);
+}
+
+// A coin cost gets the same behind-the-row progress bar a normal material row gets
+// from DrawItemRow — green once the wallet covers it, blue and part-width while it
+// does not. Coin rows are drawn by their own branches in Miller and the tree, so
+// they cannot inherit DrawItemRow's bar; this keeps the two visually identical.
+void DrawCoinCostBar(const ImVec2& rowPos, float rowWidth, float rowHeight, int total_copper) {
+    if (total_copper <= 0 || !CraftyLegend::GW2API::HasAccountData()) return;
+    int wallet = CraftyLegend::GW2API::GetWalletAmountByName("Coin");
+    if (wallet <= 0) return;
+    float pct = std::min(1.0f, static_cast<float>(wallet) / static_cast<float>(total_copper));
+    if (pct <= 0.0f) return;
+    ImU32 barCol = (wallet >= total_copper)
+        ? IM_COL32(50, 180, 50, 35)   // green = affordable
+        : IM_COL32(60, 140, 200, 25); // blue = partial
+    const float rowPadX = 6.0f; // matches DrawItemRow's textPadX
+    float barLeft = rowPos.x - rowPadX;
+    ImGui::GetWindowDrawList()->AddRectFilled(
+        ImVec2(barLeft, rowPos.y),
+        ImVec2(barLeft + rowWidth * pct, rowPos.y + rowHeight),
+        barCol, 2.0f);
+}
+
+// "12/40" for an achievement that is underway, or "" when there is nothing useful to
+// show — unknown to H&S, already done, no max reported, or not started (the GW2 account
+// endpoint omits unstarted achievements, which H&S surfaces as current == -1).
+std::string AchievementProgressText(int achievement_id) {
+    if (achievement_id <= 0) return "";
+    CraftyLegend::GW2API::AchievementProgress p;
+    if (!CraftyLegend::GW2API::GetAchievementProgress(achievement_id, p)) return "";
+    if (p.done || p.max <= 0 || p.current < 0) return "";
+    int cur = std::min(p.current, p.max);
+    return std::to_string(cur) + "/" + std::to_string(p.max);
 }
 
 // Helper: add a timestamped debug log entry

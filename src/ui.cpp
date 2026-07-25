@@ -800,16 +800,13 @@ void AddonRender() {
                     const auto& leg = legendaries[i];
                     if (!predicate(leg)) continue;
                     bool isFav = CraftyLegend::DataManager::IsFavourite(leg.id);
-                    // Hide owned legendaries if setting is off
-                    // Runes (gen 17) and Sigils (gen 18) can be owned multiple times
+                    // Armoury capacity for this item: runes 7, sigils 8, one-handed
+                    // weapons 4, rings and two-handers 2, armour and amulets 1.
+                    int legCap = leg.max_count > 0 ? leg.max_count : 1;
+                    // Hide owned legendaries if the setting is off — "owned" meaning the
+                    // armoury holds every copy it can hold.
                     if (!g_ShowOwnedLegendaries && CraftyLegend::GW2API::HasAccountData()) {
-                        if (leg.generation == 17) {
-                            if (CraftyLegend::GW2API::GetOwnedCount(leg.id) >= 7) continue;
-                        } else if (leg.generation == 18) {
-                            if (CraftyLegend::GW2API::GetOwnedCount(leg.id) >= 8) continue;
-                        } else {
-                            if (CraftyLegend::GW2API::IsLegendaryUnlocked(leg.id)) continue;
-                        }
+                        if (CraftyLegend::GW2API::GetArmoryCount(leg.id) >= legCap) continue;
                     }
                     if (!filterLower.empty()) {
                         std::string nameLower = leg.name;
@@ -856,8 +853,10 @@ void AddonRender() {
                             ImGui::GetWindowDrawList()->AddRect(iconScreenPos,
                                 ImVec2(iconScreenPos.x + ICON_SIZE, iconScreenPos.y + ICON_SIZE),
                                 rarityCol, 2.0f, 0, 1.5f);
-                            // Owned badge: green circle + white tick in bottom-right corner
-                            if (CraftyLegend::GW2API::IsLegendaryUnlocked(leg.id)) {
+                            // Owned badge: green circle + white tick in bottom-right corner.
+                            // Only a FULL armoury earns the tick — a partial holding (say
+                            // 3 of 7 runes) shows its count next to the name instead.
+                            if (CraftyLegend::GW2API::GetArmoryCount(leg.id) >= legCap) {
                                 auto* dl = ImGui::GetWindowDrawList();
                                 const float r = 5.0f;
                                 ImVec2 bc(iconScreenPos.x + ICON_SIZE - r - 1.0f, iconScreenPos.y + ICON_SIZE - r - 1.0f);
@@ -886,7 +885,19 @@ void AddonRender() {
                         starSize = sz * 2.0f + 4.0f;
                     }
                     std::string dispName = Localization::ItemName(leg.id, leg.name);
-                    std::string lbl = (isFav ? "     " : "") + dispName + subtypeSuffix + " >";
+                    // Partial armoury holding, e.g. "3/7" on Legendary Rune. Shown only
+                    // for items worth owning in multiples, and only once one is held —
+                    // the completion bar tracks the next copy, so the count is how you
+                    // see the ones already banked.
+                    std::string copiesSuffix;
+                    if (legCap > 1 && CraftyLegend::GW2API::HasAccountData()) {
+                        int held = CraftyLegend::GW2API::GetArmoryCount(leg.id);
+                        if (held > 0) {
+                            copiesSuffix = "  " + std::to_string(std::min(held, legCap))
+                                         + "/" + std::to_string(legCap);
+                        }
+                    }
+                    std::string lbl = (isFav ? "     " : "") + dispName + subtypeSuffix + copiesSuffix + " >";
                     ImVec2 itemPos = ImGui::GetCursorScreenPos();
                     float selH = g_ShowItemIcons ? ICON_SIZE : 0;
                     if (g_ShowItemIcons) {
@@ -1120,6 +1131,8 @@ void AddonRender() {
                             }
                             // Render price (right-aligned within maxPriceW, vertically centered)
                             int totalPrice = GetMaterialTotalPrice(mat);
+                            // Affordability bar, same as any other material row gets
+                            DrawCoinCostBar(rowPos, colW, rowH, totalPrice);
                             if (maxPriceW > 0.0f && totalPrice > 0) {
                                 float thisPW = CalcPriceWidth(totalPrice);
                                 float padLeft = maxPriceW - thisPW;
@@ -1235,6 +1248,8 @@ void AddonRender() {
                                             CraftyLegend::GW2API::EnsureAchievementNames({g.achievement_id}, gateLang);
                                             gName = CraftyLegend::GW2API::LocalizeAchievementName(g.achievement_id, g.name);
                                         }
+                                        std::string gProgress = AchievementProgressText(g.achievement_id);
+                                        if (!gProgress.empty()) gName += " (" + gProgress + ")";
                                         ImGui::TextColored(gc, "%s: %s", tag, gName.c_str());
                                         if (!g.description.empty()) {
                                             ImGui::PushTextWrapPos(320.0f);
@@ -1389,7 +1404,10 @@ void AddonRender() {
                         ImGui::TextColored(ImVec4(0.4f, 0.4f, 0.4f, 1.0f), "|");
                         ImGui::SameLine();
                     }
+                    // Partial progress on an unfinished achievement gate, e.g. "12/40".
+                    std::string pProgress = AchievementProgressText(p.achievement_id);
                     if (p.completed) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.3f, 0.85f, 0.3f, 1.0f));
+                    else if (!pProgress.empty()) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.95f, 0.80f, 0.35f, 1.0f));
                     std::string pName = p.name;
                     if (std::strcmp(Localization::ActiveLang(), "en") != 0) {
                         if (p.achievement_id > 0) {
@@ -1401,12 +1419,17 @@ void AddonRender() {
                             pName = Localization::Tr(p.name.c_str());
                         }
                     }
+                    if (!pProgress.empty()) pName += " (" + pProgress + ")";
                     ImGui::Text("%s", pName.c_str());
-                    if (p.completed) ImGui::PopStyleColor();
+                    if (p.completed || !pProgress.empty()) ImGui::PopStyleColor();
                     if (ImGui::IsItemHovered()) {
                         ImGui::BeginTooltip();
                         ImGui::PushTextWrapPos(300.0f);
                         ImGui::TextWrapped("%s", p.description.c_str());
+                        if (!pProgress.empty()) {
+                            ImGui::TextColored(ImVec4(0.95f, 0.80f, 0.35f, 1.0f), "%s: %s",
+                                               Localization::Tr("Progress"), pProgress.c_str());
+                        }
                         ImGui::PopTextWrapPos();
                         ImGui::EndTooltip();
                     }

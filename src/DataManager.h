@@ -66,6 +66,11 @@ namespace CraftyLegend {
         std::string binding;
         std::vector<std::string> acquisition;
         int generation = 1;
+        // Legendary Armory capacity: how many copies are useful to own. 1 for armour,
+        // amulets and back items; 2 for two-handed weapons, rings and accessories;
+        // 4 for one-handed weapons; 7 for Legendary Rune; 8 for Legendary Sigil.
+        // Sourced from /v2/legendaryarmory by scripts/fetch_max_counts.py.
+        int max_count = 1;
     };
     
     // Acquisition method structure for UI display
@@ -127,6 +132,7 @@ namespace CraftyLegend {
         
         // Data access
         static const std::vector<Legendary>& GetLegendaries();
+        static const Legendary* GetLegendaryById(uint32_t id); // nullptr if not a legendary
         static const std::unordered_map<uint32_t, Item>& GetItems();
         static const std::unordered_map<uint32_t, Recipe>& GetRecipes();
         static const std::vector<Currency>& GetCurrencies();

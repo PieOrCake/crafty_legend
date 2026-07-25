@@ -445,6 +445,8 @@ namespace CraftyLegend {
                 
                 legendary.binding = legendary_json.value("binding", "none");
                 legendary.generation = legendary_json.value("generation", 1);
+                legendary.max_count = legendary_json.value("max_count", 1);
+                if (legendary.max_count < 1) legendary.max_count = 1;
                 
                 if (legendary_json.contains("acquisition")) {
                     for (const auto& acq : legendary_json["acquisition"]) {
@@ -663,21 +665,27 @@ namespace CraftyLegend {
             } else if (item && item->id == 32) { // Bloodstone Shard (old ID)
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Spirit Shards", "200"}
                 };
             } else if (item && item->id == 20797) { // Bloodstone Shard (Gen2)
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Spirit Shards", "200"}
                 };
             } else if (item && item->id == 79418) { // Mystic Runestone
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Coin", "10000"}
                 };
@@ -719,7 +727,9 @@ namespace CraftyLegend {
             } else if (item && item->id == 71311) { // Gift of Gliding
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Airship Parts", "300"},
                     {"Lumps of Aurillium", "300"},
@@ -729,14 +739,18 @@ namespace CraftyLegend {
             } else if (item && item->id == 70528) { // Gift of Glory
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Shard of Glory", "250"}
                 };
             } else if (item && item->id == 71008) { // Gift of War
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Memory of Battle", "250"}
                 };
@@ -803,7 +817,9 @@ namespace CraftyLegend {
             } else if (item && item->id == 46752) { // Augur's Stone
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Spirit Shard", "20"}
                 };
@@ -1415,14 +1431,25 @@ namespace CraftyLegend {
                     {"Gift of Condensed Magic", "4"}
                 };
             } else if (item && item->id == 106632) { // Gift of the Elders
-                acq.display_name = "Vendor - Foothold Bivouac";
-                acq.vendor_name = "Foothold Bivouac Heart Vendor";
-                acq.vendor_location = "Starlit Weald";
+                acq.display_name = "Vendor - Captain Emund";
+                acq.vendor_name = "Captain Emund";
+                acq.vendor_location = "Shimmering Basin, Starlit Weald";
                 acq.purchase_requirements = {
                     {"Gift of the Tides", "1"},
                     {"Bloodstone Shard", "1"},
                     {"Gift of Research", "1"},
                     {"Gift of the Mists", "1"}
+                };
+            // The first Gift of the Tides is a one-off story reward (Path of Divinity);
+            // afterwards it is repurchasable from any of the nine Visions of Eternity
+            // map vendors, all at the same price.
+            } else if (item && item->id == 106275) { // Gift of the Tides
+                acq.display_name = "Vendor - VoE Map Vendors";
+                acq.vendor_name = "Alliance Field Quartermaster";
+                acq.vendor_location = "Any VoE map vendor (Castora / Shipwreck Strand / Starlit Weald / Eternity's Garden)";
+                acq.purchase_requirements = {
+                    {"Coin", "500000"},
+                    {"Karma", "300000"}
                 };
             } else if (item && item->id == 100400) { // Relic of the Sunless
                 acq.display_name = "Vendor - Lyhr";
@@ -1434,7 +1461,9 @@ namespace CraftyLegend {
             } else if (item && item->id == 20852) { // Eldritch Scroll
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Spirit Shards", "50"}
                 };
@@ -1451,14 +1480,18 @@ namespace CraftyLegend {
                 // per-unit integer model, so this rounds 0.6 up to 1.
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Spirit Shard", "1"}
                 };
             } else if (item && item->id == 20796) { // Philosopher's Stone
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";
-                acq.vendor_location = "Trader's Forum, Lion's Arch";
+                // Mystic Forge Attendants stock the same items as Miyani, so this is
+                // buyable at every Mystic Forge, not just the Lion's Arch one.
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
                     {"Spirit Shards", "1 (buys 10)"}
                 };
@@ -1746,7 +1779,7 @@ namespace CraftyLegend {
             } else if (item && item->id == 106747) { // Gift of the Seas
                 acq.display_name = "Vendor - VoE Map Vendors";
                 acq.vendor_name = "Alliance Field Quartermaster";
-                acq.vendor_location = "Shipwreck Strand / Starlit Weald";
+                acq.vendor_location = "Any VoE map vendor (Castora / Shipwreck Strand / Starlit Weald / Eternity's Garden)";
                 acq.purchase_requirements = {
                     {"Gift of the Tides", "1"},
                     {"Gift of Research", "2"},
@@ -1885,6 +1918,13 @@ namespace CraftyLegend {
     
     const std::vector<Legendary>& DataManager::GetLegendaries() {
         return s_legendaries;
+    }
+
+    const Legendary* DataManager::GetLegendaryById(uint32_t id) {
+        for (const auto& leg : s_legendaries) {
+            if (leg.id == id) return &leg;
+        }
+        return nullptr;
     }
     
     const std::unordered_map<uint32_t, Item>& DataManager::GetItems() {

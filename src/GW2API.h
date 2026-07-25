@@ -46,16 +46,31 @@ namespace CraftyLegend {
         static bool HasWalletData();
         static int GetWalletAmountByName(const std::string& currency_name);
 
-        // Legendary Armory (data set by H&S events)
+        // Legendary Armory (data set by H&S events).
+        // Only armoury-bound copies count as owned — an unbound legendary sitting in
+        // inventory can still be sold, so it is not ownership.
         static bool IsLegendaryUnlocked(uint32_t item_id);
-        static void SetLegendaryUnlocked(uint32_t item_id);
+        static void SetLegendaryUnlocked(uint32_t item_id, int count);
+        // Copies held in the armoury (0 if none). Container legendaries sum across the
+        // equipment forms they unlock, via GetArmoryAliasGroup.
+        static int GetArmoryCount(uint32_t item_id);
         static void ClearLegendaryArmory();
 
         // Masteries & Achievements (data set by H&S events)
+        // H&S reports per-achievement progress alongside the done flag. `current` is -1
+        // when the account has not started the achievement (the GW2 account endpoint
+        // omits unstarted achievements entirely) and `max` is -1 when unknown.
+        struct AchievementProgress {
+            int  current = -1;
+            int  max     = -1;
+            bool done    = false;
+        };
         static int GetMasteryLevel(int mastery_id);
         static void SetMasteryLevel(int mastery_id, int level);
         static bool IsAchievementDone(int achievement_id);
-        static void SetAchievementDone(int achievement_id, bool done);
+        static void SetAchievementProgress(int achievement_id, int current, int max, bool done);
+        // True when H&S has reported this achievement at all; fills `out` if so.
+        static bool GetAchievementProgress(int achievement_id, AchievementProgress& out);
         static void ClearMasteriesAndAchievements();
         static bool HasMapCompletion();
 
@@ -86,8 +101,8 @@ namespace CraftyLegend {
         static std::string s_current_account_name;
         static std::unordered_map<int, int> s_wallet;
         static std::unordered_map<int, int> s_masteries;     // mastery_id -> level
-        static std::unordered_map<int, bool> s_achievements;  // achievement_id -> done
-        static std::unordered_set<uint32_t> s_legendary_armory; // unlocked legendary item IDs
+        static std::unordered_map<int, AchievementProgress> s_achievements; // achievement_id -> progress
+        static std::unordered_map<uint32_t, int> s_legendary_armory; // item id -> copies held
         static bool s_has_account_data;
         static std::unordered_map<uint32_t, int> s_tp_prices;  // item_id -> sell unit_price in copper
         static bool s_has_price_data;

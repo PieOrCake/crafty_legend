@@ -169,8 +169,11 @@ void OnAchievementResponse(void* aEventArgs) {
     }
     g_HoardPermissionPending = false;
     for (uint32_t i = 0; i < resp->entry_count && i < 200; i++) {
-        CraftyLegend::GW2API::SetAchievementDone(
-            static_cast<int>(resp->entries[i].id), resp->entries[i].done);
+        // Keep current/max as well as done — the prereq panel shows partial progress
+        // (e.g. "12/40") for achievement gates that are underway.
+        CraftyLegend::GW2API::SetAchievementProgress(
+            static_cast<int>(resp->entries[i].id),
+            resp->entries[i].current, resp->entries[i].max, resp->entries[i].done);
     }
     delete resp;
     g_PrereqDirty = true;
@@ -490,7 +493,11 @@ void OnHoardArmoryResponse(void* aEventArgs) {
         auto j = json::parse(resp->json, nullptr, false);
         if (!j.is_discarded() && j.is_array()) {
             for (const auto& entry : j) {
-                CraftyLegend::GW2API::SetLegendaryUnlocked(entry["id"].get<uint32_t>());
+                // Keep the copy count: runes (7), sigils (8), one-handed weapons (4),
+                // rings/accessories (2) are useful in multiples, and completion % is
+                // scaled against the armoury's max_count for the item.
+                CraftyLegend::GW2API::SetLegendaryUnlocked(
+                    entry["id"].get<uint32_t>(), entry.value("count", 1));
             }
         }
     } catch (...) {}

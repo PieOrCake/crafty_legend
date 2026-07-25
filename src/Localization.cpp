@@ -271,6 +271,7 @@ namespace {
             {"Requires achievement", {"Erfordert Erfolg", "Nécessite un succès", "Requiere logro"}},
             {"Achievement complete", {"Erfolg abgeschlossen", "Succès terminé", "Logro completado"}},
             {"Locked - requires achievement", {"Gesperrt – erfordert Erfolg", "Verrouillé – nécessite un succès", "Bloqueado: requiere logro"}},
+            {"Progress", {"Fortschritt", "Progression", "Progreso"}},
         };
         return t;
     }

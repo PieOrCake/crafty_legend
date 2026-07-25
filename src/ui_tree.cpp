@@ -366,6 +366,10 @@ static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
         float labelX   = ImGui::GetCursorPosX() + textPadX;
         int   cost     = GetMaterialTotalPrice(mat);
         ImGui::SetCursorPosX(labelX);
+        // Affordability bar behind the row, drawn before the label so the text stays
+        // on top. Matches the bar DrawItemRow gives every other material row.
+        DrawCoinCostBar(ImGui::GetCursorScreenPos(),
+                        ImGui::GetContentRegionAvail().x, TreeRowHeight(), cost);
         if (g_ShowItemIcons) {
             ImGui::SetCursorPosY(coinRowY + (TreeRowHeight() - ImGui::GetTextLineHeight()) * 0.5f);
         }

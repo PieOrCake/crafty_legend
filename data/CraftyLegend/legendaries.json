@@ -11,7 +11,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30699,
@@ -24,7 +25,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 4
     },
     {
       "id": 30686,
@@ -37,7 +39,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30689,
@@ -50,7 +53,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30697,
@@ -63,7 +67,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30684,
@@ -76,7 +81,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 4
     },
     {
       "id": 30696,
@@ -89,7 +95,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30702,
@@ -102,7 +109,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30687,
@@ -115,7 +123,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 4
     },
     {
       "id": 30690,
@@ -128,7 +137,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30691,
@@ -141,7 +151,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 4
     },
     {
       "id": 30701,
@@ -154,7 +165,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30685,
@@ -167,7 +179,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30695,
@@ -180,7 +193,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30688,
@@ -193,7 +207,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30692,
@@ -206,7 +221,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 4
     },
     {
       "id": 30694,
@@ -219,7 +235,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30693,
@@ -232,7 +249,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 4
     },
     {
       "id": 30700,
@@ -245,7 +263,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30703,
@@ -258,7 +277,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 30704,
@@ -271,7 +291,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 1
+      "generation": 1,
+      "max_count": 2
     },
     {
       "id": 76158,
@@ -284,7 +305,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 4
     },
     {
       "id": 87109,
@@ -297,7 +319,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 4
     },
     {
       "id": 79562,
@@ -310,7 +333,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 4
     },
     {
       "id": 72713,
@@ -323,7 +347,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 4
     },
     {
       "id": 88576,
@@ -336,7 +361,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 81957,
@@ -349,7 +375,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 4
     },
     {
       "id": 86098,
@@ -362,7 +389,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 79802,
@@ -375,7 +403,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 81206,
@@ -388,7 +417,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 87687,
@@ -401,7 +431,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 90551,
@@ -414,7 +445,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 81839,
@@ -427,7 +459,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 89854,
@@ -440,7 +473,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 80488,
@@ -453,7 +487,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 78556,
@@ -466,7 +501,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 71383,
@@ -479,7 +515,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 2
+      "generation": 2,
+      "max_count": 2
     },
     {
       "id": 96937,
@@ -492,7 +529,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 4
     },
     {
       "id": 96203,
@@ -505,7 +543,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 4
     },
     {
       "id": 95612,
@@ -518,7 +557,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 4
     },
     {
       "id": 95808,
@@ -531,7 +571,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 4
     },
     {
       "id": 96221,
@@ -544,7 +585,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 95675,
@@ -557,7 +599,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 4
     },
     {
       "id": 97165,
@@ -570,7 +613,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 96028,
@@ -583,7 +627,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 97099,
@@ -596,7 +641,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 97783,
@@ -609,7 +655,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 96356,
@@ -622,7 +669,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 95684,
@@ -635,7 +683,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 97590,
@@ -648,7 +697,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 97377,
@@ -661,7 +711,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 97077,
@@ -674,7 +725,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 96652,
@@ -687,7 +739,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 3
+      "generation": 3,
+      "max_count": 2
     },
     {
       "id": 101544,
@@ -700,7 +753,8 @@
       "acquisition": [
         "crafting"
       ],
-      "generation": 4
+      "generation": 4,
+      "max_count": 1
     },
     {
       "id": 101551,
@@ -713,7 +767,8 @@
       "acquisition": [
         "crafting"
       ],
-      "generation": 4
+      "generation": 4,
+      "max_count": 1
     },
     {
       "id": 101521,
@@ -726,7 +781,8 @@
       "acquisition": [
         "crafting"
       ],
-      "generation": 4
+      "generation": 4,
+      "max_count": 1
     },
     {
       "id": 101609,
@@ -739,7 +795,8 @@
       "acquisition": [
         "crafting"
       ],
-      "generation": 4
+      "generation": 4,
+      "max_count": 1
     },
     {
       "id": 101568,
@@ -752,7 +809,8 @@
       "acquisition": [
         "crafting"
       ],
-      "generation": 4
+      "generation": 4,
+      "max_count": 1
     },
     {
       "id": 101460,
@@ -765,7 +823,8 @@
       "acquisition": [
         "crafting"
       ],
-      "generation": 4
+      "generation": 4,
+      "max_count": 1
     },
     {
       "id": 80384,
@@ -778,7 +837,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 5
+      "generation": 5,
+      "max_count": 1
     },
     {
       "id": 80435,
@@ -791,7 +851,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 5
+      "generation": 5,
+      "max_count": 1
     },
     {
       "id": 80254,
@@ -804,7 +865,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 5
+      "generation": 5,
+      "max_count": 1
     },
     {
       "id": 80205,
@@ -817,7 +879,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 5
+      "generation": 5,
+      "max_count": 1
     },
     {
       "id": 80277,
@@ -830,7 +893,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 5
+      "generation": 5,
+      "max_count": 1
     },
     {
       "id": 80557,
@@ -843,7 +907,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 5
+      "generation": 5,
+      "max_count": 1
     },
     {
       "id": 83921,
@@ -856,7 +921,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 83127,
@@ -869,7 +935,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 83348,
@@ -882,7 +949,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 82465,
@@ -895,7 +963,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 83323,
@@ -908,7 +977,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 84655,
@@ -921,7 +991,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 84643,
@@ -934,7 +1005,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 83929,
@@ -947,7 +1019,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 82670,
@@ -960,7 +1033,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 82245,
@@ -973,7 +1047,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 82512,
@@ -986,7 +1061,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 82214,
@@ -999,7 +1075,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 84633,
@@ -1012,7 +1089,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 83595,
@@ -1025,7 +1103,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 83113,
@@ -1038,7 +1117,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 83162,
@@ -1051,7 +1131,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 84546,
@@ -1064,7 +1145,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 82519,
@@ -1077,7 +1159,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 6
+      "generation": 6,
+      "max_count": 1
     },
     {
       "id": 84176,
@@ -1090,7 +1173,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82963,
@@ -1103,7 +1187,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 83394,
@@ -1116,7 +1201,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82456,
@@ -1129,7 +1215,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82196,
@@ -1142,7 +1229,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82801,
@@ -1155,7 +1243,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82437,
@@ -1168,7 +1257,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82994,
@@ -1181,7 +1271,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 84578,
@@ -1194,7 +1285,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 84110,
@@ -1207,7 +1299,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82903,
@@ -1220,7 +1313,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82093,
@@ -1233,7 +1327,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82902,
@@ -1246,7 +1341,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 82173,
@@ -1259,7 +1355,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 83036,
@@ -1272,7 +1369,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 84629,
@@ -1285,7 +1383,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 83497,
@@ -1298,7 +1397,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 83289,
@@ -1311,7 +1411,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 7
+      "generation": 7,
+      "max_count": 1
     },
     {
       "id": 81908,
@@ -1324,7 +1425,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 8
+      "generation": 8,
+      "max_count": 1
     },
     {
       "id": 91048,
@@ -1337,7 +1439,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 8
+      "generation": 8,
+      "max_count": 1
     },
     {
       "id": 91234,
@@ -1350,7 +1453,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 9
+      "generation": 9,
+      "max_count": 1
     },
     {
       "id": 92991,
@@ -1363,7 +1467,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 10
+      "generation": 10,
+      "max_count": 1
     },
     {
       "id": 93105,
@@ -1376,7 +1481,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 11
+      "generation": 11,
+      "max_count": 2
     },
     {
       "id": 95380,
@@ -1389,7 +1495,8 @@
       "acquisition": [
         "achievement"
       ],
-      "generation": 12
+      "generation": 12,
+      "max_count": 1
     },
     {
       "id": 107022,
@@ -1402,7 +1509,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 13
+      "generation": 13,
+      "max_count": 2
     },
     {
       "id": 74155,
@@ -1415,7 +1523,8 @@
         "mystic_forge"
       ],
       "generation": 14,
-      "back_type": "Backpiece"
+      "back_type": "Backpiece",
+      "max_count": 1
     },
     {
       "id": 77474,
@@ -1428,7 +1537,8 @@
         "mystic_forge"
       ],
       "generation": 14,
-      "back_type": "Backpiece"
+      "back_type": "Backpiece",
+      "max_count": 1
     },
     {
       "id": 81462,
@@ -1441,7 +1551,8 @@
         "mystic_forge"
       ],
       "generation": 14,
-      "back_type": "Backpiece"
+      "back_type": "Backpiece",
+      "max_count": 1
     },
     {
       "id": 104857,
@@ -1454,7 +1565,8 @@
         "mystic_forge"
       ],
       "generation": 14,
-      "back_type": "Backpiece"
+      "back_type": "Backpiece",
+      "max_count": 1
     },
     {
       "id": 103815,
@@ -1467,7 +1579,8 @@
         "mystic_forge"
       ],
       "generation": 15,
-      "weapon_type": "Spear"
+      "weapon_type": "Spear",
+      "max_count": 4
     },
     {
       "id": 101582,
@@ -1480,7 +1593,8 @@
         "mystic_forge"
       ],
       "generation": 16,
-      "trinket_type": "Relic"
+      "trinket_type": "Relic",
+      "max_count": 1
     },
     {
       "id": 91536,
@@ -1492,7 +1606,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 17
+      "generation": 17,
+      "max_count": 7
     },
     {
       "id": 91505,
@@ -1504,7 +1619,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 18
+      "generation": 18,
+      "max_count": 8
     },
     {
       "id": 105497,
@@ -1517,7 +1633,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 15
+      "generation": 15,
+      "max_count": 1
     },
     {
       "id": 105743,
@@ -1530,7 +1647,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 13
+      "generation": 13,
+      "max_count": 1
     },
     {
       "id": 109012,
@@ -1543,7 +1661,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 13
+      "generation": 13,
+      "max_count": 2
     },
     {
       "id": 109070,
@@ -1556,7 +1675,8 @@
       "acquisition": [
         "mystic_forge"
       ],
-      "generation": 13
+      "generation": 13,
+      "max_count": 2
     }
   ]
 }
