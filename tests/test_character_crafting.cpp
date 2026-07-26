@@ -4,6 +4,7 @@
 #include "../src/CharacterCrafting.h"
 #include <cstdio>
 #include <cstdlib>
+#include <fstream>
 #include <string>
 
 static int g_failures = 0;
@@ -254,6 +255,13 @@ static void test_denied_is_sticky_and_not_stale() {
           "a denied account stops requesting characters");
     check(!IsStale("Acct.1234"),
           "and is not re-swept until a forced refresh");
+    SetNowForTesting(1000000);
+    MarkDenied("Acct.1234");
+    SetNowForTesting(1000000 + 25 * 3600);
+    check(!IsStale("Acct.1234"),
+          "and stays not-stale well past the 24-hour window, since only "
+          "ForceRefresh can reopen a denied account");
+    SetNowForTesting(0); // back to the real clock
 }
 
 static void test_accounts_are_isolated() {
@@ -299,6 +307,46 @@ static void test_cache_round_trips_through_disk() {
     check(r.state == DataState::Ready, "reloaded account is complete");
     check(r.canCraftNow.size() == 1, "and answers the query from disk");
     check(r.canCraftNow[0].rating == 400, "with the cached rating");
+}
+
+static void test_load_tolerates_a_malformed_cache_entry() {
+    printf("test_load_tolerates_a_malformed_cache_entry\n");
+    resetStore();
+    SetAccountCharacters("Acct.5678", {"Grim Ashclaw"});
+    SetCharacterDisciplines("Acct.5678", "Grim Ashclaw",
+                            {{"Huntsman", 400, true}});
+    Save();
+
+    // Hand-edit the cache: give one account a wrong-typed field alongside the
+    // well-formed account Save() just wrote.
+    std::string path = std::string(kTestDir) + "/character_crafting.json";
+    std::ifstream in(path, std::ios::binary);
+    std::string body((std::istreambuf_iterator<char>(in)),
+                     std::istreambuf_iterator<char>());
+    in.close();
+    // Splice a malformed account into the existing "accounts" object.
+    const std::string marker = "\"accounts\": {";
+    auto pos = body.find(marker);
+    check(pos != std::string::npos, "cache file has the expected shape to edit");
+    body.insert(pos + marker.size(),
+                R"("A.1":{"completed_at":"soon","roster":["X"]},)");
+    std::ofstream out(path, std::ios::binary | std::ios::trunc);
+    out << body;
+    out.close();
+
+    bool threw = false;
+    try {
+        Init(kTestDir);
+    } catch (...) {
+        threw = true;
+    }
+    check(!threw, "Init/Load does not throw on a malformed cache entry");
+    auto r = Query("Acct.5678", {"Huntsman"}, 400);
+    check(r.state == DataState::Ready,
+          "the other, well-formed account survives the malformed one");
+    check(r.canCraftNow.size() == 1, "and still answers the query");
+    check(Query("A.1", {"Huntsman"}, 400).state == DataState::NoData,
+          "the malformed account itself is simply dropped");
 }
 
 static void test_staleness_uses_a_24_hour_window() {
@@ -366,6 +414,7 @@ int main() {
     test_accounts_are_isolated();
     test_character_list_change_drops_departed_characters();
     test_cache_round_trips_through_disk();
+    test_load_tolerates_a_malformed_cache_entry();
     test_staleness_uses_a_24_hour_window();
     test_force_refresh_reopens_the_sweep();
     test_force_refresh_clears_denied();

@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <filesystem>
 #include <fstream>
 #include <mutex>
 #include <unordered_map>
@@ -207,9 +208,26 @@ void SaveLocked() {
         accounts[name] = ja;
     }
     root["accounts"] = accounts;
-    std::ofstream f(path, std::ios::binary | std::ios::trunc);
-    if (!f) return;
-    f << root.dump(2);
+    // error_handler_t::replace swaps invalid UTF-8 (e.g. from a mangled
+    // account/character name) for U+FFFD instead of throwing json::type_error
+    // 316 — this runs on H&S's worker thread, where an escaping exception
+    // would be fatal.
+    const std::string text =
+        root.dump(2, ' ', false, json::error_handler_t::replace);
+
+    // Atomic install: write to a .tmp sibling then rename into place so a
+    // crash mid-write can never leave a truncated file that Load() would
+    // have to discard wholesale (same pattern as FontManager.cpp).
+    const std::string tmpPath = path + ".tmp";
+    {
+        std::ofstream f(tmpPath, std::ios::binary | std::ios::trunc);
+        if (!f) return;
+        f << text;
+        if (!f.good()) return;
+    }
+    std::error_code ec;
+    std::filesystem::rename(tmpPath, path, ec);
+    if (ec) std::filesystem::remove(tmpPath, ec);
 }
 
 } // namespace
@@ -239,9 +257,15 @@ void Load() {
     auto ait = root.find("accounts");
     if (ait == root.end() || !ait->is_object()) return;
 
+    // Parse into a local map first — file I/O and JSON parsing happen with
+    // g_mutex released, so a live update (e.g. SetCharacterDisciplines
+    // landing from H&S's worker thread) can race this read. Only merge
+    // accounts the live store doesn't already know about, under the lock,
+    // so a slow disk read can never clobber fresher in-memory data.
+    //
     // This file can be hand-edited by a user, so every field access below
     // that could throw json::type_error on a wrong-typed value is guarded.
-    std::lock_guard<std::mutex> lock(g_mutex);
+    std::unordered_map<std::string, AccountRecord> parsed;
     for (auto it = ait->begin(); it != ait->end(); ++it) {
         const json& ja = it.value();
         if (!ja.is_object()) continue;
@@ -277,10 +301,16 @@ void Load() {
                     a.chars[cit.key()] = std::move(c);
                 }
             }
-            g_accounts[it.key()] = std::move(a);
+            parsed[it.key()] = std::move(a);
         } catch (const json::exception&) {
             continue; // skip this one malformed account, keep the rest
         }
+    }
+
+    std::lock_guard<std::mutex> lock(g_mutex);
+    for (auto& [name, a] : parsed) {
+        if (g_accounts.find(name) != g_accounts.end()) continue; // live data wins
+        g_accounts[name] = std::move(a);
     }
 }
 
@@ -316,7 +346,9 @@ void SetCharacterDisciplines(const std::string& account,
     CharacterRecord& c = a.chars[character];
     c.disciplines = std::move(disciplines);
     c.fetched = true;
-    a.denied = false;
+    // `denied` is sticky until ForceRefresh: a late in-flight character
+    // response that lands after MarkDenied must not silently un-deny the
+    // account.
     if (SweepCompleteLocked(a)) {
         a.completedAt = NowSeconds();
         SaveLocked();
@@ -329,6 +361,7 @@ void MarkDenied(const std::string& account) {
     AccountRecord& a = g_accounts[account];
     a.denied = true;
     a.completedAt = NowSeconds();
+    SaveLocked(); // a denial should survive a restart, not depend on a later Save()
 }
 
 bool NextPendingCharacter(const std::string& account, std::string& out) {
@@ -351,6 +384,11 @@ bool IsStale(const std::string& account) {
     std::lock_guard<std::mutex> lock(g_mutex);
     auto it = g_accounts.find(account);
     if (it == g_accounts.end()) return true;
+    // A denied account is only reopened by ForceRefresh (which clears the
+    // flag), not by the age-based sweep — otherwise the Task 4 sweep driver,
+    // gated on IsStale, would re-check a permanently-denied account every
+    // frame with no way to make progress.
+    if (it->second.denied) return false;
     if (it->second.completedAt == 0) return true;
     return (NowSeconds() - it->second.completedAt) > kStaleAfterSeconds;
 }
