@@ -4,6 +4,7 @@
 #include "GW2API.h"
 #include "DataManager.h"
 #include "CharacterCrafting.h"
+#include "ui_helpers.h"
 #include "../include/HoardAndSeekAPI.h"
 #include <map>
 #include <mutex>
@@ -794,5 +795,12 @@ void RefreshCharacterCrafting() {
     strncpy(req.endpoint, endpoint.c_str(), sizeof(req.endpoint) - 1);
     strncpy(req.response_event, CL_CRAFTING_RESPONSE, sizeof(req.response_event));
     strncpy(req.account_name, currentAcct.c_str(), sizeof(req.account_name) - 1);
+    // This call is on the render thread (RefreshCharacterCrafting is only ever
+    // called from ui.cpp's render loop), so it is safe ahead of the dispatch
+    // even though H&S may answer synchronously and reenter on this same stack.
+    // AddDebugLog/g_DebugLog have no locking (see OnCharacterCraftingResponse
+    // below), so no log call is added on any path that can run on H&S's
+    // worker thread.
+    AddDebugLog("Crafting: querying " + character);
     APIDefs->Events_Raise(EV_HOARD_QUERY_API, &req);
 }
