@@ -605,6 +605,15 @@ static void ClearCraftingFailures(const std::string& account,
 // The GW2 API reports a key missing the `characters` scope with an error object
 // like {"text":"requires scope characters"}. That is the one parse failure that
 // justifies denying the whole account; every other bad body is transient.
+// The endpoint we would have asked for on `character`'s behalf. H&S echoes the
+// endpoint back on every reply, which is the only field that identifies which
+// character a reply is really for.
+static std::string ExpectedCraftingEndpoint(const std::string& character) {
+    return "/v2/characters/" +
+           CraftyLegend::CharacterCrafting::UrlEncodePathSegment(character) +
+           "/crafting";
+}
+
 static bool BodyIndicatesMissingScope(const char* json) {
     std::string body(json, strnlen(json, 512)); // error objects are tiny
     for (char& c : body) c = (char)tolower((unsigned char)c);
@@ -625,7 +634,17 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
     // already released its lock by then, so there is no deadlock.
     const std::string character = ReleaseCraftingSlot();
 
-    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
+    // Invariant for every branch below: any path that does not successfully
+    // store a character's disciplines must either schedule a back-off or leave
+    // the sweep unable to re-fire, so that no reply can drive a per-frame retry.
+    if (resp->api_version < HOARD_API_VERSION) {
+        // An older H&S still answers EV_HOARD_QUERY_API, but with api_version 3.
+        // g_HoardDataAvailable is set regardless, so without a back-off here the
+        // sweep would re-fire on every single frame for the whole session.
+        ScheduleCraftingCooldown();
+        delete resp;
+        return;
+    }
 
     const std::string account = resp->account_name;
 
@@ -639,6 +658,7 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
         // `characters` scope — stop the sweep for this account.
         CraftyLegend::CharacterCrafting::MarkDenied(account);
         g_CraftingRefreshNeeded = false;
+        ScheduleCraftingCooldown();
         delete resp;
         return;
     }
@@ -650,7 +670,24 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
         delete resp;
         return;
     }
-    if (character.empty()) { delete resp; return; } // watchdog already gave up
+    if (character.empty()) {
+        // A reply for a claim the watchdog already gave up on. We cannot tell
+        // whose it is, so drop it; the character stays un-fetched and is retried.
+        ScheduleCraftingCooldown();
+        delete resp;
+        return;
+    }
+
+    // Confirm this reply is actually for the character the slot named. After a
+    // watchdog expiry the slot can have been re-claimed by a later character,
+    // so a late reply for the earlier one would otherwise be stored under the
+    // wrong name — and would free the later character's slot, silently losing
+    // its real reply too. The echoed endpoint is what disambiguates them.
+    if (ExpectedCraftingEndpoint(character) != resp->endpoint) {
+        ScheduleCraftingCooldown();
+        delete resp;
+        return;
+    }
 
     std::vector<CraftyLegend::CharacterCrafting::DisciplineRating> disciplines;
     if (CraftyLegend::CharacterCrafting::ParseCraftingJson(resp->json, disciplines)) {
