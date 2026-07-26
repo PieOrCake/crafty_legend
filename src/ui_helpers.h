@@ -53,8 +53,13 @@ void BuildShoppingList(uint32_t legendary_id);
 // Material price (recursive TP/vendor)
 int GetMaterialTotalPrice(const CraftyLegend::RecipeIngredient& mat);
 
-// Debug log
+// Debug log. Thread-safe: AddDebugLog may be called from the render thread or
+// from Hoard & Seek's worker thread. g_DebugLog itself must never be touched
+// directly outside ui_helpers.cpp — use these three functions instead so the
+// guarding mutex can't be bypassed by accident.
 void AddDebugLog(const std::string& message);
+std::vector<std::string> GetDebugLogSnapshot();
+void ClearDebugLog();
 
 // Material label formatter
 std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat,

@@ -1458,7 +1458,7 @@ void AddonRender() {
         ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("CraftyLegend Debug Log", &g_ShowDebugWindow)) {
             if (ImGui::Button("Clear Log")) {
-                g_DebugLog.clear();
+                ClearDebugLog();
             }
             ImGui::SameLine();
             if (ImGui::Button("Clear Icon Request Tracking")) {
@@ -1467,7 +1467,7 @@ void AddonRender() {
             ImGui::SameLine();
             if (ImGui::Button("Copy to Clipboard")) {
                 std::stringstream ss;
-                for (const auto& line : g_DebugLog) {
+                for (const auto& line : GetDebugLogSnapshot()) {
                     ss << line << "\n";
                 }
                 ImGui::SetClipboardText(ss.str().c_str());
@@ -1477,7 +1477,7 @@ void AddonRender() {
             ImGui::TextColored(ImVec4(0.6f, 0.85f, 1.0f, 1.0f), "%s", Localization::DiagStatus().c_str());
             ImGui::Separator();
             ImGui::BeginChild("ScrollingRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
-            for (const auto& line : g_DebugLog) {
+            for (const auto& line : GetDebugLogSnapshot()) {
                 ImGui::TextUnformatted(line.c_str());
             }
             if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY()) {

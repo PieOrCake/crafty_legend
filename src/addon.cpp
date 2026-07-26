@@ -4,6 +4,7 @@
 #include "GW2API.h"
 #include "DataManager.h"
 #include "IconManager.h"
+#include "ui_helpers.h"
 #include "PieTheme.h"
 #include "FontManager.h"
 #include "Localization.h"
@@ -355,7 +356,7 @@ void AddonLoad(AddonAPI_t* aApi) {
             }
             std::stringstream msg;
             msg << "[CurrIcon] Loaded " << currencies.size() << " currencies, " << withIcon << " with icon URLs";
-            g_DebugLog.push_back(msg.str());
+            AddDebugLog(msg.str());
         }
     }
 

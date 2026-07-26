@@ -562,11 +562,20 @@ static std::string ReleaseCraftingSlot() {
 
 // Watchdog: drop a claim that has gone unanswered for too long.
 static void ExpireStaleCraftingSlot() {
-    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
-    if (g_CraftingInFlightChar.empty()) return;
-    if (std::chrono::steady_clock::now() - g_CraftingClaimedAt >
-        std::chrono::seconds(CRAFTING_WATCHDOG_SECONDS)) {
-        g_CraftingInFlightChar.clear();
+    std::string expired; // logged outside the lock, once released below
+    {
+        std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+        if (g_CraftingInFlightChar.empty()) return;
+        if (std::chrono::steady_clock::now() - g_CraftingClaimedAt >
+            std::chrono::seconds(CRAFTING_WATCHDOG_SECONDS)) {
+            expired = g_CraftingInFlightChar;
+            g_CraftingInFlightChar.clear();
+        }
+    }
+    if (!expired.empty()) {
+        AddDebugLog("Crafting: watchdog gave up waiting for " + expired +
+                    " (no reply after " +
+                    std::to_string(CRAFTING_WATCHDOG_SECONDS) + "s)");
     }
 }
 
@@ -666,6 +675,9 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
         // An older H&S still answers EV_HOARD_QUERY_API, but with api_version 3.
         // g_HoardDataAvailable is set regardless, so without a back-off here the
         // sweep would re-fire on every single frame for the whole session.
+        AddDebugLog("Crafting: rejected reply for " + character +
+                    " (H&S api_version " + std::to_string(resp->api_version) +
+                    " < " + std::to_string(HOARD_API_VERSION) + ")");
         ScheduleCraftingCooldown();
         delete resp;
         return;
@@ -684,6 +696,8 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
         CraftyLegend::CharacterCrafting::MarkDenied(account);
         g_CraftingRefreshNeeded = false;
         ScheduleCraftingCooldown();
+        AddDebugLog("Crafting: DENIED for " + account +
+                    " (API key needs the 'characters' permission)");
         delete resp;
         return;
     }
@@ -698,6 +712,7 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
     if (character.empty()) {
         // A reply for a claim the watchdog already gave up on. We cannot tell
         // whose it is, so drop it; the character stays un-fetched and is retried.
+        AddDebugLog("Crafting: reply arrived after the watchdog already gave up on its slot; dropped");
         ScheduleCraftingCooldown();
         delete resp;
         return;
@@ -709,6 +724,8 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
     // wrong name — and would free the later character's slot, silently losing
     // its real reply too. The echoed endpoint is what disambiguates them.
     if (ExpectedCraftingEndpoint(character) != resp->endpoint) {
+        AddDebugLog("Crafting: endpoint mismatch for " + character +
+                    " (got " + std::string(resp->endpoint) + "); dropped");
         ScheduleCraftingCooldown();
         delete resp;
         return;
@@ -719,10 +736,14 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
         CraftyLegend::CharacterCrafting::SetCharacterDisciplines(
             account, character, std::move(disciplines));
         ClearCraftingFailures(account, character);
+        AddDebugLog("Crafting: " + character + " -> " +
+                    std::to_string(disciplines.size()) + " discipline(s)");
     } else if (BodyIndicatesMissingScope(resp->json)) {
         // The key genuinely cannot read characters — no point sweeping on.
         CraftyLegend::CharacterCrafting::MarkDenied(account);
         g_CraftingRefreshNeeded = false;
+        AddDebugLog("Crafting: DENIED for " + account +
+                    " (API key needs the 'characters' permission)");
     } else {
         // A transient error body: a 500, a rate-limit object, or a 404 for a
         // character renamed or deleted since H&S snapshotted the roster. Retry
@@ -733,6 +754,11 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
             // Recording an empty discipline list marks it fetched, so
             // NextPendingCharacter stops handing back the same character.
             CraftyLegend::CharacterCrafting::SetCharacterDisciplines(account, character, {});
+            AddDebugLog("Crafting: " + character +
+                        " failed " + std::to_string(CRAFTING_MAX_FAILURES) +
+                        " times, written off for this session");
+        } else {
+            AddDebugLog("Crafting: transient failure for " + character + ", retrying");
         }
     }
     delete resp;
@@ -795,12 +821,9 @@ void RefreshCharacterCrafting() {
     strncpy(req.endpoint, endpoint.c_str(), sizeof(req.endpoint) - 1);
     strncpy(req.response_event, CL_CRAFTING_RESPONSE, sizeof(req.response_event));
     strncpy(req.account_name, currentAcct.c_str(), sizeof(req.account_name) - 1);
-    // This call is on the render thread (RefreshCharacterCrafting is only ever
-    // called from ui.cpp's render loop), so it is safe ahead of the dispatch
-    // even though H&S may answer synchronously and reenter on this same stack.
-    // AddDebugLog/g_DebugLog have no locking (see OnCharacterCraftingResponse
-    // below), so no log call is added on any path that can run on H&S's
-    // worker thread.
+    // AddDebugLog is mutex-guarded (see ui_helpers.cpp), so it is safe to call
+    // here regardless of thread, and likewise safe in OnCharacterCraftingResponse
+    // below, which can run on H&S's worker thread for a live async reply.
     AddDebugLog("Crafting: querying " + character);
     APIDefs->Events_Raise(EV_HOARD_QUERY_API, &req);
 }

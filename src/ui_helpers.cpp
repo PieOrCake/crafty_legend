@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <chrono>
 #include <ctime>
+#include <mutex>
 #include <shellapi.h>
 
 // Helper: check if an item can be drilled into (has recipe or acquisition methods)
@@ -694,22 +695,58 @@ std::string AchievementProgressText(int achievement_id) {
     return std::to_string(cur) + "/" + std::to_string(p.max);
 }
 
-// Helper: add a timestamped debug log entry
+// g_DebugLog is written from the render thread (via AddDebugLog's other call
+// sites) and from Hoard & Seek's own worker thread (crafting sweep responses
+// in hoard.cpp arrive there — see OnCharacterCraftingResponse). It is also
+// read and cleared every frame by ui.cpp's debug window. None of that is safe
+// unguarded, so every access to g_DebugLog anywhere in the addon must go
+// through this mutex. AddDebugLog, GetDebugLogSnapshot and ClearDebugLog are
+// the only functions allowed to touch g_DebugLog directly; callers elsewhere
+// (ui.cpp, addon.cpp) go through these three so the lock can never be
+// bypassed by accident.
+static std::mutex g_DebugLogMutex;
+
+// Helper: add a timestamped debug log entry. Safe to call from any thread.
 void AddDebugLog(const std::string& message) {
     auto now = std::chrono::system_clock::now();
     auto time = std::chrono::system_clock::to_time_t(now);
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
-    
+
+    // localtime_s (the Windows CRT form MinGW provides) writes into a
+    // caller-supplied struct, unlike glibc's localtime/localtime_r, which
+    // return a pointer to a shared static buffer. That makes it safe to call
+    // without the mutex on its own, but the formatting is cheap and the lock
+    // below already has to cover the vector mutation, so it is taken first
+    // and held for the whole function rather than reasoning about two
+    // separate safety arguments.
+    std::lock_guard<std::mutex> lock(g_DebugLogMutex);
+
     std::stringstream ss;
     char timeStr[32];
-    std::strftime(timeStr, sizeof(timeStr), "%H:%M:%S", std::localtime(&time));
+    struct tm tmBuf{};
+    localtime_s(&tmBuf, &time);
+    std::strftime(timeStr, sizeof(timeStr), "%H:%M:%S", &tmBuf);
     ss << timeStr << "." << std::setfill('0') << std::setw(3) << ms.count() << " " << message;
-    
+
     g_DebugLog.push_back(ss.str());
-    
+
     if (g_DebugLog.size() > MAX_DEBUG_LINES) {
         g_DebugLog.erase(g_DebugLog.begin());
     }
+}
+
+// Copy of the current log lines, taken under the same mutex as AddDebugLog.
+// The render thread should use this (never g_DebugLog directly) so iterating
+// the log can never race a worker-thread AddDebugLog call.
+std::vector<std::string> GetDebugLogSnapshot() {
+    std::lock_guard<std::mutex> lock(g_DebugLogMutex);
+    return g_DebugLog;
+}
+
+// Clears the log under the same mutex as AddDebugLog.
+void ClearDebugLog() {
+    std::lock_guard<std::mutex> lock(g_DebugLogMutex);
+    g_DebugLog.clear();
 }
 
 // Helper: format a material label like "42/77 Mystic Clover >" or "77 Mystic Clover >"
