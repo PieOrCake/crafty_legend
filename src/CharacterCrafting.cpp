@@ -1,7 +1,12 @@
 #include "CharacterCrafting.h"
 
-#include <algorithm>
 #include <nlohmann/json.hpp>
+
+#include <algorithm>
+#include <chrono>
+#include <fstream>
+#include <mutex>
+#include <unordered_map>
 
 using json = nlohmann::json;
 
@@ -15,14 +20,25 @@ bool ParseCraftingJson(const std::string& body,
     if (j.is_discarded() || !j.is_object()) return false;
     auto it = j.find("crafting");
     if (it == j.end() || !it->is_array()) return false;
-    for (const auto& e : *it) {
-        if (!e.is_object()) continue;
-        DisciplineRating d;
-        d.discipline = e.value("discipline", std::string());
-        d.rating     = e.value("rating", 0);
-        d.active     = e.value("active", false);
-        if (d.discipline.empty()) continue;
-        out.push_back(std::move(d));
+    // e.value() throws json::type_error when a key exists but holds the wrong
+    // JSON type (e.g. a string where a number is expected). This parse runs
+    // on H&S's worker thread, so an escaping exception would be fatal. A body
+    // with a wrong-typed field is treated the same as any other malformed
+    // body: return false and leave `out` empty, rather than trying to salvage
+    // a partial result from data that didn't match the expected shape.
+    try {
+        for (const auto& e : *it) {
+            if (!e.is_object()) continue;
+            DisciplineRating d;
+            d.discipline = e.value("discipline", std::string());
+            d.rating     = e.value("rating", 0);
+            d.active     = e.value("active", false);
+            if (d.discipline.empty()) continue;
+            out.push_back(std::move(d));
+        }
+    } catch (const json::exception&) {
+        out.clear();
+        return false;
     }
     return true;
 }
@@ -116,6 +132,274 @@ QualificationResult Evaluate(const std::vector<CharacterEntry>& chars,
         res.closest = Match{};
     }
     return res;
+}
+
+namespace {
+
+constexpr long long kStaleAfterSeconds = 24 * 60 * 60;
+
+struct CharacterRecord {
+    std::vector<DisciplineRating> disciplines;
+    bool fetched = false;
+};
+
+struct AccountRecord {
+    std::vector<std::string> roster;                        // order matters
+    std::unordered_map<std::string, CharacterRecord> chars; // keyed by name
+    bool denied = false;
+    long long completedAt = 0; // epoch seconds of the last full sweep
+};
+
+std::mutex                                          g_mutex;
+std::unordered_map<std::string, AccountRecord>      g_accounts;
+std::string                                         g_dataDir;
+long long                                           g_fakeNow = 0;
+
+long long NowSeconds() {
+    if (g_fakeNow != 0) return g_fakeNow;
+    using namespace std::chrono;
+    return duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+}
+
+std::string CachePath() {
+    if (g_dataDir.empty()) return std::string();
+    return g_dataDir + "/character_crafting.json";
+}
+
+// Caller must hold g_mutex.
+bool SweepCompleteLocked(const AccountRecord& a) {
+    if (a.roster.empty()) return false;
+    for (const auto& name : a.roster) {
+        auto it = a.chars.find(name);
+        if (it == a.chars.end() || !it->second.fetched) return false;
+    }
+    return true;
+}
+
+// Caller must hold g_mutex.
+void StampIfCompleteLocked(AccountRecord& a) {
+    if (SweepCompleteLocked(a)) a.completedAt = NowSeconds();
+}
+
+// Caller must hold g_mutex.
+void SaveLocked() {
+    const std::string path = CachePath();
+    if (path.empty()) return;
+    json root = json::object();
+    json accounts = json::object();
+    for (const auto& [name, a] : g_accounts) {
+        json ja = json::object();
+        ja["completed_at"] = a.completedAt;
+        ja["denied"] = a.denied;
+        ja["roster"] = a.roster;
+        json jchars = json::object();
+        for (const auto& [cname, c] : a.chars) {
+            if (!c.fetched) continue;
+            json jd = json::array();
+            for (const auto& d : c.disciplines) {
+                jd.push_back({{"discipline", d.discipline},
+                              {"rating", d.rating},
+                              {"active", d.active}});
+            }
+            jchars[cname] = jd;
+        }
+        ja["characters"] = jchars;
+        accounts[name] = ja;
+    }
+    root["accounts"] = accounts;
+    std::ofstream f(path, std::ios::binary | std::ios::trunc);
+    if (!f) return;
+    f << root.dump(2);
+}
+
+} // namespace
+
+void Init(const std::string& dataDir) {
+    {
+        std::lock_guard<std::mutex> lock(g_mutex);
+        g_dataDir = dataDir;
+        g_accounts.clear();
+    }
+    Load();
+}
+
+void Load() {
+    std::string path;
+    {
+        std::lock_guard<std::mutex> lock(g_mutex);
+        path = CachePath();
+    }
+    if (path.empty()) return;
+    std::ifstream f(path, std::ios::binary);
+    if (!f) return;
+    std::string body((std::istreambuf_iterator<char>(f)),
+                     std::istreambuf_iterator<char>());
+    json root = json::parse(body, nullptr, false);
+    if (root.is_discarded() || !root.is_object()) return;
+    auto ait = root.find("accounts");
+    if (ait == root.end() || !ait->is_object()) return;
+
+    // This file can be hand-edited by a user, so every field access below
+    // that could throw json::type_error on a wrong-typed value is guarded.
+    std::lock_guard<std::mutex> lock(g_mutex);
+    for (auto it = ait->begin(); it != ait->end(); ++it) {
+        const json& ja = it.value();
+        if (!ja.is_object()) continue;
+        try {
+            AccountRecord a;
+            a.completedAt = ja.value("completed_at", 0LL);
+            a.denied      = ja.value("denied", false);
+            if (ja.contains("roster") && ja["roster"].is_array()) {
+                for (const auto& n : ja["roster"]) {
+                    if (n.is_string()) a.roster.push_back(n.get<std::string>());
+                }
+            }
+            if (ja.contains("characters") && ja["characters"].is_object()) {
+                for (auto cit = ja["characters"].begin();
+                     cit != ja["characters"].end(); ++cit) {
+                    CharacterRecord c;
+                    c.fetched = true;
+                    if (cit.value().is_array()) {
+                        for (const auto& jd : cit.value()) {
+                            if (!jd.is_object()) continue;
+                            try {
+                                DisciplineRating d;
+                                d.discipline = jd.value("discipline", std::string());
+                                d.rating     = jd.value("rating", 0);
+                                d.active     = jd.value("active", false);
+                                if (!d.discipline.empty())
+                                    c.disciplines.push_back(std::move(d));
+                            } catch (const json::exception&) {
+                                continue; // skip this one malformed discipline
+                            }
+                        }
+                    }
+                    a.chars[cit.key()] = std::move(c);
+                }
+            }
+            g_accounts[it.key()] = std::move(a);
+        } catch (const json::exception&) {
+            continue; // skip this one malformed account, keep the rest
+        }
+    }
+}
+
+void Save() {
+    std::lock_guard<std::mutex> lock(g_mutex);
+    SaveLocked();
+}
+
+void SetAccountCharacters(const std::string& account,
+                          const std::vector<std::string>& names) {
+    if (account.empty()) return;
+    std::lock_guard<std::mutex> lock(g_mutex);
+    AccountRecord& a = g_accounts[account];
+    a.roster = names;
+    // Drop anyone no longer on the roster; keep the rest so a roster refresh
+    // doesn't throw away data we already paid for.
+    for (auto it = a.chars.begin(); it != a.chars.end();) {
+        if (std::find(names.begin(), names.end(), it->first) == names.end()) {
+            it = a.chars.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    StampIfCompleteLocked(a);
+}
+
+void SetCharacterDisciplines(const std::string& account,
+                             const std::string& character,
+                             std::vector<DisciplineRating> disciplines) {
+    if (account.empty() || character.empty()) return;
+    std::lock_guard<std::mutex> lock(g_mutex);
+    AccountRecord& a = g_accounts[account];
+    CharacterRecord& c = a.chars[character];
+    c.disciplines = std::move(disciplines);
+    c.fetched = true;
+    a.denied = false;
+    if (SweepCompleteLocked(a)) {
+        a.completedAt = NowSeconds();
+        SaveLocked();
+    }
+}
+
+void MarkDenied(const std::string& account) {
+    if (account.empty()) return;
+    std::lock_guard<std::mutex> lock(g_mutex);
+    AccountRecord& a = g_accounts[account];
+    a.denied = true;
+    a.completedAt = NowSeconds();
+}
+
+bool NextPendingCharacter(const std::string& account, std::string& out) {
+    if (account.empty()) return false;
+    std::lock_guard<std::mutex> lock(g_mutex);
+    auto it = g_accounts.find(account);
+    if (it == g_accounts.end() || it->second.denied) return false;
+    for (const auto& name : it->second.roster) {
+        auto c = it->second.chars.find(name);
+        if (c == it->second.chars.end() || !c->second.fetched) {
+            out = name;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool IsStale(const std::string& account) {
+    if (account.empty()) return false;
+    std::lock_guard<std::mutex> lock(g_mutex);
+    auto it = g_accounts.find(account);
+    if (it == g_accounts.end()) return true;
+    if (it->second.completedAt == 0) return true;
+    return (NowSeconds() - it->second.completedAt) > kStaleAfterSeconds;
+}
+
+void ForceRefresh(const std::string& account) {
+    if (account.empty()) return;
+    std::lock_guard<std::mutex> lock(g_mutex);
+    AccountRecord& a = g_accounts[account];
+    a.denied = false;
+    a.completedAt = 0;
+    // Keep the disciplines so the tooltip keeps answering during the refetch,
+    // but clear `fetched` so every character is re-queued.
+    for (auto& [name, c] : a.chars) c.fetched = false;
+}
+
+QualificationResult Query(const std::string& account,
+                          const std::vector<std::string>& disciplines,
+                          int rating) {
+    std::vector<CharacterEntry> roster;
+    DataState state = DataState::NoData;
+    {
+        std::lock_guard<std::mutex> lock(g_mutex);
+        auto it = g_accounts.find(account);
+        if (it != g_accounts.end()) {
+            const AccountRecord& a = it->second;
+            if (a.denied) {
+                state = DataState::Denied;
+            } else if (a.roster.empty()) {
+                state = DataState::NoData;
+            } else {
+                state = SweepCompleteLocked(a) ? DataState::Ready
+                                               : DataState::Loading;
+            }
+            for (const auto& name : a.roster) {
+                auto c = a.chars.find(name);
+                if (c == a.chars.end() || c->second.disciplines.empty()) continue;
+                CharacterEntry e;
+                e.name = name;
+                e.disciplines = c->second.disciplines;
+                roster.push_back(std::move(e));
+            }
+        }
+    }
+    return Evaluate(roster, disciplines, rating, state);
+}
+
+void SetNowForTesting(long long epochSeconds) {
+    std::lock_guard<std::mutex> lock(g_mutex);
+    g_fakeNow = epochSeconds;
 }
 
 } // namespace CharacterCrafting

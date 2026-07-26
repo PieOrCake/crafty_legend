@@ -185,6 +185,165 @@ static void test_evaluate_passes_state_through() {
     check(r.canCraftNow.empty(), "with no matches");
 }
 
+static void test_parse_rejects_wrong_typed_field_without_throwing() {
+    printf("test_parse_rejects_wrong_typed_field_without_throwing\n");
+    const std::string body =
+        R"({"crafting":[{"discipline":"Artificer","rating":"400","active":true}]})";
+    std::vector<DisciplineRating> out;
+    bool threw = false;
+    bool result = false;
+    try {
+        result = ParseCraftingJson(body, out);
+    } catch (...) {
+        threw = true;
+    }
+    check(!threw, "does not throw on a wrong-typed field");
+    check(!result, "and rejects the malformed entry");
+    check(out.empty(), "leaving the output empty");
+}
+
+// --- Task 3: store, cache and staleness ---
+
+static const char* kTestDir = "build/tests/data";
+
+static void resetStore() {
+    // A fresh Init on an empty directory clears in-memory state.
+    system("rm -rf build/tests/data && mkdir -p build/tests/data");
+    Init(kTestDir);
+}
+
+static void test_pending_characters_drain_in_order() {
+    printf("test_pending_characters_drain_in_order\n");
+    resetStore();
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear", "Grim Ashclaw"});
+    std::string next;
+    check(NextPendingCharacter("Acct.1234", next), "first character is pending");
+    check(next == "Ellara Sunspear", "and it is the first in the list");
+    SetCharacterDisciplines("Acct.1234", "Ellara Sunspear",
+                            {{"Artificer", 400, true}});
+    check(NextPendingCharacter("Acct.1234", next), "second is still pending");
+    check(next == "Grim Ashclaw", "and it is the second in the list");
+    SetCharacterDisciplines("Acct.1234", "Grim Ashclaw", {});
+    check(!NextPendingCharacter("Acct.1234", next), "nothing left pending");
+}
+
+static void test_state_progresses_to_ready() {
+    printf("test_state_progresses_to_ready\n");
+    resetStore();
+    check(Query("Acct.1234", {"Artificer"}, 400).state == DataState::NoData,
+          "unknown account reads NoData");
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear"});
+    check(Query("Acct.1234", {"Artificer"}, 400).state == DataState::Loading,
+          "characters known but unfetched reads Loading");
+    SetCharacterDisciplines("Acct.1234", "Ellara Sunspear",
+                            {{"Artificer", 400, true}});
+    auto r = Query("Acct.1234", {"Artificer"}, 400);
+    check(r.state == DataState::Ready, "all fetched reads Ready");
+    check(r.canCraftNow.size() == 1, "and the query answers");
+}
+
+static void test_denied_is_sticky_and_not_stale() {
+    printf("test_denied_is_sticky_and_not_stale\n");
+    resetStore();
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear"});
+    MarkDenied("Acct.1234");
+    check(Query("Acct.1234", {"Artificer"}, 400).state == DataState::Denied,
+          "denied account reads Denied");
+    std::string next;
+    check(!NextPendingCharacter("Acct.1234", next),
+          "a denied account stops requesting characters");
+    check(!IsStale("Acct.1234"),
+          "and is not re-swept until a forced refresh");
+}
+
+static void test_accounts_are_isolated() {
+    printf("test_accounts_are_isolated\n");
+    resetStore();
+    SetAccountCharacters("Acct.1111", {"Ellara Sunspear"});
+    SetCharacterDisciplines("Acct.1111", "Ellara Sunspear",
+                            {{"Artificer", 400, true}});
+    SetAccountCharacters("Acct.2222", {"Grim Ashclaw"});
+    SetCharacterDisciplines("Acct.2222", "Grim Ashclaw",
+                            {{"Huntsman", 400, true}});
+    auto a = Query("Acct.1111", {"Artificer"}, 400);
+    auto b = Query("Acct.2222", {"Artificer"}, 400);
+    check(a.canCraftNow.size() == 1, "account 1 sees its own character");
+    check(b.canCraftNow.empty(), "account 2 does not see account 1's");
+}
+
+static void test_character_list_change_drops_departed_characters() {
+    printf("test_character_list_change_drops_departed_characters\n");
+    resetStore();
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear", "Deleted Alt"});
+    SetCharacterDisciplines("Acct.1234", "Ellara Sunspear",
+                            {{"Artificer", 400, true}});
+    SetCharacterDisciplines("Acct.1234", "Deleted Alt",
+                            {{"Artificer", 500, true}});
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear"});
+    auto r = Query("Acct.1234", {"Artificer"}, 400);
+    check(r.canCraftNow.size() == 1, "the deleted character is gone");
+    check(r.canCraftNow[0].character == "Ellara Sunspear", "the survivor remains");
+    check(r.state == DataState::Ready,
+          "the survivor's already-fetched data is kept, not refetched");
+}
+
+static void test_cache_round_trips_through_disk() {
+    printf("test_cache_round_trips_through_disk\n");
+    resetStore();
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear"});
+    SetCharacterDisciplines("Acct.1234", "Ellara Sunspear",
+                            {{"Artificer", 400, true}, {"Chef", 275, false}});
+    Save();
+    Init(kTestDir); // fresh start, same directory
+    auto r = Query("Acct.1234", {"Artificer"}, 400);
+    check(r.state == DataState::Ready, "reloaded account is complete");
+    check(r.canCraftNow.size() == 1, "and answers the query from disk");
+    check(r.canCraftNow[0].rating == 400, "with the cached rating");
+}
+
+static void test_staleness_uses_a_24_hour_window() {
+    printf("test_staleness_uses_a_24_hour_window\n");
+    resetStore();
+    SetNowForTesting(1000000);
+    check(IsStale("Acct.1234"), "an unknown account is stale");
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear"});
+    SetCharacterDisciplines("Acct.1234", "Ellara Sunspear",
+                            {{"Artificer", 400, true}});
+    check(!IsStale("Acct.1234"), "a freshly completed account is not stale");
+    SetNowForTesting(1000000 + 23 * 3600);
+    check(!IsStale("Acct.1234"), "still fresh at 23 hours");
+    SetNowForTesting(1000000 + 25 * 3600);
+    check(IsStale("Acct.1234"), "stale at 25 hours");
+    SetNowForTesting(0); // back to the real clock
+}
+
+static void test_force_refresh_reopens_the_sweep() {
+    printf("test_force_refresh_reopens_the_sweep\n");
+    resetStore();
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear"});
+    SetCharacterDisciplines("Acct.1234", "Ellara Sunspear",
+                            {{"Artificer", 400, true}});
+    std::string next;
+    check(!NextPendingCharacter("Acct.1234", next), "nothing pending when done");
+    ForceRefresh("Acct.1234");
+    check(IsStale("Acct.1234"), "forced account reads stale");
+    check(NextPendingCharacter("Acct.1234", next), "and re-queues its characters");
+    check(next == "Ellara Sunspear", "starting from the first");
+    check(Query("Acct.1234", {"Artificer"}, 400).canCraftNow.size() == 1,
+          "old data still answers while the refetch is in flight");
+}
+
+static void test_force_refresh_clears_denied() {
+    printf("test_force_refresh_clears_denied\n");
+    resetStore();
+    SetAccountCharacters("Acct.1234", {"Ellara Sunspear"});
+    MarkDenied("Acct.1234");
+    ForceRefresh("Acct.1234");
+    std::string next;
+    check(NextPendingCharacter("Acct.1234", next),
+          "a forced refresh retries a previously denied account");
+}
+
 int main() {
     test_parse_crafting_json();
     test_parse_rejects_garbage();
@@ -200,6 +359,16 @@ int main() {
     test_evaluate_closest_when_nobody_qualifies();
     test_evaluate_no_closest_when_nobody_has_the_discipline();
     test_evaluate_passes_state_through();
+    test_parse_rejects_wrong_typed_field_without_throwing();
+    test_pending_characters_drain_in_order();
+    test_state_progresses_to_ready();
+    test_denied_is_sticky_and_not_stale();
+    test_accounts_are_isolated();
+    test_character_list_change_drops_departed_characters();
+    test_cache_round_trips_through_disk();
+    test_staleness_uses_a_24_hour_window();
+    test_force_refresh_reopens_the_sweep();
+    test_force_refresh_clears_denied();
     if (g_failures) {
         printf("\n%d check(s) FAILED\n", g_failures);
         return 1;

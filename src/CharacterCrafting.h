@@ -70,5 +70,54 @@ namespace CharacterCrafting {
     // character names contain spaces and may contain accented characters.
     std::string UrlEncodePathSegment(const std::string& s);
 
+    // --- Per-account store ---------------------------------------------
+    // All functions below are safe to call from any thread: H&S delivers
+    // proxy responses on its own worker thread while the render thread reads.
+
+    // `dataDir` is the addon's data directory (GW2API::GetDataDirectory()).
+    // Passed in rather than looked up so this module stays platform-free.
+    // Loads the disk cache if one is present. Safe to call repeatedly; each
+    // call resets in-memory state and reloads from disk.
+    void Init(const std::string& dataDir);
+
+    // Replace the account's character roster (from H&S's account list).
+    // Already-fetched disciplines for surviving characters are retained;
+    // characters no longer on the roster are dropped.
+    void SetAccountCharacters(const std::string& account,
+                              const std::vector<std::string>& names);
+
+    // Record one character's disciplines. An empty vector is a valid answer
+    // (a character with no crafting at all) and still marks it fetched.
+    void SetCharacterDisciplines(const std::string& account,
+                                 const std::string& character,
+                                 std::vector<DisciplineRating> disciplines);
+
+    // The API key lacks the `characters` permission. Stops the sweep for this
+    // account until ForceRefresh.
+    void MarkDenied(const std::string& account);
+
+    // Next character on the account still awaiting a fetch, in roster order.
+    // Returns false when the sweep is complete or the account is Denied.
+    bool NextPendingCharacter(const std::string& account, std::string& out);
+
+    // True when the account has never completed a sweep, or its last completed
+    // sweep is more than 24 hours old, or ForceRefresh was called.
+    bool IsStale(const std::string& account);
+
+    // Re-queue every character on the account and clear any Denied state.
+    // Existing data is kept so the tooltip stays useful during the refetch.
+    void ForceRefresh(const std::string& account);
+
+    // The tooltip's question, answered against one account's roster.
+    QualificationResult Query(const std::string& account,
+                              const std::vector<std::string>& disciplines,
+                              int rating);
+
+    void Save();
+    void Load();
+
+    // Test seam: pin the clock used by IsStale. 0 restores the real clock.
+    void SetNowForTesting(long long epochSeconds);
+
 } // namespace CharacterCrafting
 } // namespace CraftyLegend
