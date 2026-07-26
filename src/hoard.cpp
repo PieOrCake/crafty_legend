@@ -8,6 +8,9 @@
 #include <map>
 #include <mutex>
 #include <sstream>
+#include <unordered_map>
+#include <cstring>
+#include <cctype>
 
 // Forward declaration (defined later in this file)
 static void StartAccountDetection();
@@ -512,11 +515,31 @@ void OnHoardArmoryResponse(void* aEventArgs) {
     g_CompletionCacheDirty = true;
 }
 
-// The character whose crafting request is currently outstanding. Written by
-// the render thread (on dispatch) and by H&S's worker thread (on response),
-// so it is never touched outside this mutex.
-static std::mutex  g_CraftingInFlightMutex;
-static std::string g_CraftingInFlightChar;
+// Shared state for the crafting sweep. All of it is written by the render
+// thread (on dispatch) and by H&S's worker thread (on response), so none of it
+// is touched outside this mutex.
+static std::mutex g_CraftingInFlightMutex;
+static std::string g_CraftingInFlightChar;                       // "" when idle
+static std::chrono::steady_clock::time_point g_CraftingClaimedAt; // watchdog
+static std::chrono::steady_clock::time_point g_CraftingRetryAt;   // cooldown
+static bool g_CraftingCooldown = false;
+// Consecutive failures per "account\x1fcharacter", so one permanently broken
+// character (renamed, deleted, or an endpoint that always 500s) cannot wedge
+// the sweep — NextPendingCharacter would otherwise return it forever.
+static std::unordered_map<std::string, int> g_CraftingFailures;
+
+// A request that never gets a reply (H&S unloaded, or the request dropped)
+// would hold the slot for the process lifetime. Give up on it after 30 s.
+static constexpr int CRAFTING_WATCHDOG_SECONDS = 30;
+// HoardAndSeekAPI.h requires 2-5 s between retries while permission is pending.
+static constexpr int CRAFTING_COOLDOWN_SECONDS = 3;
+// Attempts at one character before it is written off and the sweep moves on.
+static constexpr int CRAFTING_MAX_FAILURES = 3;
+
+static std::string CraftingFailureKey(const std::string& account,
+                                      const std::string& character) {
+    return account + '\x1f' + character;
+}
 
 // Claim the in-flight slot for `character`. Returns false if a request is
 // already outstanding — only one character is queried at a time.
@@ -524,6 +547,7 @@ static bool ClaimCraftingSlot(const std::string& character) {
     std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
     if (!g_CraftingInFlightChar.empty()) return false;
     g_CraftingInFlightChar = character;
+    g_CraftingClaimedAt = std::chrono::steady_clock::now();
     return true;
 }
 
@@ -535,17 +559,75 @@ static std::string ReleaseCraftingSlot() {
     return was;
 }
 
+// Watchdog: drop a claim that has gone unanswered for too long.
+static void ExpireStaleCraftingSlot() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    if (g_CraftingInFlightChar.empty()) return;
+    if (std::chrono::steady_clock::now() - g_CraftingClaimedAt >
+        std::chrono::seconds(CRAFTING_WATCHDOG_SECONDS)) {
+        g_CraftingInFlightChar.clear();
+    }
+}
+
+// Hold off the next request. Called from H&S's worker thread for any reply we
+// could not use, so that no status can produce a per-frame retry loop.
+static void ScheduleCraftingCooldown() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    g_CraftingRetryAt = std::chrono::steady_clock::now() +
+                        std::chrono::seconds(CRAFTING_COOLDOWN_SECONDS);
+    g_CraftingCooldown = true;
+}
+
+// True while the cooldown is still running. Clears itself once it expires.
+static bool CraftingCooldownActive() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    if (!g_CraftingCooldown) return false;
+    if (std::chrono::steady_clock::now() < g_CraftingRetryAt) return true;
+    g_CraftingCooldown = false;
+    return false;
+}
+
+// Count a failure against one character. Returns true once it has failed often
+// enough to be written off.
+static bool RecordCraftingFailure(const std::string& account,
+                                  const std::string& character) {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    return ++g_CraftingFailures[CraftingFailureKey(account, character)] >=
+           CRAFTING_MAX_FAILURES;
+}
+
+static void ClearCraftingFailures(const std::string& account,
+                                  const std::string& character) {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    g_CraftingFailures.erase(CraftingFailureKey(account, character));
+}
+
+// The GW2 API reports a key missing the `characters` scope with an error object
+// like {"text":"requires scope characters"}. That is the one parse failure that
+// justifies denying the whole account; every other bad body is transient.
+static bool BodyIndicatesMissingScope(const char* json) {
+    std::string body(json, strnlen(json, 512)); // error objects are tiny
+    for (char& c : body) c = (char)tolower((unsigned char)c);
+    return body.find("requires scope characters") != std::string::npos;
+}
+
 void OnCharacterCraftingResponse(void* aEventArgs) {
     if (!aEventArgs) return;
     HoardQueryApiResponse* resp = static_cast<HoardQueryApiResponse*>(aEventArgs);
-    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
 
-    // Frees the slot for the next character and tells us whose reply this is.
+    // Free the slot before any branch that returns — an early return that
+    // skipped this (an older H&S replying with api_version 3, say) would wedge
+    // the sweep for the rest of the session. ReleaseCraftingSlot does not touch
+    // `resp`, so it is safe ahead of the version guard.
+    //
     // Note H&S answers a cached query synchronously, from inside Events_Raise —
     // so this can run re-entrantly on the render thread. ClaimCraftingSlot has
     // already released its lock by then, so there is no deadlock.
     const std::string character = ReleaseCraftingSlot();
-    const std::string account   = resp->account_name;
+
+    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
+
+    const std::string account = resp->account_name;
 
     if (resp->status == HOARD_STATUS_BUSY) {
         ScheduleBusyBackoff(resp->retry_after_ms);
@@ -553,23 +635,43 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
         return;
     }
     if (resp->status == HOARD_STATUS_DENIED) {
-        // The API key has no `characters` permission — stop the sweep.
+        // The user refused H&S's permission prompt, or the key lacks the
+        // `characters` scope — stop the sweep for this account.
         CraftyLegend::CharacterCrafting::MarkDenied(account);
         g_CraftingRefreshNeeded = false;
         delete resp;
         return;
     }
-    if (resp->status != HOARD_STATUS_OK || character.empty()) { delete resp; return; }
+    if (resp->status != HOARD_STATUS_OK) {
+        // HOARD_STATUS_PENDING is the normal first-run state while the H&S
+        // permission popup is on screen, and it can persist for minutes. Back
+        // off rather than re-firing the same request on every frame.
+        ScheduleCraftingCooldown();
+        delete resp;
+        return;
+    }
+    if (character.empty()) { delete resp; return; } // watchdog already gave up
 
     std::vector<CraftyLegend::CharacterCrafting::DisciplineRating> disciplines;
     if (CraftyLegend::CharacterCrafting::ParseCraftingJson(resp->json, disciplines)) {
         CraftyLegend::CharacterCrafting::SetCharacterDisciplines(
             account, character, std::move(disciplines));
-    } else {
-        // A GW2 API error body (e.g. "requires scope characters") — treat the
-        // whole account as unavailable rather than retrying forever.
+        ClearCraftingFailures(account, character);
+    } else if (BodyIndicatesMissingScope(resp->json)) {
+        // The key genuinely cannot read characters — no point sweeping on.
         CraftyLegend::CharacterCrafting::MarkDenied(account);
         g_CraftingRefreshNeeded = false;
+    } else {
+        // A transient error body: a 500, a rate-limit object, or a 404 for a
+        // character renamed or deleted since H&S snapshotted the roster. Retry
+        // it a few times, then write that one character off and move on —
+        // MarkDenied persists to disk, so it must not be reached from here.
+        ScheduleCraftingCooldown();
+        if (RecordCraftingFailure(account, character)) {
+            // Recording an empty discipline list marks it fetched, so
+            // NextPendingCharacter stops handing back the same character.
+            CraftyLegend::CharacterCrafting::SetCharacterDisciplines(account, character, {});
+        }
     }
     delete resp;
 }
@@ -594,6 +696,11 @@ void RefreshLegendaryArmory() {
 // is 20 small requests and must not be fired all at once.
 void RefreshCharacterCrafting() {
     if (!g_HoardDataAvailable) return;
+
+    // Reclaim a slot whose reply never arrived, then honour any back-off asked
+    // for by the last unusable reply. Both must precede ClaimCraftingSlot.
+    ExpireStaleCraftingSlot();
+    if (CraftingCooldownActive()) return;
 
     std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
     if (currentAcct.empty()) return;
