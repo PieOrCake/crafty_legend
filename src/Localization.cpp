@@ -275,7 +275,7 @@ namespace {
             // Achievement-gate tooltip tags
             {"Requires achievement", {"Erfordert Erfolg", "Nécessite un succès", "Requiere logro"}},
             {"Achievement complete", {"Erfolg abgeschlossen", "Succès terminé", "Logro completado"}},
-            {"Locked - requires achievement", {"Gesperrt – erfordert Erfolg", "Verrouillé – nécessite un succès", "Bloqueado: requiere logro"}},
+            {"Locked - requires achievement", {"Gesperrt - erfordert Erfolg", "Verrouillé - nécessite un succès", "Bloqueado: requiere logro"}},
             {"Progress", {"Fortschritt", "Progression", "Progreso"}},
             // Crafting discipline tooltip (PROVISIONAL, pending native review)
             {"Can craft now", {"Kann jetzt herstellen", "Peut fabriquer maintenant", "Puede fabricar ahora"}},

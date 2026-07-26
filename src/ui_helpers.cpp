@@ -1108,10 +1108,10 @@ void DrawMatchGroup(const char* headingKey,
     for (size_t i = 0; i < shown; ++i) {
         const auto& m = matches[i];
         if (dimmed) {
-            ImGui::TextDisabled("  %s  —  %s %d",
+            ImGui::TextDisabled("  %s  -  %s %d",
                                 m.character.c_str(), m.discipline.c_str(), m.rating);
         } else {
-            ImGui::Text("  %s  —  %s %d",
+            ImGui::Text("  %s  -  %s %d",
                         m.character.c_str(), m.discipline.c_str(), m.rating);
         }
     }
@@ -1179,7 +1179,7 @@ void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe) {
         ImGui::TextColored(ImVec4(0.85f, 0.45f, 0.35f, 1.0f), "%s",
                            Localization::Tr("No character can craft this yet"));
         if (result.hasClosest) {
-            ImGui::TextDisabled("  %s: %s  —  %s %d / %d",
+            ImGui::TextDisabled("  %s: %s  -  %s %d / %d",
                                 Localization::Tr("Closest"),
                                 result.closest.character.c_str(),
                                 result.closest.discipline.c_str(),

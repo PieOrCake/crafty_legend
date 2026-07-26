@@ -339,7 +339,7 @@ namespace CraftyLegend {
                 ach.vendor_name = "Dugan";
                 ach.vendor_location = "WvW (Eternal Battlegrounds / Borderlands)";
                 ach.purchase_requirements = {
-                    {"WvW Achievement", "Mists Research: Strife Unending — rewards 2x"}
+                    {"WvW Achievement", "Mists Research: Strife Unending - rewards 2x"}
                 };
                 methods.push_back(ach);
             } else if (item.id == 106443) { // Testimony of Castoran Heroics - WvW currency
@@ -3021,7 +3021,7 @@ namespace CraftyLegend {
             // --- Achievement reward legendaries ---
             case 95380: // Prismatic Champion's Regalia
                 out.push_back(MakePrereq(PC::Achievement, "Seasons of the Dragons",
-                    "Complete the Seasons of the Dragons achievement. This item cannot be crafted — it is awarded for free upon completion.",
+                    "Complete the Seasons of the Dragons achievement. This item cannot be crafted - it is awarded for free upon completion.",
                     item_id, -1, -1, 5790));
                 break;
             default:
