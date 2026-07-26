@@ -275,6 +275,17 @@ namespace {
             {"Achievement complete", {"Erfolg abgeschlossen", "Succès terminé", "Logro completado"}},
             {"Locked - requires achievement", {"Gesperrt – erfordert Erfolg", "Verrouillé – nécessite un succès", "Bloqueado: requiere logro"}},
             {"Progress", {"Fortschritt", "Progression", "Progreso"}},
+            // Crafting discipline tooltip (PROVISIONAL, pending native review)
+            {"Can craft now", {"Kann jetzt herstellen", "Peut fabriquer maintenant", "Puede fabricar ahora"}},
+            {"Needs a discipline swap", {"Benötigt Disziplinwechsel", "Nécessite un changement de discipline", "Requiere cambio de disciplina"}},
+            {"No character can craft this yet", {"Noch kein Charakter kann dies herstellen", "Aucun personnage ne peut encore fabriquer ceci", "Ningún personaje puede fabricar esto todavía"}},
+            {"Closest", {"Am nächsten", "Au plus près", "Más cerca"}},
+            {"at", {"auf", "à", "a"}},
+            {"or", {"oder", "ou", "o"}},
+            {"any rating", {"beliebige Stufe", "niveau quelconque", "cualquier nivel"}},
+            {"Loading character data...", {"Charakterdaten werden geladen...", "Chargement des données de personnage...", "Cargando datos de personaje..."}},
+            {"Character data unavailable", {"Charakterdaten nicht verfügbar", "Données de personnage indisponibles", "Datos de personaje no disponibles"}},
+            {"Your API key needs the 'characters' permission", {"Ihr API-Schlüssel benötigt die Berechtigung 'characters'", "Votre clé API nécessite l'autorisation 'characters'", "Tu clave de API necesita el permiso 'characters'"}},
         };
         return t;
     }

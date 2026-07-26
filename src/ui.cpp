@@ -1089,6 +1089,8 @@ void AddonRender() {
                     headerAccentLine, 1.0f);
                 ImGui::Indent(textPadX);
                 ImGui::TextColored(titleColor, "%s", Localization::ColumnTitle(colData.title).c_str());
+                DrawCraftingDisciplineTooltip(
+                    CraftyLegend::DataManager::GetRecipe(colData.source_item_id));
                 ImGui::Separator();
                 ImGui::Spacing();
 

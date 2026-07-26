@@ -264,6 +264,7 @@ static void RenderNode(uint32_t item_id, int count, int depth,
             if (!how.empty()) {
                 ImGui::SetCursorPosX(DrawRails(depth + 1));
                 ImGui::TextColored(ImVec4(0.85f, 0.72f, 0.42f, 0.85f), "%s", how.c_str());
+                DrawCraftingDisciplineTooltip(CraftyLegend::DataManager::GetRecipe(item_id));
                 if (!where.empty()) {
                     ImGui::SameLine(0, 6);
                     ImGui::TextColored(ImVec4(0.40f, 0.47f, 0.55f, 1.0f), "(%s)", where.c_str());

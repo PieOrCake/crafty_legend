@@ -3,6 +3,7 @@
 #include "GW2API.h"
 #include "DataManager.h"
 #include "Localization.h"
+#include "CharacterCrafting.h"
 #include "IconManager.h"
 #include <unordered_set>
 #include <algorithm>
@@ -1017,5 +1018,113 @@ RowResult DrawItemRow(const RowVisual& v) {
     }
 
     return { clicked, doubleClicked };
+}
+
+namespace {
+
+// "Artificer, Weaponsmith or Huntsman at 400" — or, at five or more
+// alternatives, the heading's own short codes so the line stays readable.
+std::string DisciplineHeaderLine(const std::vector<std::string>& disciplines,
+                                 int rating) {
+    std::string names;
+    if (disciplines.size() >= 5) {
+        names = CraftyLegend::DataManager::FormatDisciplines(disciplines);
+    } else {
+        for (size_t i = 0; i < disciplines.size(); ++i) {
+            if (i > 0) {
+                names += (i + 1 == disciplines.size())
+                    ? std::string(" ") + Localization::Tr("or") + " "
+                    : ", ";
+            }
+            names += disciplines[i];
+        }
+    }
+    std::string ratingText = (rating > 0)
+        ? std::to_string(rating)
+        : std::string("(") + Localization::Tr("any rating") + ")";
+    return names + " " + Localization::Tr("at") + " " + ratingText;
+}
+
+void DrawMatchGroup(const char* headingKey,
+                    const std::vector<CraftyLegend::CharacterCrafting::Match>& matches,
+                    bool dimmed) {
+    if (matches.empty()) return;
+    ImGui::Spacing();
+    if (dimmed) {
+        ImGui::TextDisabled("%s", Localization::Tr(headingKey));
+    } else {
+        ImGui::TextColored(ImVec4(0.85f, 0.72f, 0.42f, 1.0f), "%s",
+                           Localization::Tr(headingKey));
+    }
+    // Cap the list so a large account can't grow the tooltip past the window.
+    constexpr size_t kMaxRows = 8;
+    const size_t shown = matches.size() < kMaxRows ? matches.size() : kMaxRows;
+    for (size_t i = 0; i < shown; ++i) {
+        const auto& m = matches[i];
+        if (dimmed) {
+            ImGui::TextDisabled("  %s  —  %s %d",
+                                m.character.c_str(), m.discipline.c_str(), m.rating);
+        } else {
+            ImGui::Text("  %s  —  %s %d",
+                        m.character.c_str(), m.discipline.c_str(), m.rating);
+        }
+    }
+    if (matches.size() > shown) {
+        ImGui::TextDisabled("  +%d more", (int)(matches.size() - shown));
+    }
+}
+
+} // namespace
+
+void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe) {
+    if (!recipe) return;
+    if (recipe->type != "crafting") return;      // forge/vendor/TP have no gate
+    if (recipe->disciplines.empty()) return;
+    if (!ImGui::IsItemHovered()) return;
+
+    const std::string account = CraftyLegend::GW2API::GetCurrentAccountName();
+    const auto result = CraftyLegend::CharacterCrafting::Query(
+        account, recipe->disciplines, (int)recipe->rating);
+
+    using DataState = CraftyLegend::CharacterCrafting::DataState;
+
+    ImGui::BeginTooltip();
+    ImGui::PushTextWrapPos(ImGui::GetFontSize() * 28.0f);
+
+    ImGui::TextColored(ImVec4(0.85f, 0.72f, 0.42f, 1.0f), "%s",
+                       DisciplineHeaderLine(recipe->disciplines,
+                                            (int)recipe->rating).c_str());
+    ImGui::Separator();
+
+    if (result.state == DataState::Denied) {
+        ImGui::TextDisabled("%s", Localization::Tr("Character data unavailable"));
+        ImGui::TextDisabled("%s",
+            Localization::Tr("Your API key needs the 'characters' permission"));
+    } else if (result.state == DataState::NoData ||
+               (result.state == DataState::Loading &&
+                result.canCraftNow.empty() && result.needsSwap.empty())) {
+        ImGui::TextDisabled("%s", Localization::Tr("Loading character data..."));
+    } else if (result.canCraftNow.empty() && result.needsSwap.empty()) {
+        ImGui::TextColored(ImVec4(0.85f, 0.45f, 0.35f, 1.0f), "%s",
+                           Localization::Tr("No character can craft this yet"));
+        if (result.hasClosest) {
+            ImGui::TextDisabled("  %s: %s  —  %s %d / %d",
+                                Localization::Tr("Closest"),
+                                result.closest.character.c_str(),
+                                result.closest.discipline.c_str(),
+                                result.closest.rating,
+                                (int)recipe->rating);
+        }
+    } else {
+        DrawMatchGroup("Can craft now", result.canCraftNow, false);
+        DrawMatchGroup("Needs a discipline swap", result.needsSwap, true);
+        if (result.state == DataState::Loading) {
+            ImGui::Spacing();
+            ImGui::TextDisabled("%s", Localization::Tr("Loading character data..."));
+        }
+    }
+
+    ImGui::PopTextWrapPos();
+    ImGui::EndTooltip();
 }
 

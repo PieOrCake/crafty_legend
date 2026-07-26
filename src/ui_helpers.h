@@ -30,6 +30,12 @@ void DrawCoinCostBar(const ImVec2& rowPos, float rowWidth, float rowHeight, int 
 // "12/40" for an achievement that is underway, "" when done/unknown/not started.
 std::string AchievementProgressText(int achievement_id);
 
+// Hover tooltip for a "Craft (ART/WPN/HNT 400)" heading, listing which of the
+// active account's characters hold a qualifying discipline. Call immediately
+// after drawing the heading text; it checks IsItemHovered() itself and draws
+// nothing when the recipe is null or is not a `crafting` recipe.
+void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe);
+
 // Text helpers
 std::string StripMarkup(const std::string& text);
 void        OpenWikiPage(const std::string& itemName);
