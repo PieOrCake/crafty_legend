@@ -288,6 +288,10 @@ namespace {
             {"Loading character data...", {"Charakterdaten werden geladen...", "Chargement des données de personnage...", "Cargando datos de personaje..."}},
             {"Character data unavailable", {"Charakterdaten nicht verfügbar", "Données de personnage indisponibles", "Datos de personaje no disponibles"}},
             {"Your API key needs the 'characters' permission", {"Ihr API-Schlüssel benötigt die Berechtigung 'characters'", "Votre clé API nécessite l'autorisation 'characters'", "Tu clave de API necesita el permiso 'characters'"}},
+            {"Hoard & Seek denied Crafty Legend permission", {"Hoard & Seek hat Crafty Legend die Berechtigung verweigert", "Hoard & Seek a refusé l'autorisation à Crafty Legend", "Hoard & Seek denegó el permiso a Crafty Legend"}},
+            {"Approve it in Hoard & Seek's settings, then use 'Refresh crafting levels'", {"Erlauben Sie es in den Einstellungen von Hoard & Seek und nutzen Sie dann 'Handwerksstufen aktualisieren'", "Autorisez-le dans les paramètres de Hoard & Seek, puis utilisez 'Actualiser les niveaux d'artisanat'", "Autorízalo en los ajustes de Hoard & Seek y luego usa 'Actualizar niveles de artesanía'"}},
+            {"Your Hoard & Seek is too old for character data", {"Ihr Hoard & Seek ist zu alt für Charakterdaten", "Votre Hoard & Seek est trop ancien pour les données de personnage", "Tu Hoard & Seek es demasiado antiguo para los datos de personaje"}},
+            {"Update Hoard & Seek and relaunch the game", {"Aktualisieren Sie Hoard & Seek und starten Sie das Spiel neu", "Mettez Hoard & Seek à jour et relancez le jeu", "Actualiza Hoard & Seek y reinicia el juego"}},
         };
         return t;
     }

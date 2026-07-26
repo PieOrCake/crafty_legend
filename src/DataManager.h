@@ -119,6 +119,11 @@ namespace CraftyLegend {
         std::vector<RecipeIngredient> materials;
         uint32_t source_item_id = 0; // The item this column is about
         int source_item_count = 1; // How many of this item are needed from parent recipe
+        // Non-zero only when `title` is a "Craft (WPN 500)" heading; holds the
+        // item whose crafting recipe composed it. Lets the UI attach the
+        // discipline tooltip to genuine craft headings without pattern-matching
+        // the (localized, display-only) title text.
+        uint32_t craft_heading_item_id = 0;
         int selected_index;
         int selected_acquisition_index;
         int selected_material_index;

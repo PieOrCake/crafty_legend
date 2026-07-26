@@ -1090,8 +1090,16 @@ void AddonRender() {
                     headerAccentLine, 1.0f);
                 ImGui::Indent(textPadX);
                 ImGui::TextColored(titleColor, "%s", Localization::ColumnTitle(colData.title).c_str());
+                // Only when this column's title really is the "Craft (WPN 500)"
+                // heading. A column titled "Acquisition Methods" would otherwise
+                // sprout a discipline tooltip merely because its item happens to
+                // have a crafting recipe. DataManager records the item that
+                // composed the craft heading, so this stays data-driven rather
+                // than matching the (translated) title text.
                 DrawCraftingDisciplineTooltip(
-                    CraftyLegend::DataManager::GetRecipe(colData.source_item_id));
+                    colData.craft_heading_item_id
+                        ? CraftyLegend::DataManager::GetRecipe(colData.craft_heading_item_id)
+                        : nullptr);
                 ImGui::Separator();
                 ImGui::Spacing();
 
@@ -1632,8 +1640,10 @@ void AddonOptions() {
     ImGui::SameLine();
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered()) {
-        ImGui::SetTooltip("%s", Localization::Tr(
+        ImGui::BeginTooltip();
+        ImGui::Text("%s", Localization::Tr(
             "Re-reads each character's crafting disciplines from the API. "
             "Normally refreshed once a day."));
+        ImGui::EndTooltip();
     }
 }

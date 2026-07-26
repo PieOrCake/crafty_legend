@@ -535,6 +535,15 @@ static std::unordered_map<std::string, int> g_CraftingFailures;
 // cycle for the whole session. RefreshCharacterCrafting checks this first and
 // gives up permanently rather than retrying something that can never work.
 static bool g_CraftingVersionTooOld = false;
+// Set for the rest of the session when H&S answers HOARD_STATUS_DENIED. That
+// status comes from H&S's own per-addon permission check — the user refused
+// Crafty Legend's Hoard & Seek permission popup. It says nothing about the GW2
+// API key's scopes (a key missing `characters` comes back as STATUS_OK with an
+// error body, handled by BodyIndicatesMissingScope). Deliberately NOT persisted:
+// re-approving Crafty Legend in H&S's settings and hitting "Refresh crafting
+// levels" must be enough to recover, which is why MarkDenied (which writes
+// denied:true to disk) is never called from that branch.
+static bool g_CraftingHoardPermissionDenied = false;
 // How many endpoint-mismatch lines we are willing to log per session. A
 // mismatch should only ever happen for a genuinely late reply after a
 // watchdog expiry, which is rare — but if something were to go persistently
@@ -629,6 +638,34 @@ static bool CraftingVersionTooOld() {
     return g_CraftingVersionTooOld;
 }
 
+// Latch the sweep off because H&S refused Crafty Legend permission. Returns
+// true only the first time, so the reason is logged exactly once.
+static bool LatchCraftingHoardPermissionDenied() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    if (g_CraftingHoardPermissionDenied) return false;
+    g_CraftingHoardPermissionDenied = true;
+    return true;
+}
+
+static bool CraftingHoardPermissionDenied() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    return g_CraftingHoardPermissionDenied;
+}
+
+// Read by the tooltip (ui_helpers.cpp) via hoard.h so it never has to reach
+// into this file's statics. Takes the in-flight mutex only for the latches and
+// releases it before returning, so it can be called from the render thread
+// while a response is being handled on H&S's worker thread.
+CraftingSweepState GetCraftingSweepState() {
+    {
+        std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+        if (g_CraftingHoardPermissionDenied) return CraftingSweepState::HoardPermissionDenied;
+        if (g_CraftingVersionTooOld) return CraftingSweepState::VersionTooOld;
+    }
+    if (!g_HoardDataAvailable) return CraftingSweepState::NoHoard;
+    return CraftingSweepState::Active;
+}
+
 // True while we are still willing to log an endpoint mismatch this session —
 // caps the line count at CRAFTING_ENDPOINT_MISMATCH_LOG_LIMIT so a
 // persistently-wrong reply cannot refill the ring buffer the way an unlatched
@@ -677,6 +714,11 @@ void ResetCraftingFailures(const std::string& account) {
         }
     }
     g_CraftingCooldown = false;
+    // The H&S permission refusal is recoverable without a relaunch: the user can
+    // approve Crafty Legend in H&S's settings and press this button. (The
+    // version-too-old latch is deliberately left alone — no in-session action
+    // can make an old H&S answer.)
+    g_CraftingHoardPermissionDenied = false;
 }
 
 // The GW2 API reports a key missing the `characters` scope with an error object
@@ -742,13 +784,21 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
         return;
     }
     if (resp->status == HOARD_STATUS_DENIED) {
-        // The user refused H&S's permission prompt, or the key lacks the
-        // `characters` scope — stop the sweep for this account.
-        CraftyLegend::CharacterCrafting::MarkDenied(account);
-        g_CraftingRefreshNeeded = false;
-        ScheduleCraftingCooldown();
-        AddDebugLog("Crafting: DENIED for " + account +
-                    " (API key needs the 'characters' permission)");
+        // H&S's own CheckAddonPermission refused us: the user declined Crafty
+        // Legend's Hoard & Seek permission popup. This is NOT an API-key scope
+        // problem — a key without `characters` answers STATUS_OK with an error
+        // body (BodyIndicatesMissingScope, below). Calling MarkDenied here would
+        // persist denied:true to character_crafting.json and survive restarts,
+        // so the tooltip would keep blaming the API key long after the user
+        // re-approved us. Latch for this session only instead; the sweep stops
+        // (RefreshCharacterCrafting checks the latch) and "Refresh crafting
+        // levels" clears it.
+        if (LatchCraftingHoardPermissionDenied()) {
+            AddDebugLog("Crafting: disabled - Hoard & Seek denied Crafty Legend "
+                        "permission. Approve Crafty Legend in Hoard & Seek's "
+                        "settings, then use 'Refresh crafting levels' in "
+                        "Crafty Legend's settings.");
+        }
         delete resp;
         return;
     }
@@ -780,6 +830,16 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
                         " (got " + std::string(resp->endpoint) + "); dropped");
         }
         ScheduleCraftingCooldown();
+        // Count it against the same per-character budget as any other unusable
+        // reply. A persistently wrong echo would otherwise re-queue the same
+        // character forever, spending one proxy request every cooldown for the
+        // whole session with only the first few lines logged.
+        if (RecordCraftingFailure(account, character)) {
+            CraftyLegend::CharacterCrafting::SetCharacterDisciplines(account, character, {});
+            AddDebugLog("Crafting: " + character + " failed " +
+                        std::to_string(CRAFTING_MAX_FAILURES) +
+                        " times, written off for this session");
+        }
         delete resp;
         return;
     }
@@ -842,6 +902,10 @@ void RefreshCharacterCrafting() {
     // a stuck-old H&S cannot cost a proxy request or a cooldown cycle ever
     // again this session.
     if (CraftingVersionTooOld()) return;
+    // Same shape for an H&S permission refusal: every request would come back
+    // DENIED until the user re-approves us, so stop asking. Cleared by
+    // ResetCraftingFailures ("Refresh crafting levels").
+    if (CraftingHoardPermissionDenied()) return;
 
     // Reclaim a slot whose reply never arrived, then honour any back-off asked
     // for by the last unusable reply. Both must precede ClaimCraftingSlot.

@@ -4,6 +4,7 @@
 #include "DataManager.h"
 #include "Localization.h"
 #include "CharacterCrafting.h"
+#include "hoard.h"
 #include "IconManager.h"
 #include <unordered_set>
 #include <algorithm>
@@ -1127,11 +1128,22 @@ void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe) {
     if (recipe->disciplines.empty()) return;
     if (!ImGui::IsItemHovered()) return;
 
+    // No Hoard & Seek (or no account data from it) means there is no roster to
+    // talk about at all: per the design, the heading then behaves exactly as it
+    // did before this feature — no tooltip.
+    const CraftingSweepState sweep = GetCraftingSweepState();
+    if (sweep == CraftingSweepState::NoHoard) return;
+
     const std::string account = CraftyLegend::GW2API::GetCurrentAccountName();
     const auto result = CraftyLegend::CharacterCrafting::Query(
         account, recipe->disciplines, (int)recipe->rating);
 
     using DataState = CraftyLegend::CharacterCrafting::DataState;
+
+    // NoData means we do not even know the account's character list yet (H&S
+    // has not delivered it, or the account has no characters). "Loading
+    // character data..." would be a claim we cannot back — draw nothing.
+    if (result.state == DataState::NoData) return;
 
     ImGui::BeginTooltip();
     ImGui::PushTextWrapPos(ImGui::GetFontSize() * 28.0f);
@@ -1141,15 +1153,29 @@ void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe) {
                                             (int)recipe->rating).c_str());
     ImGui::Separator();
 
+    // Each of these says why the list is short, rather than claiming a fetch is
+    // still running when the sweep has in fact stopped for good.
+    const bool haveNames = !result.canCraftNow.empty() || !result.needsSwap.empty();
     if (result.state == DataState::Denied) {
+        // Persisted only for the API-key scope error — see OnCharacterCraftingResponse.
         ImGui::TextDisabled("%s", Localization::Tr("Character data unavailable"));
         ImGui::TextDisabled("%s",
             Localization::Tr("Your API key needs the 'characters' permission"));
-    } else if (result.state == DataState::NoData ||
-               (result.state == DataState::Loading &&
-                result.canCraftNow.empty() && result.needsSwap.empty())) {
+    } else if (sweep == CraftingSweepState::HoardPermissionDenied && !haveNames) {
+        ImGui::TextDisabled("%s", Localization::Tr("Character data unavailable"));
+        ImGui::TextDisabled("%s",
+            Localization::Tr("Hoard & Seek denied Crafty Legend permission"));
+        ImGui::TextDisabled("%s", Localization::Tr(
+            "Approve it in Hoard & Seek's settings, then use 'Refresh crafting levels'"));
+    } else if (sweep == CraftingSweepState::VersionTooOld && !haveNames) {
+        ImGui::TextDisabled("%s", Localization::Tr("Character data unavailable"));
+        ImGui::TextDisabled("%s",
+            Localization::Tr("Your Hoard & Seek is too old for character data"));
+        ImGui::TextDisabled("%s",
+            Localization::Tr("Update Hoard & Seek and relaunch the game"));
+    } else if (result.state == DataState::Loading && !haveNames) {
         ImGui::TextDisabled("%s", Localization::Tr("Loading character data..."));
-    } else if (result.canCraftNow.empty() && result.needsSwap.empty()) {
+    } else if (!haveNames) {
         ImGui::TextColored(ImVec4(0.85f, 0.45f, 0.35f, 1.0f), "%s",
                            Localization::Tr("No character can craft this yet"));
         if (result.hasClosest) {
@@ -1163,7 +1189,8 @@ void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe) {
     } else {
         DrawMatchGroup("Can craft now", result.canCraftNow, false);
         DrawMatchGroup("Needs a discipline swap", result.needsSwap, true);
-        if (result.state == DataState::Loading) {
+        // Only promise more names when the sweep can actually still deliver them.
+        if (result.state == DataState::Loading && sweep == CraftingSweepState::Active) {
             ImGui::Spacing();
             ImGui::TextDisabled("%s", Localization::Tr("Loading character data..."));
         }

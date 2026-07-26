@@ -2160,6 +2160,7 @@ namespace CraftyLegend {
             next_column.materials.clear();
             next_column.selected_acquisition_index = -1;
             next_column.selected_material_index = -1;
+            next_column.craft_heading_item_id = 0;
             
             // Get data for column 1
             next_column.source_item_id = item_id;
@@ -2195,6 +2196,7 @@ namespace CraftyLegend {
                         next_column.title = recipe->vendor.empty() ? "Vendor" : "Vendor - " + recipe->vendor;
                     } else if (recipe->type == "crafting" && !recipe->disciplines.empty()) {
                         next_column.title = "Craft (" + FormatDisciplines(recipe->disciplines) + " " + std::to_string(recipe->rating) + ")";
+                        next_column.craft_heading_item_id = item_id;
                     } else {
                         next_column.title = "Materials";
                     }
@@ -2250,6 +2252,7 @@ namespace CraftyLegend {
                 next_column.materials.clear();
                 next_column.selected_acquisition_index = -1;
                 next_column.selected_material_index = -1;
+                next_column.craft_heading_item_id = 0;
                 
                 // Get data for the clicked item - recipe takes priority over acquisition methods
                 next_column.source_item_id = item_id;
@@ -2285,6 +2288,7 @@ namespace CraftyLegend {
                                 next_column.title = item_recipe->vendor.empty() ? "Vendor" : "Vendor - " + item_recipe->vendor;
                             } else if (item_recipe->type == "crafting" && !item_recipe->disciplines.empty()) {
                                 next_column.title = "Craft (" + FormatDisciplines(item_recipe->disciplines) + " " + std::to_string(item_recipe->rating) + ")";
+                                next_column.craft_heading_item_id = item_id;
                             } else {
                                 next_column.title = "Materials";
                             }
@@ -2330,6 +2334,7 @@ namespace CraftyLegend {
                         const Recipe* recipe = GetRecipe(item_id);
                         if (recipe && !recipe->disciplines.empty()) {
                             next_column.title = "Craft (" + FormatDisciplines(recipe->disciplines) + " " + std::to_string(recipe->rating) + ")";
+                            next_column.craft_heading_item_id = item_id;
                             next_column.materials = recipe->ingredients;
                             uint32_t out_cnt = recipe->output_count > 0 ? recipe->output_count : 1;
                             int crafts = (item_count + out_cnt - 1) / out_cnt;
@@ -2398,6 +2403,7 @@ namespace CraftyLegend {
         next_column.materials.clear();
         next_column.selected_acquisition_index = -1;
         next_column.selected_material_index = -1;
+        next_column.craft_heading_item_id = 0;
         
         // Compute qty: prefer parent column's selected material count (robust),
         // fall back to source_item_count if parent lookup fails.
@@ -2454,6 +2460,7 @@ namespace CraftyLegend {
                 if (src_recipe) {
                     if (!src_recipe->disciplines.empty()) {
                         next_column.title = "Craft (" + FormatDisciplines(src_recipe->disciplines) + " " + std::to_string(src_recipe->rating) + ")";
+                        next_column.craft_heading_item_id = src_id;
                     } else {
                         next_column.title = "Crafting Materials";
                     }

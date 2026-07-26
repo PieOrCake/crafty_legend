@@ -435,6 +435,17 @@ static bool RenderMethodRow(uint32_t item_id,
     ImVec4 labelCol(0.85f, 0.72f, 0.42f, alpha); // dim gold
     std::string label = MethodLabel(method);
     ImGui::TextColored(labelCol, "%s", label.c_str());
+    // "Who can craft this?" belongs on this row too, not just the single-route
+    // heading. The governing recipe is the one this method row would expand into
+    // (RenderMethodChildren's non-vendor branch), so it is only offered for a
+    // crafting method whose recipe is itself a crafting recipe — a forge or
+    // vendor row must not inherit the node's craft recipe. Attached immediately
+    // after the label so IsItemHovered() tests the text just drawn.
+    if (method.method == "crafting") {
+        const auto* methodRecipe = CraftyLegend::DataManager::GetRecipe(item_id);
+        DrawCraftingDisciplineTooltip(
+            (methodRecipe && methodRecipe->type == "crafting") ? methodRecipe : nullptr);
+    }
 
     // Where to buy it — Miller shows this in the column header; the tree used to
     // drop it entirely.
