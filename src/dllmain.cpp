@@ -109,6 +109,8 @@ std::string g_WalletAccount;
 bool  g_WalletRefreshNeeded           = false;
 std::string g_ArmoryAccount;
 bool  g_ArmoryRefreshNeeded           = false;
+std::string       g_CraftingAccount;
+std::atomic<bool> g_CraftingRefreshNeeded{true};
 
 // Completion cache
 std::unordered_map<uint32_t, float> g_CompletionCache;

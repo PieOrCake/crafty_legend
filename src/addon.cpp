@@ -7,6 +7,7 @@
 #include "PieTheme.h"
 #include "FontManager.h"
 #include "Localization.h"
+#include "CharacterCrafting.h"
 #include "../include/HoardAndSeekAPI.h"
 #include <sstream>
 
@@ -379,6 +380,7 @@ void AddonLoad(AddonAPI_t* aApi) {
     APIDefs->Events_Subscribe(EV_HOARD_PONG, OnHoardPong);
     APIDefs->Events_Subscribe(CL_ACCOUNTS_RESPONSE, OnAccountsResponse);
     APIDefs->Events_Subscribe(CL_ARMORY_RESPONSE, OnHoardArmoryResponse);
+    APIDefs->Events_Subscribe(CL_CRAFTING_RESPONSE, OnCharacterCraftingResponse);
     APIDefs->Events_Subscribe(EV_MUMBLE_IDENTITY_UPDATED, OnMumbleIdentityUpdated);
     APIDefs->Events_Subscribe(EV_HOARD_ACCOUNTS_CHANGED, OnAccountsChanged);
     APIDefs->Log(LOGL_INFO, "CraftyLegend", "Subscribed to Hoard & Seek events");
@@ -391,6 +393,9 @@ void AddonLoad(AddonAPI_t* aApi) {
 
     // Bundled TTF font (auto-downloaded on first use when enabled)
     CraftyLegend::FontManager::Initialize(APIDefs, CraftyLegend::GW2API::GetDataDirectory());
+
+    // Per-character crafting disciplines (disk cache lives in the data directory)
+    CraftyLegend::CharacterCrafting::Init(CraftyLegend::GW2API::GetDataDirectory());
 
     // Get MumbleLink data pointer for identity polling fallback
     g_MumbleData = static_cast<Mumble::Data*>(APIDefs->DataLink_Get(DL_MUMBLE_LINK));
@@ -430,6 +435,7 @@ void AddonUnload() {
     APIDefs->Events_Unsubscribe(EV_HOARD_PONG, OnHoardPong);
     APIDefs->Events_Unsubscribe(CL_ACCOUNTS_RESPONSE, OnAccountsResponse);
     APIDefs->Events_Unsubscribe(CL_ARMORY_RESPONSE, OnHoardArmoryResponse);
+    APIDefs->Events_Unsubscribe(CL_CRAFTING_RESPONSE, OnCharacterCraftingResponse);
     APIDefs->Events_Unsubscribe(EV_MUMBLE_IDENTITY_UPDATED, OnMumbleIdentityUpdated);
     APIDefs->Events_Unsubscribe(EV_HOARD_ACCOUNTS_CHANGED, OnAccountsChanged);
     PieTheme::Shutdown();
@@ -444,6 +450,7 @@ void AddonUnload() {
     // Save final scroll positions before shutdown
     CraftyLegend::DataManager::SetSessionScrollState(g_TrackedScrollX, g_TrackedCol0ScrollY, g_TrackedColScrollY);
     CraftyLegend::DataManager::SaveSession();
+    CraftyLegend::CharacterCrafting::Save();
 
     // Persist the active layout's final window geometry.
     SaveDisplaySettings();

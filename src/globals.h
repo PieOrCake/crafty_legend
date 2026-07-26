@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <chrono>
+#include <atomic>
 #include "DataManager.h"
 #include "../include/nexus/Nexus.h"
 #include "../include/mumble/Mumble.h"
@@ -22,6 +23,7 @@
 #define CL_MASTERY_RESPONSE     "CL_MASTERY_RESPONSE"
 #define CL_ACCOUNTS_RESPONSE    "CL_ACCOUNTS_RESPONSE"
 #define CL_ARMORY_RESPONSE      "CL_ARMORY_RESPONSE"
+#define CL_CRAFTING_RESPONSE    "CL_CRAFTING_RESPONSE"
 
 // Shopping list entry
 struct ShoppingEntry {
@@ -159,6 +161,10 @@ extern std::string g_WalletAccount;
 extern bool g_WalletRefreshNeeded;
 extern std::string g_ArmoryAccount;
 extern bool g_ArmoryRefreshNeeded;
+
+// Character crafting-discipline sweep (one character per request)
+extern std::string       g_CraftingAccount;      // account the sweep is running for
+extern std::atomic<bool> g_CraftingRefreshNeeded;
 
 // -------------------------------------------------------------------------
 // Completion cache

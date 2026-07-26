@@ -236,6 +236,11 @@ void AddonRender() {
         RefreshWallet();
     }
 
+    // Sweep character crafting disciplines, one character per frame
+    if (g_HoardDataAvailable && !busyBlocked) {
+        RefreshCharacterCrafting();
+    }
+
     // Recompute prerequisites when achievement/mastery data arrives
     if (g_PrereqDirty && g_PrereqLegendaryId != 0) {
         g_Prerequisites = CraftyLegend::DataManager::GetPrerequisites(g_PrereqLegendaryId);

@@ -3,8 +3,10 @@
 #include "settings.h"
 #include "GW2API.h"
 #include "DataManager.h"
+#include "CharacterCrafting.h"
 #include "../include/HoardAndSeekAPI.h"
 #include <map>
+#include <mutex>
 #include <sstream>
 
 // Forward declaration (defined later in this file)
@@ -271,9 +273,14 @@ void OnAccountsResponse(void* aEventArgs) {
             std::string label = resp->accounts[i].label;
             if (!label.empty()) g_AccountLabels[name] = label;
             // Build character→account map from the account's character list
+            std::vector<std::string> charNames;
             for (uint32_t c = 0; c < resp->accounts[i].character_count && c < 80; c++) {
-                g_CharToAccount[resp->accounts[i].characters[c]] = name;
+                std::string ch = resp->accounts[i].characters[c];
+                if (ch.empty()) continue;
+                g_CharToAccount[ch] = name;
+                charNames.push_back(ch);
             }
+            CraftyLegend::CharacterCrafting::SetAccountCharacters(name, charNames);
         }
     }
     delete resp;
@@ -505,6 +512,68 @@ void OnHoardArmoryResponse(void* aEventArgs) {
     g_CompletionCacheDirty = true;
 }
 
+// The character whose crafting request is currently outstanding. Written by
+// the render thread (on dispatch) and by H&S's worker thread (on response),
+// so it is never touched outside this mutex.
+static std::mutex  g_CraftingInFlightMutex;
+static std::string g_CraftingInFlightChar;
+
+// Claim the in-flight slot for `character`. Returns false if a request is
+// already outstanding — only one character is queried at a time.
+static bool ClaimCraftingSlot(const std::string& character) {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    if (!g_CraftingInFlightChar.empty()) return false;
+    g_CraftingInFlightChar = character;
+    return true;
+}
+
+// Release the slot and return whose request it was ("" if none).
+static std::string ReleaseCraftingSlot() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    std::string was = g_CraftingInFlightChar;
+    g_CraftingInFlightChar.clear();
+    return was;
+}
+
+void OnCharacterCraftingResponse(void* aEventArgs) {
+    if (!aEventArgs) return;
+    HoardQueryApiResponse* resp = static_cast<HoardQueryApiResponse*>(aEventArgs);
+    if (resp->api_version < HOARD_API_VERSION) { delete resp; return; }
+
+    // Frees the slot for the next character and tells us whose reply this is.
+    // Note H&S answers a cached query synchronously, from inside Events_Raise —
+    // so this can run re-entrantly on the render thread. ClaimCraftingSlot has
+    // already released its lock by then, so there is no deadlock.
+    const std::string character = ReleaseCraftingSlot();
+    const std::string account   = resp->account_name;
+
+    if (resp->status == HOARD_STATUS_BUSY) {
+        ScheduleBusyBackoff(resp->retry_after_ms);
+        delete resp; // the character stays un-fetched, so it is retried
+        return;
+    }
+    if (resp->status == HOARD_STATUS_DENIED) {
+        // The API key has no `characters` permission — stop the sweep.
+        CraftyLegend::CharacterCrafting::MarkDenied(account);
+        g_CraftingRefreshNeeded = false;
+        delete resp;
+        return;
+    }
+    if (resp->status != HOARD_STATUS_OK || character.empty()) { delete resp; return; }
+
+    std::vector<CraftyLegend::CharacterCrafting::DisciplineRating> disciplines;
+    if (CraftyLegend::CharacterCrafting::ParseCraftingJson(resp->json, disciplines)) {
+        CraftyLegend::CharacterCrafting::SetCharacterDisciplines(
+            account, character, std::move(disciplines));
+    } else {
+        // A GW2 API error body (e.g. "requires scope characters") — treat the
+        // whole account as unavailable rather than retrying forever.
+        CraftyLegend::CharacterCrafting::MarkDenied(account);
+        g_CraftingRefreshNeeded = false;
+    }
+    delete resp;
+}
+
 void RefreshLegendaryArmory() {
     if (!g_HoardDataAvailable) return;
     std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
@@ -518,4 +587,44 @@ void RefreshLegendaryArmory() {
     APIDefs->Events_Raise(EV_HOARD_QUERY_API, &req);
     g_ArmoryAccount = currentAcct;
     g_ArmoryRefreshNeeded = false;
+}
+
+// Fetch one character's crafting disciplines per call. The sweep is spread
+// across frames — /v2/characters has no bulk form, so a 20-character account
+// is 20 small requests and must not be fired all at once.
+void RefreshCharacterCrafting() {
+    if (!g_HoardDataAvailable) return;
+
+    std::string currentAcct = CraftyLegend::GW2API::GetCurrentAccountName();
+    if (currentAcct.empty()) return;
+
+    // Only sweep when the account's cache is missing, expired, or forced.
+    if (g_CraftingAccount != currentAcct) {
+        g_CraftingAccount = currentAcct;
+        g_CraftingRefreshNeeded = true;
+    }
+    if (!g_CraftingRefreshNeeded &&
+        !CraftyLegend::CharacterCrafting::IsStale(currentAcct)) {
+        return;
+    }
+
+    std::string character;
+    if (!CraftyLegend::CharacterCrafting::NextPendingCharacter(currentAcct, character)) {
+        g_CraftingRefreshNeeded = false; // sweep finished (or account denied)
+        return;
+    }
+
+    if (!ClaimCraftingSlot(character)) return; // a request is already in flight
+
+    std::string endpoint = "/v2/characters/" +
+        CraftyLegend::CharacterCrafting::UrlEncodePathSegment(character) +
+        "/crafting";
+
+    HoardQueryApiRequest req{};
+    req.api_version = HOARD_API_VERSION;
+    strncpy(req.requester, "Crafty Legend", sizeof(req.requester));
+    strncpy(req.endpoint, endpoint.c_str(), sizeof(req.endpoint) - 1);
+    strncpy(req.response_event, CL_CRAFTING_RESPONSE, sizeof(req.response_event));
+    strncpy(req.account_name, currentAcct.c_str(), sizeof(req.account_name) - 1);
+    APIDefs->Events_Raise(EV_HOARD_QUERY_API, &req);
 }
