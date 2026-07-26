@@ -9,6 +9,7 @@ build/
 **/api_key.json
 **/account_data.json
 **/tp_prices.json
+**/character_crafting.json
 
 # IDE
 .vscode/
