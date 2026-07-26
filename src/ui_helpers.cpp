@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <chrono>
 #include <ctime>
+#include <cstring>
 #include <mutex>
 #include <shellapi.h>
 
@@ -724,8 +725,15 @@ void AddDebugLog(const std::string& message) {
     std::stringstream ss;
     char timeStr[32];
     struct tm tmBuf{};
-    localtime_s(&tmBuf, &time);
-    std::strftime(timeStr, sizeof(timeStr), "%H:%M:%S", &tmBuf);
+    // localtime_s returns nonzero on failure and leaves tmBuf untouched (still
+    // value-initialised, i.e. the epoch), which would silently timestamp the
+    // line "00:00:00" — use an obviously-wrong marker instead so a bad
+    // timestamp cannot be mistaken for a real one.
+    if (localtime_s(&tmBuf, &time) == 0) {
+        std::strftime(timeStr, sizeof(timeStr), "%H:%M:%S", &tmBuf);
+    } else {
+        std::strncpy(timeStr, "??:??:??", sizeof(timeStr));
+    }
     ss << timeStr << "." << std::setfill('0') << std::setw(3) << ms.count() << " " << message;
 
     g_DebugLog.push_back(ss.str());

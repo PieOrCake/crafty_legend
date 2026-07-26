@@ -1477,7 +1477,10 @@ void AddonRender() {
             ImGui::TextColored(ImVec4(0.6f, 0.85f, 1.0f, 1.0f), "%s", Localization::DiagStatus().c_str());
             ImGui::Separator();
             ImGui::BeginChild("ScrollingRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
-            for (const auto& line : GetDebugLogSnapshot()) {
+            // Snapshot once per frame (not once per line) — up to 1000 strings
+            // copied every frame this window is open is wasteful otherwise.
+            const std::vector<std::string> logLines = GetDebugLogSnapshot();
+            for (const auto& line : logLines) {
                 ImGui::TextUnformatted(line.c_str());
             }
             if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY()) {

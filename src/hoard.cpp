@@ -528,6 +528,22 @@ static bool g_CraftingCooldown = false;
 // character (renamed, deleted, or an endpoint that always 500s) cannot wedge
 // the sweep — NextPendingCharacter would otherwise return it forever.
 static std::unordered_map<std::string, int> g_CraftingFailures;
+// Set for the rest of the session the moment a reply comes back with an
+// api_version older than this build needs: against that H&S build every
+// future reply would be rejected the same way, the 3 s cooldown would repeat
+// forever, and the sweep would burn one proxy request and one log line every
+// cycle for the whole session. RefreshCharacterCrafting checks this first and
+// gives up permanently rather than retrying something that can never work.
+static bool g_CraftingVersionTooOld = false;
+// How many endpoint-mismatch lines we are willing to log per session. A
+// mismatch should only ever happen for a genuinely late reply after a
+// watchdog expiry, which is rare — but if something were to go persistently
+// wrong, an unbounded log line per reply would refill the ring buffer just
+// like the version-guard case. This is a much smaller bound because the
+// failure mode is not expected to be pinned/persistent the way the version
+// guard is.
+static int g_CraftingEndpointMismatchLogged = 0;
+static constexpr int CRAFTING_ENDPOINT_MISMATCH_LOG_LIMIT = 5;
 
 // A request that never gets a reply (H&S unloaded, or the request dropped)
 // would hold the slot for the process lifetime. Give up on it after 30 s.
@@ -595,6 +611,33 @@ static bool CraftingCooldownActive() {
     if (std::chrono::steady_clock::now() < g_CraftingRetryAt) return true;
     g_CraftingCooldown = false;
     return false;
+}
+
+// Latch the sweep off for the rest of the session because H&S's api_version
+// is too old to ever satisfy it. Returns true only the first time it is
+// called, so the caller can log the reason exactly once.
+static bool LatchCraftingVersionTooOld() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    if (g_CraftingVersionTooOld) return false;
+    g_CraftingVersionTooOld = true;
+    return true;
+}
+
+// Checked by RefreshCharacterCrafting before doing anything else.
+static bool CraftingVersionTooOld() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    return g_CraftingVersionTooOld;
+}
+
+// True while we are still willing to log an endpoint mismatch this session —
+// caps the line count at CRAFTING_ENDPOINT_MISMATCH_LOG_LIMIT so a
+// persistently-wrong reply cannot refill the ring buffer the way an unlatched
+// version-guard rejection could.
+static bool ShouldLogCraftingEndpointMismatch() {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    if (g_CraftingEndpointMismatchLogged >= CRAFTING_ENDPOINT_MISMATCH_LOG_LIMIT) return false;
+    ++g_CraftingEndpointMismatchLogged;
+    return true;
 }
 
 // Count a failure against one character. Returns true once it has failed often
@@ -673,12 +716,20 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
     // the sweep unable to re-fire, so that no reply can drive a per-frame retry.
     if (resp->api_version < HOARD_API_VERSION) {
         // An older H&S still answers EV_HOARD_QUERY_API, but with api_version 3.
-        // g_HoardDataAvailable is set regardless, so without a back-off here the
-        // sweep would re-fire on every single frame for the whole session.
-        AddDebugLog("Crafting: rejected reply for " + character +
-                    " (H&S api_version " + std::to_string(resp->api_version) +
-                    " < " + std::to_string(HOARD_API_VERSION) + ")");
-        ScheduleCraftingCooldown();
+        // That can never satisfy the crafting sweep, and every future reply
+        // would be rejected the same way — a per-cycle cooldown-then-retry
+        // here would run forever, burning H&S's rate budget and refilling the
+        // debug ring buffer with the same line. Latch the sweep off for the
+        // rest of the session instead (RefreshCharacterCrafting checks this
+        // first) and log the reason exactly once, in terms a tester can paste
+        // into Discord without needing to know what "api_version" means.
+        if (LatchCraftingVersionTooOld()) {
+            AddDebugLog("Crafting: disabled for this session - your Hoard & Seek "
+                        "is too old for character crafting data (reports version " +
+                        std::to_string(resp->api_version) + ", need " +
+                        std::to_string(HOARD_API_VERSION) +
+                        "). Update Hoard & Seek and relaunch the game.");
+        }
         delete resp;
         return;
     }
@@ -724,8 +775,10 @@ void OnCharacterCraftingResponse(void* aEventArgs) {
     // wrong name — and would free the later character's slot, silently losing
     // its real reply too. The echoed endpoint is what disambiguates them.
     if (ExpectedCraftingEndpoint(character) != resp->endpoint) {
-        AddDebugLog("Crafting: endpoint mismatch for " + character +
-                    " (got " + std::string(resp->endpoint) + "); dropped");
+        if (ShouldLogCraftingEndpointMismatch()) {
+            AddDebugLog("Crafting: endpoint mismatch for " + character +
+                        " (got " + std::string(resp->endpoint) + "); dropped");
+        }
         ScheduleCraftingCooldown();
         delete resp;
         return;
@@ -784,6 +837,11 @@ void RefreshLegendaryArmory() {
 // is 20 small requests and must not be fired all at once.
 void RefreshCharacterCrafting() {
     if (!g_HoardDataAvailable) return;
+    // Latched permanently once H&S has proven too old to ever answer this
+    // sweep — see LatchCraftingVersionTooOld. Checked before anything else so
+    // a stuck-old H&S cannot cost a proxy request or a cooldown cycle ever
+    // again this session.
+    if (CraftingVersionTooOld()) return;
 
     // Reclaim a slot whose reply never arrived, then honour any back-off asked
     // for by the last unusable reply. Both must precede ClaimCraftingSlot.
