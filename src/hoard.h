@@ -23,6 +23,7 @@ void RefreshWallet();
 void RefreshMasteriesAndAchievements();
 void RefreshLegendaryArmory();
 void RefreshCharacterCrafting();
+void ResetCraftingFailures(const std::string& account);
 
 // Account display helper called from ui.cpp
 std::string GetAccountDisplayName(const std::string& account_name);

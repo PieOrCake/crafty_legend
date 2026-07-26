@@ -602,6 +602,30 @@ static void ClearCraftingFailures(const std::string& account,
     g_CraftingFailures.erase(CraftingFailureKey(account, character));
 }
 
+// Called from the manual "Refresh crafting levels" button (render thread).
+// CharacterCrafting::ForceRefresh() only resets the store; it cannot touch
+// g_CraftingFailures, which lives here and is guarded by
+// g_CraftingInFlightMutex. Without this, a character written off earlier in
+// the session would stay written off after a forced refresh. Also lifts an
+// active cooldown so the sweep can pick up the refreshed characters on the
+// very next frame instead of waiting out the retry delay. The in-flight slot
+// itself is left alone: if a request is genuinely outstanding, clearing it
+// here would let a second request claim the slot before the first reply
+// arrives, and the eventual ReleaseCraftingSlot() would then clear the wrong
+// claim.
+void ResetCraftingFailures(const std::string& account) {
+    std::lock_guard<std::mutex> lock(g_CraftingInFlightMutex);
+    const std::string prefix = account + '\x1f';
+    for (auto it = g_CraftingFailures.begin(); it != g_CraftingFailures.end();) {
+        if (it->first.compare(0, prefix.size(), prefix) == 0) {
+            it = g_CraftingFailures.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    g_CraftingCooldown = false;
+}
+
 // The GW2 API reports a key missing the `characters` scope with an error object
 // like {"text":"requires scope characters"}. That is the one parse failure that
 // justifies denying the whole account; every other bad body is transient.

@@ -215,6 +215,8 @@ namespace {
             {"Hide only when armoury is full", {"Nur bei voller Waffenkammer ausblenden", "Masquer seulement si l'arsenal est plein", "Ocultar solo si la armería está llena"}},
             {"Update Account Data", {"Kontodaten aktualisieren", "Actualiser les données du compte", "Actualizar datos de cuenta"}},
             {"Refresh TP Prices", {"TP-Preise aktualisieren", "Actualiser les prix du comptoir", "Actualizar precios del puesto"}},
+            {"Refresh crafting levels", {"Handwerksstufen aktualisieren", "Actualiser les niveaux d'artisanat", "Actualizar niveles de artesanía"}},
+            {"Re-reads each character's crafting disciplines from the API. Normally refreshed once a day.", {"Liest die Handwerksdisziplinen jedes Charakters erneut über die API. Wird normalerweise einmal täglich aktualisiert.", "Relit les disciplines d'artisanat de chaque personnage via l'API. Actualisé une fois par jour normalement.", "Vuelve a leer las disciplinas de artesanía de cada personaje desde la API. Normalmente se actualiza una vez al día."}},
             {"Homepage",        {"Startseite", "Site web", "Página web"}},
             {"Buy me a coffee!", {"Spendier mir einen Kaffee!", "Offre-moi un café !", "¡Invítame a un café!"}},
             // Short H&S status lines

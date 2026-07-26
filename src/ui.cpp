@@ -1,6 +1,7 @@
 #include "globals.h"
 #include "ui_helpers.h"
 #include "hoard.h"
+#include "CharacterCrafting.h"
 #include "settings.h"
 #include "GW2API.h"
 #include "DataManager.h"
@@ -1616,4 +1617,20 @@ void AddonOptions() {
         ImGui::EndTooltip();
     }
 
+    ImGui::Spacing();
+    if (ImGui::Button(Localization::Tr("Refresh crafting levels"))) {
+        std::string acct = CraftyLegend::GW2API::GetCurrentAccountName();
+        if (!acct.empty()) {
+            CraftyLegend::CharacterCrafting::ForceRefresh(acct);
+            ResetCraftingFailures(acct);
+            g_CraftingRefreshNeeded = true;
+        }
+    }
+    ImGui::SameLine();
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("%s", Localization::Tr(
+            "Re-reads each character's crafting disciplines from the API. "
+            "Normally refreshed once a day."));
+    }
 }
