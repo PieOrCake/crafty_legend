@@ -33,6 +33,32 @@ namespace CharacterCrafting {
         Denied   // the API key lacks the `characters` permission
     };
 
+    // One character's best satisfying discipline for a given recipe.
+    struct Match {
+        std::string character;
+        std::string discipline;
+        int rating = 0;
+    };
+
+    struct QualificationResult {
+        DataState state = DataState::NoData;
+        std::vector<Match> canCraftNow; // qualifies, discipline active
+        std::vector<Match> needsSwap;   // qualifies, discipline inactive
+        bool  hasClosest = false;
+        Match closest;                  // best non-qualifying holder
+    };
+
+    // Answer "who can craft this?" against an explicit roster.
+    // `disciplines` are alternatives: holding ANY of them at >= `rating`
+    // qualifies. `rating` 0 means no rating requirement.
+    // Each character appears at most once, in `canCraftNow` if any satisfying
+    // discipline is active, otherwise in `needsSwap`. Both lists are sorted by
+    // rating descending, then character name ascending.
+    QualificationResult Evaluate(const std::vector<CharacterEntry>& chars,
+                                 const std::vector<std::string>& disciplines,
+                                 int rating,
+                                 DataState state);
+
     // Parse one /v2/characters/<name>/crafting response body.
     // Returns false for malformed JSON or a body with no `crafting` array
     // (which is what a GW2 API error object looks like).
