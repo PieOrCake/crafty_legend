@@ -538,7 +538,7 @@ static void RenderMethodChildren(uint32_t item_id,
 void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
     ImGui::BeginChild("TreeView", ImVec2(availWidth, availHeight), false);
     if (legendaryId == 0) {
-        ImGui::TextDisabled("Select a legendary to see its crafting tree.");
+        ImGui::TextDisabled("%s", Localization::Tr("Select a legendary to see its crafting tree."));
         ImGui::EndChild();
         return;
     }
@@ -606,7 +606,7 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
                        root + "/" + std::to_string(ing.item_id), onPath);
         }
     } else {
-        ImGui::TextDisabled("No crafting recipe available for this legendary.");
+        ImGui::TextDisabled("%s", Localization::Tr("No crafting recipe available for this legendary."));
     }
 
     ImGui::EndChild();

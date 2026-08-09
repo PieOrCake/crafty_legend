@@ -127,23 +127,23 @@ static void HandleFirstRunNotice() {
     ImGui::SetNextWindowSize(ImVec2(430, 0), ImGuiCond_Appearing);
 
     if (ImGui::BeginPopupModal("Optional Add-ons", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-        ImGui::TextWrapped("Crafty Legend works best with these optional add-ons:");
+        ImGui::TextWrapped("%s", Localization::Tr("Crafty Legend works best with these optional add-ons:"));
         ImGui::Spacing();
         // Always list both dependencies so users learn about both, even if only one is missing.
         ImGui::BulletText("Hoard & Seek%s", s_missHS ? "" : " (installed)");
         ImGui::Indent();
-        ImGui::TextWrapped("Reads your account so Crafty Legend can show how many of each material you already own.");
+        ImGui::TextWrapped("%s", Localization::Tr("Reads your account so Crafty Legend can show how many of each material you already own."));
         ImGui::Unindent();
         ImGui::Spacing();
         ImGui::BulletText("Decoder Ring%s", s_missDR ? "" : " (installed)");
         ImGui::Indent();
-        ImGui::TextWrapped("Translates item and legendary names into your game language (German, French, Spanish).");
+        ImGui::TextWrapped("%s", Localization::Tr("Translates item and legendary names into your game language (German, French, Spanish)."));
         ImGui::Unindent();
         ImGui::Spacing();
         ImGui::Separator();
-        ImGui::TextWrapped("Both can be installed from the Nexus add-on library.");
+        ImGui::TextWrapped("%s", Localization::Tr("Both can be installed from the Nexus add-on library."));
         ImGui::Spacing();
-        if (ImGui::Button("Got it", ImVec2(120, 0))) {
+        if (ImGui::Button(Localization::Tr("Got it"), ImVec2(120, 0))) {
             g_FirstRunNoticeDone = true;
             SaveDisplaySettings();
             ImGui::CloseCurrentPopup();
@@ -1465,15 +1465,15 @@ void AddonRender() {
     if (g_ShowDebugWindow) {
         ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("CraftyLegend Debug Log", &g_ShowDebugWindow)) {
-            if (ImGui::Button("Clear Log")) {
+            if (ImGui::Button(Localization::Tr("Clear Log"))) {
                 ClearDebugLog();
             }
             ImGui::SameLine();
-            if (ImGui::Button("Clear Icon Request Tracking")) {
+            if (ImGui::Button(Localization::Tr("Clear Icon Request Tracking"))) {
                 g_LoggedIconRequests.clear();
             }
             ImGui::SameLine();
-            if (ImGui::Button("Copy to Clipboard")) {
+            if (ImGui::Button(Localization::Tr("Copy to Clipboard"))) {
                 std::stringstream ss;
                 for (const auto& line : GetDebugLogSnapshot()) {
                     ss << line << "\n";
@@ -1538,7 +1538,7 @@ void AddonOptions() {
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
-        ImGui::Text("Hide item icons and reduce row height for a denser view");
+        ImGui::Text("%s", Localization::Tr("Hide item icons and reduce row height for a denser view"));
         ImGui::EndTooltip();
     }
     
@@ -1602,7 +1602,7 @@ void AddonOptions() {
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
-        ImGui::Text("Show the anvil icon in the Nexus Quick Access toolbar");
+        ImGui::Text("%s", Localization::Tr("Show the anvil icon in the Nexus Quick Access toolbar"));
         ImGui::EndTooltip();
     }
 
@@ -1617,14 +1617,14 @@ void AddonOptions() {
         ImGui::EndTooltip();
     }
 
-    if (ImGui::Checkbox("Show Debug Window", &g_ShowDebugWindow)) {
+    if (ImGui::Checkbox(Localization::Tr("Show Debug Window"), &g_ShowDebugWindow)) {
         SaveDisplaySettings();
     }
     ImGui::SameLine();
     ImGui::TextDisabled("(?)");
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
-        ImGui::Text("Show debug log window for icon loading");
+        ImGui::Text("%s", Localization::Tr("Show debug log window for icon loading"));
         ImGui::EndTooltip();
     }
 

@@ -135,7 +135,10 @@ namespace {
             {"Junk",       {"Plunder", "Camelote", "Chatarra"}},
             {"Basic",      {"Einfach", "Basique", "Básico"}},
             {"Fine",       {"Fein", "Raffiné", "Fino"}},
-            {"Masterwork", {"Meisterwerk", "Chef-d'œuvre", "Obra maestra"}},
+            // "Chef-d'oeuvre" is spelt with the oe digraph, not the U+0153 ligature:
+            // that codepoint is outside Latin-1 and ImGui's default atlas, so the
+            // real spelling would draw as a missing glyph in game.
+            {"Masterwork", {"Meisterwerk", "Chef-d'oeuvre", "Obra maestra"}},
             {"Rare",       {"Selten", "Rare", "Excepcional"}},
             {"Exotic",     {"Exotisch", "Exotique", "Exótico"}},
             {"Ascended",   {"Aufgestiegen", "Élevé", "Ascendido"}},
@@ -292,6 +295,31 @@ namespace {
             {"Approve it in Hoard & Seek's settings, then use 'Refresh crafting levels'", {"Erlauben Sie es in den Einstellungen von Hoard & Seek und nutzen Sie dann 'Handwerksstufen aktualisieren'", "Autorisez-le dans les paramètres de Hoard & Seek, puis utilisez 'Actualiser les niveaux d'artisanat'", "Autorízalo en los ajustes de Hoard & Seek y luego usa 'Actualizar niveles de artesanía'"}},
             {"Your Hoard & Seek is too old for character data", {"Ihr Hoard & Seek ist zu alt für Charakterdaten", "Votre Hoard & Seek est trop ancien pour les données de personnage", "Tu Hoard & Seek es demasiado antiguo para los datos de personaje"}},
             {"Update Hoard & Seek and relaunch the game", {"Aktualisieren Sie Hoard & Seek und starten Sie das Spiel neu", "Mettez Hoard & Seek à jour et relancez le jeu", "Actualiza Hoard & Seek y reinicia el juego"}},
+            // Layout chooser and font settings (0.9.8.0) (PROVISIONAL, pending native review)
+            {"Layout", {"Layout", "Disposition", "Diseño"}},
+            {"Miller Columns", {"Miller-Spalten", "Colonnes Miller", "Columnas Miller"}},
+            {"Tree View", {"Baumansicht", "Vue arborescente", "Vista de árbol"}},
+            {"Use custom font", {"Eigene Schriftart verwenden", "Utiliser une police personnalisée", "Usar fuente personalizada"}},
+            {"Font size", {"Schriftgröße", "Taille de police", "Tamaño de fuente"}},
+            // Tree layout chrome (PROVISIONAL, pending native review)
+            {"Choose one of these acquisition methods", {"Wählen Sie eine dieser Bezugsmethoden", "Choisissez l'une de ces méthodes d'acquisition", "Elige uno de estos métodos de adquisición"}},
+            {"in total", {"insgesamt", "au total", "en total"}},
+            {"Select a legendary to see its crafting tree.", {"Wählen Sie ein Legendäres aus, um seinen Herstellungsbaum zu sehen.", "Sélectionnez un légendaire pour voir son arbre de fabrication.", "Selecciona un legendario para ver su árbol de fabricación."}},
+            {"No crafting recipe available for this legendary.", {"Für dieses Legendäre ist kein Rezept verfügbar.", "Aucune recette de fabrication disponible pour ce légendaire.", "No hay receta de fabricación disponible para este legendario."}},
+            // First-run optional dependency notice (PROVISIONAL, pending native review)
+            {"Crafty Legend works best with these optional add-ons:", {"Crafty Legend funktioniert am besten mit diesen optionalen Add-ons:", "Crafty Legend fonctionne au mieux avec ces add-ons optionnels :", "Crafty Legend funciona mejor con estos complementos opcionales:"}},
+            {"Reads your account so Crafty Legend can show how many of each material you already own.", {"Liest Ihr Konto, damit Crafty Legend anzeigen kann, wie viel Sie von jedem Material bereits besitzen.", "Lit votre compte pour que Crafty Legend puisse indiquer combien de chaque matériau vous possédez déjà.", "Lee tu cuenta para que Crafty Legend pueda mostrar cuántos materiales ya tienes."}},
+            {"Translates item and legendary names into your game language (German, French, Spanish).", {"Übersetzt Gegenstands- und Legendärnamen in Ihre Spielsprache (Deutsch, Französisch, Spanisch).", "Traduit les noms d'objets et de légendaires dans la langue de votre jeu (allemand, français, espagnol).", "Traduce los nombres de objetos y legendarios a tu idioma de juego (alemán, francés, español)."}},
+            {"Both can be installed from the Nexus add-on library.", {"Beide können über die Nexus-Add-on-Bibliothek installiert werden.", "Les deux peuvent être installés depuis la bibliothèque d'add-ons Nexus.", "Ambos se pueden instalar desde la biblioteca de complementos de Nexus."}},
+            {"Got it", {"Verstanden", "Compris", "Entendido"}},
+            // Debug window and remaining setting tooltips (PROVISIONAL, pending native review)
+            {"Clear Log", {"Protokoll leeren", "Effacer le journal", "Borrar registro"}},
+            {"Clear Icon Request Tracking", {"Symbolanfragen zurücksetzen", "Réinitialiser le suivi des icônes", "Restablecer seguimiento de iconos"}},
+            {"Copy to Clipboard", {"In Zwischenablage kopieren", "Copier dans le presse-papiers", "Copiar al portapapeles"}},
+            {"Show Debug Window", {"Debug-Fenster anzeigen", "Afficher la fenêtre de débogage", "Mostrar ventana de depuración"}},
+            {"Show debug log window for icon loading", {"Debug-Protokollfenster für das Laden von Symbolen anzeigen", "Afficher la fenêtre de journal de débogage pour le chargement des icônes", "Mostrar la ventana de registro de depuración para la carga de iconos"}},
+            {"Hide item icons and reduce row height for a denser view", {"Gegenstandssymbole ausblenden und Zeilenhöhe für eine kompakte Ansicht verringern", "Masquer les icônes d'objets et réduire la hauteur des lignes pour une vue plus dense", "Ocultar los iconos de objetos y reducir la altura de fila para una vista más compacta"}},
+            {"Show the anvil icon in the Nexus Quick Access toolbar", {"Das Amboss-Symbol in der Nexus-Schnellzugriffsleiste anzeigen", "Afficher l'icône d'enclume dans la barre d'accès rapide de Nexus", "Mostrar el icono del yunque en la barra de acceso rápido de Nexus"}},
         };
         return t;
     }
