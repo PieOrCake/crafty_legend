@@ -690,11 +690,16 @@ namespace CraftyLegend {
                     {"Coin", "10000"}
                 };
             } else if (item && item->id == 86093) { // Funerary Incense
-                acq.display_name = "Vendor - Awakened Servant Tooraj";
-                acq.vendor_name = "Awakened Servant Tooraj";
-                acq.vendor_location = "Vehjin Mines, Domain of Vabbi";
+                // The Vabbi heart vendors (Tooraj, Cagri, Bakkal...) sell this for
+                // 5 Trade Contracts but are capped at 1 per account per day, which is
+                // useless against the 250 needed for Gift of Desert Mastery. Primeval
+                // Steward is the only unlimited source. Alternative price at the same
+                // vendor: 100 Trade Contracts instead of the 3 Elegy Mosaics.
+                acq.display_name = "Vendor - Primeval Steward";
+                acq.vendor_name = "Primeval Steward";
+                acq.vendor_location = "Tomb of the Primeval Kings, Desert Highlands";
                 acq.purchase_requirements = {
-                    {"Trade Contract", "5"},
+                    {"Elegy Mosaic", "3"},
                     {"Amalgamated Gemstone", "1"},
                     {"Glob of Ectoplasm", "1"},
                     {"Obsidian Shard", "1"}
