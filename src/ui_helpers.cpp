@@ -6,6 +6,10 @@
 #include "CharacterCrafting.h"
 #include "hoard.h"
 #include "IconManager.h"
+// For MeaningfulMethods/ResolveActiveMethodIndex: the shopping list and the
+// rolled-up row costs have to pick the same acquisition route the tree is
+// showing, so they share the tree's resolver rather than re-deriving it.
+#include "ui_tree.h"
 #include <unordered_set>
 #include <algorithm>
 #include <climits>
@@ -381,13 +385,53 @@ float GetLegendaryCompletion(uint32_t legendary_id) {
     return -1.0f; // not yet computed
 }
 
+// True when an item offers a genuine choice of acquisition route. Checks the raw
+// method list first because that is a reference, while MeaningfulMethods copies -
+// and this sits on the per-frame pricing path for every visible row. MeaningfulMethods
+// only ever removes entries, so fewer than two raw methods can never yield a choice.
+static bool HasRouteChoice(uint32_t item_id) {
+    return CraftyLegend::DataManager::GetAcquisitionMethods(item_id).size() >= 2 &&
+           CraftyLegend::UI::MeaningfulMethods(item_id).size() >= 2;
+}
+
+// A purchase requirement's numeric amount, or 0 when the cost is descriptive
+// ("Requires Raptor mastery") rather than a count. Trailing text after the number
+// is tolerated so entries like "25 (Fractal Reliquary)" still parse.
+static int ParseRequirementAmount(const std::string& value) {
+    try {
+        size_t pos = 0;
+        int amount = std::stoi(value, &pos);
+        if (pos != value.size() && value[pos] != ' ') return 0;
+        return amount > 0 ? amount : 0;
+    } catch (...) {
+        return 0;
+    }
+}
+
+// Accumulate one vendor method's purchase requirements. `mKey` is the tree key of
+// the method node, so nested requirements resolve their own routes exactly as the
+// tree draws them (RenderMethodChildren builds the same "#vreq:<i>" keys).
+static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq,
+    int remaining, const std::string& mKey,
+    std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
+    std::unordered_map<std::string, int>& walletMats,
+    std::unordered_set<uint32_t>& visited);
+
 // Helper: recursively flatten a crafting tree into base materials.
 // Base materials are items with no recipe that can't be drilled into further.
 // Accumulates into a map keyed by item_id (or by name for item_id==0 wallet costs).
+//
+// `nodeKey` mirrors the tree's node key (see RenderNode) so a multi-route item is
+// flattened down the route the user actually picked. Without it the list always
+// described the recipe route, which could ask for materials the chosen vendor
+// route never needs. In Miller layout there is no expand-state to read, so
+// ResolveActiveMethodIndex falls back to its default rule and the result matches
+// the old behaviour.
 static void FlattenCraftingTree(uint32_t item_id, int count,
     std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
     std::unordered_map<std::string, int>& walletMats,
-    std::unordered_set<uint32_t>& visited) {
+    std::unordered_set<uint32_t>& visited,
+    const std::string& nodeKey) {
     if (item_id == 0 || count <= 0) return;
     if (visited.count(item_id)) return; // cycle guard
 
@@ -398,6 +442,32 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
         remaining = std::max(0, remaining - owned);
     }
     if (remaining <= 0) return;
+
+    // Multi-route item: follow the active route instead of assuming the recipe.
+    if (HasRouteChoice(item_id)) {
+        auto methods = CraftyLegend::UI::MeaningfulMethods(item_id);
+        int active = CraftyLegend::UI::ResolveActiveMethodIndex(item_id, nodeKey);
+        if (active >= 0 && active < static_cast<int>(methods.size())) {
+            const auto& method = methods[active];
+            if (method.method == "vendor") {
+                visited.insert(item_id);
+                FlattenVendorRequirements(method, remaining,
+                    nodeKey + "#m:" + std::to_string(active),
+                    itemMats, walletMats, visited);
+                visited.erase(item_id);
+                return;
+            }
+            if (method.method == "trading_post") {
+                // Buying it outright is the whole cost; do not expand the recipe.
+                std::string tpName = CraftyLegend::DataManager::GetItemName(item_id);
+                if (tpName.empty()) tpName = "Unknown #" + std::to_string(item_id);
+                itemMats[item_id].first = tpName;
+                itemMats[item_id].second += remaining;
+                return;
+            }
+            // crafting / mystic_forge: fall through to the recipe walk below.
+        }
+    }
 
     // If item has a recipe, recurse into ingredients
     const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
@@ -411,7 +481,8 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
                 walletMats[ing.name] += static_cast<int>(ing.count) * numCrafts;
             } else {
                 FlattenCraftingTree(ing.item_id, static_cast<int>(ing.count) * numCrafts,
-                    itemMats, walletMats, visited);
+                    itemMats, walletMats, visited,
+                    nodeKey + "/" + std::to_string(ing.item_id));
             }
         }
         visited.erase(item_id);
@@ -424,28 +495,40 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
     itemMats[item_id].first = name;
     itemMats[item_id].second += remaining;
 
-    // Also walk vendor purchase sub-items so their gold costs are captured
+    // Also walk vendor purchase sub-items so their gold costs are captured. Any
+    // genuine choice of vendor was resolved above, so whatever is left here is the
+    // item's only route and taking the first one with costs is not a guess.
+    // The tree passes nodeKey as the method key in this single-route case
+    // (RenderNode -> RenderMethodChildren), so the keys line up.
     const auto& acqs = CraftyLegend::DataManager::GetAcquisitionMethods(item_id);
     for (const auto& acq : acqs) {
         if (acq.purchase_requirements.empty()) continue;
         visited.insert(item_id);
-        for (const auto& req : acq.purchase_requirements) {
-            if (req.first == "Coin") continue; // direct gold cost handled by GetVendorCoinCost
-            // Parse count
-            int sub_count = 0;
-            try {
-                size_t pos = 0;
-                sub_count = std::stoi(req.second, &pos);
-                if (pos != req.second.size() && req.second[pos] != ' ') sub_count = 0;
-            } catch (...) { sub_count = 0; }
-            if (sub_count <= 0) continue;
-            uint32_t sub_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
-            if (sub_id != 0) {
-                FlattenCraftingTree(sub_id, sub_count * remaining, itemMats, walletMats, visited);
-            }
-        }
+        FlattenVendorRequirements(acq, remaining, nodeKey, itemMats, walletMats, visited);
         visited.erase(item_id);
-        break; // use first acquisition method
+        break;
+    }
+}
+
+static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq,
+    int remaining, const std::string& mKey,
+    std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
+    std::unordered_map<std::string, int>& walletMats,
+    std::unordered_set<uint32_t>& visited) {
+    int idx = 0;
+    for (const auto& req : acq.purchase_requirements) {
+        std::string reqKey = mKey + "#vreq:" + std::to_string(idx++);
+        if (req.first == "Coin") continue; // direct gold cost handled by GetVendorCoinCost
+        int sub_count = ParseRequirementAmount(req.second);
+        if (sub_count <= 0) continue;
+        uint32_t sub_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
+        if (sub_id != 0) {
+            FlattenCraftingTree(sub_id, sub_count * remaining, itemMats, walletMats, visited,
+                reqKey + "/" + std::to_string(sub_id));
+        }
+        // A requirement that resolves to no item is a wallet currency. The shopping
+        // list is a list of things to buy, and wallet costs are excluded from it
+        // (see the end of BuildShoppingList), so there is nothing to record.
     }
 }
 
@@ -462,17 +545,22 @@ void BuildShoppingList(uint32_t legendary_id) {
     // what's needed for the *next* craft, regardless of how many are already owned
     // (relevant for Runes/Sigils that can be owned multiple times, and for any
     // legendary that registers a count in the Legendary Armory).
+    // The node keys below must match the ones RenderTree/RenderNode build, or the
+    // route lookup reads a different item's expand-state: the legendary's id is the
+    // root and every child appends "/<item id>".
+    const std::string root = std::to_string(legendary_id);
     const auto* top_recipe = CraftyLegend::DataManager::GetRecipe(legendary_id);
     if (top_recipe && !top_recipe->ingredients.empty()) {
         for (const auto& ing : top_recipe->ingredients) {
             if (ing.item_id == 0) {
                 walletMats[ing.name] += static_cast<int>(ing.count);
             } else {
-                FlattenCraftingTree(ing.item_id, static_cast<int>(ing.count), itemMats, walletMats, visited);
+                FlattenCraftingTree(ing.item_id, static_cast<int>(ing.count), itemMats, walletMats,
+                    visited, root + "/" + std::to_string(ing.item_id));
             }
         }
     } else {
-        FlattenCraftingTree(legendary_id, 1, itemMats, walletMats, visited);
+        FlattenCraftingTree(legendary_id, 1, itemMats, walletMats, visited, root);
     }
 
     // Convert to shopping entries
@@ -551,7 +639,15 @@ static bool IsReadyToCraft(uint32_t item_id, int count, std::unordered_set<uint3
 }
 
 // Forward declaration for mutual recursion
-static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_set<uint32_t>& visited);
+// `nodeKey` is optional route context. When supplied, the recipe recursion below
+// hands each ingredient to GetRouteAwarePrice so a multi-route descendant is priced
+// down its active route; the cheapest-of-all-options logic at this level is
+// unchanged either way. nullptr keeps the original route-blind behaviour.
+static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_set<uint32_t>& visited,
+                                   const std::string* nodeKey = nullptr);
+static long long GetRouteAwarePrice(uint32_t item_id, int count,
+                                    std::unordered_set<uint32_t>& visited,
+                                    const std::string& nodeKey);
 
 // Helper: compute vendor acquisition cost for an item (gold portion only).
 // Returns -1 if no vendor cost is computable.
@@ -590,7 +686,8 @@ static long long GetVendorPrice(uint32_t item_id, int remaining, std::unordered_
 
 // Helper: recursively compute TP cost for an item.
 // Considers recipe crafting, TP direct buy, and vendor costs; returns cheapest.
-static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_set<uint32_t>& visited) {
+static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_set<uint32_t>& visited,
+                                   const std::string* nodeKey) {
     if (item_id == 0 || count <= 0) return 0;
     if (!CraftyLegend::GW2API::HasPriceData()) return 0;
     if (visited.count(item_id)) return 0; // cycle guard
@@ -622,7 +719,11 @@ static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_s
         if (item_id == 19675 && numCrafts > 1) numCrafts *= 3;
         long long craftSum = 0;
         for (const auto& ing : recipe->ingredients) {
-            craftSum += GetRecursivePrice(ing.item_id, static_cast<int>(ing.count) * numCrafts, visited);
+            int ingCount = static_cast<int>(ing.count) * numCrafts;
+            craftSum += nodeKey
+                ? GetRouteAwarePrice(ing.item_id, ingCount, visited,
+                                     *nodeKey + "/" + std::to_string(ing.item_id))
+                : GetRecursivePrice(ing.item_id, ingCount, visited);
         }
         visited.erase(item_id);
         if (bestPrice < 0 || craftSum < bestPrice) bestPrice = craftSum;
@@ -635,6 +736,81 @@ static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_s
     return bestPrice > 0 ? bestPrice : 0;
 }
 
+// As GetRecursivePrice, but at a node that offers a real choice of acquisition
+// route it prices the ACTIVE route rather than the cheapest one. Everywhere else
+// it hands straight back to GetRecursivePrice, so single-route items keep their
+// existing "cheapest of trading post / craft / vendor" figure. Owned counts are
+// still subtracted at every level, matching the rest of the price display.
+static long long GetRouteAwarePrice(uint32_t item_id, int count,
+                                    std::unordered_set<uint32_t>& visited,
+                                    const std::string& nodeKey) {
+    if (item_id == 0 || count <= 0) return 0;
+    if (!CraftyLegend::GW2API::HasPriceData()) return 0;
+    if (visited.count(item_id)) return 0; // cycle guard
+
+    // No genuine choice here: price it the usual way, but keep the route context so
+    // any multi-route item deeper in the recipe still follows its own active route.
+    if (!HasRouteChoice(item_id)) return GetRecursivePrice(item_id, count, visited, &nodeKey);
+
+    auto methods = CraftyLegend::UI::MeaningfulMethods(item_id);
+    int active = CraftyLegend::UI::ResolveActiveMethodIndex(item_id, nodeKey);
+    if (active < 0 || active >= static_cast<int>(methods.size())) {
+        return GetRecursivePrice(item_id, count, visited, &nodeKey);
+    }
+    const auto& method = methods[active];
+
+    int remaining = count;
+    if (CraftyLegend::GW2API::HasAccountData()) {
+        remaining = std::max(0, remaining - GetEffectiveOwnedCount(item_id));
+    }
+    if (remaining <= 0) return 0;
+
+    if (method.method == "trading_post") {
+        int unit = CraftyLegend::GW2API::GetSellPrice(item_id);
+        return unit > 0 ? static_cast<long long>(unit) * remaining : 0;
+    }
+
+    if (method.method == "vendor") {
+        long long sum = 0;
+        const std::string mKey = nodeKey + "#m:" + std::to_string(active);
+        visited.insert(item_id);
+        int idx = 0;
+        for (const auto& req : method.purchase_requirements) {
+            const std::string reqKey = mKey + "#vreq:" + std::to_string(idx++);
+            int amount = ParseRequirementAmount(req.second);
+            if (req.first == "Coin") {
+                if (amount > 0) sum += static_cast<long long>(amount) * remaining;
+                continue;
+            }
+            if (amount <= 0) continue;
+            uint32_t sub_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
+            if (sub_id == 0) continue; // wallet currency: no gold equivalent
+            sum += GetRouteAwarePrice(sub_id, amount * remaining, visited,
+                                      reqKey + "/" + std::to_string(sub_id));
+        }
+        visited.erase(item_id);
+        return sum;
+    }
+
+    // crafting / mystic_forge
+    const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
+    if (!recipe || recipe->ingredients.empty()) {
+        return GetRecursivePrice(item_id, count, visited, &nodeKey);
+    }
+    visited.insert(item_id);
+    int output = std::max(1u, recipe->output_count);
+    int numCrafts = (remaining + output - 1) / output;
+    // Mystic Clover: ~33% success rate, need ~3x attempts (mirrors GetRecursivePrice)
+    if (item_id == 19675 && numCrafts > 1) numCrafts *= 3;
+    long long sum = 0;
+    for (const auto& ing : recipe->ingredients) {
+        sum += GetRouteAwarePrice(ing.item_id, static_cast<int>(ing.count) * numCrafts, visited,
+                                  nodeKey + "/" + std::to_string(ing.item_id));
+    }
+    visited.erase(item_id);
+    return sum;
+}
+
 // Helper: get the total gold cost for a material (recursive through crafting tree)
 int GetMaterialTotalPrice(const CraftyLegend::RecipeIngredient& mat) {
     // Coin materials: count is already the total copper amount
@@ -644,6 +820,22 @@ int GetMaterialTotalPrice(const CraftyLegend::RecipeIngredient& mat) {
     std::unordered_set<uint32_t> visited;
     long long price = GetRecursivePrice(mat.item_id, static_cast<int>(mat.count), visited);
     // Cap to int range
+    if (price > INT_MAX) return INT_MAX;
+    return static_cast<int>(price);
+}
+
+// The tree's variant: same figure, but multi-route nodes are priced down the route
+// the tree is showing, so a row's cost agrees with the method row above it and with
+// the route-aware heading total. An empty nodeKey means "no route context" and
+// falls back to the cheapest-route figure Miller uses.
+int GetMaterialTotalPriceForRoute(const CraftyLegend::RecipeIngredient& mat,
+                                  const std::string& nodeKey) {
+    if (nodeKey.empty()) return GetMaterialTotalPrice(mat);
+    if (mat.name == "Coin" && mat.count > 0) return static_cast<int>(mat.count);
+    if (mat.item_id == 0 || mat.count == 0) return 0;
+    if (!CraftyLegend::GW2API::HasPriceData()) return 0;
+    std::unordered_set<uint32_t> visited;
+    long long price = GetRouteAwarePrice(mat.item_id, static_cast<int>(mat.count), visited, nodeKey);
     if (price > INT_MAX) return INT_MAX;
     return static_cast<int>(price);
 }

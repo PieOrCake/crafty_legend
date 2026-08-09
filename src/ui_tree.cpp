@@ -201,9 +201,12 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     // labelStartX is the icon-column width (no price column in Task 5).
     // Right-pinned acquisition cost (Task 8): computed once so we can both
     // reserve room for it (narrowing the Selectable) and draw it afterwards at
-    // a fixed x, consistent across all depths.
+    // a fixed x, consistent across all depths. Route-aware, so a multi-route item
+    // is priced down the route this node is showing rather than the cheapest one:
+    // that keeps the row consistent with the method row beneath it and with the
+    // rolled-up heading total.
     float rowBaseY = ImGui::GetCursorPosY();
-    int   rowCost  = GetMaterialTotalPrice(mat);
+    int   rowCost  = GetMaterialTotalPriceForRoute(mat, nodeKey);
     float costW    = rowCost > 0 ? CalcPriceWidth(rowCost) : 0.0f;
     const float costGap = 8.0f;
 

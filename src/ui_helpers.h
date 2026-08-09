@@ -52,6 +52,11 @@ void BuildShoppingList(uint32_t legendary_id);
 
 // Material price (recursive TP/vendor)
 int GetMaterialTotalPrice(const CraftyLegend::RecipeIngredient& mat);
+// Route-aware form for the tree: prices a multi-route item down its active route
+// instead of the cheapest one. Pass the item's tree node key; an empty key behaves
+// exactly like GetMaterialTotalPrice.
+int GetMaterialTotalPriceForRoute(const CraftyLegend::RecipeIngredient& mat,
+                                  const std::string& nodeKey);
 
 // Debug log. Thread-safe: AddDebugLog may be called from the render thread or
 // from Hoard & Seek's worker thread. g_DebugLog itself must never be touched
