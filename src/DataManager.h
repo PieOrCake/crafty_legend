@@ -185,6 +185,10 @@ namespace CraftyLegend {
         // Achievement gates for a single item (non-recursive), completion resolved.
         // Used by the UI to mark/tooltip rows whose acquisition is locked behind an achievement.
         static std::vector<Prerequisite> GetItemAchievementGates(uint32_t item_id);
+        // Every tier of every precursor collection chain. A prereq only ever names the
+        // tier currently in progress, so these must be queried in full or the panel can
+        // never work out which tier that is.
+        static std::vector<int> GetCollectionChainAchievementIds();
         
         // TP Prices - collect all non-bound item IDs across all crafting trees
         static std::vector<uint32_t> GetAllTradeableItemIds();

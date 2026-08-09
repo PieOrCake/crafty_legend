@@ -445,6 +445,13 @@ void RefreshMasteriesAndAchievements() {
         }
     }
 
+    // A precursor collection prereq only ever names the tier in progress, so the
+    // loop above sees one tier per chain. Every tier is needed to work out which
+    // one that is, and this query is latched per account, so ask for them all now.
+    for (int id : CraftyLegend::DataManager::GetCollectionChainAchievementIds()) {
+        if (id >= 0) achIds.insert(static_cast<uint32_t>(id));
+    }
+
     // Batch query achievements (up to 200 per request)
     {
         HoardQueryAchievementRequest req{};

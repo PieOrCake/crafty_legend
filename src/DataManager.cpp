@@ -2722,6 +2722,157 @@ namespace CraftyLegend {
         return p;
     }
 
+    // Precursor collection chains, keyed on the legendary's name and listed in the
+    // order they must be completed. Every id and title comes straight from
+    // /v2/achievements (category 114, Legendary Weapons) - do not hand-edit.
+    //
+    // Gen2 chains deliberately stop at tier III. Tier IV rewards the legendary's
+    // gift (Gift of the Cosmos, Gift of the Raven Spirit, Gift of the Catalyst,
+    // Gift of Family) and is attached to that gift item's own prereq case above,
+    // so including it here would gate the precursor on a collection it does not need.
+    struct CollectionTier {
+        int achievement_id;
+        const char* name;
+    };
+    static const std::unordered_map<std::string, std::vector<CollectionTier>>& CollectionChains() {
+        static const std::unordered_map<std::string, std::vector<CollectionTier>> chains = {
+            {"Astralaria", {
+                {2571, "Astralaria I: The Device"},
+                {2447, "Astralaria II: The Apparatus"},
+                {2433, "Astralaria III: The Mechanism"},
+            }},
+            {"Bolt", {
+                {2355, "Bolt I: The Experimental Sword"},
+                {2356, "Bolt II: The Perfected Sword"},
+                {2480, "Bolt III: Zap"},
+            }},
+            {"Chuka and Champawat", {
+                {2920, "Chuka and Champawat I: Hunter's Journal"},
+                {2990, "Chuka and Champawat I: The Hunt"},
+                {2921, "Chuka and Champawat II: Ambush"},
+                {2946, "Chuka and Champawat III: Naturalist's Journal"},
+                {2951, "Chuka and Champawat III: Tigris"},
+            }},
+            {"Frenzy", {
+                {2637, "Frenzy I: The Experimental Harpoon Gun"},
+                {2232, "Frenzy II: The Perfected Harpoon Gun"},
+                {2409, "Frenzy III: Rage"},
+            }},
+            {"Frostfang", {
+                {2478, "Frostfang I: The Experimental Axe"},
+                {2606, "Frostfang II: The Perfected Axe"},
+                {2393, "Frostfang III: Tooth of Frostfang"},
+            }},
+            {"HOPE", {
+                {2450, "HOPE I: Research"},
+                {2354, "HOPE II: Development"},
+                {2556, "HOPE III: Prototype"},
+            }},
+            {"Howler", {
+                {2270, "Howler I: The Experimental Warhorn"},
+                {2588, "Howler II: The Perfected Warhorn"},
+                {2260, "Howler III: Howl"},
+            }},
+            {"Incinerator", {
+                {2564, "Incinerator I: The Experimental Dagger"},
+                {2458, "Incinerator II: The Perfected Dagger"},
+                {2502, "Incinerator III: Spark"},
+            }},
+            {"Kamohoali'i Kotaki", {
+                {2642, "Kamohoali'i Kotaki I: The Experimental Spear"},
+                {2306, "Kamohoali'i Kotaki II: The Perfected Spear"},
+                {2535, "Kamohoali'i Kotaki III: Carcharias"},
+            }},
+            {"Kraitkin", {
+                {2483, "Kraitkin I: The Experimental Trident"},
+                {2522, "Kraitkin II: The Perfected Trident"},
+                {2296, "Kraitkin III: Venom"},
+            }},
+            {"Kudzu", {
+                {2193, "Kudzu I: The Experimental Longbow"},
+                {2311, "Kudzu II: The Perfected Longbow"},
+                {2383, "Kudzu III: Leaf of Kudzu"},
+            }},
+            {"Meteorlogicus", {
+                {2441, "Meteorlogicus I: The Experimental Scepter"},
+                {2391, "Meteorlogicus II: The Perfected Scepter"},
+                {2449, "Meteorlogicus III: Storm"},
+            }},
+            {"Nevermore", {
+                {2528, "Nevermore I: Ravenswood Branch"},
+                {2288, "Nevermore II: Ravenswood Staff"},
+                {2336, "Nevermore III: The Raven Staff"},
+            }},
+            {"Quip", {
+                {2389, "Quip I: The Experimental Pistol"},
+                {2498, "Quip II: The Perfected Pistol"},
+                {2524, "Quip III: Chaos Gun"},
+            }},
+            {"Rodgort", {
+                {2180, "Rodgort I: The Experimental Torch"},
+                {2596, "Rodgort II: The Perfected Torch"},
+                {2388, "Rodgort III: Rodgort's Flame"},
+            }},
+            {"Sunrise", {
+                {2253, "Sunrise I: The Experimental Daysword"},
+                {2278, "Sunrise II: The Perfected Daysword"},
+                {2630, "Sunrise III: Dawn"},
+            }},
+            {"The Bifrost", {
+                {2530, "The Bifrost I: The Experimental Staff"},
+                {2500, "The Bifrost II: The Perfected Staff"},
+                {2187, "The Bifrost III: The Legend"},
+            }},
+            {"The Dreamer", {
+                {2481, "The Dreamer I: The Experimental Short Bow"},
+                {2610, "The Dreamer II: The Perfected Short Bow"},
+                {2428, "The Dreamer III: The Lover"},
+            }},
+            {"The Flameseeker Prophecies", {
+                {2479, "The Flameseeker Prophecies I: The Experimental Shield"},
+                {2390, "The Flameseeker Prophecies II: The Perfected Shield"},
+                {2536, "The Flameseeker Prophecies III: The Chosen"},
+            }},
+            {"The Juggernaut", {
+                {2438, "The Juggernaut I: The Experimental Hammer"},
+                {2241, "The Juggernaut II: The Perfected Hammer"},
+                {2468, "The Juggernaut III: The Colossus"},
+            }},
+            {"The Minstrel", {
+                {2313, "The Minstrel I: The Experimental Focus"},
+                {2213, "The Minstrel II: The Perfected Focus"},
+                {2242, "The Minstrel III: The Bard"},
+            }},
+            {"The Moot", {
+                {2177, "The Moot I: The Experimental Mace"},
+                {2291, "The Moot II: The Perfected Mace"},
+                {2374, "The Moot III: The Energizer"},
+            }},
+            {"The Predator", {
+                {2534, "The Predator I: The Experimental Rifle"},
+                {2503, "The Predator II: The Perfected Rifle"},
+                {2280, "The Predator III: The Hunter"},
+            }},
+            {"Twilight", {
+                {2420, "Twilight I: The Experimental Nightsword"},
+                {2184, "Twilight II: The Perfected Nightsword"},
+                {2183, "Twilight III: Dusk"},
+            }},
+        };
+        return chains;
+    }
+
+    // Every tier id across every chain. The prereq panel only ever names the tier
+    // the account is currently on, but that choice needs each earlier tier's
+    // done-state, so Hoard & Seek has to be asked for all of them up front.
+    std::vector<int> DataManager::GetCollectionChainAchievementIds() {
+        std::vector<int> ids;
+        for (const auto& [name, chain] : CollectionChains()) {
+            for (const auto& tier : chain) ids.push_back(tier.achievement_id);
+        }
+        return ids;
+    }
+
     // Helper: get prerequisites for a specific item ID (not recursive)
     static void GetItemPrereqs(uint32_t item_id, std::vector<Prerequisite>& out) {
         using PC = PrereqCategory;
@@ -2866,21 +3017,30 @@ namespace CraftyLegend {
                     "Obtained by salvaging ascended weapons or armor with a Black Lion Salvage Kit", item_id));
                 break;
             // --- Gen2 Collection/Achievement items ---
+            // Each of these gifts is the reward payload of its legendary's FOURTH
+            // collection, confirmed against the `rewards` block of /v2/achievements.
+            // They were all gated on tier I, which reads as unlocked the moment the
+            // chain is started. Tiers I to III gate the precursor instead and are
+            // handled by the generic collection walk further down.
             case 71173: // Gift of the Raven Spirit
-                out.push_back(MakePrereq(PC::Achievement, "Nevermore I: Ravenswood Branch",
-                    "Complete the Nevermore I collection achievement", item_id, -1, -1, 2528));
+                out.push_back(MakePrereq(PC::Achievement, "Nevermore IV: The Raven Spirit",
+                    "Complete the Nevermore IV collection achievement, which rewards this gift",
+                    item_id, -1, -1, 2550));
                 break;
             case 72083: // Gift of the Cosmos
-                out.push_back(MakePrereq(PC::Achievement, "Astralaria I: The Device",
-                    "Complete the Astralaria I collection achievement", item_id, -1, -1, 2571));
+                out.push_back(MakePrereq(PC::Achievement, "Astralaria IV: The Cosmos",
+                    "Complete the Astralaria IV collection achievement, which rewards this gift",
+                    item_id, -1, -1, 2268));
                 break;
             case 76442: // Gift of the Catalyst
-                out.push_back(MakePrereq(PC::Achievement, "HOPE I: Research",
-                    "Complete the HOPE I collection achievement", item_id, -1, -1, 2450));
+                out.push_back(MakePrereq(PC::Achievement, "HOPE IV: The Catalyst",
+                    "Complete the HOPE IV collection achievement, which rewards this gift",
+                    item_id, -1, -1, 2250));
                 break;
             case 78344: // Gift of Family
-                out.push_back(MakePrereq(PC::Achievement, "Chuka and Champawat I: The Hunt",
-                    "Complete the Chuka and Champawat I collection achievement", item_id, -1, -1, 2990));
+                out.push_back(MakePrereq(PC::Achievement, "Chuka and Champawat IV: A Nontraditional Family",
+                    "Complete the Chuka and Champawat IV collection achievement, which rewards this gift",
+                    item_id, -1, -1, 2974));
                 break;
             case 106986: // Gift of the Hylek
                 out.push_back(MakePrereq(PC::Achievement, "Radiance of the Sun God",
@@ -3098,52 +3258,53 @@ namespace CraftyLegend {
                             }
                         }
 
-                        // Map collection names to GW2 API achievement IDs
-                        static const std::unordered_map<std::string, int> collection_achievement_ids = {
-                            // Gen1 Tier III precursor collections
-                            {"Twilight III: Dusk", 2183},
-                            {"Sunrise III: Dawn", 2630},
-                            {"Bolt III: Zap", 2480},
-                            {"The Bifrost III: The Legend", 2187},
-                            {"The Dreamer III: The Lover", 2428},
-                            {"Frostfang III: Tooth of Frostfang", 2393},
-                            {"Incinerator III: Spark", 2502},
-                            {"Kudzu III: Leaf of Kudzu", 2383},
-                            {"Meteorlogicus III: Storm", 2449},
-                            {"Howler III: Howl", 2260},
-                            {"Quip III: Chaos Gun", 2524},
-                            {"Rodgort III: Rodgort's Flame", 2388},
-                            {"The Flameseeker Prophecies III: The Chosen", 2536},
-                            {"The Juggernaut III: The Colossus", 2468},
-                            {"The Minstrel III: The Bard", 2242},
-                            {"The Moot III: The Energizer", 2374},
-                            {"The Predator III: The Hunter", 2280},
-                            {"Frenzy III: Rage", 2409},
-                            {"Kamohoali'i Kotaki III: Carcharias", 2535},
-                            {"Kraitkin III: Venom", 2296},
-                            // Gen2 precursor collections (final tier)
-                            {"Nevermore Collections", 2550},
-                            {"Astralaria Collections", 2268},
-                            {"HOPE Collections", 2250},
-                            {"Chuka and Champawat Collections", 2951},
-                        };
-
                         std::string prereq_name;
                         std::string desc;
+                        int achiev_id = -1;
                         std::string target = precursor_name.empty() ? "the precursor" : precursor_name;
-                        if (!legendary_name.empty() && !precursor_name.empty()) {
-                            if (precursor_tradeable) {
-                                // Gen1: collection name follows "[Legendary] III: [Precursor]"
-                                prereq_name = legendary_name + " III: " + precursor_name;
-                                desc = "Complete this collection to craft " + target +
-                                    ". Only needed if crafting " + target +
-                                    " via the collection path instead of purchasing from the Trading Post.";
-                            } else {
-                                // Gen2: account-bound precursor, collection is required
-                                prereq_name = legendary_name + " Collections";
-                                desc = "Complete the " + legendary_name +
-                                    " precursor crafting collections. Required for crafting " + target + ".";
+
+                        // Base wording: a Gen1 precursor can be bought instead, a Gen2
+                        // one is account bound so the collections are the only route.
+                        if (precursor_tradeable) {
+                            desc = "Complete this collection chain to craft " + target +
+                                ". Only needed if crafting " + target +
+                                " via the collection path instead of purchasing from the Trading Post.";
+                        } else {
+                            desc = "Complete the precursor crafting collections. Required for crafting " +
+                                target + ".";
+                        }
+
+                        const auto& chains = CollectionChains();
+                        auto cit = chains.find(legendary_name);
+                        if (cit != chains.end() && !cit->second.empty()) {
+                            // Name the tier actually being worked on: the earliest one
+                            // the account has not finished. Listing the whole chain
+                            // would bury the only line the user cares about, and naming
+                            // the last tier (what this used to do) reports no progress
+                            // at all until every earlier tier is behind you. With no
+                            // account data yet, tier one is the honest guess - the panel
+                            // is rebuilt when achievements arrive.
+                            const auto& chain = cit->second;
+                            size_t idx = chain.size();
+                            for (size_t i = 0; i < chain.size(); i++) {
+                                if (!GW2API::IsAchievementDone(chain[i].achievement_id)) {
+                                    idx = i;
+                                    break;
+                                }
                             }
+                            if (idx == chain.size()) {
+                                prereq_name = legendary_name + " Collections";
+                                achiev_id = chain.back().achievement_id;
+                            } else {
+                                prereq_name = chain[idx].name;
+                                achiev_id = chain[idx].achievement_id;
+                                desc += "\n\nStep " + std::to_string(idx + 1) + " of " +
+                                    std::to_string(chain.size()) + " in the chain.";
+                            }
+                        } else if (!legendary_name.empty() && !precursor_name.empty()) {
+                            prereq_name = precursor_tradeable
+                                ? (legendary_name + " III: " + precursor_name)
+                                : (legendary_name + " Collections");
                         } else if (!precursor_name.empty()) {
                             prereq_name = target + " Collection";
                             desc = "Complete this collection to craft " + target + ".";
@@ -3152,12 +3313,6 @@ namespace CraftyLegend {
                             desc = "Part of a precursor crafting collection.";
                         }
 
-                        // Look up achievement ID for completion tracking
-                        int achiev_id = -1;
-                        auto ait = collection_achievement_ids.find(prereq_name);
-                        if (ait != collection_achievement_ids.end()) {
-                            achiev_id = ait->second;
-                        }
                         out.push_back(MakePrereq(PC::Collection, prereq_name, desc, item_id, -1, -1, achiev_id));
                     }
                 }
