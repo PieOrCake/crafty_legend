@@ -27,7 +27,7 @@ namespace CraftyLegend {
             {"Jug of Water", 12156},
             {"Vial of Condensed Mists Essence", 38014},
             {"Icy Runestone", 19676},
-            {"Bloodstone Shard", 19925},
+            {"Bloodstone Shard", 20797},
             {"Crystalline Ore", 46682},
             // Gen3 (EoD) materials
             {"Antique Summoning Stone", 96978},
@@ -97,6 +97,13 @@ namespace CraftyLegend {
             {"Blood Rubies", 79280},
             {"Fire Orchid Blossom", 81127},
             {"Fire Orchid Blossoms", 81127},
+            {"Jade Shard", 80332},
+            {"Jade Shards", 80332},
+            {"Orrian Pearl", 81706},
+            {"Orrian Pearls", 81706},
+            {"Fresh Winterberry", 79899},
+            {"Fresh Winterberries", 79899},
+            {"Petrified Wood", 79469},
             {"Shadowstone Fragment", 109459},
             {"Shadowstone Fragments", 109459},
             {"Tome of Knowledge", 43766},
@@ -271,25 +278,24 @@ namespace CraftyLegend {
             }
             
             // WvW vendor items: add vendor method for items with only "wvw" acquisition
-            auto addWvWVendor = [&](uint32_t id, const char* name, const char* ticketCost, const char* badgeCost) {
+            auto addWvWVendor = [&](uint32_t id, const char* name, const char* ticketCost) {
                 if (item.id == id) {
                     AcquisitionMethod v;
                     v.method = "vendor";
-                    v.display_name = std::string("Vendor - Skirmish Supervisor");
-                    v.description = "Purchased from WvW Skirmish Supervisor";
-                    v.vendor_name = "Skirmish Supervisor";
-                    v.vendor_location = "WvW";
+                    v.display_name = std::string("Vendor - Legendary Commander War Razor");
+                    v.description = "Purchased from the WvW legendary armor vendor";
+                    v.vendor_name = "Legendary Commander War Razor";
+                    v.vendor_location = "WvW spawn areas";
                     v.purchase_requirements = {
-                        {"WvW Skirmish Claim Ticket", ticketCost},
-                        {"Badge of Honor", badgeCost}
+                        {"WvW Skirmish Claim Ticket", ticketCost}
                     };
                     methods.push_back(v);
                 }
             };
-            addWvWVendor(81455, "Recruit's Wings of War", "175", "35");
-            addWvWVendor(81356, "Soldier's Wings of War", "350", "75");
-            addWvWVendor(81288, "General's Wings of War", "525", "150");
-            addWvWVendor(81294, "Commander's Wings of War", "700", "350");
+            addWvWVendor(81455, "Recruit's Wings of War", "350");
+            addWvWVendor(81356, "Soldier's Wings of War", "525");
+            addWvWVendor(81288, "General's Wings of War", "700");
+            addWvWVendor(81294, "Commander's Wings of War", "875");
 
             // Items sold by multiple vendors: replace single vendor with specific options
             if (item.id == 80058) { // Mist Band (Infused)
@@ -324,8 +330,8 @@ namespace CraftyLegend {
                 wvw.vendor_name = "Skirmish Supervisor";
                 wvw.vendor_location = "WvW";
                 wvw.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "250"},
-                    {"Memory of Battle", "350"}
+                    {"WvW Skirmish Claim Ticket", "350"},
+                    {"Memory of Battle", "250"}
                 };
                 methods.push_back(wvw);
             }
@@ -631,14 +637,16 @@ namespace CraftyLegend {
                 acq.purchase_requirements = {
                     {"Coin", "10000"}
                 };
-            } else if (item && item->id == 5 || (item && item->id == 19925)) { // Obsidian Shard
+            } else if (item && item->id == 19925) { // Obsidian Shard
                 acq.display_name = "Vendor - Multiple";
                 acq.vendor_name = "Multiple Vendors";
                 acq.vendor_location = "Various Locations";
+                // One price, not three: these are ALTERNATIVES and listing them together
+                // charged the player all three at once. Karma is the most widely available.
+                // Also sold for 25 Fractal Relic (Fractal Reliquary), 50 Bandit Crest
+                // (Silverwastes), 3 Laurel (Laurel Merchant) or 100 Volatile Magic + 96 Coin.
                 acq.purchase_requirements = {
-                    {"Fractal Relics", "25 (Fractal Reliquary)"},
-                    {"Karma", "2100 (Orr Karma Vendors)"},
-                    {"Bandit Crests", "50 (Silverwastes)"}
+                    {"Karma", "2100"}
                 };
             } else if (item && item->id == 6) { // Mystic Coin
                 acq.display_name = "Trading Post";
@@ -1045,6 +1053,7 @@ namespace CraftyLegend {
                 acq.vendor_name = "Scholar Glenna";
                 acq.vendor_location = "Raid Lobby";
                 acq.purchase_requirements = {
+                    {"Coin", "50000"},
                     {"Legendary Insight", "25"}
                 };
             } else if (item && item->id == 98327) { // Legendary Insight
@@ -1090,8 +1099,10 @@ namespace CraftyLegend {
                 std::string markName = isHeavy ? "Grandmaster Armorsmith's Mark" :
                                        (isMedium ? "Grandmaster Leatherworker's Mark" :
                                                    "Grandmaster Tailor's Mark");
+                // Coat costs 3 gold, every other slot 2.
+                std::string coin = isChest ? "30000" : "20000";
                 acq.purchase_requirements = {
-                    {"Coin", "20000"},
+                    {"Coin", coin},
                     {markName, marks},
                     {"WvW Skirmish Claim Ticket", tickets},
                     {"Memory of Battle", "250"}
@@ -1105,24 +1116,44 @@ namespace CraftyLegend {
                                 item->id == 67131 || item->id == 67151 || item->id == 67148)) {
                 acq.display_name = "Vendor - PvP League";
                 acq.vendor_name = "Ascended Armor League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
+                // Cost varies by slot, and there are no PvP League Tickets in it at all.
+                // Coat = 4 marks + 250 Ascended Shard of Glory + 3g; leggings = 4 marks +
+                // 150 + 2g; every other slot = 3 marks + 100 + 2g. 250 Shard of Glory flat.
+                bool pvpIsChest = (item->id == 67143 || item->id == 67115 || item->id == 67118);
+                bool pvpIsLegs  = (item->id == 67146 || item->id == 67157 || item->id == 67151);
+                std::string pvpMarks = (pvpIsChest || pvpIsLegs) ? "4" : "3";
+                std::string pvpAscShards = pvpIsChest ? "250" : (pvpIsLegs ? "150" : "100");
+                std::string pvpCoin = pvpIsChest ? "30000" : "20000";
+                bool pvpIsHeavy  = (item->id == 67145 || item->id == 67147 || item->id == 67143 ||
+                                     item->id == 67144 || item->id == 67146 || item->id == 67142);
+                bool pvpIsMedium = (item->id == 67156 || item->id == 67158 || item->id == 67115 ||
+                                     item->id == 67117 || item->id == 67157 || item->id == 67128);
+                std::string pvpMarkName = pvpIsHeavy ? "Grandmaster Armorsmith's Mark" :
+                                          (pvpIsMedium ? "Grandmaster Leatherworker's Mark" :
+                                                         "Grandmaster Tailor's Mark");
                 acq.purchase_requirements = {
-                    {"PvP League Ticket", "10"},
-                    {"Ascended Shard of Glory", "60"}
+                    {"Coin", pvpCoin},
+                    {pvpMarkName, pvpMarks},
+                    {"Ascended Shard of Glory", pvpAscShards},
+                    {"Shard of Glory", "250"}
                 };
             // --- PvP Armor Vendors ---
             } else if (item && item->id == 77531) { // Mist Core Fragment
                 acq.display_name = "Vendor - PvP";
                 acq.vendor_name = "Ascended Armor League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
+                // Sold as a bundle: 4 fragments for 1 Perfect Mist Core. Stored as 1 core
+                // because every recipe that wants a fragment wants exactly one, so a single
+                // core is what a build actually costs. Fragments also drop, guaranteed,
+                // from the Glorious Armor Box.
                 acq.purchase_requirements = {
-                    {"PvP League Ticket", "10"},
-                    {"Ascended Shard of Glory", "60"}
+                    {"Perfect Mist Core", "1"}
                 };
             } else if (item && item->id == 82700) { // Record of League Victories
                 acq.display_name = "Vendor - PvP";
                 acq.vendor_name = "Ascended Armor League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"PvP League Ticket", "30"}
                 };
@@ -1137,27 +1168,31 @@ namespace CraftyLegend {
             // --- Legendary Trinket Vendors ---
             // Aurora (LWS3)
             } else if (item && item->id == 81815) { // Gift of Bloodstone Magic
-                acq.display_name = "Vendor - Scholar Rakka";
-                acq.vendor_name = "Scholar Rakka";
-                acq.vendor_location = "Bloodstone Fen";
+                acq.display_name = "Vendor - Miyani";
+                acq.vendor_name = "Miyani";
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
+                // Gated behind the Aurora: Awakening collection.
                 acq.purchase_requirements = {
-                    {"Unbound Magic", "500"},
-                    {"Blood Ruby", "250"}
+                    {"Blood Ruby", "250"},
+                    {"Jade Shard", "250"},
+                    {"Orrian Pearl", "250"}
                 };
             } else if (item && item->id == 82036) { // Gift of Dragon Magic
-                acq.display_name = "Vendor - Gleam of Sentience";
-                acq.vendor_name = "Gleam of Sentience";
-                acq.vendor_location = "Draconis Mons";
+                acq.display_name = "Vendor - Miyani";
+                acq.vendor_name = "Miyani";
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
+                // Gated behind the Aurora: Awakening collection.
                 acq.purchase_requirements = {
-                    {"Unbound Magic", "500"},
-                    {"Fire Orchid Blossom", "250"}
+                    {"Fire Orchid Blossom", "250"},
+                    {"Fresh Winterberry", "250"},
+                    {"Petrified Wood", "250"}
                 };
             } else if (item && item->id == 19663) { // Bottle of Elonian Wine
-                acq.display_name = "Vendor - Master Craftsman";
-                acq.vendor_name = "Master Craftsman";
-                acq.vendor_location = "Crafting Stations";
+                acq.display_name = "Vendor - Miyani";
+                acq.vendor_name = "Miyani";
+                acq.vendor_location = "Any Mystic Forge (Miyani or Forge Attendant)";
                 acq.purchase_requirements = {
-                    {"Coin", "2528"}
+                    {"Coin", "2504"}
                 };
             // Transcendence (PvP)
             } else if (item && item->id == 79980) { // Mist Pendant
@@ -1202,11 +1237,10 @@ namespace CraftyLegend {
                 };
             } else if (item && item->id == 83872) { // Star of Glory
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "Ascended Armor League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
-                    {"PvP League Ticket", "15"},
-                    {"Ascended Shard of Glory", "200"}
+                    {"Ascended Shard of Glory", "400"}
                 };
             } else if (item && item->id == 83082) { // Glob of Condensed Spirit Energy
                 acq.display_name = "Vendor - Legendary Commander War Razor";
@@ -1217,45 +1251,45 @@ namespace CraftyLegend {
                 };
             } else if (item && item->id == 82926) { // Jar of Distilled Glory
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "Ascended Armor League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
+                // Plain Shard of Glory (item 70820), NOT the Ascended Shards of Glory wallet.
                 acq.purchase_requirements = {
-                    {"PvP League Ticket", "30"},
-                    {"Ascended Shard of Glory", "400"}
+                    {"Shard of Glory", "1000"}
                 };
             } else if (item && item->id == 82471) { // Record of League Participation
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "Ascended Armor League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
-                    {"PvP League Ticket", "30"}
+                    {"PvP League Ticket", "20"}
                 };
             // --- The Ascension precursor: Wings of Glory (PvP vendor) ---
             } else if (item && item->id == 77507) { // Recruit's Wings of Glory
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"PvP League Ticket", "10"}
                 };
             } else if (item && item->id == 77522) { // Veteran's Wings of Glory
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"PvP League Ticket", "20"}
                 };
             } else if (item && item->id == 77477) { // Champion's Wings of Glory
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"PvP League Ticket", "30"}
                 };
             } else if (item && item->id == 77503) { // Elite's Wings of Glory
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"PvP League Ticket", "40"}
                 };
@@ -1276,8 +1310,11 @@ namespace CraftyLegend {
                 acq.display_name = "Vendor - Skirmish Supervisor";
                 acq.vendor_name = "Skirmish Supervisor";
                 acq.vendor_location = "WvW";
+                // Bundle price: 10 shards for 1 ticket. The per-unit model cannot hold
+                // 0.1, so this rounds up the same way Philosopher's Stone does and
+                // overstates a shard tenfold. See scripts/audit_vendor_costs.py EXPECTED.
                 acq.purchase_requirements = {
-                    {"WvW Skirmish Claim Ticket", "1"}
+                    {"WvW Skirmish Claim Ticket", "1 (buys 10)"}
                 };
             } else if (item && item->id == 93147) { // Mist Pearl
                 acq.display_name = "Vendor - Legendary Commander War Razor";
@@ -1510,29 +1547,29 @@ namespace CraftyLegend {
             // --- The Ascension: PvP Essences (vendor) ---
             } else if (item && item->id == 77552) { // Essence of Determination
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"Shard of Glory", "25"}
                 };
             } else if (item && item->id == 77488) { // Essence of Challenge
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"Shard of Glory", "50"}
                 };
             } else if (item && item->id == 77541) { // Essence of Discipline
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"Shard of Glory", "75"}
                 };
             } else if (item && item->id == 77535) { // Essence of Success
                 acq.display_name = "Vendor - PvP";
-                acq.vendor_name = "PvP League Vendor";
-                acq.vendor_location = "Heart of the Mists";
+                acq.vendor_name = "League Vendor";
+                acq.vendor_location = "Hall of Memories, Heart of the Mists";
                 acq.purchase_requirements = {
                     {"Shard of Glory", "100"}
                 };
@@ -1552,11 +1589,11 @@ namespace CraftyLegend {
                     {"Ranked PvP Wins", "120"}
                 };
             } else if (item && item->id == 93146) { // Emblem of the Conqueror
-                acq.display_name = "WvW Achievement";
-                acq.vendor_name = "WvW Objective Captures";
+                acq.display_name = "Vendor - Skirmish Supervisor";
+                acq.vendor_name = "Skirmish Supervisor";
                 acq.vendor_location = "WvW";
                 acq.purchase_requirements = {
-                    {"Objective Captures", "500"}
+                    {"Emblem of the Avenger", "100"}
                 };
             } else if (item && item->id == 87557) { // Grandmaster Mark Shard
                 acq.display_name = "WvW - Skirmish Reward Track";
@@ -1970,8 +2007,8 @@ namespace CraftyLegend {
             {"League Ticket", "PvP League Ticket"},
             {"League Tickets", "PvP League Ticket"},
             {"Ascended Shard of Glory", "Ascended Shards of Glory"},
-            {"Shard of Glory", "Ascended Shards of Glory"},
-            {"Shards of Glory", "Ascended Shards of Glory"},
+            // NOTE: plain "Shard of Glory" is item 70820, a crafting material, and must NOT
+            // alias to the Ascended Shards of Glory wallet currency. They are separate costs.
             // WvW currencies
             {"Skirmish Claim Ticket", "WvW Skirmish Claim Ticket"},
             {"Skirmish Claim Tickets", "WvW Skirmish Claim Ticket"},

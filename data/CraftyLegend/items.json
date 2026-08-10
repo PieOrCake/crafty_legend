@@ -3541,7 +3541,7 @@
       "id": "70867",
       "name": "Gift of Condensed Might",
       "icon": "https://render.guildwars2.com/file/CCA4C2F8AF79D2EB0CFF381E3DDA3EA792BA7412/1302180.png",
-      "description": "Created in the Mystic Forge by combining:\n\u2022 1 Gift of Fangs\n\u2022 1 Gift of Scales\n\u2022 1 Gift of Claws\n\u20221 Gift of Bones",
+      "description": "Created in the Mystic Forge by combining:\n- 1 Gift of Fangs\n- 1 Gift of Scales\n- 1 Gift of Claws\n- 1 Gift of Bones",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
@@ -3758,7 +3758,7 @@
       "id": "71820",
       "name": "Mystic Tribute",
       "icon": "https://render.guildwars2.com/file/62A0F109C444E275E966B9A903D63FFE99540BAD/455807.png",
-      "description": "Made by combining these items in the Mystic Forge:\n\u2022 2 Gifts of Condensed Magic\n\u2022 2 Gifts of Condensed Might\n\u2022 77 Mystic Clovers\n\u2022 250 Mystic Coins",
+      "description": "Made by combining these items in the Mystic Forge:\n- 2 Gifts of Condensed Magic\n- 2 Gifts of Condensed Might\n- 77 Mystic Clovers\n- 250 Mystic Coins",
       "type": "trophy",
       "binding": "account",
       "acquisition": [],
@@ -5054,7 +5054,7 @@
       "id": "76530",
       "name": "Gift of Condensed Magic",
       "icon": "https://render.guildwars2.com/file/09F42753049B20A54F6017B1F26A9447613016FE/1302179.png",
-      "description": "Created in the Mystic Forge by combining:\n\u2022 1 Gift of Blood\n\u2022 1 Gift of Venom\n\u2022 1 Gift of Totems\n\u2022 1 Gift of Dust",
+      "description": "Created in the Mystic Forge by combining:\n- 1 Gift of Blood\n- 1 Gift of Venom\n- 1 Gift of Totems\n- 1 Gift of Dust",
       "type": "crafting_material",
       "binding": "account",
       "acquisition": [
@@ -12642,6 +12642,10 @@
     {"id": "80281", "name": "Perfected Envoy Boots", "icon": "https://render.guildwars2.com/file/BF4C6A48BA02BD6D6AC32F1E9C3F32A50399E336/1634590.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80177", "name": "Refined Envoy Boots", "icon": "https://render.guildwars2.com/file/60E85BC87152F87F1D6C587AC774504E57BDB54E/1634592.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
     {"id": "45864", "name": "Elonian Boot Sole", "icon": "https://render.guildwars2.com/file/1C0F4AF102404D150229CAC251D04E19085D02F8/699250.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45865", "name": "Elonian Boot Upper", "icon": "https://render.guildwars2.com/file/57C9099E7C305FF669B1E1CBE6B7296E1299C9F3/699251.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"}
+    {"id": "45865", "name": "Elonian Boot Upper", "icon": "https://render.guildwars2.com/file/57C9099E7C305FF669B1E1CBE6B7296E1299C9F3/699251.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "80332", "name": "Jade Shard", "icon": "https://render.guildwars2.com/file/B3D1DB6458480968B2FC0C0115476EC892CD0555/1633883.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with Quartermaster Hitchens.", "binding": "account"},
+    {"id": "81706", "name": "Orrian Pearl", "icon": "https://render.guildwars2.com/file/F3B0E4096379AA58AFC6CE1ED1FBC5B015C40840/1729789.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with vendors.", "binding": "account"},
+    {"id": "79899", "name": "Fresh Winterberry", "icon": "https://render.guildwars2.com/file/414B0D0E3E38F73EC360C5BAE8A1DE98D324DCE6/1601463.png", "type": "craftingmaterial", "rarity": "Masterwork", "level": 0, "acquisition": ["map_currency"], "description": "Used to brew a thaw elixir, traded with Slooshoo, or consumed for unbound magic.", "binding": "account"},
+    {"id": "79469", "name": "Petrified Wood", "icon": "https://render.guildwars2.com/file/EC4BA02B3BFEE603551B53BBF5305679AE700776/1493259.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with Scholar Surra.", "binding": "account"}
   ]
 }
