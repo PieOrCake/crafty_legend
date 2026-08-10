@@ -6069,7 +6069,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6091,7 +6091,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6195,7 +6195,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6263,7 +6263,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6275,7 +6275,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6365,7 +6365,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6377,7 +6377,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6449,7 +6449,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6635,7 +6635,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6671,7 +6671,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6751,7 +6751,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6807,7 +6807,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6819,7 +6819,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6867,7 +6867,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6925,7 +6925,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -6971,7 +6971,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -7078,7 +7078,7 @@
       "type": "trophy",
       "binding": "account",
       "acquisition": [
-        "vendor"
+        "mystic_forge"
       ],
       "rarity": "Legendary"
     },
@@ -12646,6 +12646,8 @@
     {"id": "80332", "name": "Jade Shard", "icon": "https://render.guildwars2.com/file/B3D1DB6458480968B2FC0C0115476EC892CD0555/1633883.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with Quartermaster Hitchens.", "binding": "account"},
     {"id": "81706", "name": "Orrian Pearl", "icon": "https://render.guildwars2.com/file/F3B0E4096379AA58AFC6CE1ED1FBC5B015C40840/1729789.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with vendors.", "binding": "account"},
     {"id": "79899", "name": "Fresh Winterberry", "icon": "https://render.guildwars2.com/file/414B0D0E3E38F73EC360C5BAE8A1DE98D324DCE6/1601463.png", "type": "craftingmaterial", "rarity": "Masterwork", "level": 0, "acquisition": ["map_currency"], "description": "Used to brew a thaw elixir, traded with Slooshoo, or consumed for unbound magic.", "binding": "account"},
-    {"id": "79469", "name": "Petrified Wood", "icon": "https://render.guildwars2.com/file/EC4BA02B3BFEE603551B53BBF5305679AE700776/1493259.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with Scholar Surra.", "binding": "account"}
+    {"id": "79469", "name": "Petrified Wood", "icon": "https://render.guildwars2.com/file/EC4BA02B3BFEE603551B53BBF5305679AE700776/1493259.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with Scholar Surra.", "binding": "account"},
+    {"id": "97790", "name": "Lamplighter's Badge", "icon": "https://render.guildwars2.com/file/461D091230BAC7A857D77FABD54C3E45685ADCFB/2595114.png", "description": "Used in the crafting of End of Dragons legendary items. Acquired by completing map exploration achievements.", "type": "crafting_material", "binding": "none", "acquisition": ["trading_post"], "rarity": "Exotic"},
+    {"id": "71148", "name": "Sheet of Premium Paper", "icon": "https://render.guildwars2.com/file/E72B275B450CE0E3084AE2969BD3680BB05A2308/1201919.png", "description": "Crafted from wood pulp and cloth. Used to make scrolls and books.", "type": "crafting_material", "binding": "none", "acquisition": ["trading_post"], "rarity": "Fine"}
   ]
 }

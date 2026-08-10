@@ -836,32 +836,11 @@ namespace CraftyLegend {
                 acq.purchase_requirements = {
                     {"Spirit Shard", "20"}
                 };
-            // --- EoD Poems (Arborstone vendor) ---
-            } else if (item && (item->id == 97160 || item->id == 96187 || item->id == 96035 ||
-                                item->id == 95809 || item->id == 96173 || item->id == 97335 ||
-                                item->id == 96951 || item->id == 95740 || item->id == 97257 ||
-                                item->id == 96341 || item->id == 96036 || item->id == 97082 ||
-                                item->id == 97800 || item->id == 97201 || item->id == 96849 ||
-                                item->id == 95962)) { // Poem on [Weapon]
-                acq.display_name = "Vendor - Leivas";
-                acq.vendor_name = "Leivas";
-                acq.vendor_location = "Arborstone, Echovald Wilds";
-                acq.purchase_requirements = {
-                    {"Imperial Favor", "1000"},
-                    {"Research Note", "500"}
-                };
+            // NOTE: the 16 "Poem on <weapon>" items and Gift of the Dragon Empire used to
+            // carry invented Leivas vendor entries here. Neither is sold by anyone -- both
+            // are Mystic Forge combines, and now live in recipes.json as mystic_forge
+            // recipes (wiki-verified 2026-08-10).
             // --- EoD (Gen3) Vendors ---
-            } else if (item && item->id == 97433) { // Gift of the Dragon Empire
-                acq.display_name = "Vendor - Leivas";
-                acq.vendor_name = "Leivas";
-                acq.vendor_location = "Arborstone, Echovald Wilds";
-                acq.purchase_requirements = {
-                    {"Jade Runestone", "100"},
-                    {"Chunk of Pure Jade", "200"},
-                    {"Chunk of Ancient Ambergris", "100"},
-                    {"Blessing of the Jade Empress", "5"},
-                    {"Imperial Favor", "2500"}
-                };
             } else if (item && item->id == 96993) { // Gift of Seitung Province
                 acq.display_name = "Map Completion - Seitung Province";
                 acq.vendor_name = "Map Reward";
@@ -1493,13 +1472,9 @@ namespace CraftyLegend {
                     {"Coin", "500000"},
                     {"Karma", "300000"}
                 };
-            } else if (item && item->id == 100400) { // Relic of the Sunless
-                acq.display_name = "Vendor - Lyhr";
-                acq.vendor_name = "Lyhr";
-                acq.vendor_location = "Wizard's Tower";
-                acq.purchase_requirements = {
-                    {"Purified Rift Essence", "10"}
-                };
+            // NOTE: Relic of the Sunless used to carry an invented "Lyhr, 10 Purified Rift
+            // Essence" entry here. Lyhr does not sell it -- it is crafting recipe 14026
+            // (Leatherworker/Armorsmith/Tailor 400), now in recipes.json.
             } else if (item && item->id == 20852) { // Eldritch Scroll
                 acq.display_name = "Vendor - Miyani";
                 acq.vendor_name = "Miyani";

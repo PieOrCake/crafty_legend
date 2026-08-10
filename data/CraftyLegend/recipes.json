@@ -15001,32 +15001,6 @@
       ]
     },
     {
-      "output_id": "70867",
-      "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
-      "ingredients": [
-        { "item_id": "75744", "count": 1, "name": "Gift of Fangs" },
-        { "item_id": "75299", "count": 1, "name": "Gift of Scales" },
-        { "item_id": "70801", "count": 1, "name": "Gift of Claws" },
-        { "item_id": "71123", "count": 1, "name": "Gift of Bones" }
-      ]
-    },
-    {
-      "output_id": "76530",
-      "output_count": 1,
-      "disciplines": [],
-      "rating": 0,
-      "type": "mystic_forge",
-      "ingredients": [
-        { "item_id": "71655", "count": 1, "name": "Gift of Blood" },
-        { "item_id": "71787", "count": 1, "name": "Gift of Venom" },
-        { "item_id": "73236", "count": 1, "name": "Gift of Totems" },
-        { "item_id": "73196", "count": 1, "name": "Gift of Dust" }
-      ]
-    },
-    {
       "output_id": "70528",
       "output_count": 1,
       "disciplines": [],
@@ -15355,6 +15329,532 @@
     {"output_id": "80281", "output_count": 1, "disciplines": [], "rating": 0, "type": "mystic_forge", "ingredients": [{"item_id": "80177", "count": 1, "name": "Refined Envoy Boots"}, {"item_id": "78866", "count": 1, "name": "Gift of Prosperity"}, {"item_id": "78989", "count": 1, "name": "Gift of Prowess"}, {"item_id": "78936", "count": 1, "name": "Gift of Dedication"}]},
     {"output_id": "80177", "output_count": 1, "disciplines": ["Leatherworker"], "rating": 500, "type": "crafting", "ingredients": [{"item_id": "49523", "count": 1, "name": "Lesser Vision Crystal"}, {"item_id": "80516", "count": 1, "name": "Envoy Insignia"}, {"item_id": "45864", "count": 1, "name": "Elonian Boot Sole"}, {"item_id": "45865", "count": 1, "name": "Elonian Boot Upper"}]},
     {"output_id": "45864", "output_count": 1, "disciplines": ["Leatherworker"], "rating": 500, "type": "crafting", "ingredients": [{"item_id": "46739", "count": 2, "name": "Elonian Leather Square"}, {"item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread"}, {"item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust"}]},
-    {"output_id": "45865", "output_count": 1, "disciplines": ["Leatherworker"], "rating": 500, "type": "crafting", "ingredients": [{"item_id": "46739", "count": 2, "name": "Elonian Leather Square"}, {"item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread"}, {"item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust"}]}
+    {"output_id": "45865", "output_count": 1, "disciplines": ["Leatherworker"], "rating": 500, "type": "crafting", "ingredients": [{"item_id": "46739", "count": 2, "name": "Elonian Leather Square"}, {"item_id": "19790", "count": 60, "name": "Spool of Gossamer Thread"}, {"item_id": "24277", "count": 5, "name": "Pile of Crystalline Dust"}]},
+    {
+      "output_id": "97160",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45845",
+          "count": 1,
+          "name": "Deldrimor Steel Axe Blade"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "96187",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45846",
+          "count": 1,
+          "name": "Deldrimor Steel Dagger Blade"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "96035",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45852",
+          "count": 1,
+          "name": "Deldrimor Steel Mace Head"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "95809",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45833",
+          "count": 1,
+          "name": "Deldrimor Steel Pistol Barrel"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "96173",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45885",
+          "count": 1,
+          "name": "Spiritwood Scepter Core"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "97335",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45848",
+          "count": 1,
+          "name": "Deldrimor Steel Sword Blade"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "96951",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45884",
+          "count": 1,
+          "name": "Spiritwood Focus Core"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "95740",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45858",
+          "count": 1,
+          "name": "Deldrimor Steel Shield Boss"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "97257",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45838",
+          "count": 1,
+          "name": "Deldrimor Steel Torch Head"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "96341",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45839",
+          "count": 1,
+          "name": "Deldrimor Steel Horn"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "96036",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45847",
+          "count": 1,
+          "name": "Deldrimor Steel Greatsword Blade"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "97082",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45851",
+          "count": 1,
+          "name": "Deldrimor Steel Hammer Head"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "97800",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45841",
+          "count": 1,
+          "name": "Spiritwood Longbow Stave"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "97201",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45834",
+          "count": 1,
+          "name": "Deldrimor Steel Rifle Barrel"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "96849",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45842",
+          "count": 1,
+          "name": "Spiritwood Short-Bow Stave"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "95962",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96151",
+          "count": 10,
+          "name": "Tale of Adventure"
+        },
+        {
+          "item_id": "97790",
+          "count": 10,
+          "name": "Lamplighter's Badge"
+        },
+        {
+          "item_id": "45887",
+          "count": 1,
+          "name": "Spiritwood Staff Head"
+        },
+        {
+          "item_id": "71148",
+          "count": 1,
+          "name": "Sheet of Premium Paper"
+        }
+      ]
+    },
+    {
+      "output_id": "97433",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "96722",
+          "count": 100,
+          "name": "Jade Runestone"
+        },
+        {
+          "item_id": "97102",
+          "count": 200,
+          "name": "Chunk of Pure Jade"
+        },
+        {
+          "item_id": "96347",
+          "count": 100,
+          "name": "Chunk of Ancient Ambergris"
+        },
+        {
+          "item_id": "97829",
+          "count": 5,
+          "name": "Blessing of the Jade Empress"
+        }
+      ]
+    },
+    {
+      "output_id": "100400",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor"
+      ],
+      "rating": 400,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "89271",
+          "count": 48,
+          "name": "Pile of Lucent Crystal"
+        },
+        {
+          "item_id": "19717",
+          "count": 30,
+          "name": "Sun Bead"
+        },
+        {
+          "item_id": "89216",
+          "count": 3,
+          "name": "Charm of Skill"
+        },
+        {
+          "item_id": "19721",
+          "count": 15,
+          "name": "Glob of Ectoplasm"
+        }
+      ]
+    }
   ]
 }

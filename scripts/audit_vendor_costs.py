@@ -66,13 +66,9 @@ EXPECTED = {
     93022: "Emblem of Victory: an achievement reward (120 ranked wins), not a purchase.",
     19925: "Obsidian Shard: several alternative vendor prices exist; we store the "
            "karma one. See the source comment for the others.",
-    # Fabricated vendor entries for items that are really Mystic Forge recipes.
-    # Left in place pending the recipe trees being added -- see handover.
-    97433: "Gift of the Dragon Empire: really a Mystic Forge recipe. PENDING.",
-    **{i: "Poem on <weapon>: really a Mystic Forge recipe. PENDING."
-       for i in (97160, 96187, 96035, 95809, 96173, 97335, 96951, 95740, 97257,
-                 96341, 96036, 97082, 97800, 97201, 96849, 95962)},
-    100400: "Relic of the Sunless: really a crafted relic (recipe 14026). PENDING.",
+    # (The 16 Poems, Gift of the Dragon Empire and Relic of the Sunless used to be
+    # suppressed here as fabricated vendor entries. Fixed 2026-08-10 -- they are now
+    # real recipes in recipes.json and no longer reach this script.)
 }
 
 # our name -> canonical wiki name (both directions are normalised through this)
