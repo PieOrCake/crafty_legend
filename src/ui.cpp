@@ -243,6 +243,14 @@ void AddonRender() {
         RefreshWallet();
     }
 
+    // Re-query the Legendary Armory if account changed. Without this the flag had
+    // no driver at all - RefreshLegendaryArmory was only reachable from the tail
+    // of RefreshHoardData - so an account switch and a rate-limited armoury reply
+    // both set g_ArmoryRefreshNeeded and then nothing ever acted on it.
+    if (g_ArmoryRefreshNeeded && g_HoardDataAvailable && !busyBlocked) {
+        RefreshLegendaryArmory();
+    }
+
     // Learn the account list (and each account's characters). Must precede the
     // crafting sweep: it is what supplies the roster the sweep walks.
     if (g_HoardDataAvailable && !busyBlocked) {

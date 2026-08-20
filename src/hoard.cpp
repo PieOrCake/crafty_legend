@@ -79,6 +79,18 @@ void OnHoardDataUpdated(void* aEventArgs) {
     CraftyLegend::GW2API::SetHasAccountData(true);
     g_HoardQueriedItems.clear();
     g_HoardQueriedWallets.clear();
+    // Clearing a cache is not enough to get it back: RefreshLegendaryArmory and
+    // RefreshMasteriesAndAchievements both skip out early when they already hold
+    // data for the current account, and wiping the map does not change that -
+    // the "current account" they compare against is still the same string. So the
+    // armoury and the achievement/mastery data were dropped here and never
+    // re-fetched, leaving Owned Legendaries and every collection tier blank until
+    // a restart. The wallet escaped it only because its own skip check also asks
+    // HasWalletData(). Neither of these can use that trick (an account owning no
+    // legendaries has a legitimately empty armoury, which would then re-query
+    // forever), so say explicitly that a refresh is due.
+    g_ArmoryRefreshNeeded = true;
+    g_MasteryAchievementRefreshNeeded = true;
     g_CompletionCacheDirty = true;
     g_ShoppingListDirty = true;
 }
@@ -250,8 +262,19 @@ std::string GetAccountDisplayName(const std::string& account_name) {
     return account_name;
 }
 
+// Consecutive accounts replies that came back with no character names at all.
+// See OnAccountsResponse: an empty roster is a "not ready yet", not an answer,
+// but it must not be retried forever either. 20 replies at one every 3 s gives
+// H&S a minute to finish its character fetch.
+static int g_AccountDetectionEmptyReplies = 0;
+static constexpr int ACCOUNT_DETECTION_MAX_EMPTY_REPLIES = 20;
+
 // Called when H&S accounts are added/removed — refresh the account list
 void OnAccountsChanged(void* aEventArgs) {
+    // A newly added account brings a roster we have not seen, so reopen detection
+    // even if an earlier run had given up on an empty one.
+    g_AccountDetectionDone = false;
+    g_AccountDetectionEmptyReplies = 0;
     StartAccountDetection();
 }
 
@@ -273,6 +296,7 @@ void OnAccountsResponse(void* aEventArgs) {
     g_AccountNames.clear();
     g_AccountLabels.clear();
     g_CharToAccount.clear();
+    bool anyCharacters = false;
     for (uint32_t i = 0; i < resp->account_count && i < 16; i++) {
         std::string name = resp->accounts[i].account_name;
         if (!name.empty()) {
@@ -286,13 +310,28 @@ void OnAccountsResponse(void* aEventArgs) {
                 if (ch.empty()) continue;
                 g_CharToAccount[ch] = name;
                 charNames.push_back(ch);
+                anyCharacters = true;
             }
             CraftyLegend::CharacterCrafting::SetAccountCharacters(name, charNames);
         }
     }
     delete resp;
 
-    g_AccountDetectionDone = true;
+    // An OK reply is not proof the answer is usable. H&S fetches each account's
+    // character list asynchronously at load (RefreshCharacterListsAsync), so a
+    // reply that lands before that finishes carries accounts with no characters -
+    // and this is the only source of both the character->account map and the
+    // crafting roster. Latching on it left the active account unresolvable and the
+    // crafting tooltip stuck on "Loading character data..." for the whole session.
+    // The lists are persisted to disk by H&S, so this only happens on a genuinely
+    // cold start, but that is exactly a first run with a newly added account.
+    // Keep asking until characters actually turn up, with a cap so an account that
+    // really has none stops the 3 s poll instead of running it all session.
+    if (anyCharacters) {
+        g_AccountDetectionDone = true;
+    } else if (++g_AccountDetectionEmptyReplies >= ACCOUNT_DETECTION_MAX_EMPTY_REPLIES) {
+        g_AccountDetectionDone = true;
+    }
     TryResolveCurrentAccount();
 }
 
