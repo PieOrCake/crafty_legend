@@ -24,6 +24,13 @@ void RefreshMasteriesAndAchievements();
 void RefreshLegendaryArmory();
 void RefreshCharacterCrafting();
 void ResetCraftingFailures(const std::string& account);
+// Ask H&S for the account list (and each account's characters) until it answers.
+// This is the ONLY source of the character->account map and of the crafting
+// tooltip's character roster, so it must run for every user, not just
+// multi-account ones. Cheap and self-throttling: a no-op once an OK response
+// has landed, and retried every few seconds until then (the response can come
+// back PENDING while H&S is still loading, and nothing else would ask again).
+void EnsureAccountDetection();
 
 // Account display helper called from ui.cpp
 std::string GetAccountDisplayName(const std::string& account_name);

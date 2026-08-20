@@ -181,14 +181,9 @@ void OpenWikiPage(const std::string& itemName) {
 // Account-bound items: show only current account's count
 // Unbound items: show total across all accounts
 int GetEffectiveOwnedCount(uint32_t item_id) {
-    if (!CraftyLegend::GW2API::HasAccountData()) return 0;
-    const auto* item = CraftyLegend::DataManager::GetItem(item_id);
-    if (item && (item->binding == "account" || item->binding == "soul")
-        && CraftyLegend::GW2API::HasCurrentAccount()) {
-        return CraftyLegend::GW2API::GetOwnedCountForAccount(item_id,
-            CraftyLegend::GW2API::GetCurrentAccountName());
-    }
-    return CraftyLegend::GW2API::GetOwnedCount(item_id);
+    // One implementation, in DataManager, so Miller, the tree, pricing and the
+    // shopping list can never drift apart on what "owned" means.
+    return CraftyLegend::DataManager::EffectiveOwnedCount(item_id);
 }
 
 // --- Legendary completion % ---
@@ -473,8 +468,8 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
     const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
     if (recipe && !recipe->ingredients.empty()) {
         visited.insert(item_id);
-        int output = std::max(1u, recipe->output_count);
-        int numCrafts = (remaining + output - 1) / output;
+        int numCrafts = CraftyLegend::DataManager::CraftsNeeded(
+            item_id, remaining, recipe->output_count);
         for (const auto& ing : recipe->ingredients) {
             if (ing.item_id == 0) {
                 // Wallet/currency cost
@@ -620,10 +615,8 @@ static bool IsReadyToCraft(uint32_t item_id, int count, std::unordered_set<uint3
     const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
     if (recipe && !recipe->ingredients.empty()) {
         visited.insert(item_id);
-        int output = std::max(1u, recipe->output_count);
-        int numCrafts = (remaining + output - 1) / output;
-        // Mystic Clover: ~33% success rate, need ~3x attempts
-        if (item_id == 19675 && numCrafts > 1) numCrafts *= 3;
+        int numCrafts = CraftyLegend::DataManager::CraftsNeeded(
+            item_id, remaining, recipe->output_count);
         for (const auto& ing : recipe->ingredients) {
             if (!IsReadyToCraft(ing.item_id, static_cast<int>(ing.count) * numCrafts, visited)) {
                 visited.erase(item_id);
@@ -713,10 +706,8 @@ static long long GetRecursivePrice(uint32_t item_id, int count, std::unordered_s
     const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
     if (recipe && !recipe->ingredients.empty()) {
         visited.insert(item_id);
-        int output = std::max(1u, recipe->output_count);
-        int numCrafts = (remaining + output - 1) / output;
-        // Mystic Clover: ~33% success rate, need ~3x attempts
-        if (item_id == 19675 && numCrafts > 1) numCrafts *= 3;
+        int numCrafts = CraftyLegend::DataManager::CraftsNeeded(
+            item_id, remaining, recipe->output_count);
         long long craftSum = 0;
         for (const auto& ing : recipe->ingredients) {
             int ingCount = static_cast<int>(ing.count) * numCrafts;
@@ -798,10 +789,8 @@ static long long GetRouteAwarePrice(uint32_t item_id, int count,
         return GetRecursivePrice(item_id, count, visited, &nodeKey);
     }
     visited.insert(item_id);
-    int output = std::max(1u, recipe->output_count);
-    int numCrafts = (remaining + output - 1) / output;
-    // Mystic Clover: ~33% success rate, need ~3x attempts (mirrors GetRecursivePrice)
-    if (item_id == 19675 && numCrafts > 1) numCrafts *= 3;
+    int numCrafts = CraftyLegend::DataManager::CraftsNeeded(
+        item_id, remaining, recipe->output_count);
     long long sum = 0;
     for (const auto& ing : recipe->ingredients) {
         sum += GetRouteAwarePrice(ing.item_id, static_cast<int>(ing.count) * numCrafts, visited,
@@ -1332,10 +1321,13 @@ void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe) {
 
     using DataState = CraftyLegend::CharacterCrafting::DataState;
 
-    // NoData means we do not even know the account's character list yet (H&S
-    // has not delivered it, or the account has no characters). "Loading
-    // character data..." would be a claim we cannot back — draw nothing.
-    if (result.state == DataState::NoData) return;
+    // NoData means we do not even know the account's character list yet. This
+    // used to return silently, which hid a real bug for months: single-account
+    // users never had account detection run, so the roster was permanently empty
+    // and the tooltip simply never appeared - and because this check came first,
+    // none of the honest explanations below could ever be reached either. Say
+    // something instead, so the next failure of this kind is diagnosable.
+    const bool noRoster = (result.state == DataState::NoData);
 
     ImGui::BeginTooltip();
     ImGui::PushTextWrapPos(ImGui::GetFontSize() * 28.0f);
@@ -1365,6 +1357,13 @@ void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe) {
             Localization::Tr("Your Hoard & Seek is too old for character data"));
         ImGui::TextDisabled("%s",
             Localization::Tr("Update Hoard & Seek and relaunch the game"));
+    } else if (noRoster) {
+        // The roster arrives with Hoard & Seek's account list, which
+        // EnsureAccountDetection retries until it lands - so "still loading" is a
+        // claim we can now back, and the second line says what is outstanding.
+        ImGui::TextDisabled("%s", Localization::Tr("Loading character data..."));
+        ImGui::TextDisabled("%s",
+            Localization::Tr("Waiting for the account's character list"));
     } else if (result.state == DataState::Loading && !haveNames) {
         ImGui::TextDisabled("%s", Localization::Tr("Loading character data..."));
     } else if (!haveNames) {

@@ -43,10 +43,13 @@ void OnHoardPong(void* aEventArgs) {
         g_HoardDataAvailable = true;
         g_HoardRefreshNeeded = true;
         CraftyLegend::GW2API::SetHasAccountData(true);
-        // Start account detection only for multi-account setups
-        if (g_HoardAccountCount > 1 && !g_AccountDetectionDone) {
-            StartAccountDetection();
-        }
+        // Account detection used to be gated on g_HoardAccountCount > 1, on the
+        // reasoning that a single-account user needs no account resolution. That
+        // was true for ownership counting, but the accounts response is also the
+        // only source of each account's CHARACTER list - so single-account users
+        // got no roster, the crafting sweep never fired a single request, and the
+        // "who can craft this?" tooltip silently drew nothing. Run it for everyone.
+        EnsureAccountDetection();
     }
     SaveLastUpdated();
 }
@@ -335,6 +338,18 @@ static void StartAccountDetection() {
     APIDefs->Events_Raise(EV_HOARD_QUERY_ACCOUNTS, &req);
 }
 
+// See hoard.h. OnAccountsResponse only sets g_AccountDetectionDone on an OK
+// reply, so a PENDING one (H&S still loading its accounts) simply comes back
+// round here a few seconds later instead of leaving us without a roster.
+void EnsureAccountDetection() {
+    if (g_AccountDetectionDone) return;
+    static std::chrono::steady_clock::time_point s_nextAttempt{};
+    const auto now = std::chrono::steady_clock::now();
+    if (now < s_nextAttempt) return;
+    s_nextAttempt = now + std::chrono::seconds(3);
+    StartAccountDetection();
+}
+
 // Helper: fire H&S item query if not already queried
 static void QueryHoardItem(uint32_t item_id) {
     if (item_id == 0 || !g_HoardDataAvailable) return;
@@ -409,8 +424,10 @@ void RefreshHoardData() {
 
     g_HoardRefreshNeeded = false;
 
-    // After all item queries, try to resolve current account from character→account map (multi-account only)
-    if (g_HoardAccountCount > 1 && !CraftyLegend::GW2API::HasCurrentAccount()) {
+    // After all item queries, try to resolve the current account from the
+    // character->account map. Not multi-account-only: a single-account user needs
+    // a resolved account too, because the crafting-discipline sweep keys on it.
+    if (!CraftyLegend::GW2API::HasCurrentAccount()) {
         TryResolveCurrentAccount();
     }
 

@@ -236,6 +236,15 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     }
 
     if (expanded) {
+        // Drilling in shows the cost of what is LEFT to make, so the children scale
+        // from the net requirement rather than the gross one. Miller has always done
+        // this (ui.cpp's drill_count and HandleAcquisitionMethodSelection both
+        // subtract owned); the tree did not, which is why the two views disagreed.
+        // The row above still shows the gross "owned/needed" fraction. Clamped to at
+        // least one so a fully-owned branch shows one craft's worth instead of zeros.
+        int netCount = CraftyLegend::DataManager::RemainingNeeded(item_id, count);
+        if (netCount < 1) netCount = 1;
+
         auto methods = MeaningfulMethods(item_id);
         if (methods.size() >= 2) {
             // Multi-route chooser: a dim sub-heading, then one accordion node per
@@ -249,11 +258,11 @@ static void RenderNode(uint32_t item_id, int count, int depth,
             for (size_t i = 0; i < methods.size(); ++i) {
                 std::string mKey = nodeKey + "#m:" + std::to_string(i);
                 bool mExpanded = CraftyLegend::DataManager::IsNodeExpanded(mKey);
-                mExpanded = RenderMethodRow(item_id, methods[i], count, depth + 1,
+                mExpanded = RenderMethodRow(item_id, methods[i], netCount, depth + 1,
                                             nodeKey, mKey, mExpanded, (int)i == active);
                 if (mExpanded) {
                     onPath.insert(item_id);
-                    RenderMethodChildren(item_id, methods[i], count, depth + 2,
+                    RenderMethodChildren(item_id, methods[i], netCount, depth + 2,
                                          nodeKey, mKey, onPath);
                     onPath.erase(item_id);
                 }
@@ -276,9 +285,8 @@ static void RenderNode(uint32_t item_id, int count, int depth,
             onPath.insert(item_id);
             const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
             if (recipe) {
-                uint32_t out = recipe->output_count > 0 ? recipe->output_count : 1;
-                int crafts = (count + static_cast<int>(out) - 1) / static_cast<int>(out);
-                if (crafts < 1) crafts = 1;
+                int crafts = CraftyLegend::DataManager::CraftsNeeded(
+                    item_id, netCount, recipe->output_count);
                 for (const auto& ing : recipe->ingredients) {
                     RenderNode(ing.item_id, static_cast<int>(ing.count) * crafts, depth + 1,
                                nodeKey + "/" + std::to_string(ing.item_id), onPath);
@@ -287,7 +295,7 @@ static void RenderNode(uint32_t item_id, int count, int depth,
                 // No recipe but a single meaningful acquisition method (e.g. a
                 // vendor-only component): render that method's children directly
                 // so the node doesn't expand to nothing.
-                RenderMethodChildren(item_id, methods[0], count, depth + 1,
+                RenderMethodChildren(item_id, methods[0], netCount, depth + 1,
                                      nodeKey, nodeKey, onPath);
             }
             onPath.erase(item_id);
@@ -437,6 +445,22 @@ static bool RenderMethodRow(uint32_t item_id,
     float  alpha = active ? 1.0f : 0.42f;
     ImVec4 labelCol(0.85f, 0.72f, 0.42f, alpha); // dim gold
     std::string label = MethodLabel(method);
+    // A gambled forge route (Mystic Clover, ~31% success) needs more combines than
+    // the recipe's output count implies. Miller says so in its column header; the
+    // tree must match, or the material counts below look inexplicably high.
+    if (method.method == "mystic_forge") {
+        if (const auto* mRecipe = CraftyLegend::DataManager::GetRecipe(item_id)) {
+            uint32_t out = mRecipe->output_count > 0 ? mRecipe->output_count : 1;
+            int plain = (count + static_cast<int>(out) - 1) / static_cast<int>(out);
+            if (plain < 1) plain = 1;
+            int crafts = CraftyLegend::DataManager::CraftsNeeded(
+                item_id, count, mRecipe->output_count);
+            if (crafts > plain) {
+                label = Localization::ColumnTitle(
+                    "Mystic Forge (~" + std::to_string(crafts) + " attempts)");
+            }
+        }
+    }
     ImGui::TextColored(labelCol, "%s", label.c_str());
     // "Who can craft this?" belongs on this row too, not just the single-route
     // heading. The governing recipe is the one this method row would expand into
@@ -473,11 +497,18 @@ static bool RenderMethodRow(uint32_t item_id,
         int copper = gold > 0x7fffffffLL ? 0x7fffffff : static_cast<int>(gold);
         float w = CalcPriceWidth(copper);
         if (w > 0.0f) {
+            // RenderPrice ends on a trailing SameLine (its last coin does), so the
+            // cursor must be saved and restored around it - exactly as
+            // DrawRightPinnedCost does. Without this the line is left open and the
+            // FIRST child rendered below (RenderMethodChildren -> RenderNode) lays
+            // itself out on this row, off the right edge, and vanishes.
+            ImVec2 savedCursor = ImGui::GetCursorPos();
             ImGui::SameLine();
             ImGui::SetCursorPosX(std::max(contentX, rightEdge - w));
             if (!active) ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.42f);
             RenderPrice(copper);
             if (!active) ImGui::PopStyleVar();
+            ImGui::SetCursorPos(savedCursor);
         }
     }
 
@@ -524,9 +555,8 @@ static void RenderMethodChildren(uint32_t item_id,
     } else {
         const auto* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
         if (recipe) {
-            uint32_t out = recipe->output_count > 0 ? recipe->output_count : 1;
-            int crafts = (count + static_cast<int>(out) - 1) / static_cast<int>(out);
-            if (crafts < 1) crafts = 1;
+            int crafts = CraftyLegend::DataManager::CraftsNeeded(
+                item_id, count, recipe->output_count);
             for (const auto& ing : recipe->ingredients) {
                 RenderNode(ing.item_id, static_cast<int>(ing.count) * crafts, depth,
                            nodeKey + "/" + std::to_string(ing.item_id), onPath);
@@ -587,9 +617,13 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
             float w = CalcPriceWidth(copper);
             if (w > 0.0f) {
                 float rightEdge = ImGui::GetWindowContentRegionMax().x;
+                // Save/restore around RenderPrice for the same reason as
+                // RenderMethodRow: it returns on a trailing SameLine.
+                ImVec2 savedCursor = ImGui::GetCursorPos();
                 ImGui::SameLine();
                 ImGui::SetCursorPosX(std::max(ImGui::GetCursorPosX(), rightEdge - w));
                 RenderPrice(copper);
+                ImGui::SetCursorPos(savedCursor);
             }
         }
     }
@@ -697,8 +731,8 @@ long long RouteGoldCost(uint32_t item_id, const CraftyLegend::AcquisitionMethod&
         // how many craft operations are needed to produce `count` outputs.
         const CraftyLegend::Recipe* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
         if (!recipe || recipe->ingredients.empty()) return -1;
-        uint32_t output = std::max<uint32_t>(1, recipe->output_count);
-        int numCrafts = (count + static_cast<int>(output) - 1) / static_cast<int>(output);
+        int numCrafts = CraftyLegend::DataManager::CraftsNeeded(
+            item_id, count, recipe->output_count);
         for (const auto& ing : recipe->ingredients) {
             CraftyLegend::RecipeIngredient scaled = ing;
             scaled.count = ing.count * static_cast<uint32_t>(numCrafts);
@@ -779,8 +813,8 @@ static long long ActiveRouteGoldCost(uint32_t item_id, int count,
     const CraftyLegend::Recipe* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
     if (recipe && !recipe->ingredients.empty()) {
         visited.insert(item_id);
-        uint32_t output = std::max<uint32_t>(1, recipe->output_count);
-        int numCrafts = (count + static_cast<int>(output) - 1) / static_cast<int>(output);
+        int numCrafts = CraftyLegend::DataManager::CraftsNeeded(
+            item_id, count, recipe->output_count);
         long long total = 0;
         for (const auto& ing : recipe->ingredients) {
             long long effCount = static_cast<long long>(ing.count) * numCrafts;

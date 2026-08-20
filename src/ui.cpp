@@ -195,8 +195,14 @@ void AddonRender() {
         g_StartupPingRetryTime = std::chrono::steady_clock::now() + std::chrono::seconds(2);
     }
 
-    // Poll MumbleLink identity JSON if multi-account and we still don't have a valid character name
-    if (g_HoardAccountCount > 1 && g_CurrentCharacterName.empty() && g_MumbleData && g_MumbleData->UITick > 0) {
+    // Poll MumbleLink identity JSON while we still don't have a valid character
+    // name. This used to be gated on g_HoardAccountCount > 1 alongside account
+    // detection; but the character name is what resolves the active account, and
+    // the active account is what the crafting-discipline sweep keys on, so a
+    // single-account user needs it too. EV_MUMBLE_IDENTITY_UPDATED alone is not
+    // enough - the identity JSON is only valid once the character has fully
+    // loaded, which is exactly what this poll waits for.
+    if (g_CurrentCharacterName.empty() && g_MumbleData && g_MumbleData->UITick > 0) {
         // Parse the wchar_t Identity[256] JSON for the "name" field
         std::wstring wIdent(g_MumbleData->Identity);
         std::string ident(wIdent.begin(), wIdent.end());
@@ -235,6 +241,12 @@ void AddonRender() {
     // Re-query wallet if account changed
     if (g_WalletRefreshNeeded && g_HoardDataAvailable && !busyBlocked) {
         RefreshWallet();
+    }
+
+    // Learn the account list (and each account's characters). Must precede the
+    // crafting sweep: it is what supplies the roster the sweep walks.
+    if (g_HoardDataAvailable && !busyBlocked) {
+        EnsureAccountDetection();
     }
 
     // Sweep character crafting disciplines, one character per frame

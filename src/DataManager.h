@@ -162,7 +162,25 @@ namespace CraftyLegend {
         // anything the wallet knows (vendors charge the wallet, even for costs that
         // also exist as an inventory item — e.g. Testimony of Castoran Heroics).
         static uint32_t ResolveRequirementItemId(const std::string& name);
-        
+
+        // How many craft/forge operations are needed to end up with `count` of an
+        // item, given its recipe's output_count. Normally ceil(count/output_count),
+        // but Mystic Clover's forge recipes only succeed about 31% of the time, so a
+        // 10-clover combine yields ~3.1 clovers and the attempt count scales with
+        // that instead. Every consumer (Miller columns, the tree, pricing and the
+        // shopping list) must go through this, or the four disagree - which is
+        // exactly how the tree ended up showing 20 of each clover material where
+        // Miller showed 210.
+        static int CraftsNeeded(uint32_t item_id, int count, uint32_t output_count);
+        // How many of an item the account holds, counting account/soulbound items
+        // against the ACTIVE account only and unbound ones across all accounts.
+        // ui_helpers::GetEffectiveOwnedCount forwards here so there is one rule.
+        static int EffectiveOwnedCount(uint32_t item_id);
+        // Net amount still needed after what the account already holds. Drilling
+        // into an item shows the cost of what is LEFT to make, so every place that
+        // scales a recipe's children uses this.
+        static int RemainingNeeded(uint32_t item_id, int count);
+
         // Column management
         static void InitializeColumns();
         static void ResetColumns();

@@ -2096,6 +2096,48 @@ namespace CraftyLegend {
         return it != s_acquisition_methods.end() ? it->second : empty;
     }
     
+    // Mystic Clover's two Mystic Forge recipes only have a CHANCE to yield clovers -
+    // drop research over ~40k forges puts it at about 31% (see the wiki's Mystic
+    // Clover notes). Our recipe data models the 10-clover combine as a flat
+    // 10-for-10, so every consumer has to scale the attempt count by hand. It is
+    // expressed as a percentage so the integer maths below stays exact.
+    static const uint32_t MYSTIC_CLOVER_ID = 19675;
+    static const int MYSTIC_CLOVER_SUCCESS_PCT = 31;
+
+    int DataManager::CraftsNeeded(uint32_t item_id, int count, uint32_t output_count) {
+        if (count < 1) count = 1;
+        const long long out = output_count > 0 ? static_cast<long long>(output_count) : 1LL;
+
+        if (item_id == MYSTIC_CLOVER_ID) {
+            // Expected yield per combine is out * 31%, so the number of combines is
+            // ceil(count / (out * 0.31)) == ceil(count * 100 / (out * 31)).
+            const long long denom = out * MYSTIC_CLOVER_SUCCESS_PCT;
+            const long long crafts = (static_cast<long long>(count) * 100 + denom - 1) / denom;
+            return crafts < 1 ? 1 : static_cast<int>(crafts);
+        }
+
+        const long long crafts = (static_cast<long long>(count) + out - 1) / out;
+        return crafts < 1 ? 1 : static_cast<int>(crafts);
+    }
+
+    int DataManager::EffectiveOwnedCount(uint32_t item_id) {
+        if (item_id == 0) return 0;
+        if (!GW2API::HasAccountData()) return 0;
+        const Item* item = GetItem(item_id);
+        if (item && (item->binding == "account" || item->binding == "soul")
+            && GW2API::HasCurrentAccount()) {
+            return GW2API::GetOwnedCountForAccount(item_id, GW2API::GetCurrentAccountName());
+        }
+        return GW2API::GetOwnedCount(item_id);
+    }
+
+    int DataManager::RemainingNeeded(uint32_t item_id, int count) {
+        if (count <= 0) return 0;
+        const int owned = EffectiveOwnedCount(item_id);
+        const int remaining = count - owned;
+        return remaining > 0 ? remaining : 0;
+    }
+
     const std::vector<RecipeIngredient>& DataManager::GetRecipeIngredients(uint32_t item_id) {
         static std::vector<RecipeIngredient> empty;
         auto it = s_recipes.find(item_id);
@@ -2294,8 +2336,7 @@ namespace CraftyLegend {
                             // Single method - show recipe directly
                             next_column.materials = item_recipe->ingredients;
                             // Scale ingredients by number of crafts needed
-                            uint32_t out_cnt = item_recipe->output_count > 0 ? item_recipe->output_count : 1;
-                            int crafts = (item_count + out_cnt - 1) / out_cnt;
+                            int crafts = CraftsNeeded(item_id, item_count, item_recipe->output_count);
                             if (crafts > 1) {
                                 for (auto& mat : next_column.materials) mat.count *= crafts;
                             }
@@ -2335,8 +2376,7 @@ namespace CraftyLegend {
                         const Recipe* item_recipe = GetRecipe(item_id);
                         if (item_recipe && !item_recipe->ingredients.empty()) {
                             next_column.materials = item_recipe->ingredients;
-                            uint32_t out_cnt = item_recipe->output_count > 0 ? item_recipe->output_count : 1;
-                            int crafts = (item_count + out_cnt - 1) / out_cnt;
+                            int crafts = CraftsNeeded(item_id, item_count, item_recipe->output_count);
                             if (crafts > 1) {
                                 for (auto& mat : next_column.materials) mat.count *= crafts;
                             }
@@ -2353,8 +2393,7 @@ namespace CraftyLegend {
                             next_column.title = "Craft (" + FormatDisciplines(recipe->disciplines) + " " + std::to_string(recipe->rating) + ")";
                             next_column.craft_heading_item_id = item_id;
                             next_column.materials = recipe->ingredients;
-                            uint32_t out_cnt = recipe->output_count > 0 ? recipe->output_count : 1;
-                            int crafts = (item_count + out_cnt - 1) / out_cnt;
+                            int crafts = CraftsNeeded(item_id, item_count, recipe->output_count);
                             if (crafts > 1) {
                                 for (auto& mat : next_column.materials) mat.count *= crafts;
                             }
@@ -2431,11 +2470,13 @@ namespace CraftyLegend {
             int sel = parent.selected_material_index;
             if (sel >= 0 && sel < static_cast<int>(parent.materials.size()) &&
                 parent.materials[sel].item_id == src_id) {
-                qty = static_cast<int>(parent.materials[sel].count);
-                if (GW2API::HasAccountData()) {
-                    int owned = GW2API::GetOwnedCount(src_id);
-                    qty = std::max(0, qty - owned);
-                }
+                // RemainingNeeded, not raw GetOwnedCount: an account-bound item must
+                // only count against the ACTIVE account, which is what every other
+                // owned-count call site already does.
+                qty = RemainingNeeded(src_id, static_cast<int>(parent.materials[sel].count));
+                // Own enough already? Show one purchase/craft's worth rather than a
+                // column of zeroes (BuildVendorCostMaterials multiplies by qty).
+                if (qty < 1) qty = 1;
                 // Update source_item_count so it stays consistent
                 s_columns[column_index].source_item_count = qty;
             }
@@ -2452,20 +2493,19 @@ namespace CraftyLegend {
                 const Recipe* src_recipe = GetRecipe(src_id);
                 if (src_recipe && !src_recipe->ingredients.empty()) {
                     next_column.materials = src_recipe->ingredients;
-                    // Mystic Clover is gambled at ~33% success rate
-                    if (src_id == 19675 && qty > 1) {
-                        int expected_attempts = qty * 3; // ~33% chance per attempt
-                        next_column.title = "Mystic Forge (~" + std::to_string(expected_attempts) + " attempts)";
-                        for (auto& mat : next_column.materials) {
-                            mat.count *= expected_attempts;
-                        }
-                    } else {
-                        next_column.title = "Mystic Forge";
-                        uint32_t out_cnt = src_recipe->output_count > 0 ? src_recipe->output_count : 1;
-                        int crafts = (qty + out_cnt - 1) / out_cnt;
-                        if (crafts > 1) {
-                            for (auto& mat : next_column.materials) mat.count *= crafts;
-                        }
+                    // CraftsNeeded folds in Mystic Clover's ~31% success rate. The old
+                    // code multiplied the ten-clover combine's ingredients by
+                    // (clovers x 3) instead of by the number of COMBINES, which
+                    // overstated every clover material by roughly ten times.
+                    uint32_t out_cnt = src_recipe->output_count > 0 ? src_recipe->output_count : 1;
+                    int plain = (qty + static_cast<int>(out_cnt) - 1) / static_cast<int>(out_cnt);
+                    if (plain < 1) plain = 1;
+                    int crafts = CraftsNeeded(src_id, qty, src_recipe->output_count);
+                    next_column.title = (crafts > plain)
+                        ? "Mystic Forge (~" + std::to_string(crafts) + " attempts)"
+                        : "Mystic Forge";
+                    if (crafts > 1) {
+                        for (auto& mat : next_column.materials) mat.count *= crafts;
                     }
                 }
             } else {
@@ -2482,8 +2522,7 @@ namespace CraftyLegend {
                         next_column.title = "Crafting Materials";
                     }
                     next_column.materials = src_recipe->ingredients;
-                    uint32_t out_cnt = src_recipe->output_count > 0 ? src_recipe->output_count : 1;
-                    int crafts = (qty + out_cnt - 1) / out_cnt;
+                    int crafts = CraftsNeeded(src_id, qty, src_recipe->output_count);
                     if (crafts > 1) {
                         for (auto& mat : next_column.materials) mat.count *= crafts;
                     }

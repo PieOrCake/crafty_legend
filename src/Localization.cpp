@@ -290,6 +290,7 @@ namespace {
             {"any rating", {"beliebige Stufe", "niveau quelconque", "cualquier nivel"}},
             {"Loading character data...", {"Charakterdaten werden geladen...", "Chargement des données de personnage...", "Cargando datos de personaje..."}},
             {"Character data unavailable", {"Charakterdaten nicht verfügbar", "Données de personnage indisponibles", "Datos de personaje no disponibles"}},
+            {"Waiting for the account's character list", {"Warte auf die Charakterliste des Kontos", "En attente de la liste des personnages du compte", "Esperando la lista de personajes de la cuenta"}},
             {"Your API key needs the 'characters' permission", {"Ihr API-Schlüssel benötigt die Berechtigung 'characters'", "Votre clé API nécessite l'autorisation 'characters'", "Tu clave de API necesita el permiso 'characters'"}},
             {"Hoard & Seek denied Crafty Legend permission", {"Hoard & Seek hat Crafty Legend die Berechtigung verweigert", "Hoard & Seek a refusé l'autorisation à Crafty Legend", "Hoard & Seek denegó el permiso a Crafty Legend"}},
             {"Approve it in Hoard & Seek's settings, then use 'Refresh crafting levels'", {"Erlauben Sie es in den Einstellungen von Hoard & Seek und nutzen Sie dann 'Handwerksstufen aktualisieren'", "Autorisez-le dans les paramètres de Hoard & Seek, puis utilisez 'Actualiser les niveaux d'artisanat'", "Autorízalo en los ajustes de Hoard & Seek y luego usa 'Actualizar niveles de artesanía'"}},
