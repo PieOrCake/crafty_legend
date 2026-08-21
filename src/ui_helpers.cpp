@@ -410,7 +410,30 @@ static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq
     int remaining, const std::string& mKey,
     std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
     std::unordered_map<std::string, int>& walletMats,
-    std::unordered_set<uint32_t>& visited);
+    std::unordered_set<uint32_t>& visited,
+    std::unordered_map<uint32_t, int>& pool);
+
+// How much of `item_id` the walk still has to find, after spending whatever is
+// left of the stack you already own.
+//
+// The stack has to be *spent*, not re-checked at every node. Mystic Coin is the
+// clearest case: a Mystic Tribute wants 250 outright and another 186 through the
+// Mystic Clover vendor route, and 200 in the bank covers part of one or the other
+// but not both. Subtracting the full 200 at each node reported 50 missing when
+// the true shortfall is 436 - 200 = 236. `pool` is seeded on first sight of an
+// item and drawn down as the walk meets it, so the answer is the same whichever
+// branch is walked first. This mirrors WalkCompletion, which already pools.
+static int TakeFromPool(uint32_t item_id, int count,
+                        std::unordered_map<uint32_t, int>& pool) {
+    if (!CraftyLegend::GW2API::HasAccountData()) return count;
+    auto it = pool.find(item_id);
+    if (it == pool.end()) {
+        it = pool.emplace(item_id, GetEffectiveOwnedCount(item_id)).first;
+    }
+    const int spend = std::min(it->second, count);
+    it->second -= spend;
+    return count - spend;
+}
 
 // Helper: recursively flatten a crafting tree into base materials.
 // Base materials are items with no recipe that can't be drilled into further.
@@ -426,16 +449,14 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
     std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
     std::unordered_map<std::string, int>& walletMats,
     std::unordered_set<uint32_t>& visited,
-    const std::string& nodeKey) {
+    const std::string& nodeKey,
+    std::unordered_map<uint32_t, int>& pool) {
     if (item_id == 0 || count <= 0) return;
     if (visited.count(item_id)) return; // cycle guard
 
-    // Subtract owned from required at each level
-    int remaining = count;
-    if (CraftyLegend::GW2API::HasAccountData()) {
-        int owned = GetEffectiveOwnedCount(item_id);
-        remaining = std::max(0, remaining - owned);
-    }
+    // Spend what is left of the stack you own, rather than crediting all of it
+    // against every branch that wants this item (see TakeFromPool).
+    int remaining = TakeFromPool(item_id, count, pool);
     if (remaining <= 0) return;
 
     // Multi-route item: follow the active route instead of assuming the recipe.
@@ -448,7 +469,7 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
                 visited.insert(item_id);
                 FlattenVendorRequirements(method, remaining,
                     nodeKey + "#m:" + std::to_string(active),
-                    itemMats, walletMats, visited);
+                    itemMats, walletMats, visited, pool);
                 visited.erase(item_id);
                 return;
             }
@@ -477,7 +498,7 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
             } else {
                 FlattenCraftingTree(ing.item_id, static_cast<int>(ing.count) * numCrafts,
                     itemMats, walletMats, visited,
-                    nodeKey + "/" + std::to_string(ing.item_id));
+                    nodeKey + "/" + std::to_string(ing.item_id), pool);
             }
         }
         visited.erase(item_id);
@@ -499,7 +520,7 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
     for (const auto& acq : acqs) {
         if (acq.purchase_requirements.empty()) continue;
         visited.insert(item_id);
-        FlattenVendorRequirements(acq, remaining, nodeKey, itemMats, walletMats, visited);
+        FlattenVendorRequirements(acq, remaining, nodeKey, itemMats, walletMats, visited, pool);
         visited.erase(item_id);
         break;
     }
@@ -509,7 +530,8 @@ static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq
     int remaining, const std::string& mKey,
     std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
     std::unordered_map<std::string, int>& walletMats,
-    std::unordered_set<uint32_t>& visited) {
+    std::unordered_set<uint32_t>& visited,
+    std::unordered_map<uint32_t, int>& pool) {
     int idx = 0;
     for (const auto& req : acq.purchase_requirements) {
         std::string reqKey = mKey + "#vreq:" + std::to_string(idx++);
@@ -519,7 +541,7 @@ static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq
         uint32_t sub_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
         if (sub_id != 0) {
             FlattenCraftingTree(sub_id, sub_count * remaining, itemMats, walletMats, visited,
-                reqKey + "/" + std::to_string(sub_id));
+                reqKey + "/" + std::to_string(sub_id), pool);
         }
         // A requirement that resolves to no item is a wallet currency. The shopping
         // list is a list of things to buy, and wallet costs are excluded from it
@@ -534,6 +556,8 @@ void BuildShoppingList(uint32_t legendary_id) {
     std::unordered_map<uint32_t, std::pair<std::string, int>> itemMats;
     std::unordered_map<std::string, int> walletMats;
     std::unordered_set<uint32_t> visited;
+    // One stack per item for the whole list, drawn down as the walk spends it.
+    std::unordered_map<uint32_t, int> pool;
 
     // Recurse directly into the legendary's recipe ingredients, bypassing the
     // owned-count check for the legendary itself. The shopping list always shows
@@ -551,11 +575,11 @@ void BuildShoppingList(uint32_t legendary_id) {
                 walletMats[ing.name] += static_cast<int>(ing.count);
             } else {
                 FlattenCraftingTree(ing.item_id, static_cast<int>(ing.count), itemMats, walletMats,
-                    visited, root + "/" + std::to_string(ing.item_id));
+                    visited, root + "/" + std::to_string(ing.item_id), pool);
             }
         }
     } else {
-        FlattenCraftingTree(legendary_id, 1, itemMats, walletMats, visited, root);
+        FlattenCraftingTree(legendary_id, 1, itemMats, walletMats, visited, root, pool);
     }
 
     // Convert to shopping entries

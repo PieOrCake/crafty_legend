@@ -277,25 +277,10 @@ namespace CraftyLegend {
                 methods.push_back(CreateAcquisitionMethod(method, &item));
             }
             
-            // WvW vendor items: add vendor method for items with only "wvw" acquisition
-            auto addWvWVendor = [&](uint32_t id, const char* name, const char* ticketCost) {
-                if (item.id == id) {
-                    AcquisitionMethod v;
-                    v.method = "vendor";
-                    v.display_name = std::string("Vendor - Legendary Commander War Razor");
-                    v.description = "Purchased from the WvW legendary armor vendor";
-                    v.vendor_name = "Legendary Commander War Razor";
-                    v.vendor_location = "WvW spawn areas";
-                    v.purchase_requirements = {
-                        {"WvW Skirmish Claim Ticket", ticketCost}
-                    };
-                    methods.push_back(v);
-                }
-            };
-            addWvWVendor(81455, "Recruit's Wings of War", "350");
-            addWvWVendor(81356, "Soldier's Wings of War", "525");
-            addWvWVendor(81288, "General's Wings of War", "700");
-            addWvWVendor(81294, "Commander's Wings of War", "875");
+            // The four Wings of War used to be special-cased here because items.json
+            // tagged them "wvw", which the filter above drops. They are tagged "vendor"
+            // now, so CreateAcquisitionMethod's own blocks cover them; adding them here
+            // as well would show the same vendor twice.
 
             // Items sold by multiple vendors: replace single vendor with specific options
             if (item.id == 80058) { // Mist Band (Infused)
@@ -1129,6 +1114,18 @@ namespace CraftyLegend {
                 acq.purchase_requirements = {
                     {"Perfect Mist Core", "1"}
                 };
+            } else if (item && item->id == 77520) { // Perfect Mist Core
+                // Four fragments double-click into one core, and fragments are a
+                // guaranteed Glorious Armor Box drop. Written as text rather than a
+                // 4x Mist Core Fragment cost because the fragment above prices itself
+                // in cores (the vendor splits one core into four), and a numeric cost
+                // here would make the two entries reference each other in a loop.
+                acq.display_name = "PvP - Glorious Armor Box";
+                acq.vendor_name = "Glorious Armor Box";
+                acq.vendor_location = "PvP League rewards";
+                acq.purchase_requirements = {
+                    {"Mist Core Fragment", "4 (combine; guaranteed from Glorious Armor Box)"}
+                };
             } else if (item && item->id == 82700) { // Record of League Victories
                 acq.display_name = "Vendor - PvP";
                 acq.vendor_name = "Ascended Armor League Vendor";
@@ -1613,11 +1610,21 @@ namespace CraftyLegend {
                 item->id == 89478 ||  // Tribute to Spero
                 item->id == 90776     // Tribute to the Exitare
             )) {
-                acq.display_name = "Vendor - Map Vendors";
-                acq.vendor_name = "Various Heart/Mastery Vendors";
-                acq.vendor_location = "HoT, PoF, LW, EoD maps";
+                // All twelve come from one vendor for Volatile Magic; only the
+                // amount differs. Verified against each tribute's wiki page.
+                const char* tributeCost = "15";
+                if (item->id == 79845 || item->id == 81163 ||
+                    item->id == 86266 || item->id == 87627) {
+                    tributeCost = "10";
+                } else if (item->id == 80201 || item->id == 81871 ||
+                           item->id == 89478 || item->id == 90776) {
+                    tributeCost = "20";
+                }
+                acq.display_name = "Vendor - Alaleh";
+                acq.vendor_name = "Alaleh";
+                acq.vendor_location = "Chalon Docks, Domain of Istan";
                 acq.purchase_requirements = {
-                    {"Map Currencies", "Varies by vendor"}
+                    {"Volatile Magic", tributeCost}
                 };
             // --- JW Precursor: Nyr Hrammr ---
             } else if (item && item->id == 103973) { // Nyr Hrammr
@@ -1642,6 +1649,80 @@ namespace CraftyLegend {
                 acq.vendor_location = "Mistburned Barrens";
                 acq.purchase_requirements = {
                     {"Collection", "Unknown Nightmares: Gift of Shadows"}
+                };
+            // --- Ad Infinitum chain (Fractals of the Mists) ---
+            // The three "Solution:" components drop from their collection tier; the
+            // Aetherblade Quartermaster sells extras, which is the only priceable
+            // route, so that is what the tree shows.
+            } else if (item && (item->id == 70435 || item->id == 73201 || item->id == 75469)) {
+                const char* solutionCost = item->id == 70435 ? "5"
+                                         : (item->id == 73201 ? "9" : "13");
+                acq.display_name = "Vendor - Aetherblade Quartermaster";
+                acq.vendor_name = "Aetherblade Quartermaster";
+                acq.vendor_location = "Captain Mai Trin Boss Fractal";
+                acq.purchase_requirements = {
+                    {"Ball of Dark Energy", solutionCost}
+                };
+            // Each tier's backpack is salvaged for the next tier's Spirit. Modelled as
+            // a requirement so the tree walks Unbound -> Upper Bound -> Finite Result
+            // instead of stopping at a Spirit with no source.
+            } else if (item && item->id == 75066) { // Spirit of the Finite Result
+                acq.display_name = "Salvage - Finite Result";
+                acq.vendor_name = "Ascended Salvage Kit";
+                acq.vendor_location = "Salvaged from the Finite Result backpack";
+                acq.purchase_requirements = {
+                    {"Finite Result", "1"}
+                };
+            } else if (item && item->id == 70642) { // Spirit of the Upper Bound
+                acq.display_name = "Salvage - Upper Bound";
+                acq.vendor_name = "Ascended Salvage Kit";
+                acq.vendor_location = "Salvaged from the Upper Bound backpack";
+                acq.purchase_requirements = {
+                    {"Upper Bound", "1"}
+                };
+            // Fractal mists essences: one vendor, three tiers, gold cost in copper.
+            } else if (item && (item->id == 38014 || item->id == 38023 || item->id == 38024)) {
+                const char* relics = item->id == 38014 ? "30"
+                                   : (item->id == 38023 ? "100" : "300");
+                const char* copper = item->id == 38014 ? "3200"
+                                   : (item->id == 38023 ? "9600" : "28800");
+                acq.display_name = "Vendor - INFUZ-5959";
+                acq.vendor_name = "INFUZ-5959";
+                acq.vendor_location = "Mistlock Observatory (requires Follows Advice mastery)";
+                acq.purchase_requirements = {
+                    {"Fractal Relic", relics},
+                    {"Coin", copper}
+                };
+            } else if (item && item->id == 109391) { // Vial of Liquid Shadowstone
+                acq.display_name = "Vendor - Canach";
+                acq.vendor_name = "Canach";
+                acq.vendor_location = "Breezy Cay, Shipwreck Strand";
+                // Also sold by Castaway Agnes, Captain Emund and the Alliance Field
+                // Quartermaster at the same price. Needs the story step So It Is Written.
+                acq.purchase_requirements = {
+                    {"Coin", "2500000"},
+                    {"Shadowstone Fragment", "250"}
+                };
+            // --- VoE Exploration Gifts (map vendors; needs that map completed) ---
+            } else if (item && item->id == 106467) { // Gift of Shipwreck Strand Exploration
+                acq.display_name = "Vendor - Canach";
+                acq.vendor_name = "Canach";
+                acq.vendor_location = "Breezy Cay, Shipwreck Strand";
+                // Also sold by Castaway Agnes, Captain Emund and the Alliance Field
+                // Quartermaster at the same price. Requires Shipwreck Strand map completion.
+                acq.purchase_requirements = {
+                    {"Coin", "5000000"},
+                    {"Karma", "300000"}
+                };
+            } else if (item && item->id == 106672) { // Gift of Starlit Weald Exploration
+                acq.display_name = "Vendor - Captain Emund";
+                acq.vendor_name = "Captain Emund";
+                acq.vendor_location = "Shimmering Basin, Starlit Weald";
+                // Also sold by Canach, Castaway Agnes and the Alliance Field
+                // Quartermaster at the same price. Requires Starlit Weald map completion.
+                acq.purchase_requirements = {
+                    {"Coin", "5000000"},
+                    {"Karma", "300000"}
                 };
             // --- Dungeon Gifts (all from Dungeon Armor and Weapons vendor) ---
             } else if (item && item->id == 19664) { // Gift of Ascalon
@@ -1715,15 +1796,8 @@ namespace CraftyLegend {
                 acq.purchase_requirements = {
                     {"Coin", "8"}
                 };
-            // --- Fractal vendor ---
-            } else if (item && item->id == 38014) { // Vial of Condensed Mists Essence
-                acq.display_name = "Vendor - INFUZ-5959";
-                acq.vendor_name = "INFUZ-5959";
-                acq.vendor_location = "Mistlock Observatory";
-                acq.purchase_requirements = {
-                    {"Fractal Relic", "30"},
-                    {"Coin", "3200"}
-                };
+            // (Vial of Condensed Mists Essence is handled with the other two INFUZ-5959
+            // essence tiers further up.)
             // --- Laurel Merchant ---
             } else if (item && item->id == 39125) { // Mystic Binding Agent
                 acq.display_name = "Vendor - Laurel Merchant";
@@ -2122,13 +2196,23 @@ namespace CraftyLegend {
 
     int DataManager::EffectiveOwnedCount(uint32_t item_id) {
         if (item_id == 0) return 0;
-        if (!GW2API::HasAccountData()) return 0;
+
+        // Materials that became wallet currencies (the rift essences, Legendary
+        // Insight) are still referenced by their item id in recipe data, but the
+        // balance lives in the wallet. Count that, plus any stacks of the item
+        // form not yet consumed — the two never overlap, consuming converts one
+        // into the other.
+        int wallet = 0;
+        const int currency_id = GW2API::GetWalletCurrencyForItem(item_id);
+        if (currency_id >= 0) wallet = GW2API::GetWalletAmount(currency_id);
+
+        if (!GW2API::HasAccountData()) return wallet;
         const Item* item = GetItem(item_id);
         if (item && (item->binding == "account" || item->binding == "soul")
             && GW2API::HasCurrentAccount()) {
-            return GW2API::GetOwnedCountForAccount(item_id, GW2API::GetCurrentAccountName());
+            return wallet + GW2API::GetOwnedCountForAccount(item_id, GW2API::GetCurrentAccountName());
         }
-        return GW2API::GetOwnedCount(item_id);
+        return wallet + GW2API::GetOwnedCount(item_id);
     }
 
     int DataManager::RemainingNeeded(uint32_t item_id, int count) {
@@ -2724,7 +2808,10 @@ namespace CraftyLegend {
                         // (matches normal click behavior in dllmain_hotkey.cpp)
                         int drill_count = static_cast<int>(col.materials[selected_mat].count);
                         if (GW2API::HasAccountData()) {
-                            int owned = GW2API::GetOwnedCount(mat_id);
+                            // EffectiveOwnedCount, not the raw item count: the click
+                            // path in ui.cpp uses it, so binding scope and wallet-backed
+                            // materials have to be honoured here too.
+                            int owned = EffectiveOwnedCount(mat_id);
                             drill_count = std::max(0, drill_count - owned);
                         }
                         UpdateColumn(col_index, mat_id, drill_count);
@@ -2787,6 +2874,14 @@ namespace CraftyLegend {
     };
     static const std::unordered_map<std::string, std::vector<CollectionTier>>& CollectionChains() {
         static const std::unordered_map<std::string, std::vector<CollectionTier>> chains = {
+            // Ad Infinitum is the one fractal chain here. Each tier both unlocks the
+            // next backpack's "Solution:" component and hands over the backpack that
+            // gets salvaged for the following tier's Spirit, so the order is load-bearing.
+            {"Ad Infinitum", {
+                {2351, "Ad Infinitum I: Finite Result"},
+                {2557, "Ad Infinitum II: Upper Bound"},
+                {2368, "Ad Infinitum III: Unbound"},
+            }},
             {"Astralaria", {
                 {2571, "Astralaria I: The Device"},
                 {2447, "Astralaria II: The Apparatus"},
@@ -3130,6 +3225,35 @@ namespace CraftyLegend {
                 out.push_back(MakePrereq(PC::Achievement, "Legendary Backpack: Ad Infinitum",
                     "Complete the Ad Infinitum legendary backpack collection", item_id, -1, -1, 2295));
                 break;
+            // Each "Solution:" component is gated on its own tier of the chain. Named
+            // explicitly rather than left to the generic collection walk below, which
+            // reports whichever tier the account is currently on for every item alike.
+            case 70435: // Solution: Finite Result
+                out.push_back(MakePrereq(PC::Collection, "Ad Infinitum I: Finite Result",
+                    "Complete the Ad Infinitum I collection in the Fractals of the Mists. "
+                    "Step 1 of 3 towards Unbound. Extra copies are sold by the Aetherblade "
+                    "Quartermaster in the Captain Mai Trin Boss fractal.", item_id, -1, -1, 2351));
+                break;
+            case 73201: // Solution: Upper Bound
+                out.push_back(MakePrereq(PC::Collection, "Ad Infinitum II: Upper Bound",
+                    "Complete the Ad Infinitum II collection in the Fractals of the Mists. "
+                    "Step 2 of 3 towards Unbound; needs Finite Result first.", item_id, -1, -1, 2557));
+                break;
+            case 75469: // Solution: Unbound
+                out.push_back(MakePrereq(PC::Collection, "Ad Infinitum III: Unbound",
+                    "Complete the Ad Infinitum III collection in the Fractals of the Mists. "
+                    "Step 3 of 3; needs Upper Bound first.", item_id, -1, -1, 2368));
+                break;
+            case 75066: // Spirit of the Finite Result
+                out.push_back(MakePrereq(PC::Salvage, "Salvage Finite Result",
+                    "Salvage the Finite Result backpack with an ascended salvage kit. "
+                    "Craft Finite Result first (Ad Infinitum I).", item_id));
+                break;
+            case 70642: // Spirit of the Upper Bound
+                out.push_back(MakePrereq(PC::Salvage, "Salvage Upper Bound",
+                    "Salvage the Upper Bound backpack with an ascended salvage kit. "
+                    "Craft Upper Bound first (Ad Infinitum II).", item_id));
+                break;
             // --- The Ascension (PvP backpiece) ---
             case 77493: // The Thrill of Battle
                 out.push_back(MakePrereq(PC::Achievement, "Path of the Ascension I: The Thrill of Battle",
@@ -3243,6 +3367,76 @@ namespace CraftyLegend {
             default:
                 break;
         }
+
+        // Source notes for leaves with no purchasable route. These are the end of the
+        // tree - there is nothing below them to expand and no price to show - so the
+        // only useful thing the panel can say is where the material actually comes
+        // from. Every map below is the one named on the item's own wiki page.
+        struct SourceNote {
+            uint32_t id;
+            PrereqCategory category;
+            const char* name;
+            const char* description;
+        };
+        static const SourceNote kSourceNotes[] = {
+            // Living World map materials: gathered from that map's nodes, with a
+            // home-instance node available once the map's collection is done.
+            {79280,  PC::MapCurrency, "Bloodstone Fen: Blood Ruby",
+             "Gather Blood Rubies in Bloodstone Fen. Also traded by Scholar Rakka, and a home-instance node can be unlocked."},
+            {81127,  PC::MapCurrency, "Ember Bay: Fire Orchid Blossom",
+             "Gather Fire Orchid Blossoms in Ember Bay. A home-instance node can be unlocked."},
+            {79899,  PC::MapCurrency, "Bitterfrost Frontier: Fresh Winterberry",
+             "Gather Fresh Winterberries in Bitterfrost Frontier. Also traded by Slooshoo, and a home-instance node can be unlocked."},
+            {80332,  PC::MapCurrency, "Lake Doric: Jade Shard",
+             "Gather Jade Shards in Lake Doric. Also traded by Quartermaster Hitchens."},
+            {81706,  PC::MapCurrency, "Siren's Landing: Orrian Pearl",
+             "Gather Orrian Pearls in Siren's Landing, mostly from Waterlogged Chests after the shrine events."},
+            {79469,  PC::MapCurrency, "Draconis Mons: Petrified Wood",
+             "Gather Petrified Wood in Draconis Mons. Also traded by Scholar Surra."},
+            {109459, PC::MapCurrency, "Eternity's Garden: Shadowstone Fragment",
+             "Earned in Eternity's Garden and spent at that map's vendors."},
+            {89537,  PC::MapCurrency, "Thunderhead Peaks: Branded Mass",
+             "Gather Branded Mass in Thunderhead Peaks, including the Dragon Crystal nodes after the Thunderhead Keep meta."},
+            {87645,  PC::MapCurrency, "Domain of Kourna: Inscribed Shard",
+             "Gather Inscribed Shards in the Domain of Kourna, mostly from the Scarab Plague meta chests."},
+            {88955,  PC::MapCurrency, "Jahai Bluffs: Lump of Mistonium",
+             "Gather Lumps of Mistonium in Jahai Bluffs. Five per day are also sold by each completed renown heart there."},
+            {90783,  PC::MapCurrency, "Dragonfall: Mistborn Mote",
+             "Gather Mistborn Motes in Dragonfall and trade them at the camp vendors."},
+            {46682,  PC::MapCurrency, "Heart of Thorns: Crystalline Ore",
+             "Earned from the Heart of Thorns metas, chiefly Dragon's Stand. Gharr Leadclaw in the Wizard's Tower will also exchange five of a Heart of Thorns map currency plus karma for one."},
+            // Rift essences are wallet currencies (June 3, 2025), so there is no item
+            // to buy and no recipe - only the activities that pay them out.
+            {104747, PC::MapCurrency, "Rift Hunting: Fine Rift Essence",
+             "Earned from rift hunts of any tier and from Convergences."},
+            {104773, PC::MapCurrency, "Rift Hunting: Masterwork Rift Essence",
+             "Earned from tier 2 and higher rift hunts and from Convergences."},
+            {105009, PC::MapCurrency, "Rift Hunting: Rare Rift Essence",
+             "Earned from tier 3 rift hunts and from Convergences."},
+            // Janthir Wilds homestead refining.
+            {102306, PC::Other, "Homestead: Fiber Refiner",
+             "Refine basic plant materials at the Homestead Fiber Refiner. Weekly cap rises with the Fiber Trade Capacity upgrades."},
+            {102205, PC::Other, "Homestead: Metal Forge",
+             "Refine basic ore at the Homestead Metal Refiner. Weekly cap rises with the Metal Trade Capacity upgrades."},
+            {103049, PC::Other, "Homestead: Lumber Mill",
+             "Refine basic logs at the Homestead Wood Refiner. Weekly cap rises with the Wood Trade Capacity upgrades."},
+            // Legendary Armory grants, not craftable or purchasable at all.
+            {95081,  PC::Other, "Legendary Armory: Sunrise",
+             "Granted once Sunrise is added to the Legendary Armory. Stands in for Sunrise when forging Eternity."},
+            {95086,  PC::Other, "Legendary Armory: Twilight",
+             "Granted once Twilight is added to the Legendary Armory. Stands in for Twilight when forging Eternity."},
+            {43766,  PC::Other, "Reward Tracks / Level-Up",
+             "Awarded by PvP and WvW reward tracks, and for each level gained past 80."},
+            {109391, PC::Other, "Story: So It Is Written",
+             "Complete the Visions of Eternity story step So It Is Written before the Castora vendors will sell this."},
+        };
+        for (const auto& note : kSourceNotes) {
+            if (note.id == item_id) {
+                out.push_back(MakePrereq(note.category, note.name, note.description, item_id));
+                break;
+            }
+        }
+
         // Handle collection items generically
         const Item* item = DataManager::GetItem(item_id);
         if (item) {
@@ -3420,11 +3614,14 @@ namespace CraftyLegend {
                     p.completed = GW2API::GetOwnedCount(p.source_item_id) > 0;
                 }
                 break;
+            // These three all mean the same thing: "have you actually reached the
+            // source". EffectiveOwnedCount rather than the raw item count, so a
+            // wallet-backed material (the rift essences) and a binding-scoped one
+            // both answer honestly.
             case PrereqCategory::MapCurrency:
-                p.completed = GW2API::GetOwnedCount(p.source_item_id) > 0;
-                break;
             case PrereqCategory::Salvage:
-                p.completed = GW2API::GetOwnedCount(p.source_item_id) > 0;
+            case PrereqCategory::Other:
+                p.completed = DataManager::EffectiveOwnedCount(p.source_item_id) > 0;
                 break;
             default:
                 break;
@@ -3521,7 +3718,13 @@ namespace CraftyLegend {
         GetItemPrereqs(item_id, all);
         std::vector<Prerequisite> gates;
         for (auto& p : all) {
-            if (p.category == PrereqCategory::Achievement) {
+            // Collection counts as a gate too. A collection tier IS an achievement -
+            // CheckPrereqCompletion already resolves it through IsAchievementDone -
+            // and leaving it out meant the ~57 Gen2 collection components (every
+            // "Spirit of the Perfected ..." and friend) showed no hover text at all,
+            // even though the prerequisites panel knew exactly which tier they need.
+            if (p.category == PrereqCategory::Achievement ||
+                p.category == PrereqCategory::Collection) {
                 CheckPrereqCompletion(p);
                 gates.push_back(std::move(p));
             }

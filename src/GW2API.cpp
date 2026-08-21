@@ -103,9 +103,32 @@ namespace CraftyLegend {
         static const std::unordered_map<uint32_t, std::vector<uint32_t>> groups = {
             // Mistwalker Infusion — all stat variants
             {99790, {99790, 99784, 99789, 99809, 99824, 99839, 99848, 99850}},
+            // Rift essences: the "service" item recipes reference, plus the
+            // pre-June-2025 crafting material of the same name. Both convert into
+            // the same wallet currency, so unconverted stacks of either count.
+            {104747, {104747, 100078}}, // Fine
+            {104773, {104773, 100414}}, // Masterwork
+            {105009, {105009, 100055}}, // Rare
         };
         auto it = groups.find(item_id);
         return it != groups.end() ? &it->second : nullptr;
+    }
+
+    // Materials that ArenaNet turned into wallet currencies. Recipes and vendors
+    // now charge the wallet, but our recipe data (and the GW2 API's) still carries
+    // the legacy item id, and the item form survives as a "consume to convert"
+    // service item. Ownership therefore has to read the wallet, not just inventory:
+    // - Rift essences became currencies in the June 3, 2025 update.
+    // - Legendary Insight is a raid wallet currency; 98327 is its service item.
+    int GW2API::GetWalletCurrencyForItem(uint32_t item_id) {
+        static const std::unordered_map<uint32_t, int> item_to_currency = {
+            {104747, 78}, // Fine Rift Essence
+            {104773, 80}, // Masterwork Rift Essence
+            {105009, 79}, // Rare Rift Essence
+            {98327,  70}, // Legendary Insight
+        };
+        auto it = item_to_currency.find(item_id);
+        return it != item_to_currency.end() ? it->second : -1;
     }
 
     int GW2API::GetOwnedCount(uint32_t item_id) {

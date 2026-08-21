@@ -45,6 +45,9 @@ namespace CraftyLegend {
         static void ClearWallet();
         static bool HasWalletData();
         static int GetWalletAmountByName(const std::string& currency_name);
+        // Wallet currency id backing a legacy material item id, or -1 if the item
+        // is not one of the materials that became a currency.
+        static int GetWalletCurrencyForItem(uint32_t item_id);
 
         // Legendary Armory (data set by H&S events).
         // Only armoury-bound copies count as owned — an unbound legendary sitting in

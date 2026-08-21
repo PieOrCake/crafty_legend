@@ -1979,7 +1979,9 @@
       "description": "",
       "type": "crafting_material",
       "binding": "none",
-      "acquisition": [],
+      "acquisition": [
+        "trading_post"
+      ],
       "rarity": "Rare"
     },
     {
@@ -3521,7 +3523,7 @@
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
-        "pvp"
+        "vendor"
       ],
       "rarity": "Rare"
     },
@@ -3702,7 +3704,7 @@
       "type": "crafting_material",
       "binding": "none",
       "acquisition": [
-        "reward_track"
+        "trading_post"
       ],
       "rarity": "Rare"
     },
@@ -7292,9 +7294,7 @@
       "type": "consumable",
       "rarity": "Fine",
       "level": 0,
-      "acquisition": [
-        "trading_post"
-      ],
+      "acquisition": [],
       "description": "",
       "binding": "account"
     },
@@ -7318,9 +7318,7 @@
       "type": "consumable",
       "rarity": "Rare",
       "level": 0,
-      "acquisition": [
-        "trading_post"
-      ],
+      "acquisition": [],
       "description": "",
       "binding": "account"
     },
@@ -7438,9 +7436,7 @@
       "type": "consumable",
       "rarity": "Masterwork",
       "level": 0,
-      "acquisition": [
-        "trading_post"
-      ],
+      "acquisition": [],
       "description": "",
       "binding": "account"
     },
@@ -9725,7 +9721,7 @@
       "rarity": "Exotic",
       "level": 0,
       "acquisition": [
-        "crafting"
+        "vendor"
       ]
     },
     {
@@ -9803,7 +9799,7 @@
       "rarity": "Legendary",
       "level": 80,
       "acquisition": [
-        "drop"
+        "vendor"
       ]
     },
     {
@@ -11130,7 +11126,7 @@
       "rarity": "Exotic",
       "level": 0,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -11208,7 +11204,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "trading post",
+        "trading_post",
         "crafting"
       ]
     },
@@ -11222,7 +11218,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "trading post",
+        "trading_post",
         "crafting"
       ]
     },
@@ -11236,8 +11232,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "trading post",
-        "crafting"
+        "trading_post"
       ]
     },
     {
@@ -11315,7 +11310,7 @@
       "rarity": "Exotic",
       "level": 0,
       "acquisition": [
-        "map completion"
+        "vendor"
       ]
     },
     {
@@ -11341,7 +11336,7 @@
       "rarity": "Exotic",
       "level": 0,
       "acquisition": [
-        "map completion"
+        "vendor"
       ]
     },
     {
@@ -11352,7 +11347,7 @@
       "rarity": "Fine",
       "level": 80,
       "acquisition": [
-        "wvw"
+        "vendor"
       ],
       "icon": "https://render.guildwars2.com/file/E130FBD10F1AAC58ADD9F1375D4108FB081D0F47/1701091.png",
       "description": "Combine the Recruit's, Soldier's, General's, and Commander's Wings of War to obtain Warcry, precursor to Warbringer."
@@ -11365,7 +11360,7 @@
       "rarity": "Masterwork",
       "level": 80,
       "acquisition": [
-        "wvw"
+        "vendor"
       ],
       "icon": "https://render.guildwars2.com/file/0E7813E70E9204D90227FE6161ED66AF09DF1FEB/1701092.png",
       "description": "Combine the Recruit's, Soldier's, General's, and Commander's Wings of War to obtain Warcry, precursor to Warbringer."
@@ -11378,7 +11373,7 @@
       "rarity": "Rare",
       "level": 80,
       "acquisition": [
-        "wvw"
+        "vendor"
       ],
       "icon": "https://render.guildwars2.com/file/4D430AF4DF5A3675B97E05FC0F0E4C2B35CAF632/1701093.png",
       "description": "Combine the Recruit's, Soldier's, General's, and Commander's Wings of War to obtain Warcry, precursor to Warbringer."
@@ -11391,7 +11386,7 @@
       "rarity": "Exotic",
       "level": 80,
       "acquisition": [
-        "wvw"
+        "vendor"
       ],
       "icon": "https://render.guildwars2.com/file/59EDCAC43B5EFE104ACE3F3B1A4405F42F2CBA0F/1701094.png",
       "description": "Combine the Recruit's, Soldier's, General's, and Commander's Wings of War to obtain Warcry, precursor to Warbringer."
@@ -11404,7 +11399,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "wvw"
+        "vendor"
       ],
       "icon": "https://render.guildwars2.com/file/7DECD9AB626915A135D1C9D9B6C50C23FA97D734/1701099.png",
       "description": "Combine with 20 Vials of Powerful Blood, 50 Vials of Potent Blood, and 250 Piles of Bloodstone Dust in the Mystic Forge to create a Mystic Essence of Strategy."
@@ -11417,7 +11412,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "wvw"
+        "vendor"
       ],
       "icon": "https://render.guildwars2.com/file/70F0B7C44BBD5C330766906F15014D282CBCF575/1701096.png",
       "description": "Combine with 20 Ancient Bones, 50 Large Bones, and 250 Empyreal Fragments in the Mystic Forge to create a Mystic Essence of Animosity."
@@ -11430,7 +11425,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "wvw"
+        "vendor"
       ],
       "icon": "https://render.guildwars2.com/file/095B589F3445BD27EBCD9759AB6FF7027D2A720C/1701098.png",
       "description": "Combine with 20 Armored Scales, 50 Large Scales, and 250 Dragonite Ore in the Mystic Forge to create a Mystic Essence of Carnage."
@@ -11443,7 +11438,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "wvw"
+        "vendor"
       ],
       "icon": "https://render.guildwars2.com/file/05FFA01898D2A0BE0D09F6E0C848799A7FDB8097/1701097.png",
       "description": "Combine with 20 Vicious Claws, 50 Large Claws, and 10 Globs of Dark Matter in the Mystic Forge to create a Mystic Essence of Annihilation."
@@ -11809,7 +11804,7 @@
       "rarity": "Rare",
       "level": 80,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -11822,7 +11817,7 @@
       "rarity": "Exotic",
       "level": 80,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -11835,7 +11830,7 @@
       "rarity": "Fine",
       "level": 80,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -11848,7 +11843,7 @@
       "rarity": "Masterwork",
       "level": 80,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -11913,7 +11908,7 @@
       "rarity": "Exotic",
       "level": 0,
       "acquisition": [
-        "story_journal"
+        "trading_post"
       ]
     },
     {
@@ -11926,7 +11921,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -11939,7 +11934,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -11952,7 +11947,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -11965,7 +11960,7 @@
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
-        "pvp"
+        "vendor"
       ]
     },
     {
@@ -12568,7 +12563,7 @@
       "binding": "account",
       "rarity": "Exotic",
       "acquisition": [
-        "story_journal"
+        "vendor"
       ]
     },
     {"id": "24571", "name": "Superior Sigil of Purity", "icon": "https://render.guildwars2.com/file/C3E907DE24CF72CE490639710F46CDCD917D5B06/220745.png", "description": "Element: ControlDouble-click to apply to a weapon.", "type": "upgrade_component", "binding": "", "acquisition": ["trading_post"], "rarity": "Exotic", "level": 60},
@@ -12648,6 +12643,305 @@
     {"id": "79899", "name": "Fresh Winterberry", "icon": "https://render.guildwars2.com/file/414B0D0E3E38F73EC360C5BAE8A1DE98D324DCE6/1601463.png", "type": "craftingmaterial", "rarity": "Masterwork", "level": 0, "acquisition": ["map_currency"], "description": "Used to brew a thaw elixir, traded with Slooshoo, or consumed for unbound magic.", "binding": "account"},
     {"id": "79469", "name": "Petrified Wood", "icon": "https://render.guildwars2.com/file/EC4BA02B3BFEE603551B53BBF5305679AE700776/1493259.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with Scholar Surra.", "binding": "account"},
     {"id": "97790", "name": "Lamplighter's Badge", "icon": "https://render.guildwars2.com/file/461D091230BAC7A857D77FABD54C3E45685ADCFB/2595114.png", "description": "Used in the crafting of End of Dragons legendary items. Acquired by completing map exploration achievements.", "type": "crafting_material", "binding": "none", "acquisition": ["trading_post"], "rarity": "Exotic"},
-    {"id": "71148", "name": "Sheet of Premium Paper", "icon": "https://render.guildwars2.com/file/E72B275B450CE0E3084AE2969BD3680BB05A2308/1201919.png", "description": "Crafted from wood pulp and cloth. Used to make scrolls and books.", "type": "crafting_material", "binding": "none", "acquisition": ["trading_post"], "rarity": "Fine"}
+    {"id": "71148", "name": "Sheet of Premium Paper", "icon": "https://render.guildwars2.com/file/E72B275B450CE0E3084AE2969BD3680BB05A2308/1201919.png", "description": "Crafted from wood pulp and cloth. Used to make scrolls and books.", "type": "crafting_material", "binding": "none", "acquisition": ["trading_post"], "rarity": "Fine"},
+    {
+      "id": "68944",
+      "name": "Auric Sliver",
+      "icon": "https://render.guildwars2.com/file/38C83A6073EADFF39E0FA0AE59C822A79DBEF6E1/1202990.png",
+      "type": "trophy",
+      "rarity": "Rare",
+      "level": 0,
+      "acquisition": [
+        "trading_post"
+      ],
+      "description": "",
+      "binding": "none"
+    },
+    {
+      "id": "12989",
+      "name": "Mithril Plated Dowel",
+      "icon": "https://render.guildwars2.com/file/D3EB5FDAACAD7709D9082E281055C4905BF3CAE4/455581.png",
+      "type": "crafting_material",
+      "rarity": "Masterwork",
+      "level": 0,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "none"
+    },
+    {
+      "id": "19739",
+      "name": "Wool Scrap",
+      "icon": "https://render.guildwars2.com/file/4F4E176F0B5B040F690AB7AE7B7A6844C83F2D0D/65956.png",
+      "type": "crafting_material",
+      "rarity": "Basic",
+      "level": 0,
+      "acquisition": [
+        "trading_post"
+      ],
+      "description": "",
+      "binding": "none"
+    },
+    {
+      "id": "19741",
+      "name": "Cotton Scrap",
+      "icon": "https://render.guildwars2.com/file/3C013701E6252F3F100D2559BE4E47546CE1E82F/65957.png",
+      "type": "crafting_material",
+      "rarity": "Basic",
+      "level": 0,
+      "acquisition": [
+        "trading_post"
+      ],
+      "description": "",
+      "binding": "none"
+    },
+    {
+      "id": "19743",
+      "name": "Linen Scrap",
+      "icon": "https://render.guildwars2.com/file/28536CD63C63047DA7DA9F7923923461DCFC5860/65958.png",
+      "type": "crafting_material",
+      "rarity": "Basic",
+      "level": 0,
+      "acquisition": [
+        "trading_post"
+      ],
+      "description": "",
+      "binding": "none"
+    },
+    {
+      "id": "19745",
+      "name": "Gossamer Scrap",
+      "icon": "https://render.guildwars2.com/file/0CB2040408D0789690575FFE3532F3C34B693C6F/340417.png",
+      "type": "crafting_material",
+      "rarity": "Basic",
+      "level": 0,
+      "acquisition": [
+        "trading_post"
+      ],
+      "description": "",
+      "binding": "none"
+    },
+    {
+      "id": "19748",
+      "name": "Silk Scrap",
+      "icon": "https://render.guildwars2.com/file/021DA825F2092327B1C6BC09EC77BD5DE5B4770D/65961.png",
+      "type": "crafting_material",
+      "rarity": "Basic",
+      "level": 0,
+      "acquisition": [
+        "trading_post"
+      ],
+      "description": "",
+      "binding": "none"
+    },
+    {
+      "id": "38023",
+      "name": "Glob of Coagulated Mists Essence",
+      "icon": "https://render.guildwars2.com/file/7159DCB9BA92C064A4E6699B42225EAAC3B31F2B/512006.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "38024",
+      "name": "Shard of Crystallized Mists Essence",
+      "icon": "https://render.guildwars2.com/file/7DB2AB514CB9ACC219457DC1AEAB340BD578644F/512007.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "70435",
+      "name": "Solution: Finite Result",
+      "icon": "https://render.guildwars2.com/file/DCA678B606AD70016D511892565421EC0EDB3C9C/223857.png",
+      "type": "trophy",
+      "rarity": "Basic",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "70642",
+      "name": "Spirit of the Upper Bound",
+      "icon": "https://render.guildwars2.com/file/1DE649F0431C45987C2CF93F9E9C02562C50586C/1203031.png",
+      "type": "trophy",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "71885",
+      "name": "Third Order Mist Frame",
+      "icon": "https://render.guildwars2.com/file/BEF40DDFC9240727741A0704AD04FA01D2DA4E2A/866730.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "72613",
+      "name": "Unbound Wings",
+      "icon": "https://render.guildwars2.com/file/254BC8EFC296C8BF71C64716A4220CB95102B4A0/223929.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "73201",
+      "name": "Solution: Upper Bound",
+      "icon": "https://render.guildwars2.com/file/F2E1C224261C70C4D95E3A4B94B662750CA5D360/65726.png",
+      "type": "trophy",
+      "rarity": "Basic",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "73251",
+      "name": "Upper Bound",
+      "icon": "https://render.guildwars2.com/file/9306E19468E70F349A28C3E20958D11899396696/1202360.png",
+      "type": "back",
+      "rarity": "Ascended",
+      "level": 80,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "73624",
+      "name": "Finite Result",
+      "icon": "https://render.guildwars2.com/file/EF6661AF5FEDDA022D2DBD9F18E41DDDFF1AD202/1202359.png",
+      "type": "back",
+      "rarity": "Ascended",
+      "level": 80,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "74890",
+      "name": "First Order Mist Frame",
+      "icon": "https://render.guildwars2.com/file/BEF40DDFC9240727741A0704AD04FA01D2DA4E2A/866730.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "75066",
+      "name": "Spirit of the Finite Result",
+      "icon": "https://render.guildwars2.com/file/2DE4FABAAB4B72E23352DE72D653A63357520A20/1203024.png",
+      "type": "trophy",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "75469",
+      "name": "Solution: Unbound",
+      "icon": "https://render.guildwars2.com/file/B6745C0DA4CB49665746CA04022E244606115B9F/65628.png",
+      "type": "trophy",
+      "rarity": "Basic",
+      "level": 0,
+      "acquisition": [
+        "vendor"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "75781",
+      "name": "Pristine Mist Essence",
+      "icon": "https://render.guildwars2.com/file/C0F15CC7A245C804C71F31F6B1037F5B043F3905/587072.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "75847",
+      "name": "Bound Wings",
+      "icon": "https://render.guildwars2.com/file/254BC8EFC296C8BF71C64716A4220CB95102B4A0/223929.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "76292",
+      "name": "Finite Wings",
+      "icon": "https://render.guildwars2.com/file/254BC8EFC296C8BF71C64716A4220CB95102B4A0/223929.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    },
+    {
+      "id": "76502",
+      "name": "Second Order Mist Frame",
+      "icon": "https://render.guildwars2.com/file/BEF40DDFC9240727741A0704AD04FA01D2DA4E2A/866730.png",
+      "type": "crafting_material",
+      "rarity": "Ascended",
+      "level": 0,
+      "acquisition": [
+        "crafting"
+      ],
+      "description": "",
+      "binding": "account"
+    }
   ]
 }

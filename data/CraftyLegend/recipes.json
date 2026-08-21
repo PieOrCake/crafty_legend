@@ -15855,6 +15855,487 @@
           "name": "Glob of Ectoplasm"
         }
       ]
+    },
+    {
+      "output_id": "73537",
+      "output_count": 1,
+      "disciplines": [
+        "Artificer",
+        "Huntsman",
+        "Weaponsmith"
+      ],
+      "rating": 400,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "69432",
+          "count": 30,
+          "name": "Pile of Auric Dust"
+        },
+        {
+          "item_id": "68944",
+          "count": 30,
+          "name": "Auric Sliver"
+        }
+      ]
+    },
+    {
+      "output_id": "12989",
+      "output_count": 1,
+      "disciplines": [
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 350,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19709",
+          "count": 2,
+          "name": "Elder Wood Plank"
+        },
+        {
+          "item_id": "19684",
+          "count": 3,
+          "name": "Mithril Ingot"
+        }
+      ]
+    },
+    {
+      "output_id": "19740",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Scribe"
+      ],
+      "rating": 75,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19739",
+          "count": 2,
+          "name": "Wool Scrap"
+        }
+      ]
+    },
+    {
+      "output_id": "19742",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Scribe"
+      ],
+      "rating": 150,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19741",
+          "count": 2,
+          "name": "Cotton Scrap"
+        }
+      ]
+    },
+    {
+      "output_id": "19744",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Scribe"
+      ],
+      "rating": 225,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19743",
+          "count": 2,
+          "name": "Linen Scrap"
+        }
+      ]
+    },
+    {
+      "output_id": "19746",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Scribe"
+      ],
+      "rating": 400,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19745",
+          "count": 2,
+          "name": "Gossamer Scrap"
+        }
+      ]
+    },
+    {
+      "output_id": "19747",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Scribe"
+      ],
+      "rating": 300,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19748",
+          "count": 3,
+          "name": "Silk Scrap"
+        }
+      ]
+    },
+    {
+      "output_id": "71885",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "46741",
+          "count": 5,
+          "name": "Bolt of Damask"
+        },
+        {
+          "item_id": "46739",
+          "count": 5,
+          "name": "Elonian Leather Square"
+        },
+        {
+          "item_id": "46738",
+          "count": 5,
+          "name": "Deldrimor Steel Ingot"
+        },
+        {
+          "item_id": "46736",
+          "count": 5,
+          "name": "Spiritwood Plank"
+        }
+      ]
+    },
+    {
+      "output_id": "72309",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "75469",
+          "count": 1,
+          "name": "Solution: Unbound"
+        },
+        {
+          "item_id": "75781",
+          "count": 5,
+          "name": "Pristine Mist Essence"
+        },
+        {
+          "item_id": "72613",
+          "count": 1,
+          "name": "Unbound Wings"
+        },
+        {
+          "item_id": "71885",
+          "count": 1,
+          "name": "Third Order Mist Frame"
+        }
+      ]
+    },
+    {
+      "output_id": "72613",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "46746",
+          "count": 1,
+          "name": "Vision Crystal"
+        },
+        {
+          "item_id": "38024",
+          "count": 5,
+          "name": "Shard of Crystallized Mists Essence"
+        },
+        {
+          "item_id": "19721",
+          "count": 25,
+          "name": "Glob of Ectoplasm"
+        },
+        {
+          "item_id": "70642",
+          "count": 1,
+          "name": "Spirit of the Upper Bound"
+        }
+      ]
+    },
+    {
+      "output_id": "73251",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "73201",
+          "count": 1,
+          "name": "Solution: Upper Bound"
+        },
+        {
+          "item_id": "75781",
+          "count": 2,
+          "name": "Pristine Mist Essence"
+        },
+        {
+          "item_id": "75847",
+          "count": 1,
+          "name": "Bound Wings"
+        },
+        {
+          "item_id": "76502",
+          "count": 1,
+          "name": "Second Order Mist Frame"
+        }
+      ]
+    },
+    {
+      "output_id": "73624",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "70435",
+          "count": 1,
+          "name": "Solution: Finite Result"
+        },
+        {
+          "item_id": "75781",
+          "count": 1,
+          "name": "Pristine Mist Essence"
+        },
+        {
+          "item_id": "76292",
+          "count": 1,
+          "name": "Finite Wings"
+        },
+        {
+          "item_id": "74890",
+          "count": 1,
+          "name": "First Order Mist Frame"
+        }
+      ]
+    },
+    {
+      "output_id": "74890",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19747",
+          "count": 50,
+          "name": "Bolt of Silk"
+        },
+        {
+          "item_id": "19735",
+          "count": 100,
+          "name": "Cured Thick Leather Square"
+        },
+        {
+          "item_id": "12989",
+          "count": 75,
+          "name": "Mithril Plated Dowel"
+        }
+      ]
+    },
+    {
+      "output_id": "75781",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "45177",
+          "count": 10,
+          "name": "Rare Essence of Luck"
+        },
+        {
+          "item_id": "73137",
+          "count": 1,
+          "name": "Cube of Stabilized Dark Energy"
+        },
+        {
+          "item_id": "46747",
+          "count": 10,
+          "name": "Thermocatalytic Reagent"
+        }
+      ]
+    },
+    {
+      "output_id": "75847",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "46746",
+          "count": 1,
+          "name": "Vision Crystal"
+        },
+        {
+          "item_id": "38023",
+          "count": 5,
+          "name": "Glob of Coagulated Mists Essence"
+        },
+        {
+          "item_id": "19721",
+          "count": 10,
+          "name": "Glob of Ectoplasm"
+        },
+        {
+          "item_id": "75066",
+          "count": 1,
+          "name": "Spirit of the Finite Result"
+        }
+      ]
+    },
+    {
+      "output_id": "76292",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "46746",
+          "count": 1,
+          "name": "Vision Crystal"
+        },
+        {
+          "item_id": "38014",
+          "count": 5,
+          "name": "Vial of Condensed Mists Essence"
+        },
+        {
+          "item_id": "24277",
+          "count": 10,
+          "name": "Pile of Crystalline Dust"
+        }
+      ]
+    },
+    {
+      "output_id": "76502",
+      "output_count": 1,
+      "disciplines": [
+        "Leatherworker",
+        "Armorsmith",
+        "Tailor",
+        "Artificer",
+        "Weaponsmith",
+        "Huntsman"
+      ],
+      "rating": 500,
+      "type": "crafting",
+      "ingredients": [
+        {
+          "item_id": "19746",
+          "count": 25,
+          "name": "Bolt of Gossamer"
+        },
+        {
+          "item_id": "19736",
+          "count": 75,
+          "name": "Cured Rugged Leather Square"
+        },
+        {
+          "item_id": "12988",
+          "count": 50,
+          "name": "Orichalcum Plated Dowel"
+        }
+      ]
     }
   ]
 }
