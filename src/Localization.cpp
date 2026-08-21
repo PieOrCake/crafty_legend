@@ -209,6 +209,7 @@ namespace {
             {"Add Favourite",   {"Favorit hinzufügen", "Ajouter aux favoris", "Añadir a favoritos"}},
             {"Remove Favourite", {"Favorit entfernen", "Retirer des favoris", "Quitar de favoritos"}},
             {"Search in Hoard & Seek", {"In Hoard & Seek suchen", "Rechercher dans Hoard & Seek", "Buscar en Hoard & Seek"}},
+            {"Preview in Game", {"Im Spiel ansehen", "Aperçu dans le jeu", "Vista previa en el juego"}},
             {"CraftyLegend Settings", {"CraftyLegend-Einstellungen", "Paramètres de CraftyLegend", "Ajustes de CraftyLegend"}},
             {"Display Settings", {"Anzeigeeinstellungen", "Paramètres d'affichage", "Ajustes de pantalla"}},
             {"Compact Mode",    {"Kompaktmodus", "Mode compact", "Modo compacto"}},

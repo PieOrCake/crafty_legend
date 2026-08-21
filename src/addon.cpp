@@ -6,6 +6,7 @@
 #include "IconManager.h"
 #include "ui_helpers.h"
 #include "PieTheme.h"
+#include "PieUiLink.h"
 #include "FontManager.h"
 #include "Localization.h"
 #include "CharacterCrafting.h"
@@ -388,6 +389,8 @@ void AddonLoad(AddonAPI_t* aApi) {
 
     // Optional Pie UI theme integration (soft dependency)
     PieTheme::Init();
+    // Optional Pie UI native item preview (soft dependency)
+    CraftyLegend::PieUiLink::Init();
 
     // Internationalization: language detection + Decoder Ring name consumer (soft dependency)
     Localization::Init();
@@ -440,6 +443,7 @@ void AddonUnload() {
     APIDefs->Events_Unsubscribe(EV_MUMBLE_IDENTITY_UPDATED, OnMumbleIdentityUpdated);
     APIDefs->Events_Unsubscribe(EV_HOARD_ACCOUNTS_CHANGED, OnAccountsChanged);
     PieTheme::Shutdown();
+    CraftyLegend::PieUiLink::Shutdown();
     Localization::Shutdown();
     CraftyLegend::FontManager::Shutdown();
 

@@ -49,6 +49,7 @@ set(SOURCES
     src/GW2API.cpp
     src/IconManager.cpp
     src/PieTheme.cpp
+    src/PieUiLink.cpp
     src/Localization.cpp
     src/CharacterCrafting.cpp
     src/FontManager.cpp

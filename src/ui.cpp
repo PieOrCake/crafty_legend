@@ -13,6 +13,7 @@
 #include <vector>
 #include <shellapi.h>
 #include "PieTheme.h"
+#include "PieUiLink.h"
 #include "Localization.h"
 #include "ui_tree.h"
 #include "FontManager.h"
@@ -959,6 +960,15 @@ void AddonRender() {
                             if (CraftyLegend::GW2API::HasAccountData() && CraftyLegend::GW2API::GetOwnedCount(leg.id) > 0) {
                                 if (ImGui::MenuItem(Localization::Tr("Search in Hoard & Seek"))) {
                                     APIDefs->Events_Raise(EV_HOARD_SEARCH, (void*)leg.name.c_str());
+                                }
+                            }
+                            // Native wardrobe preview via Pie UI. Only offered when Pie is
+                            // loaded AND the item type actually has a preview slot - trinkets
+                            // and upgrade components would silently open nothing.
+                            if (CraftyLegend::PieUiLink::Present() &&
+                                CraftyLegend::PieUiLink::IsPreviewableType(leg.type)) {
+                                if (ImGui::MenuItem(Localization::Tr("Preview in Game"))) {
+                                    CraftyLegend::PieUiLink::OpenItemPreview(leg.id);
                                 }
                             }
                             ImGui::EndPopup();
