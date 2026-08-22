@@ -263,6 +263,20 @@ void AddonRender() {
         RefreshCharacterCrafting();
     }
 
+    // The shopping list flattens the tree down the ACTIVE route at every
+    // multi-route item, so any change to the route store invalidates it. Watching
+    // the revision counter catches all of them at once - the tree's expand arrows,
+    // Miller's acquisition-method clicks and a session restore - which is safer
+    // than remembering to raise the flag at each of those call sites.
+    {
+        static uint64_t s_lastExpandRevision = CraftyLegend::DataManager::GetExpandRevision();
+        const uint64_t rev = CraftyLegend::DataManager::GetExpandRevision();
+        if (rev != s_lastExpandRevision) {
+            s_lastExpandRevision = rev;
+            g_ShoppingListDirty = true;
+        }
+    }
+
     // Recompute prerequisites when achievement/mastery data arrives
     if (g_PrereqDirty && g_PrereqLegendaryId != 0) {
         g_Prerequisites = CraftyLegend::DataManager::GetPrerequisites(g_PrereqLegendaryId);
@@ -614,9 +628,11 @@ void AddonRender() {
 
                 // Compute per-group totals
                 long long tpCost = 0, vendorCost = 0;
-                int tpCount = 0, vendorCount = 0;
+                int tpCount = 0, vendorCount = 0, unbuyableCount = 0;
                 for (const auto& e : g_ShoppingList) {
-                    if (e.is_vendor) {
+                    if (e.is_unbuyable) {
+                        unbuyableCount++;
+                    } else if (e.is_vendor) {
                         vendorCount++;
                         if (e.tp_price > 0 && e.required > 0)
                             vendorCost += (long long)e.tp_price * e.required;
@@ -669,10 +685,12 @@ void AddonRender() {
                 }
                 ImGui::Separator();
 
-                // Render helper lambda for a group of entries
-                auto renderEntries = [&](bool vendor) {
+                // Render helper lambda for a group of entries.
+                // 0 = trading post, 1 = vendor (gold), 2 = not buyable for gold.
+                auto renderEntries = [&](int group) {
                     for (const auto& e : g_ShoppingList) {
-                        if (e.is_vendor != vendor) continue;
+                        const int g = e.is_unbuyable ? 2 : (e.is_vendor ? 1 : 0);
+                        if (g != group) continue;
                         // Qty column (right-aligned)
                         std::string qtyStr = std::to_string(e.required);
                         float qw = ImGui::CalcTextSize(qtyStr.c_str()).x;
@@ -697,7 +715,7 @@ void AddonRender() {
                     ImGui::TextColored(readyColor, "%s", Localization::Tr("Trading Post"));
                     ImGui::SameLine();
                     ImGui::TextColored(dimTextColor, "(%d)", tpCount);
-                    renderEntries(false);
+                    renderEntries(0);
                 }
 
                 // Vendor Purchases section
@@ -706,7 +724,18 @@ void AddonRender() {
                     ImGui::TextColored(sectionHeaderColor, "%s", Localization::Tr("Vendor"));
                     ImGui::SameLine();
                     ImGui::TextColored(dimTextColor, "(%d)", vendorCount);
-                    renderEntries(true);
+                    renderEntries(1);
+                }
+
+                // Still short, but not for sale: bound leaves with no coin price.
+                // Listed so the shortfall is visible somewhere - it used to be
+                // dropped silently, which understated the whole list.
+                if (unbuyableCount > 0) {
+                    if (tpCount > 0 || vendorCount > 0) ImGui::Spacing();
+                    ImGui::TextColored(subtypeColor, "%s", Localization::Tr("Gather or Earn"));
+                    ImGui::SameLine();
+                    ImGui::TextColored(dimTextColor, "(%d)", unbuyableCount);
+                    renderEntries(2);
                 }
 
                 ImGui::Unindent(textPadX);
@@ -1225,10 +1254,17 @@ void AddonRender() {
                             CraftyLegend::DataManager::SetSelectedMaterial(col, static_cast<int>(i));
                             if (mat.item_id != 0) {
                                 try {
+                                    // Net against this node's share of the owned stack,
+                                    // not the whole stack: the same material often
+                                    // appears in several branches, and crediting all of
+                                    // it to each one made every column read as covered
+                                    // while the shopping list still asked for more.
                                     int drill_count = (int)mat.count;
                                     if (CraftyLegend::GW2API::HasAccountData()) {
-                                        int owned = GetEffectiveOwnedCount(mat.item_id);
-                                        drill_count = std::max(0, drill_count - owned);
+                                        drill_count = RemainingNeededAtNode(
+                                            g_PrereqLegendaryId,
+                                            CraftyLegend::DataManager::GetChildNodeKey(col, static_cast<int>(i)),
+                                            mat.item_id, drill_count);
                                     }
                                     CraftyLegend::DataManager::UpdateColumn(col, mat.item_id, drill_count);
                                 } catch (...) {}
@@ -1345,7 +1381,28 @@ void AddonRender() {
                         if (ImGui::Selectable(label.c_str(), isSel)) {
                             CraftyLegend::DataManager::SetSelectedAcquisition(col, static_cast<int>(i));
                             try {
-                                CraftyLegend::DataManager::HandleAcquisitionMethodSelection(col, i);
+                                // How many of this item are still needed once the owned
+                                // stack has been shared across every branch that wants
+                                // it. DataManager can't work this out itself - the
+                                // allocation lives with the shopping list walk - so it
+                                // is computed here and passed in.
+                                int netQty = -1;
+                                const auto& cols = CraftyLegend::DataManager::GetColumns();
+                                if (col > 0 && col < static_cast<int>(cols.size())) {
+                                    const uint32_t srcId = cols[col].source_item_id;
+                                    const auto& parent = cols[col - 1];
+                                    const int sel = parent.selected_material_index;
+                                    if (srcId != 0 && sel >= 0 &&
+                                        sel < static_cast<int>(parent.materials.size()) &&
+                                        parent.materials[sel].item_id == srcId) {
+                                        netQty = RemainingNeededAtNode(
+                                            g_PrereqLegendaryId,
+                                            CraftyLegend::DataManager::GetColumnNodeKey(col),
+                                            srcId, static_cast<int>(parent.materials[sel].count));
+                                        if (netQty < 1) netQty = 1;
+                                    }
+                                }
+                                CraftyLegend::DataManager::HandleAcquisitionMethodSelection(col, i, netQty);
                             } catch (...) {}
                             g_Columns = CraftyLegend::DataManager::GetColumns();
                             CraftyLegend::DataManager::SetSessionScrollState(g_TrackedScrollX, g_TrackedCol0ScrollY, g_TrackedColScrollY);

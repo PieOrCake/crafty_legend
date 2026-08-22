@@ -28,6 +28,12 @@ static const int   MAX_TREE_DEPTH = 12;    // backstop against pathological recu
 // simplifies to `textPadX + iconColW` (maxPriceW and priceGap both 0 here).
 static const float textPadX = 6.0f;
 
+// The legendary RenderTree is currently drawing. RenderNode needs it to look up
+// this node's share of the owned-material allocation, and threading it through
+// every recursion would touch every signature for one unchanging value.
+static uint32_t s_currentTreeLegendaryId = 0;
+static uint32_t CurrentTreeLegendaryId() { return s_currentTreeLegendaryId; }
+
 // Right-pinned acquisition-cost column: draws `copper` right-aligned to the
 // tree panel's content-region right edge, at `rowBaseY`, without disturbing the
 // caller's layout cursor (it saves and restores the cursor position). Used for
@@ -237,12 +243,13 @@ static void RenderNode(uint32_t item_id, int count, int depth,
 
     if (expanded) {
         // Drilling in shows the cost of what is LEFT to make, so the children scale
-        // from the net requirement rather than the gross one. Miller has always done
-        // this (ui.cpp's drill_count and HandleAcquisitionMethodSelection both
-        // subtract owned); the tree did not, which is why the two views disagreed.
+        // from the net requirement rather than the gross one. Netted against THIS
+        // node's share of the owned stack, not the whole stack: a material wanted by
+        // several branches would otherwise be counted as covered in each of them,
+        // disagreeing with the shopping list, which shares one stack across the tree.
         // The row above still shows the gross "owned/needed" fraction. Clamped to at
         // least one so a fully-owned branch shows one craft's worth instead of zeros.
-        int netCount = CraftyLegend::DataManager::RemainingNeeded(item_id, count);
+        int netCount = RemainingNeededAtNode(CurrentTreeLegendaryId(), nodeKey, item_id, count);
         if (netCount < 1) netCount = 1;
 
         auto methods = MeaningfulMethods(item_id);
@@ -566,6 +573,7 @@ static void RenderMethodChildren(uint32_t item_id,
 }
 
 void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
+    s_currentTreeLegendaryId = legendaryId;
     ImGui::BeginChild("TreeView", ImVec2(availWidth, availHeight), false);
     if (legendaryId == 0) {
         ImGui::TextDisabled("%s", Localization::Tr("Select a legendary to see its crafting tree."));
@@ -650,17 +658,8 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
 // when the item has a recipe, "trading_post" is not a meaningful acquisition choice
 // because the recipe route already covers it.
 std::vector<CraftyLegend::AcquisitionMethod> MeaningfulMethods(uint32_t item_id) {
-    std::vector<CraftyLegend::AcquisitionMethod> methods =
-        CraftyLegend::DataManager::GetAcquisitionMethods(item_id);
-
-    const CraftyLegend::Recipe* recipe = CraftyLegend::DataManager::GetRecipe(item_id);
-    if (recipe && !recipe->ingredients.empty()) {
-        methods.erase(
-            std::remove_if(methods.begin(), methods.end(),
-                [](const CraftyLegend::AcquisitionMethod& a) { return a.method == "trading_post"; }),
-            methods.end());
-    }
-    return methods;
+    // One definition, in DataManager, so the Miller columns index the same list.
+    return CraftyLegend::DataManager::MeaningfulAcquisitionMethods(item_id);
 }
 
 // Total gold cost (copper) for a single ingredient leaf, or -1 if it cannot be

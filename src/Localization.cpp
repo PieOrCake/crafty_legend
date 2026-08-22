@@ -99,6 +99,7 @@ namespace {
     const std::unordered_map<std::string, Row>& ChromeTable() {
         static const std::unordered_map<std::string, Row> t = {
             {"Shopping List",   {"Einkaufsliste", "Liste d'achats", "Lista de compra"}},
+            {"Gather or Earn",  {"Sammeln oder verdienen", "Récolter ou gagner", "Recoger o ganar"}},
             // Column titles
             {"Details",         {"Details", "Détails", "Detalles"}},
             {"Mystic Forge",    {"Mystische Schmiede", "Forge mystique", "Fragua mística"}},

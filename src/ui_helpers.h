@@ -50,6 +50,16 @@ float GetLegendaryCompletion(uint32_t legendary_id);
 // Shopping list builder
 void BuildShoppingList(uint32_t legendary_id);
 
+// How many of `item_id` are still needed at one node of a legendary's tree, after
+// the account's stock has been shared out across every branch that wants it.
+// DataManager::RemainingNeeded answers the same question per node in isolation,
+// which credits the whole stack to each branch: own 300 Mystic Coins and two
+// branches wanting 190 and 250 both read as covered, while the shopping list
+// correctly still asks for 140. Drilling and the tree rows go through here so all
+// three agree. Falls back to the per-node rule when the node is not in the walk.
+int RemainingNeededAtNode(uint32_t legendary_id, const std::string& nodeKey,
+                          uint32_t item_id, int count);
+
 // Material price (recursive TP/vendor)
 int GetMaterialTotalPrice(const CraftyLegend::RecipeIngredient& mat);
 // Route-aware form for the tree: prices a multi-route item down its active route

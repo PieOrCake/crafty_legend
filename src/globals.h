@@ -33,6 +33,11 @@ struct ShoppingEntry {
     int owned;
     int tp_price;
     bool is_vendor;
+    // Still needed, but no amount of gold will buy it - an account-bound leaf with
+    // no coin price (Obsidian Shards, Shards of Glory, Memories of Battle...).
+    // These used to be dropped from the list entirely, so a shortfall of a few
+    // hundred shards showed up nowhere at all.
+    bool is_unbuyable = false;
 };
 
 enum class ShoppingSort { Name, Price };

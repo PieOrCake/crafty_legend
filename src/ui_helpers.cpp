@@ -411,7 +411,8 @@ static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq
     std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
     std::unordered_map<std::string, int>& walletMats,
     std::unordered_set<uint32_t>& visited,
-    std::unordered_map<uint32_t, int>& pool);
+    std::unordered_map<uint32_t, int>& pool,
+    std::unordered_map<std::string, int>* nodeSpend);
 
 // How much of `item_id` the walk still has to find, after spending whatever is
 // left of the stack you already own.
@@ -450,13 +451,18 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
     std::unordered_map<std::string, int>& walletMats,
     std::unordered_set<uint32_t>& visited,
     const std::string& nodeKey,
-    std::unordered_map<uint32_t, int>& pool) {
+    std::unordered_map<uint32_t, int>& pool,
+    std::unordered_map<std::string, int>* nodeSpend) {
     if (item_id == 0 || count <= 0) return;
     if (visited.count(item_id)) return; // cycle guard
 
     // Spend what is left of the stack you own, rather than crediting all of it
     // against every branch that wants this item (see TakeFromPool).
     int remaining = TakeFromPool(item_id, count, pool);
+    // Record what this node was actually credited, so the Miller columns and the
+    // tree rows can show the same shortfall the list does instead of subtracting
+    // the whole stack again at every branch.
+    if (nodeSpend) (*nodeSpend)[nodeKey] += count - remaining;
     if (remaining <= 0) return;
 
     // Multi-route item: follow the active route instead of assuming the recipe.
@@ -469,7 +475,7 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
                 visited.insert(item_id);
                 FlattenVendorRequirements(method, remaining,
                     nodeKey + "#m:" + std::to_string(active),
-                    itemMats, walletMats, visited, pool);
+                    itemMats, walletMats, visited, pool, nodeSpend);
                 visited.erase(item_id);
                 return;
             }
@@ -498,32 +504,45 @@ static void FlattenCraftingTree(uint32_t item_id, int count,
             } else {
                 FlattenCraftingTree(ing.item_id, static_cast<int>(ing.count) * numCrafts,
                     itemMats, walletMats, visited,
-                    nodeKey + "/" + std::to_string(ing.item_id), pool);
+                    nodeKey + "/" + std::to_string(ing.item_id), pool, nodeSpend);
             }
         }
         visited.erase(item_id);
         return;
     }
 
-    // Leaf item: accumulate
-    std::string name = CraftyLegend::DataManager::GetItemName(item_id);
-    if (name.empty()) name = "Unknown #" + std::to_string(item_id);
-    itemMats[item_id].first = name;
-    itemMats[item_id].second += remaining;
-
-    // Also walk vendor purchase sub-items so their gold costs are captured. Any
-    // genuine choice of vendor was resolved above, so whatever is left here is the
-    // item's only route and taking the first one with costs is not a guess.
+    // Leaf item. If it is traded for other ITEMS at a vendor, those items are what
+    // you actually have to go and get - listing the leaf as well told you to buy
+    // both the Ardent Glorious helm and the 250 Shards of Glory you would trade for
+    // it. A cost paid in coin or wallet currency leaves the leaf itself as the thing
+    // to acquire, so it is still listed then.
+    // Any genuine choice of vendor was resolved above, so whatever is left here is
+    // the item's only route and taking the first one with costs is not a guess.
     // The tree passes nodeKey as the method key in this single-route case
     // (RenderNode -> RenderMethodChildren), so the keys line up.
     const auto& acqs = CraftyLegend::DataManager::GetAcquisitionMethods(item_id);
     for (const auto& acq : acqs) {
         if (acq.purchase_requirements.empty()) continue;
+        bool tradedForItems = false;
+        for (const auto& req : acq.purchase_requirements) {
+            if (req.first == "Coin") continue;
+            if (ParseRequirementAmount(req.second) <= 0) continue;
+            if (CraftyLegend::DataManager::ResolveRequirementItemId(req.first) != 0) {
+                tradedForItems = true;
+                break;
+            }
+        }
         visited.insert(item_id);
-        FlattenVendorRequirements(acq, remaining, nodeKey, itemMats, walletMats, visited, pool);
+        FlattenVendorRequirements(acq, remaining, nodeKey, itemMats, walletMats, visited, pool, nodeSpend);
         visited.erase(item_id);
+        if (tradedForItems) return; // its price replaces it on the list
         break;
     }
+
+    std::string name = CraftyLegend::DataManager::GetItemName(item_id);
+    if (name.empty()) name = "Unknown #" + std::to_string(item_id);
+    itemMats[item_id].first = name;
+    itemMats[item_id].second += remaining;
 }
 
 static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq,
@@ -531,7 +550,8 @@ static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq
     std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
     std::unordered_map<std::string, int>& walletMats,
     std::unordered_set<uint32_t>& visited,
-    std::unordered_map<uint32_t, int>& pool) {
+    std::unordered_map<uint32_t, int>& pool,
+    std::unordered_map<std::string, int>* nodeSpend) {
     int idx = 0;
     for (const auto& req : acq.purchase_requirements) {
         std::string reqKey = mKey + "#vreq:" + std::to_string(idx++);
@@ -541,7 +561,7 @@ static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq
         uint32_t sub_id = CraftyLegend::DataManager::ResolveRequirementItemId(req.first);
         if (sub_id != 0) {
             FlattenCraftingTree(sub_id, sub_count * remaining, itemMats, walletMats, visited,
-                reqKey + "/" + std::to_string(sub_id), pool);
+                reqKey + "/" + std::to_string(sub_id), pool, nodeSpend);
         }
         // A requirement that resolves to no item is a wallet currency. The shopping
         // list is a list of things to buy, and wallet costs are excluded from it
@@ -549,14 +569,16 @@ static void FlattenVendorRequirements(const CraftyLegend::AcquisitionMethod& acq
     }
 }
 
-void BuildShoppingList(uint32_t legendary_id) {
-    g_ShoppingList.clear();
-    if (legendary_id == 0) return;
-
-    std::unordered_map<uint32_t, std::pair<std::string, int>> itemMats;
-    std::unordered_map<std::string, int> walletMats;
+// One walk of a legendary's whole tree, shared by the shopping list and by the
+// owned-material allocation the columns and tree rows read. Keeping it in one place
+// is what makes those three agree: same routes, same clover maths, and above all
+// the same single stack of each owned material spent across the whole tree.
+static void WalkLegendary(uint32_t legendary_id,
+    std::unordered_map<uint32_t, std::pair<std::string, int>>& itemMats,
+    std::unordered_map<std::string, int>& walletMats,
+    std::unordered_map<std::string, int>* nodeSpend) {
     std::unordered_set<uint32_t> visited;
-    // One stack per item for the whole list, drawn down as the walk spends it.
+    // One stack per item for the whole walk, drawn down as it is spent.
     std::unordered_map<uint32_t, int> pool;
 
     // Recurse directly into the legendary's recipe ingredients, bypassing the
@@ -575,12 +597,84 @@ void BuildShoppingList(uint32_t legendary_id) {
                 walletMats[ing.name] += static_cast<int>(ing.count);
             } else {
                 FlattenCraftingTree(ing.item_id, static_cast<int>(ing.count), itemMats, walletMats,
-                    visited, root + "/" + std::to_string(ing.item_id), pool);
+                    visited, root + "/" + std::to_string(ing.item_id), pool, nodeSpend);
             }
         }
     } else {
-        FlattenCraftingTree(legendary_id, 1, itemMats, walletMats, visited, root, pool);
+        // No recipe: the legendary is bought outright from a vendor. Expand that
+        // vendor's costs directly rather than going through FlattenCraftingTree,
+        // which would net the legendary against copies already in the armoury (the
+        // list is always for the NEXT one) and then list the legendary itself as
+        // something to shop for.
+        auto methods = CraftyLegend::UI::MeaningfulMethods(legendary_id);
+        int active = methods.empty() ? -1 : 0;
+        if (methods.size() >= 2) {
+            active = CraftyLegend::UI::ResolveActiveMethodIndex(legendary_id, root);
+        }
+        if (active >= 0 && active < static_cast<int>(methods.size())) {
+            const std::string mKey = methods.size() >= 2
+                ? root + "#m:" + std::to_string(active)
+                : root;
+            visited.insert(legendary_id);
+            FlattenVendorRequirements(methods[active], 1, mKey,
+                                      itemMats, walletMats, visited, pool, nodeSpend);
+            visited.erase(legendary_id);
+        }
     }
+}
+
+// How much of each node's requirement the account's stock already covers, for the
+// legendary currently on screen. Cached: rebuilding is a full tree walk, and the
+// tree asks once per visible row per frame.
+static const std::unordered_map<std::string, int>& OwnedAllocation(uint32_t legendary_id) {
+    static std::unordered_map<std::string, int> s_alloc;
+    static uint32_t s_legendary = 0;
+    static uint64_t s_accountRev = static_cast<uint64_t>(-1);
+    static uint64_t s_expandRev  = static_cast<uint64_t>(-1);
+
+    const uint64_t accountRev = CraftyLegend::GW2API::GetAccountRevision();
+    const uint64_t expandRev  = CraftyLegend::DataManager::GetExpandRevision();
+    if (legendary_id == s_legendary && accountRev == s_accountRev && expandRev == s_expandRev) {
+        return s_alloc;
+    }
+
+    s_alloc.clear();
+    s_legendary  = legendary_id;
+    s_accountRev = accountRev;
+    s_expandRev  = expandRev;
+    if (legendary_id != 0) {
+        std::unordered_map<uint32_t, std::pair<std::string, int>> itemMats;
+        std::unordered_map<std::string, int> walletMats;
+        WalkLegendary(legendary_id, itemMats, walletMats, &s_alloc);
+    }
+    return s_alloc;
+}
+
+int RemainingNeededAtNode(uint32_t legendary_id, const std::string& nodeKey,
+                          uint32_t item_id, int count) {
+    if (count <= 0) return 0;
+    if (legendary_id == 0 || nodeKey.empty()) {
+        return CraftyLegend::DataManager::RemainingNeeded(item_id, count);
+    }
+    const auto& alloc = OwnedAllocation(legendary_id);
+    auto it = alloc.find(nodeKey);
+    if (it == alloc.end()) {
+        // The walk never reached this node - a stale column, or a route the active
+        // resolution does not take. Fall back to the per-node rule rather than
+        // pretending nothing is owned.
+        return CraftyLegend::DataManager::RemainingNeeded(item_id, count);
+    }
+    const int remaining = count - it->second;
+    return remaining > 0 ? remaining : 0;
+}
+
+void BuildShoppingList(uint32_t legendary_id) {
+    g_ShoppingList.clear();
+    if (legendary_id == 0) return;
+
+    std::unordered_map<uint32_t, std::pair<std::string, int>> itemMats;
+    std::unordered_map<std::string, int> walletMats;
+    WalkLegendary(legendary_id, itemMats, walletMats, nullptr);
 
     // Convert to shopping entries
     // Note: FlattenCraftingTree already subtracts owned counts, so info.second
@@ -591,23 +685,33 @@ void BuildShoppingList(uint32_t legendary_id) {
         int tp_price = CraftyLegend::GW2API::HasPriceData() ? CraftyLegend::GW2API::GetSellPrice(id) : 0;
         int vendor_coin = GetVendorCoinCost(id); // per-unit vendor gold cost
         bool is_bound = item && item->binding != "none" && !item->binding.empty();
-        if (is_bound && vendor_coin <= 0) continue; // bound item with no gold cost
-        if (!is_bound && CraftyLegend::GW2API::HasPriceData() && tp_price <= 0 && vendor_coin <= 0) continue; // not purchasable
+        // Anything gold can buy goes in the TP or Vendor group. What is left is a
+        // real shortfall you have to go and earn, and it is listed rather than
+        // dropped: silently omitting it understated the list (a Mystic Tribute can
+        // leave you a couple of hundred Obsidian Shards short with nothing on
+        // screen to say so). Only classify as unbuyable when we actually know -
+        // before TP prices load, an unbound item's price is unknown, not absent.
+        bool unbuyable = false;
+        if (tp_price <= 0 && vendor_coin <= 0) {
+            if (is_bound || CraftyLegend::GW2API::HasPriceData()) unbuyable = true;
+        }
         ShoppingEntry e;
         e.item_id = id;
         e.name = info.first; // English canonical; localized at render time so it updates live
         e.required = info.second; // net amount to purchase
         e.owned = 0;
-        e.is_vendor = (tp_price <= 0 && vendor_coin > 0);
+        e.is_unbuyable = unbuyable;
+        e.is_vendor = (!unbuyable && tp_price <= 0 && vendor_coin > 0);
         e.tp_price = tp_price > 0 ? tp_price : vendor_coin; // prefer TP, fallback to vendor
         g_ShoppingList.push_back(e);
     }
     // Wallet currencies excluded - not purchasable on TP
 
-    // Sort within each group (vendor vs TP) by current sort mode
-    auto sorter = [](const ShoppingEntry& a, const ShoppingEntry& b) {
-        // Primary: group by is_vendor (TP first, vendor second)
-        if (a.is_vendor != b.is_vendor) return !a.is_vendor;
+    // Sort within each group (trading post / vendor / gather-or-earn) by sort mode
+    auto group = [](const ShoppingEntry& e) { return e.is_unbuyable ? 2 : (e.is_vendor ? 1 : 0); };
+    auto sorter = [&group](const ShoppingEntry& a, const ShoppingEntry& b) {
+        // Primary: trading post, then vendor, then what gold cannot buy
+        if (group(a) != group(b)) return group(a) < group(b);
         // Secondary: current sort mode
         if (g_ShoppingSort == ShoppingSort::Price) {
             long long pa = (long long)a.tp_price * a.required;

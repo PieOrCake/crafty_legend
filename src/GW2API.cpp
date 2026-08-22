@@ -24,6 +24,7 @@ namespace CraftyLegend {
     FetchStatus GW2API::s_price_fetch_status = FetchStatus::Idle;
     std::string GW2API::s_price_fetch_message;
     std::atomic<uint64_t> GW2API::s_price_revision{0};
+    std::atomic<uint64_t> GW2API::s_account_revision{0};
     std::mutex GW2API::s_mutex;
     std::unordered_map<int, std::string> GW2API::s_currency_names;
     std::unordered_map<int, std::string> GW2API::s_achievement_names;
@@ -155,6 +156,7 @@ namespace CraftyLegend {
     void GW2API::SetHasAccountData(bool has_data) {
         std::lock_guard<std::mutex> lock(s_mutex);
         s_has_account_data = has_data;
+        s_account_revision.fetch_add(1, std::memory_order_relaxed);
     }
 
     void GW2API::SetItemCount(uint32_t item_id, int count) {
@@ -164,6 +166,7 @@ namespace CraftyLegend {
         } else {
             s_owned_items.erase(item_id);
         }
+        s_account_revision.fetch_add(1, std::memory_order_relaxed);
     }
 
     void GW2API::SetItemCountPerAccount(uint32_t item_id, const std::string& account_name, int count) {
@@ -177,6 +180,7 @@ namespace CraftyLegend {
                 if (it->second.empty()) s_owned_items_per_account.erase(it);
             }
         }
+        s_account_revision.fetch_add(1, std::memory_order_relaxed);
     }
 
     int GW2API::GetOwnedCountForAccount(uint32_t item_id, const std::string& account_name) {
@@ -211,6 +215,7 @@ namespace CraftyLegend {
     void GW2API::SetCurrentAccountName(const std::string& name) {
         std::lock_guard<std::mutex> lock(s_mutex);
         s_current_account_name = name;
+        s_account_revision.fetch_add(1, std::memory_order_relaxed);
     }
 
     std::string GW2API::GetCurrentAccountName() {
@@ -228,16 +233,19 @@ namespace CraftyLegend {
         s_owned_items.clear();
         s_owned_items_per_account.clear();
         s_wallet.clear();
+        s_account_revision.fetch_add(1, std::memory_order_relaxed);
     }
 
     void GW2API::SetWalletAmount(int currency_id, int amount) {
         std::lock_guard<std::mutex> lock(s_mutex);
         s_wallet[currency_id] = amount;
+        s_account_revision.fetch_add(1, std::memory_order_relaxed);
     }
 
     void GW2API::ClearWallet() {
         std::lock_guard<std::mutex> lock(s_mutex);
         s_wallet.clear();
+        s_account_revision.fetch_add(1, std::memory_order_relaxed);
     }
 
     bool GW2API::HasWalletData() {
@@ -568,6 +576,10 @@ namespace CraftyLegend {
 
     uint64_t GW2API::GetPriceRevision() {
         return s_price_revision.load(std::memory_order_relaxed);
+    }
+
+    uint64_t GW2API::GetAccountRevision() {
+        return s_account_revision.load(std::memory_order_relaxed);
     }
 
     bool GW2API::SavePriceData(const std::unordered_map<uint32_t, int>& prices) {

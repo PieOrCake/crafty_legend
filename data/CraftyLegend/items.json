@@ -6,7 +6,7 @@
       "icon": "https://render.guildwars2.com/file/91AC9F70D30C5E3E22635DF4F30CAFA1F6F803A0/219361.png",
       "description": "",
       "type": "consumable",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -18,7 +18,7 @@
       "icon": "https://render.guildwars2.com/file/BA57FF7A052FFE37669F97A815BD28089FCFF0AD/219367.png",
       "description": "",
       "type": "consumable",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -81,7 +81,7 @@
       "icon": "https://render.guildwars2.com/file/C23FA1EA0827E97312D6064F4A08B402FE9943B9/63071.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "vendor"
       ],
@@ -117,7 +117,7 @@
       "icon": "https://render.guildwars2.com/file/4703A1CA2C61B002212E3D5A960C35BE13B5CF3B/455580.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [],
       "rarity": "Masterwork"
     },
@@ -846,7 +846,7 @@
       "icon": "https://render.guildwars2.com/file/32D3BC4B5722155E15DC5A1DE5E9255C50F90609/65909.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -868,7 +868,7 @@
       "icon": "https://render.guildwars2.com/file/80C845F5ED06036F7E041C7214C29FA3D562A480/65911.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -924,7 +924,7 @@
       "icon": "https://render.guildwars2.com/file/33150406A468526276071A0D0AD678B9F1D6EDCA/65915.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -1226,7 +1226,7 @@
       "icon": "https://render.guildwars2.com/file/12B5A77DE31564F344BFD46875C3200E9105E0A8/65952.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [],
       "rarity": "Basic"
     },
@@ -1236,7 +1236,7 @@
       "icon": "https://render.guildwars2.com/file/3158B2B14EC72A93D05F07AD3FAF0EB9BC7E3E0C/65953.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [],
       "rarity": "Basic"
     },
@@ -1282,7 +1282,7 @@
       "icon": "https://render.guildwars2.com/file/B7CFD70F53A845E4ED1212040C18C123FC172910/65959.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "vendor"
       ],
@@ -1426,7 +1426,7 @@
       "icon": "https://render.guildwars2.com/file/45ACC107537E9D70776C9F24EDA1DCC26C4AFAB1/63345.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -1438,7 +1438,7 @@
       "icon": "https://render.guildwars2.com/file/4AA6F8CB30973B9A6E4C310124EFB5BFF42036E5/63273.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -1450,7 +1450,7 @@
       "icon": "https://render.guildwars2.com/file/F438A5EFB89C4ED6F8A04FE6E7060D05C294C4C6/434532.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -1582,7 +1582,7 @@
       "icon": "https://render.guildwars2.com/file/F94ECFFF0FA9C321C108DA34E777B27B0AC9D5F8/66944.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -1930,7 +1930,7 @@
       "icon": "https://render.guildwars2.com/file/FA216B1B546314D0A4125D083F9BD34EA03B9329/67002.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -1966,7 +1966,7 @@
       "icon": "https://render.guildwars2.com/file/2DC5460357C6E766A31EF72854F3030C43BF0143/220948.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -1990,7 +1990,7 @@
       "icon": "https://render.guildwars2.com/file/327A0AA63E50E268EC02C4A5F0DBD246F207AEBB/220952.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -2713,7 +2713,7 @@
       "icon": "https://render.guildwars2.com/file/F996013B7E4AB74F0D73EE38723521BEA9B8D67F/619700.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -3273,7 +3273,7 @@
       "icon": "https://render.guildwars2.com/file/94DCAE59215C0096449906A81F202B0201FBA85B/631486.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [],
       "rarity": "Ascended"
     },
@@ -3283,7 +3283,7 @@
       "icon": "https://render.guildwars2.com/file/057F4DB327DB7F46490876E4D9D86E7C1D613C26/631487.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [],
       "rarity": "Ascended"
     },
@@ -3341,7 +3341,7 @@
       "icon": "https://render.guildwars2.com/file/090DF0E7AFD6AD9A6C9FC31CCE510A05663D0A0E/631495.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "vendor"
       ],
@@ -3377,7 +3377,7 @@
       "icon": "https://render.guildwars2.com/file/5E979AEEF7D092DCFEF9ADA527BB61F6FF03E811/711882.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -3389,7 +3389,7 @@
       "icon": "https://render.guildwars2.com/file/A87B2A37E3400D19E0BF2D9206DF80DD6C98066E/831484.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -3714,7 +3714,7 @@
       "icon": "https://render.guildwars2.com/file/D838CB1BF7D49E1725EBB1F3ABD00C55EB67CE1E/1205401.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -3738,7 +3738,7 @@
       "icon": "https://render.guildwars2.com/file/56BB44D10201E6B51772FBA99BB6BEFECB40A674/1200714.png",
       "description": "",
       "type": "trophy",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "collection"
       ],
@@ -3832,7 +3832,7 @@
       "icon": "https://render.guildwars2.com/file/7EA15F9A3EFA445D0FE824DA2E591D7F7DDE150F/1200716.png",
       "description": "",
       "type": "trophy",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "collection"
       ],
@@ -4022,7 +4022,7 @@
       "icon": "https://render.guildwars2.com/file/3E3CB8B5ED53AA4E099BE4F40160E45A2859F173/1201914.png",
       "description": "",
       "type": "trophy",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "collection"
       ],
@@ -4746,7 +4746,7 @@
       "icon": "https://render.guildwars2.com/file/B7A7BC319AE979B3F40B3776FC66F91692694446/1200709.png",
       "description": "",
       "type": "trophy",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "collection"
       ],
@@ -5046,7 +5046,7 @@
       "icon": "https://render.guildwars2.com/file/4E096C75FAB2EF90A82648A43C64FC226267FB92/1202991.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -5743,7 +5743,7 @@
       "icon": "https://render.guildwars2.com/file/4E72696614D536500D093EE6C95FA9DD650E913B/1914827.png",
       "description": "",
       "type": "crafting_material",
-      "binding": "account",
+      "binding": "none",
       "acquisition": [
         "trading_post"
       ],
@@ -9522,7 +9522,7 @@
       "icon": "https://render.guildwars2.com/file/3504CD3199285BC1293FAE249ACF9461C50994DB/1465586.png",
       "description": "",
       "type": "consumable",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Exotic",
       "level": 0,
       "acquisition": [
@@ -9535,7 +9535,7 @@
       "icon": "https://render.guildwars2.com/file/FFE3A6302A0409148059239E05C9064D5DAF1E04/561734.png",
       "description": "",
       "type": "consumable",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
@@ -9939,7 +9939,7 @@
       "icon": "https://render.guildwars2.com/file/E993B80B313DFC50746C3692F96F7EBE01B3F372/3744854.png",
       "description": "",
       "type": "consumable",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
@@ -10160,7 +10160,7 @@
       "icon": "https://render.guildwars2.com/file/CEF1E6DA2DBF143661DF26E668034A621812B61A/3122370.png",
       "description": "",
       "type": "relic",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Exotic",
       "level": 60,
       "acquisition": [
@@ -10173,7 +10173,7 @@
       "icon": "https://render.guildwars2.com/file/CC720B5A5810A84FD97AB00FA43F1679C48074DE/455843.png",
       "description": "",
       "type": "trophy",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Exotic",
       "level": 0,
       "acquisition": [
@@ -10693,7 +10693,7 @@
       "icon": "https://render.guildwars2.com/file/74940C36779745CBA9DDD56CDF6CBAC1CEA8179F/3122363.png",
       "description": "",
       "type": "relic",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Exotic",
       "level": 60,
       "acquisition": [
@@ -10706,7 +10706,7 @@
       "icon": "https://render.guildwars2.com/file/BC680270399F49A15415E402623AD4E5A09A6411/3442617.png",
       "description": "",
       "type": "weapon",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Legendary",
       "level": 80,
       "acquisition": [
@@ -10758,7 +10758,7 @@
       "icon": "https://render.guildwars2.com/file/C56FF6EE2461FAC025D4C993AAF9BC35230FD0DD/3442765.png",
       "description": "",
       "type": "weapon",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Exotic",
       "level": 80,
       "acquisition": [
@@ -10862,7 +10862,7 @@
       "icon": "https://render.guildwars2.com/file/EDA0452ED3DD2A0DB0C0340ACCC83FE2DB0599BB/3255339.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
@@ -10927,7 +10927,7 @@
       "icon": "https://render.guildwars2.com/file/24FD0F0BF29208A1404702FF0D09BE9B0E762578/2063473.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
@@ -10940,7 +10940,7 @@
       "icon": "https://render.guildwars2.com/file/069CC52BA2E635EEF6D115C90F19660B34324B1F/2063472.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Rare",
       "level": 0,
       "acquisition": [
@@ -10953,7 +10953,7 @@
       "icon": "https://render.guildwars2.com/file/607AA1A4574FA66006FFB57C0B2DDBAAFDE50CD6/2063471.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Fine",
       "level": 0,
       "acquisition": [
@@ -10966,7 +10966,7 @@
       "icon": "https://render.guildwars2.com/file/E4B016CDF70960156803FD04C425BF9A4C382D95/2063466.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Masterwork",
       "level": 0,
       "acquisition": [
@@ -10979,7 +10979,7 @@
       "icon": "https://render.guildwars2.com/file/2949679FC79B6808EB437A0434B59D5642D86BCC/2063465.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Masterwork",
       "level": 0,
       "acquisition": [
@@ -10992,7 +10992,7 @@
       "icon": "https://render.guildwars2.com/file/F99BAAD3C841D8AC4E5C621972454E400E3CD85D/2063467.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Masterwork",
       "level": 0,
       "acquisition": [
@@ -11005,7 +11005,7 @@
       "icon": "https://render.guildwars2.com/file/BF26E2BE4C6F3F0F24194A0B0209800DB9E8D118/2063469.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Masterwork",
       "level": 0,
       "acquisition": [
@@ -11018,7 +11018,7 @@
       "icon": "https://render.guildwars2.com/file/2B7554FA80CC0279F807BB66DD15F1D66FDDB6D5/2063468.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Masterwork",
       "level": 0,
       "acquisition": [
@@ -11031,7 +11031,7 @@
       "icon": "https://render.guildwars2.com/file/ED0DC52CEEB4A22263EB25EAFDCF570E177F161C/2063464.png",
       "description": "",
       "type": "craftingmaterial",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Masterwork",
       "level": 0,
       "acquisition": [
@@ -11044,7 +11044,7 @@
       "icon": "https://render.guildwars2.com/file/80C0746F7E65C40119EBC2A26E4C6F0A6E7A6617/3708965.png",
       "description": "",
       "type": "container",
-      "binding": "account",
+      "binding": "none",
       "rarity": "Legendary",
       "level": 0,
       "acquisition": [
@@ -12428,7 +12428,7 @@
       "icon": "https://render.guildwars2.com/file/D6BC79630AFF64123ED10DF9D065CCA657E0767E/3710074.png",
       "description": "",
       "type": "consumable",
-      "binding": "account",
+      "binding": "soul",
       "rarity": "Fine",
       "acquisition": [
         "wvw"
@@ -12592,52 +12592,52 @@
     {"id": "109459", "name": "Shadowstone Fragment", "icon": "https://render.guildwars2.com/file/E775F80195D7B835E4C81CA47EB19A5924E4ADF1/3771067.png", "description": "Map currency.", "type": "crafting_material", "binding": "account", "acquisition": ["map_currency"], "rarity": "Basic"},
     {"id": "80248", "name": "Perfected Envoy Cowl", "icon": "https://render.guildwars2.com/file/06146C9BD029041178F50B5D9ACD0A76E7051408/1634576.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80441", "name": "Refined Envoy Cowl", "icon": "https://render.guildwars2.com/file/4A6F447F0ED0501AA0631592EE7DE12719EBFFAF/1634583.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45896", "name": "Damask Helm Padding", "icon": "https://render.guildwars2.com/file/F4E2F0023A6B20687EEA11BB71E2FF10BB041841/699274.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45897", "name": "Damask Helm Strap", "icon": "https://render.guildwars2.com/file/CF0FA8994371FCEFE8635BA5E96C56A10B3337E1/699275.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45896", "name": "Damask Helm Padding", "icon": "https://render.guildwars2.com/file/F4E2F0023A6B20687EEA11BB71E2FF10BB041841/699274.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45897", "name": "Damask Helm Strap", "icon": "https://render.guildwars2.com/file/CF0FA8994371FCEFE8635BA5E96C56A10B3337E1/699275.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80131", "name": "Perfected Envoy Mantle", "icon": "https://render.guildwars2.com/file/A77403E5F0EB03E46E686B12297A04707AF50278/1634579.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80264", "name": "Refined Envoy Mantle", "icon": "https://render.guildwars2.com/file/4F07C7D6A13539CD253B01B5D9607ADF3440F63F/1634585.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45901", "name": "Damask Epaulet Panel", "icon": "https://render.guildwars2.com/file/4ECBACADAB14E4492D2DD5540CEBD4181E58E245/699279.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45893", "name": "Damask Epaulet Padding", "icon": "https://render.guildwars2.com/file/9B083601AB2A2F41D3E9D8D1489B04F5FBD531EC/699271.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45901", "name": "Damask Epaulet Panel", "icon": "https://render.guildwars2.com/file/4ECBACADAB14E4492D2DD5540CEBD4181E58E245/699279.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45893", "name": "Damask Epaulet Padding", "icon": "https://render.guildwars2.com/file/9B083601AB2A2F41D3E9D8D1489B04F5FBD531EC/699271.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80190", "name": "Perfected Envoy Vestments", "icon": "https://render.guildwars2.com/file/C8FB494379CC98171EFB0F13923CACFD047743B3/1634574.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80120", "name": "Refined Envoy Vestments", "icon": "https://render.guildwars2.com/file/FB18190B78062C633DE42F7D66F340BC386977FF/1634581.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45891", "name": "Damask Coat Lining", "icon": "https://render.guildwars2.com/file/2D9A780C08EBB0E66BFE465C794527BFD2EFE831/699269.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45892", "name": "Damask Coat Panel", "icon": "https://render.guildwars2.com/file/01FD07EEB93A1ED6BDB01D75D3EC15F320A91AF0/699270.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45891", "name": "Damask Coat Lining", "icon": "https://render.guildwars2.com/file/2D9A780C08EBB0E66BFE465C794527BFD2EFE831/699269.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45892", "name": "Damask Coat Panel", "icon": "https://render.guildwars2.com/file/01FD07EEB93A1ED6BDB01D75D3EC15F320A91AF0/699270.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80111", "name": "Perfected Envoy Gloves", "icon": "https://render.guildwars2.com/file/9703DBC0926F6BB4072032E6B55BE593F6B750CD/1634575.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80460", "name": "Refined Envoy Gloves", "icon": "https://render.guildwars2.com/file/03653011AA6E3EA0ABFFE46A03F20FD6050EE098/1634582.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45894", "name": "Damask Gloves Padding", "icon": "https://render.guildwars2.com/file/462EC5A558D2BDE6B950B49A0D68DC059C0B0257/699272.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45895", "name": "Damask Gloves Panel", "icon": "https://render.guildwars2.com/file/52EF0164ABBF366B9DD4AB050AAB61F14F1942FB/699273.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45894", "name": "Damask Gloves Padding", "icon": "https://render.guildwars2.com/file/462EC5A558D2BDE6B950B49A0D68DC059C0B0257/699272.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45895", "name": "Damask Gloves Panel", "icon": "https://render.guildwars2.com/file/52EF0164ABBF366B9DD4AB050AAB61F14F1942FB/699273.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80356", "name": "Perfected Envoy Pants", "icon": "https://render.guildwars2.com/file/65A4D3A41592D10EEABD0BC0D611F13A383B0261/1634577.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80275", "name": "Refined Envoy Pants", "icon": "https://render.guildwars2.com/file/FC154D95720FC1BAC3A50A300308495C6E56EF02/1634584.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45898", "name": "Damask Pants Lining", "icon": "https://render.guildwars2.com/file/4FA5E273611502729F586121A40D0A0DD67B5825/699276.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45899", "name": "Damask Pants Panel", "icon": "https://render.guildwars2.com/file/4B0B064F035F02C027F3C1A47120067C36B57D36/699277.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45898", "name": "Damask Pants Lining", "icon": "https://render.guildwars2.com/file/4FA5E273611502729F586121A40D0A0DD67B5825/699276.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45899", "name": "Damask Pants Panel", "icon": "https://render.guildwars2.com/file/4B0B064F035F02C027F3C1A47120067C36B57D36/699277.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80399", "name": "Perfected Envoy Shoes", "icon": "https://render.guildwars2.com/file/FD60D4E3986FA46F4FEBB8131B65159195260B19/1634578.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80583", "name": "Refined Envoy Shoes", "icon": "https://render.guildwars2.com/file/CFC4C80ACAD86398BFD91318BCE70E2AA3ABBC65/1634580.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45900", "name": "Damask Shoe Upper", "icon": "https://render.guildwars2.com/file/4994464797BB0C9A37C5933BD95E2480DD1A474C/699278.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45902", "name": "Damask Shoe Sole", "icon": "https://render.guildwars2.com/file/E53E3277EB0552A9391C800FB7E1100FE3E20E92/699280.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45900", "name": "Damask Shoe Upper", "icon": "https://render.guildwars2.com/file/4994464797BB0C9A37C5933BD95E2480DD1A474C/699278.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45902", "name": "Damask Shoe Sole", "icon": "https://render.guildwars2.com/file/E53E3277EB0552A9391C800FB7E1100FE3E20E92/699280.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80296", "name": "Perfected Envoy Mask", "icon": "https://render.guildwars2.com/file/49092A1358E528DEC67EFA1C090546ED034642E2/1634588.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80634", "name": "Refined Envoy Mask", "icon": "https://render.guildwars2.com/file/65DC63CC1BC4B8E898800102C372F8ACD85421FA/1634595.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45860", "name": "Elonian Helmet Padding", "icon": "https://render.guildwars2.com/file/5E3753C2C70FC605B733262FA8E1B4E53E59B8E0/699246.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45867", "name": "Elonian Helmet Strap", "icon": "https://render.guildwars2.com/file/6BF065E37E9C75063B50257EA44D1AD308460E96/699253.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45860", "name": "Elonian Helmet Padding", "icon": "https://render.guildwars2.com/file/5E3753C2C70FC605B733262FA8E1B4E53E59B8E0/699246.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45867", "name": "Elonian Helmet Strap", "icon": "https://render.guildwars2.com/file/6BF065E37E9C75063B50257EA44D1AD308460E96/699253.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80145", "name": "Perfected Envoy Shoulderpads", "icon": "https://render.guildwars2.com/file/CF7609512FC6527D805F2B74F26AF4549FF4E808/1634591.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80366", "name": "Refined Envoy Shoulderpads", "icon": "https://render.guildwars2.com/file/05C206056F0391E163001EE27CA1A3B1B927807A/1634597.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45862", "name": "Elonian Shoulderguard Padding", "icon": "https://render.guildwars2.com/file/A9E676E85F550CBEBB04920DB90C133BCC270AE9/699248.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45869", "name": "Elonian Shoulderguard Panel", "icon": "https://render.guildwars2.com/file/A5D6E4BC33B30F39014CD80DEBD6A2DD109B4CBE/699255.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45862", "name": "Elonian Shoulderguard Padding", "icon": "https://render.guildwars2.com/file/A9E676E85F550CBEBB04920DB90C133BCC270AE9/699248.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45869", "name": "Elonian Shoulderguard Panel", "icon": "https://render.guildwars2.com/file/A5D6E4BC33B30F39014CD80DEBD6A2DD109B4CBE/699255.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80578", "name": "Perfected Envoy Jerkin", "icon": "https://render.guildwars2.com/file/57360F35D1210D12010F6AE772382450A07D08F6/1634586.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80607", "name": "Refined Envoy Jerkin", "icon": "https://render.guildwars2.com/file/F7A6A2E3D04FDEE614D9F646B0759B9955B63157/1634593.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45861", "name": "Elonian Longcoat Padding", "icon": "https://render.guildwars2.com/file/D69A7DD63FCE3EEAB91A09CBF2FB78284ECB3DB4/699247.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45868", "name": "Elonian Longcoat Panel", "icon": "https://render.guildwars2.com/file/C063C549D2FD735D7AA3537F4DAEEDBB0F940670/699254.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45861", "name": "Elonian Longcoat Padding", "icon": "https://render.guildwars2.com/file/D69A7DD63FCE3EEAB91A09CBF2FB78284ECB3DB4/699247.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45868", "name": "Elonian Longcoat Panel", "icon": "https://render.guildwars2.com/file/C063C549D2FD735D7AA3537F4DAEEDBB0F940670/699254.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80161", "name": "Perfected Envoy Vambraces", "icon": "https://render.guildwars2.com/file/C57E5E5FA69261A2503CBB50080A6C023A155C49/1634587.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80658", "name": "Refined Envoy Vambraces", "icon": "https://render.guildwars2.com/file/B90315D80B036BD60650C543FC04DFA619C595AF/1634594.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45859", "name": "Elonian Glove Lining", "icon": "https://render.guildwars2.com/file/B0CF09720250E92742D1030255DDBE32553944FB/699245.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45866", "name": "Elonian Glove Panel", "icon": "https://render.guildwars2.com/file/E2252C1B390E96C1A50B64CC24DB04350A06EF33/699252.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45859", "name": "Elonian Glove Lining", "icon": "https://render.guildwars2.com/file/B0CF09720250E92742D1030255DDBE32553944FB/699245.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45866", "name": "Elonian Glove Panel", "icon": "https://render.guildwars2.com/file/E2252C1B390E96C1A50B64CC24DB04350A06EF33/699252.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80252", "name": "Perfected Envoy Leggings", "icon": "https://render.guildwars2.com/file/EBD907C061747927AE062D1B41BC13D0EAF14AD5/1634589.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80675", "name": "Refined Envoy Leggings", "icon": "https://render.guildwars2.com/file/9023F9ADD5E202F3B6E0C86AF01AC56016A500AA/1634596.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45863", "name": "Elonian Trouser Padding", "icon": "https://render.guildwars2.com/file/79D1F902E6EA35A31DE6BE930C51C035ED9D516C/699249.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45870", "name": "Elonian Trouser Panel", "icon": "https://render.guildwars2.com/file/93F7285BD7090C671EE360A76DA3DB31E49B1E65/699256.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45863", "name": "Elonian Trouser Padding", "icon": "https://render.guildwars2.com/file/79D1F902E6EA35A31DE6BE930C51C035ED9D516C/699249.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45870", "name": "Elonian Trouser Panel", "icon": "https://render.guildwars2.com/file/93F7285BD7090C671EE360A76DA3DB31E49B1E65/699256.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80281", "name": "Perfected Envoy Boots", "icon": "https://render.guildwars2.com/file/BF4C6A48BA02BD6D6AC32F1E9C3F32A50399E336/1634590.png", "type": "armor", "rarity": "Legendary", "level": 80, "acquisition": ["mystic_forge"], "description": "", "binding": "account"},
     {"id": "80177", "name": "Refined Envoy Boots", "icon": "https://render.guildwars2.com/file/60E85BC87152F87F1D6C587AC774504E57BDB54E/1634592.png", "type": "armor", "rarity": "Ascended", "level": 80, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45864", "name": "Elonian Boot Sole", "icon": "https://render.guildwars2.com/file/1C0F4AF102404D150229CAC251D04E19085D02F8/699250.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
-    {"id": "45865", "name": "Elonian Boot Upper", "icon": "https://render.guildwars2.com/file/57C9099E7C305FF669B1E1CBE6B7296E1299C9F3/699251.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "account"},
+    {"id": "45864", "name": "Elonian Boot Sole", "icon": "https://render.guildwars2.com/file/1C0F4AF102404D150229CAC251D04E19085D02F8/699250.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
+    {"id": "45865", "name": "Elonian Boot Upper", "icon": "https://render.guildwars2.com/file/57C9099E7C305FF669B1E1CBE6B7296E1299C9F3/699251.png", "type": "craftingmaterial", "rarity": "Basic", "level": 0, "acquisition": ["crafting"], "description": "", "binding": "none"},
     {"id": "80332", "name": "Jade Shard", "icon": "https://render.guildwars2.com/file/B3D1DB6458480968B2FC0C0115476EC892CD0555/1633883.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with Quartermaster Hitchens.", "binding": "account"},
     {"id": "81706", "name": "Orrian Pearl", "icon": "https://render.guildwars2.com/file/F3B0E4096379AA58AFC6CE1ED1FBC5B015C40840/1729789.png", "type": "craftingmaterial", "rarity": "Exotic", "level": 0, "acquisition": ["map_currency"], "description": "Can be consumed for unbound magic or traded with vendors.", "binding": "account"},
     {"id": "79899", "name": "Fresh Winterberry", "icon": "https://render.guildwars2.com/file/414B0D0E3E38F73EC360C5BAE8A1DE98D324DCE6/1601463.png", "type": "craftingmaterial", "rarity": "Masterwork", "level": 0, "acquisition": ["map_currency"], "description": "Used to brew a thaw elixir, traded with Slooshoo, or consumed for unbound magic.", "binding": "account"},

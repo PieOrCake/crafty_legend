@@ -88,6 +88,10 @@ namespace CraftyLegend {
         // or load from disk). Lock-free read so render code can poll it cheaply
         // to invalidate cost caches when live TP prices change.
         static uint64_t GetPriceRevision();
+        // Bumped on every change to owned items, the wallet or the active account.
+        // Lets callers cache work derived from ownership (the shared owned-material
+        // allocation) without recomputing it every frame. Lock-free read.
+        static uint64_t GetAccountRevision();
 
         // Localized names (i18n; display-only). Fetched from the public /v2 API
         // with ?lang=. English keys/ids remain the internal matchers.
@@ -112,6 +116,7 @@ namespace CraftyLegend {
         static FetchStatus s_price_fetch_status;
         static std::string s_price_fetch_message;
         static std::atomic<uint64_t> s_price_revision;
+        static std::atomic<uint64_t> s_account_revision;
         static std::mutex s_mutex;
 
         // Localized-name caches (per active language; keyed by id)

@@ -127,6 +127,14 @@ namespace CraftyLegend {
         int selected_index;
         int selected_acquisition_index;
         int selected_material_index;
+        // The tree's node key for source_item_id, so a Miller column can address the
+        // same node the tree does. Both layouts then share one route-choice store
+        // instead of Miller's picks being invisible to the shopping list.
+        std::string node_key;
+        // Set only when this column lists a vendor's purchase costs: the "#m:<i>"
+        // method key those costs hang off. Children key as
+        // vendor_method_key + "#vreq:<materialIndex>/<itemId>", matching the tree.
+        std::string vendor_method_key;
     };
     
     // Data manager with JSON loading
@@ -146,6 +154,13 @@ namespace CraftyLegend {
         static std::string GetCurrencyName(uint32_t id);
         static size_t GetAcquisitionMethodCount();
         static const std::vector<AcquisitionMethod>& GetAcquisitionMethods(uint32_t item_id);
+        // Acquisition methods that represent a real choice: trading_post is dropped
+        // once the item has a recipe, because buying an item you can craft is not a
+        // separate route through the tree. Miller columns, the tree's method
+        // accordion and the shopping list all index into THIS list, so the "#m:<i>"
+        // node keys mean the same thing everywhere - they used to derive it
+        // separately in three places.
+        static std::vector<AcquisitionMethod> MeaningfulAcquisitionMethods(uint32_t item_id);
         static const std::vector<RecipeIngredient>& GetRecipeIngredients(uint32_t item_id);
         static const Recipe* GetRecipe(uint32_t item_id);
         static const Item* GetItem(uint32_t id);
@@ -186,8 +201,19 @@ namespace CraftyLegend {
         static void ResetColumns();
         static void UpdateColumn(int column_index, uint32_t item_id, int item_count = 1);
         static void SetSelectedAcquisition(int column_index, int acquisition_index);
-        static void HandleAcquisitionMethodSelection(int column_index, int acquisition_index);
+        // net_qty: how many of this column's item are still needed once the account's
+        // owned stock has been shared across every branch of the tree that wants it.
+        // Pass -1 to fall back to the per-node rule (RemainingNeeded), which credits
+        // the whole stack to this branch alone - only right when nothing else in the
+        // tree competes for it. The UI layer supplies the shared figure; see
+        // ui_helpers::RemainingNeededAtNode.
+        static void HandleAcquisitionMethodSelection(int column_index, int acquisition_index,
+                                                     int net_qty = -1);
         static void SetSelectedMaterial(int column_index, int material_index);
+        // Tree node keys for a Miller column, so the two layouts address the same
+        // nodes. Empty when the column has no key (column 0, or a stale column).
+        static const std::string& GetColumnNodeKey(int column_index);
+        static std::string GetChildNodeKey(int column_index, int material_index);
         static uint32_t GetParentItemId(int column_index);
         static uint32_t GetParentItemIdFromAcquisitionColumn(int acquisition_column_index);
         static const std::vector<ColumnData>& GetColumns();

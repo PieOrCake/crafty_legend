@@ -2169,6 +2169,18 @@ namespace CraftyLegend {
         auto it = s_acquisition_methods.find(item_id);
         return it != s_acquisition_methods.end() ? it->second : empty;
     }
+
+    std::vector<AcquisitionMethod> DataManager::MeaningfulAcquisitionMethods(uint32_t item_id) {
+        std::vector<AcquisitionMethod> methods = GetAcquisitionMethods(item_id);
+        const Recipe* recipe = GetRecipe(item_id);
+        if (recipe && !recipe->ingredients.empty()) {
+            methods.erase(
+                std::remove_if(methods.begin(), methods.end(),
+                    [](const AcquisitionMethod& a) { return a.method == "trading_post"; }),
+                methods.end());
+        }
+        return methods;
+    }
     
     // Mystic Clover's two Mystic Forge recipes only have a CHANCE to yield clovers -
     // drop research over ~40k forges puts it at about 31% (see the wiki's Mystic
@@ -2308,6 +2320,9 @@ namespace CraftyLegend {
             // Get data for column 1
             next_column.source_item_id = item_id;
             next_column.source_item_count = item_count;
+            // The legendary is the tree's root key; every child appends to it.
+            next_column.node_key = std::to_string(item_id);
+            next_column.vendor_method_key.clear();
             try {
                 next_column.acquisitions = GetAcquisitionMethods(item_id);
                 next_column.materials = GetRecipeIngredients(item_id);
@@ -2316,16 +2331,12 @@ namespace CraftyLegend {
                 next_column.acquisitions.clear();
                 next_column.materials.clear();
             }
-            
+
             // Set title based on content
             const Recipe* recipe = GetRecipe(item_id);
             if (!next_column.materials.empty() && recipe) {
-                // Filter out trading_post - not a meaningful choice when recipe exists
-                next_column.acquisitions.erase(
-                    std::remove_if(next_column.acquisitions.begin(), next_column.acquisitions.end(),
-                        [](const AcquisitionMethod& a) { return a.method == "trading_post"; }),
-                    next_column.acquisitions.end());
-                
+                next_column.acquisitions = MeaningfulAcquisitionMethods(item_id);
+
                 if (next_column.acquisitions.size() > 1) {
                     // Multiple meaningful methods (e.g. mystic_forge + vendor) - show choice
                     const Item* clicked_item = GetItem(item_id);
@@ -2356,6 +2367,9 @@ namespace CraftyLegend {
                     next_column.materials.clear();
                     int qty = next_column.source_item_count;
                     BuildVendorCostMaterials(next_column.materials, only_method.purchase_requirements, qty);
+                    // Single-route vendor: the tree hangs the requirements straight off
+                    // the item's own key, with no "#m:<i>" segment.
+                    next_column.vendor_method_key = next_column.node_key;
                 } else if (only_method.method == "trading_post") {
                     next_column.title = "Trading Post";
                 } else if (only_method.method == "mystic_forge") {
@@ -2400,17 +2414,16 @@ namespace CraftyLegend {
                 // Get data for the clicked item - recipe takes priority over acquisition methods
                 next_column.source_item_id = item_id;
                 next_column.source_item_count = item_count;
+                // Key this column against the material row that was clicked in the
+                // parent, so it names the same node the tree would.
+                next_column.node_key = GetChildNodeKey(column_index,
+                                                       s_columns[column_index].selected_material_index);
+                next_column.vendor_method_key.clear();
                 try {
                     const Recipe* item_recipe = GetRecipe(item_id);
                     if (item_recipe && !item_recipe->ingredients.empty()) {
-                        // Check if item has multiple meaningful acquisition methods
-                        auto acq_methods = GetAcquisitionMethods(item_id);
-                        // Filter out trading_post when recipe exists
-                        acq_methods.erase(
-                            std::remove_if(acq_methods.begin(), acq_methods.end(),
-                                [](const AcquisitionMethod& a) { return a.method == "trading_post"; }),
-                            acq_methods.end());
-                        
+                        auto acq_methods = MeaningfulAcquisitionMethods(item_id);
+
                         if (acq_methods.size() > 1) {
                             // Multiple meaningful methods - show acquisition choice
                             next_column.acquisitions = acq_methods;
@@ -2466,11 +2479,13 @@ namespace CraftyLegend {
                             }
                         }
                     } else if (only_method.method == "vendor") {
-                        next_column.title = !only_method.vendor_name.empty() 
+                        next_column.title = !only_method.vendor_name.empty()
                             ? "Vendor - " + only_method.vendor_name : "Vendor Costs";
                         next_column.materials.clear();
                         int qty = next_column.source_item_count;
                         BuildVendorCostMaterials(next_column.materials, only_method.purchase_requirements, qty);
+                        // Single-route vendor: requirements hang straight off the item key.
+                        next_column.vendor_method_key = next_column.node_key;
                     } else if (only_method.method == "crafting") {
                         const Recipe* recipe = GetRecipe(item_id);
                         if (recipe && !recipe->disciplines.empty()) {
@@ -2512,7 +2527,8 @@ namespace CraftyLegend {
         }
     }
     
-    void DataManager::HandleAcquisitionMethodSelection(int column_index, int acquisition_index) {
+    void DataManager::HandleAcquisitionMethodSelection(int column_index, int acquisition_index,
+                                                       int net_qty) {
         if (column_index < 0 || column_index >= static_cast<int>(s_columns.size())) {
             return;
         }
@@ -2527,7 +2543,20 @@ namespace CraftyLegend {
         
         // Copy the acquisition method - must not hold a reference across s_columns.resize()
         const AcquisitionMethod acq = s_columns[column_index].acquisitions[acquisition_index];
-        
+
+        // Record the pick in the shared route store, keyed exactly as the tree keys
+        // it, so the shopping list and the rolled-up costs follow the route the user
+        // just chose. Miller used to keep this to itself, which left the list
+        // flattening down whatever the fallback rule guessed.
+        const std::string parentKey = s_columns[column_index].node_key;
+        std::string methodKey;
+        if (!parentKey.empty()) {
+            methodKey = parentKey + "#m:" + std::to_string(acquisition_index);
+            if (s_columns[column_index].acquisitions.size() > 1) {
+                SetActiveMethod(parentKey, methodKey);
+            }
+        }
+
         // Ensure the next column exists before accessing it
         if (s_columns.size() <= static_cast<size_t>(column_index + 1)) {
             s_columns.resize(column_index + 2);
@@ -2544,7 +2573,12 @@ namespace CraftyLegend {
         next_column.selected_acquisition_index = -1;
         next_column.selected_material_index = -1;
         next_column.craft_heading_item_id = 0;
-        
+        // This column lists the chosen method's children, so it is still about the
+        // same item: it keeps the parent's node key. A vendor's costs additionally
+        // hang off the method key ("#m:<i>#vreq:<n>"), matching the tree.
+        next_column.node_key = parentKey;
+        next_column.vendor_method_key = (acq.method == "vendor") ? methodKey : std::string();
+
         // Compute qty: prefer parent column's selected material count (robust),
         // fall back to source_item_count if parent lookup fails.
         uint32_t src_id = s_columns[column_index].source_item_id;
@@ -2554,10 +2588,14 @@ namespace CraftyLegend {
             int sel = parent.selected_material_index;
             if (sel >= 0 && sel < static_cast<int>(parent.materials.size()) &&
                 parent.materials[sel].item_id == src_id) {
-                // RemainingNeeded, not raw GetOwnedCount: an account-bound item must
-                // only count against the ACTIVE account, which is what every other
-                // owned-count call site already does.
-                qty = RemainingNeeded(src_id, static_cast<int>(parent.materials[sel].count));
+                // Prefer the caller's shared-stack figure. Falling back to
+                // RemainingNeeded credits this branch with the whole owned stack,
+                // which is what made every column read as covered while the shopping
+                // list still asked for more. (Not raw GetOwnedCount either way: an
+                // account-bound item counts against the ACTIVE account only.)
+                qty = net_qty >= 0
+                    ? net_qty
+                    : RemainingNeeded(src_id, static_cast<int>(parent.materials[sel].count));
                 // Own enough already? Show one purchase/craft's worth rather than a
                 // column of zeroes (BuildVendorCostMaterials multiplies by qty).
                 if (qty < 1) qty = 1;
@@ -2668,6 +2706,29 @@ namespace CraftyLegend {
         if (column_index >= 0 && column_index < s_columns.size()) {
             s_columns[column_index].selected_material_index = material_index;
         }
+    }
+
+    const std::string& DataManager::GetColumnNodeKey(int column_index) {
+        static const std::string empty;
+        if (column_index < 0 || column_index >= static_cast<int>(s_columns.size())) return empty;
+        return s_columns[column_index].node_key;
+    }
+
+    std::string DataManager::GetChildNodeKey(int column_index, int material_index) {
+        if (column_index < 0 || column_index >= static_cast<int>(s_columns.size())) return std::string();
+        const ColumnData& col = s_columns[column_index];
+        if (col.node_key.empty()) return std::string();
+        if (material_index < 0 || material_index >= static_cast<int>(col.materials.size())) {
+            return std::string();
+        }
+        const std::string id = std::to_string(col.materials[material_index].item_id);
+        // A vendor's cost rows are addressed by their position in the purchase
+        // requirements; BuildVendorCostMaterials emits one row per requirement in
+        // order (Coin included), so the material index IS the requirement index.
+        if (!col.vendor_method_key.empty()) {
+            return col.vendor_method_key + "#vreq:" + std::to_string(material_index) + "/" + id;
+        }
+        return col.node_key + "/" + id;
     }
     
     const std::vector<ColumnData>& DataManager::GetColumns() {
