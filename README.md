@@ -20,7 +20,8 @@ If an LLM creating software upsets you, then perhaps this repo isn't for you. Mo
 - **Route chooser** — when something can be crafted *or* bought, pick which route you intend to take; costs and the shopping list follow your choice
 - **"Who can craft this?"** — hover a craft heading to see which of your characters hold the discipline, and which would need a discipline swap
 - Progress bars showing how close you are to completion, with collection and achievement progress where a step is gated behind one
-- **Shopping list** — aggregates all needed materials, with TP prices, vendor costs, and coin totals
+- **Shopping list** — aggregates all needed materials, with TP prices, vendor costs, and coin totals, plus a separate "Gather or Earn" group for everything you cannot simply buy
+- **Native item preview** — right-click a legendary and pick "Preview in Game" to open the game's own wardrobe preview (needs [Pie UI](https://github.com/PieOrCake/pie_ui))
 - **Multi-account support** — detects the active account via MumbleLink; account-bound items show per-account counts, unbound items total across all accounts
 - **Favourites** — star any legendary to pin it to a section at the top of the list
 - Search bar for quickly finding any legendary
@@ -34,6 +35,7 @@ If an LLM creating software upsets you, then perhaps this repo isn't for you. Mo
 - [Raidcore Nexus](https://raidcore.gg/Nexus)
 - [Hoard & Seek](https://github.com/PieOrCake/hoard_and_seek) (v3+) — provides all account data (inventory, wallet, legendary armory, achievements, masteries). No GW2 API key needed in Crafty Legend itself. The "who can craft this?" tooltip additionally needs the `characters` permission on the key you gave Hoard & Seek; everything else works without it.
 - [Decoder Ring](https://github.com/PieOrCake/decoder_ring) (optional) — provides localized item and legendary names for non-English clients. Without it, names stay English.
+- [Pie UI](https://github.com/PieOrCake/pie_ui) (optional) — matches Crafty Legend's colours to your Pie UI theme, and enables the in-game item preview.
 
 ## Installation
 
