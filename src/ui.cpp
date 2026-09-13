@@ -976,32 +976,10 @@ void AddonRender() {
                     if (g_ShowItemIcons) {
                         ImGui::PopStyleVar();
                     }
-                    // Right-click context menu for legendaries
+                    // Right-click context menu for legendaries (shared with tree mode)
                     {
                         std::string legPopupId = std::string("LegCtx##") + label + "##" + std::to_string(leg.id);
-                        if (ImGui::BeginPopupContextItem(legPopupId.c_str())) {
-                            if (ImGui::MenuItem(Localization::Tr("Open on Wiki"))) {
-                                OpenWikiPage(leg.name);
-                            }
-                            if (ImGui::MenuItem(isFav ? Localization::Tr("Remove Favourite") : Localization::Tr("Add Favourite"))) {
-                                CraftyLegend::DataManager::ToggleFavourite(leg.id);
-                            }
-                            if (CraftyLegend::GW2API::HasAccountData() && CraftyLegend::GW2API::GetOwnedCount(leg.id) > 0) {
-                                if (ImGui::MenuItem(Localization::Tr("Search in Hoard & Seek"))) {
-                                    APIDefs->Events_Raise(EV_HOARD_SEARCH, (void*)leg.name.c_str());
-                                }
-                            }
-                            // Native wardrobe preview via Pie UI. Only offered when Pie is
-                            // loaded AND the item type actually has a preview slot - trinkets
-                            // and upgrade components would silently open nothing.
-                            if (CraftyLegend::PieUiLink::Present() &&
-                                CraftyLegend::PieUiLink::IsPreviewableType(leg.type)) {
-                                if (ImGui::MenuItem(Localization::Tr("Preview in Game"))) {
-                                    CraftyLegend::PieUiLink::OpenItemPreview(leg.id);
-                                }
-                            }
-                            ImGui::EndPopup();
-                        }
+                        DrawItemContextMenu(legPopupId.c_str(), leg.id, leg.name, true);
                     }
                     // Draw favourite star as overlay (after Selectable so highlight covers the star area)
                     if (isFav) {
@@ -1345,25 +1323,10 @@ void AddonRender() {
                                 ImGui::EndTooltip();
                             }
                         }
-                        // Right-click context menu
+                        // Right-click context menu (shared with tree mode)
                         if (mat.name != "Coin") {
                             std::string popupId = "MatCtx##" + std::to_string(col) + "_" + std::to_string(i);
-                            if (ImGui::BeginPopupContextItem(popupId.c_str())) {
-                                std::string wikiName = mat.name;
-                                if (mat.item_id != 0) {
-                                    const auto* wItem = CraftyLegend::DataManager::GetItem(mat.item_id);
-                                    if (wItem) wikiName = wItem->name;
-                                }
-                                if (ImGui::MenuItem(Localization::Tr("Open on Wiki"))) {
-                                    OpenWikiPage(wikiName);
-                                }
-                                if (mat.item_id != 0 && CraftyLegend::GW2API::HasAccountData() && CraftyLegend::GW2API::GetOwnedCount(mat.item_id) > 0) {
-                                    if (ImGui::MenuItem(Localization::Tr("Search in Hoard & Seek"))) {
-                                        APIDefs->Events_Raise(EV_HOARD_SEARCH, (void*)wikiName.c_str());
-                                    }
-                                }
-                                ImGui::EndPopup();
-                            }
+                            DrawItemContextMenu(popupId.c_str(), mat.item_id, mat.name, false);
                         }
                         if (isComplete || isReady) {
                             ImGui::PopStyleColor();

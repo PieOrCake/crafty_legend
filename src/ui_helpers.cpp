@@ -6,6 +6,8 @@
 #include "CharacterCrafting.h"
 #include "hoard.h"
 #include "IconManager.h"
+#include "PieUiLink.h"
+#include "../include/HoardAndSeekAPI.h"
 // For MeaningfulMethods/ResolveActiveMethodIndex: the shopping list and the
 // rolled-up row costs have to pick the same acquisition route the tree is
 // showing, so they share the tree's resolver rather than re-deriving it.
@@ -1130,6 +1132,56 @@ std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool*
 // dynamic-column loop in ui.cpp so both layouts draw identical rows. Only
 // visuals + the label Selectable live here; the caller owns click handling,
 // selection, the per-account/gate hover tooltip and the right-click menu.
+void DrawItemContextMenu(const char* popupId, uint32_t item_id,
+                         const std::string& fallbackName, bool isLegendary) {
+    if (!ImGui::BeginPopupContextItem(popupId)) return;
+
+    // Look the row's item up once. Legendaries live in their own table, so the
+    // preview check needs the Legendary record's type, not the item table's.
+    const CraftyLegend::Legendary* leg =
+        isLegendary && item_id ? CraftyLegend::DataManager::GetLegendaryById(item_id) : nullptr;
+    const CraftyLegend::Item* item =
+        (!leg && item_id) ? CraftyLegend::DataManager::GetItem(item_id) : nullptr;
+
+    // The wiki URL and the Hoard & Seek search are keyed on the English name, so
+    // this deliberately does NOT go through Localization::ItemName.
+    std::string name = fallbackName;
+    if (leg) name = leg->name;
+    else if (item) name = item->name;
+
+    if (ImGui::MenuItem(Localization::Tr("Open on Wiki"))) {
+        OpenWikiPage(name);
+    }
+
+    if (leg) {
+        bool fav = CraftyLegend::DataManager::IsFavourite(item_id);
+        if (ImGui::MenuItem(fav ? Localization::Tr("Remove Favourite")
+                                : Localization::Tr("Add Favourite"))) {
+            CraftyLegend::DataManager::ToggleFavourite(item_id);
+        }
+    }
+
+    if (item_id != 0 && CraftyLegend::GW2API::HasAccountData() &&
+        CraftyLegend::GW2API::GetOwnedCount(item_id) > 0) {
+        if (ImGui::MenuItem(Localization::Tr("Search in Hoard & Seek"))) {
+            APIDefs->Events_Raise(EV_HOARD_SEARCH, (void*)name.c_str());
+        }
+    }
+
+    // Native wardrobe preview via Pie UI. Only offered when Pie is loaded AND the
+    // item type actually has a preview slot - trinkets and upgrade components
+    // would silently open nothing. Legendaries only: material rows were offered
+    // this and declined.
+    if (leg && CraftyLegend::PieUiLink::Present() &&
+        CraftyLegend::PieUiLink::IsPreviewableType(leg->type)) {
+        if (ImGui::MenuItem(Localization::Tr("Preview in Game"))) {
+            CraftyLegend::PieUiLink::OpenItemPreview(item_id);
+        }
+    }
+
+    ImGui::EndPopup();
+}
+
 RowResult DrawItemRow(const RowVisual& v) {
     // Matches ui.cpp: internal text padding from column edge (Miller uses 6.0f).
     const float textPadX = 6.0f;

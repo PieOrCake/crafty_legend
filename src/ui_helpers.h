@@ -40,6 +40,21 @@ void DrawCraftingDisciplineTooltip(const CraftyLegend::Recipe* recipe);
 std::string StripMarkup(const std::string& text);
 void        OpenWikiPage(const std::string& itemName);
 
+// Right-click context menu for one item row - Open on Wiki, favourite (legendaries
+// only), Hoard & Seek search, and the Pie UI wardrobe preview (legendaries only,
+// and only for types that actually have a preview slot). Shared by the Miller
+// columns and the tree so the two menus cannot drift apart.
+//
+// Call it IMMEDIATELY after the row's clickable widget - BeginPopupContextItem
+// binds to the last item drawn - and give every row a popupId that is unique
+// within its ImGui ID scope, or two rows will fight over one popup.
+//
+// `fallbackName` is used when the id is not in the item table (wallet currencies
+// pass item_id 0); it must be the canonical ENGLISH name, since the wiki URL and
+// the Hoard & Seek search are both keyed on it.
+void DrawItemContextMenu(const char* popupId, uint32_t item_id,
+                         const std::string& fallbackName, bool isLegendary);
+
 // Account-aware owned count
 int GetEffectiveOwnedCount(uint32_t item_id);
 

@@ -230,6 +230,10 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     v.drillArrow     = false; // the twisty already signals expandability in tree mode
 
     RowResult row = DrawItemRow(v);
+    // Right-click menu, identical to the Miller material rows. Must come straight
+    // after DrawItemRow (the popup binds to the last item, its Selectable) and
+    // before PopID, so the enclosing nodeKey scope keeps diamonds apart.
+    DrawItemContextMenu("NodeCtx", item_id, mat.name, false);
     DrawRightPinnedCost(rowBaseY, contentX, rowCost);
     ImGui::PopID();
 
@@ -420,6 +424,7 @@ static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
     v.gates          = &gates;
     v.drillArrow     = false; // the twisty already signals expandability in tree mode
     DrawItemRow(v);
+    DrawItemContextMenu("LeafCtx", mat.item_id, mat.name, false);
     DrawRightPinnedCost(rowBaseY, contentX, rowCost);
     ImGui::PopID();
 }
@@ -596,6 +601,13 @@ void RenderTree(uint32_t legendaryId, float availWidth, float availHeight) {
     ImGui::TextUnformatted(leg ? Localization::ItemName(legendaryId, leg->name).c_str() : "");
     ImGui::PopStyleColor();
     if (headingFont) ImGui::PopFont();
+
+    // The heading is the legendary itself, so it gets the full column-0 menu
+    // (wiki, favourite, Hoard & Seek, wardrobe preview). The text carries no ImGui
+    // ID of its own, hence the explicit popup id; it binds to the text's rect.
+    if (leg) {
+        DrawItemContextMenu("TreeHeadCtx", legendaryId, leg->name, true);
+    }
 
     // Route-aware rolled-up total cost, right-aligned on the heading line. Follows
     // the active acquisition route at every multi-route node in the tree. Only
