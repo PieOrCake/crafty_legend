@@ -12942,6 +12942,127 @@
       ],
       "description": "",
       "binding": "account"
+    },
+    {
+      "id": "110142",
+      "name": "Fledgling Constellation",
+      "icon": "https://render.guildwars2.com/file/68B73F58535A5F7877C7F52C011BAFAAF60F96DB/3806615.png",
+      "description": "Precursor sword for Wages of Stars. Rewarded by the So Be It story achievement.",
+      "type": "weapon",
+      "binding": "account",
+      "rarity": "Exotic",
+      "level": 80,
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "110081",
+      "name": "Gift of the Tenebral Ward",
+      "icon": "https://render.guildwars2.com/file/EBC4DDAF60142C7E2AAAC59B1ACEB07D69F39734/3805891.png",
+      "description": "Purchased from Astral Ward Agent Snarlcrow in the Ordnance Depot, Leyspring Hollows.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "110162",
+      "name": "Banner of the Tenebral Ward",
+      "icon": "https://render.guildwars2.com/file/E2DF920830E30736F8F50C2AF0E861E73EC907F4/3805894.png",
+      "description": "Used to create a Gift of the Tenebral Ward.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "110133",
+      "name": "Gift of Shining Arms",
+      "icon": "https://render.guildwars2.com/file/4CECA0F46E082009709DEA524D08F2A6277A0919/3805893.png",
+      "description": "Earned by completing the Shining Ward weapon collection achievement.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "110033",
+      "name": "Gift of Tenebral Armor",
+      "icon": "https://render.guildwars2.com/file/424438BBF0DB7EEFD5CE35084E6BBE595E1C67F1/3805892.png",
+      "description": "Earned by completing the Tenebral Ward armor collection achievement.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "110008",
+      "name": "Gift of Reality",
+      "icon": "https://render.guildwars2.com/file/BA2061E32CA7A152B64F1A60A3F8F4283919637F/3805889.png",
+      "description": "Purchased from Acolyte of Balance Dexx in the Hall of Assemblage, Leyspring Hollows.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "110148",
+      "name": "Mists Scrying Mirror",
+      "icon": "https://render.guildwars2.com/file/3617A021F32B4BE09D6351A23E1B4B6824742F57/3805888.png",
+      "description": "Earned by completing the Leyspring Hollows Mastery achievement.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "110122",
+      "name": "Gift of Leyspring Hollows Exploration",
+      "icon": "https://render.guildwars2.com/file/E2791506D63ECC80255C397598FDAC4BA51575EB/3805887.png",
+      "description": "Earned by fully exploring Leyspring Hollows.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "achievement"
+      ]
+    },
+    {
+      "id": "110084",
+      "name": "Advanced Research Data Crystal",
+      "icon": "https://render.guildwars2.com/file/CF4129692701085411F7BCBA3708ADF7DE0A1291/3805890.png",
+      "description": "Purchased from Acolyte of Balance Dexx in the Hall of Assemblage, Leyspring Hollows.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Legendary",
+      "acquisition": [
+        "vendor"
+      ]
+    },
+    {
+      "id": "110156",
+      "name": "Shadowstone Research Data",
+      "icon": "https://render.guildwars2.com/file/5C11093F5115D60CDF0EDB32057F79665B214D0B/3806638.png",
+      "description": "Spent at vendors in Leyspring Hollows.",
+      "type": "crafting_material",
+      "binding": "account",
+      "rarity": "Basic",
+      "acquisition": [
+        "vendor"
+      ]
     }
   ]
 }

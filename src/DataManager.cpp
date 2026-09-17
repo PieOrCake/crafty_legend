@@ -69,6 +69,18 @@ namespace CraftyLegend {
             {"Raw Enchanting Stone", 105686},
             {"Gift of Starlit Weald Exploration", 106672},
             {"Seer Wreath of Service", 106627},
+            // Wages of Stars (VoE / Leyspring Hollows)
+            {"Gift of the Tenebral Ward", 110081},
+            {"Banner of the Tenebral Ward", 110162},
+            {"Gift of Shining Arms", 110133},
+            {"Gift of Tenebral Armor", 110033},
+            {"Gift of Reality", 110008},
+            {"Mists Scrying Mirror", 110148},
+            {"Gift of Leyspring Hollows Exploration", 110122},
+            {"Advanced Research Data Crystal", 110084},
+            {"Shadowstone Research Data", 110156},
+            {"Seer Runestone", 109666},
+            {"Seer Runestones", 109666},
             {"Sun Bead", 19717},
             {"Sun Beads", 19717},
             // SotO map currencies are wallet currencies (IDs 66, 72, 73, 75) - not items
@@ -1936,14 +1948,62 @@ namespace CraftyLegend {
                     {"Bolt of Silk", "2500"}
                 };
             } else if (item && item->id == 109666) { // Seer Runestone
-                acq.display_name = "Vendor - Eternity's Garden Heart Vendors";
-                acq.vendor_name = "Historian Meliza / Steward Brizio";
-                acq.vendor_location = "Pilgrim's Rest or Artificer's Islet, Eternity's Garden";
+                acq.display_name = "Vendor - VoE Heart Vendors";
+                acq.vendor_name = "Historian Meliza / Steward Brizio / Acolyte of Balance Dexx";
+                acq.vendor_location = "Eternity's Garden or Leyspring Hollows";
                 acq.purchase_requirements = {
                     {"Mystic Runestone", "1"},
                     {"Glob of Ectoplasm", "10"},
                     {"Research Note", "250"},
                     {"Karma", "35000"}
+                };
+            // --- Wages of Stars (VoE / Leyspring Hollows) ---
+            // Costs are the in-game item descriptions returned by /v2/items, which name
+            // both the vendor and the exchange. Note the wiki spells the Ordnance Depot
+            // NPC "Snorlcrow"; the game itself says Snarlcrow, so the game wins.
+            } else if (item && item->id == 110081) { // Gift of the Tenebral Ward
+                acq.display_name = "Vendor - Astral Ward Agent Snarlcrow";
+                acq.vendor_name = "Astral Ward Agent Snarlcrow";
+                acq.vendor_location = "Ordnance Depot, Leyspring Hollows";
+                acq.purchase_requirements = {
+                    {"Banner of the Tenebral Ward", "1"},
+                    {"Gift of Shining Arms", "1"},
+                    {"Gift of Tenebral Armor", "1"},
+                    {"Seer Runestone", "100"}
+                };
+            } else if (item && item->id == 110162) { // Banner of the Tenebral Ward
+                acq.display_name = "Vendor - Astral Ward Agent Snarlcrow";
+                acq.vendor_name = "Astral Ward Agent Snarlcrow";
+                acq.vendor_location = "Ordnance Depot, Leyspring Hollows";
+                acq.purchase_requirements = {
+                    {"Mystic Runestone", "150"},
+                    {"Shadowstone Fragment", "500"},
+                    {"Raw Enchanting Stone", "2500"},
+                    {"Chromatic Sap", "2500"}
+                };
+            } else if (item && item->id == 110008) { // Gift of Reality
+                acq.display_name = "Vendor - Acolyte of Balance Dexx";
+                acq.vendor_name = "Acolyte of Balance Dexx";
+                acq.vendor_location = "Hall of Assemblage, Leyspring Hollows";
+                acq.purchase_requirements = {
+                    {"Gift of the Mists", "1"},
+                    {"Mists Scrying Mirror", "1"},
+                    {"Gift of Leyspring Hollows Exploration", "1"},
+                    {"Advanced Research Data Crystal", "1"}
+                };
+            } else if (item && item->id == 110084) { // Advanced Research Data Crystal
+                acq.display_name = "Vendor - Acolyte of Balance Dexx";
+                acq.vendor_name = "Acolyte of Balance Dexx";
+                acq.vendor_location = "Hall of Assemblage, Leyspring Hollows";
+                acq.purchase_requirements = {
+                    {"Shadowstone Research Data", "500"}
+                };
+            } else if (item && item->id == 110156) { // Shadowstone Research Data
+                acq.display_name = "Vendor - Acolyte of Balance Dexx";
+                acq.vendor_name = "Acolyte of Balance Dexx";
+                acq.vendor_location = "Hall of Assemblage, Leyspring Hollows";
+                acq.purchase_requirements = {
+                    {"Raw Enchanting Stone", "20"}
                 };
             } else {
                 // Generic vendor information
@@ -1985,6 +2045,26 @@ namespace CraftyLegend {
                 acq.display_name = "Achievement - Glimmering Resin Weapon Collection";
                 acq.description = "Earned by completing the Glimmering Resin weapon collection";
                 acq.details = {"Complete the Glimmering Resin Weapon Collection achievement", "Additional copies available from VoE map vendors"};
+            } else if (item && item->id == 110142) { // Fledgling Constellation
+                acq.display_name = "Achievement - So Be It";
+                acq.description = "Rewarded by the Visions of Eternity story achievement So Be It";
+                acq.details = {"Complete the story journal achievement So Be It", "Precursor for Wages of Stars"};
+            } else if (item && item->id == 110133) { // Gift of Shining Arms
+                acq.display_name = "Achievement - Shining Ward Weapon Collector";
+                acq.description = "Earned by completing the Shining Ward weapon collection";
+                acq.details = {"Unlock all 17 Shining Ward weapon skins", "Additional copies available from VoE map vendors"};
+            } else if (item && item->id == 110033) { // Gift of Tenebral Armor
+                acq.display_name = "Achievement - Tenebral Ward Armor Collection";
+                acq.description = "Earned by completing the Tenebral Ward armor collection";
+                acq.details = {"Complete the Tenebral Ward Armor Collection achievement", "Additional copies available from VoE map vendors"};
+            } else if (item && item->id == 110148) { // Mists Scrying Mirror
+                acq.display_name = "Achievement - Leyspring Hollows Mastery";
+                acq.description = "Earned by completing the Leyspring Hollows Mastery achievement";
+                acq.details = {"Complete the map achievements throughout Leyspring Hollows", "Additional copies available from VoE map vendors"};
+            } else if (item && item->id == 110122) { // Gift of Leyspring Hollows Exploration
+                acq.display_name = "Achievement - Map Exploration";
+                acq.description = "Earned by fully exploring Leyspring Hollows";
+                acq.details = {"Complete 100% map exploration of Leyspring Hollows", "Additional copies available from VoE map vendors"};
             } else {
                 acq.details = {"Complete specific achievements"};
             }
@@ -3418,6 +3498,34 @@ namespace CraftyLegend {
                 out.push_back(MakePrereq(PC::Achievement, "Glimmering Resin Weapon Collector",
                     "Complete the Glimmering Resin Weapon Collector achievement. Additional copies available from VoE map vendors.",
                     item_id, -1, -1, 9344));
+                break;
+            // --- Wages of Stars components ---
+            case 110142: // Fledgling Constellation
+                out.push_back(MakePrereq(PC::Achievement, "So Be It",
+                    "Complete the Visions of Eternity story achievement So Be It, which rewards this precursor.",
+                    item_id, -1, -1, 9421));
+                break;
+            case 110148: // Mists Scrying Mirror
+                out.push_back(MakePrereq(PC::Achievement, "Leyspring Hollows Mastery",
+                    "Complete the map achievements throughout Leyspring Hollows. Additional copies available from VoE map vendors.",
+                    item_id, -1, -1, 9417));
+                break;
+            case 110122: // Gift of Leyspring Hollows Exploration
+                out.push_back(MakePrereq(PC::Achievement, "Leyspring Hollows Explorer",
+                    "Explore all areas of Leyspring Hollows. Additional copies available from VoE map vendors.",
+                    item_id, -1, -1, 9002));
+                break;
+            case 110133: // Gift of Shining Arms
+                out.push_back(MakePrereq(PC::Achievement, "Shining Ward Weapon Collector",
+                    "Complete the Shining Ward Weapon Collector achievement. Additional copies available from VoE map vendors.",
+                    item_id, -1, -1, 9437));
+                break;
+            case 110033: // Gift of Tenebral Armor
+                // The Tenebral Ward Armor Collection is not in /v2/achievements yet, so
+                // the id stays -1 until it appears - same as Forge Guard's above.
+                out.push_back(MakePrereq(PC::Achievement, "Tenebral Ward Armor Collection",
+                    "Complete the Tenebral Ward Armor Collection achievement. Additional copies available from VoE map vendors.",
+                    item_id, -1, -1, -1));
                 break;
             // --- Achievement reward legendaries ---
             case 95380: // Prismatic Champion's Regalia

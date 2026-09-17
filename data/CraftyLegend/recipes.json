@@ -16336,6 +16336,35 @@
           "name": "Orichalcum Plated Dowel"
         }
       ]
+    },
+    {
+      "output_id": "110020",
+      "output_count": 1,
+      "disciplines": [],
+      "rating": 0,
+      "type": "mystic_forge",
+      "ingredients": [
+        {
+          "item_id": "110142",
+          "count": 1,
+          "name": "Fledgling Constellation"
+        },
+        {
+          "item_id": "110081",
+          "count": 1,
+          "name": "Gift of the Tenebral Ward"
+        },
+        {
+          "item_id": "110008",
+          "count": 1,
+          "name": "Gift of Reality"
+        },
+        {
+          "item_id": "71820",
+          "count": 1,
+          "name": "Mystic Tribute"
+        }
+      ]
     }
   ]
 }

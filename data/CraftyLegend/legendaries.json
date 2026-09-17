@@ -2013,6 +2013,20 @@
       ],
       "generation": 5,
       "max_count": 1
+    },
+    {
+      "id": 110020,
+      "name": "Wages of Stars",
+      "icon": "https://render.guildwars2.com/file/C009DEECBD6AB295310C31C0E7B8DDC14408EF56/3806591.png",
+      "description": "Legendary sword (VoE).",
+      "type": "weapon",
+      "weapon_type": "Sword",
+      "binding": "account",
+      "acquisition": [
+        "mystic_forge"
+      ],
+      "generation": 15,
+      "max_count": 4
     }
   ]
 }
