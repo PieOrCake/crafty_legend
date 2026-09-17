@@ -1712,7 +1712,7 @@ namespace CraftyLegend {
                 // Also sold by Castaway Agnes, Captain Emund and the Alliance Field
                 // Quartermaster at the same price. Needs the story step So It Is Written.
                 acq.purchase_requirements = {
-                    {"Coin", "2500000"},
+                    {"Coin", "250000"},
                     {"Shadowstone Fragment", "250"}
                 };
             // --- VoE Exploration Gifts (map vendors; needs that map completed) ---
@@ -1723,7 +1723,7 @@ namespace CraftyLegend {
                 // Also sold by Castaway Agnes, Captain Emund and the Alliance Field
                 // Quartermaster at the same price. Requires Shipwreck Strand map completion.
                 acq.purchase_requirements = {
-                    {"Coin", "5000000"},
+                    {"Coin", "500000"},
                     {"Karma", "300000"}
                 };
             } else if (item && item->id == 106672) { // Gift of Starlit Weald Exploration
@@ -1733,7 +1733,7 @@ namespace CraftyLegend {
                 // Also sold by Canach, Castaway Agnes and the Alliance Field
                 // Quartermaster at the same price. Requires Starlit Weald map completion.
                 acq.purchase_requirements = {
-                    {"Coin", "5000000"},
+                    {"Coin", "500000"},
                     {"Karma", "300000"}
                 };
             // --- Dungeon Gifts (all from Dungeon Armor and Weapons vendor) ---
