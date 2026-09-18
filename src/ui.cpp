@@ -955,7 +955,13 @@ void AddonRender() {
                                          + "/" + std::to_string(legCap);
                         }
                     }
-                    std::string lbl = (isFav ? "     " : "") + dispName + subtypeSuffix + copiesSuffix + " >";
+                    // The same legendary is drawn twice when it is a favourite - once
+                    // in the Favourites section, once in its own category. ImGui derives
+                    // a widget's id from its label, so without the per-section suffix
+                    // both rows share one id, the first one drawn swallows the click and
+                    // the copy in the normal list cannot be selected at all.
+                    std::string lbl = (isFav ? "     " : "") + dispName + subtypeSuffix + copiesSuffix
+                                    + " >##" + label + "_" + std::to_string(leg.id);
                     ImVec2 itemPos = ImGui::GetCursorScreenPos();
                     float selH = g_ShowItemIcons ? ICON_SIZE : 0;
                     if (g_ShowItemIcons) {
@@ -1223,6 +1229,12 @@ void AddonRender() {
                         rv.selected       = isSel;
                         rv.altTint        = (i % 2 == 1);
                         rv.gates          = &matGates;
+                        // Tree position, so the row's "owned/needed" fraction is this
+                        // node's share of the pooled stack - the same figure the
+                        // shopping list works from.
+                        rv.legendaryId    = g_PrereqLegendaryId;
+                        rv.nodeKey        = CraftyLegend::DataManager::GetChildNodeKey(
+                                                col, static_cast<int>(i));
 
                         ImGui::PushID(static_cast<int>(i));
                         RowResult rowResult = DrawItemRow(rv);
@@ -1264,7 +1276,8 @@ void AddonRender() {
                         // that stayed in the caller. FormatMaterialLabel is a pure read.
                         bool isComplete = false;
                         bool isReady = false;
-                        FormatMaterialLabel(mat, &isComplete, &isReady);
+                        FormatMaterialLabel(mat, &isComplete, &isReady, true,
+                                            rv.legendaryId, rv.nodeKey);
                         if (isComplete) {
                             ImGui::PushStyleColor(ImGuiCol_Text, completedColor);
                         } else if (isReady) {

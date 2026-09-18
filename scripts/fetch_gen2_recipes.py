@@ -78,14 +78,10 @@ def get_acquisition(item_info, has_recipe, recipe_type=None):
 
 def map_weapon_type(details):
     wt = details.get('type', '')
-    mapping = {
-        'Axe': 'axe', 'Dagger': 'dagger', 'Mace': 'mace', 'Pistol': 'pistol',
-        'Scepter': 'scepter', 'Sword': 'sword', 'Focus': 'focus', 'Shield': 'shield',
-        'Torch': 'torch', 'Warhorn': 'warhorn', 'Greatsword': 'greatsword',
-        'Hammer': 'hammer', 'LongBow': 'longbow', 'Rifle': 'rifle',
-        'ShortBow': 'shortbow', 'Staff': 'staff',
-    }
-    return mapping.get(wt, wt.lower())
+    # Initial capital throughout, matching armor_type / trinket_type / back_type.
+    # Only the API's two camel-case names need remapping.
+    mapping = {'LongBow': 'Longbow', 'ShortBow': 'Shortbow'}
+    return mapping.get(wt, wt.capitalize() if wt else wt)
 
 
 # ===== Manually defined Gen2 recipes (MF recipes not in API) =====

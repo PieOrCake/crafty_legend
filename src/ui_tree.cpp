@@ -228,6 +228,10 @@ static void RenderNode(uint32_t item_id, int count, int depth,
     v.altTint        = false;
     v.gates          = &gates;
     v.drillArrow     = false; // the twisty already signals expandability in tree mode
+    // Tree position, so the "owned/needed" fraction is this node's share of the
+    // pooled stack rather than the whole stack credited again at every branch.
+    v.legendaryId    = CurrentTreeLegendaryId();
+    v.nodeKey        = nodeKey;
 
     RowResult row = DrawItemRow(v);
     // Right-click menu, identical to the Miller material rows. Must come straight
@@ -374,7 +378,7 @@ static bool ParseReqAmount(const std::string& s, int& out) {
 // used for a vendor method's currency/item requirements. Wallet currencies keep
 // item_id 0 so DrawItemRow tallies them from the wallet.
 static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
-                        const std::string& idKey) {
+                        const std::string& idKey, const std::string& allocKey) {
     ImGui::PushID(idKey.c_str());
     float contentX = DrawRails(depth);
     ImGui::SetCursorPosX(contentX);
@@ -423,6 +427,8 @@ static void DrawLeafRow(const CraftyLegend::RecipeIngredient& mat, int depth,
     v.altTint        = false;
     v.gates          = &gates;
     v.drillArrow     = false; // the twisty already signals expandability in tree mode
+    v.legendaryId    = CurrentTreeLegendaryId();
+    v.nodeKey        = allocKey;
     DrawItemRow(v);
     DrawItemContextMenu("LeafCtx", mat.item_id, mat.name, false);
     DrawRightPinnedCost(rowBaseY, contentX, rowCost);
@@ -561,7 +567,13 @@ static void RenderMethodChildren(uint32_t item_id,
                 RenderNode(mat.item_id, static_cast<int>(mat.count), depth,
                            reqKey + "/" + std::to_string(mat.item_id), onPath);
             } else {
-                DrawLeafRow(mat, depth, reqKey);
+                // The walk records this requirement's spend under the requirement key
+                // plus the item id (FlattenVendorRequirements), so the row has to ask
+                // under that same key or it falls back to the un-pooled count.
+                DrawLeafRow(mat, depth, reqKey,
+                            mat.item_id != 0
+                                ? reqKey + "/" + std::to_string(mat.item_id)
+                                : std::string());
             }
         }
     } else {

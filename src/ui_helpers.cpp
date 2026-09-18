@@ -150,6 +150,31 @@ int GetVendorCoinCost(uint32_t item_id) {
     return 0;
 }
 
+// True when some merchant sells this item, whatever the currency. GetVendorCoinCost
+// only answers for coin, so it cannot tell a Karma or Certificate of Heroics
+// purchase apart from something no vendor stocks at all.
+bool HasVendorSource(uint32_t item_id) {
+    if (item_id == 0) return false;
+    const auto& acqs = CraftyLegend::DataManager::GetAcquisitionMethods(item_id);
+    for (const auto& acq : acqs) {
+        if (acq.method != "vendor") continue;
+        for (const auto& req : acq.purchase_requirements) {
+            // A descriptive requirement ("WvW: Random drop from enemy players") is
+            // not a price, and the handful of drops filed under the vendor tag must
+            // not read as something you can walk up and buy. A real cost has a
+            // number in front of it.
+            try {
+                size_t pos = 0;
+                if (std::stoi(req.second, &pos) > 0 &&
+                    (pos == req.second.size() || req.second[pos] == ' ')) {
+                    return true;
+                }
+            } catch (...) {}
+        }
+    }
+    return false;
+}
+
 // Helper: strip GW2 markup tags (e.g. <c=@flavor>text</c>) from strings
 std::string StripMarkup(const std::string& text) {
     std::string result;
@@ -670,6 +695,26 @@ int RemainingNeededAtNode(uint32_t legendary_id, const std::string& nodeKey,
     return remaining > 0 ? remaining : 0;
 }
 
+// What a row should show to the left of the slash. Wallet currencies are read
+// straight from the wallet (they are not part of the item pool). For items, the
+// pooled answer is whatever the node was actually credited - needed minus what is
+// still outstanding there - so a material wanted by three branches is shown once
+// across the three of them instead of three times over.
+int OwnedAtNode(const CraftyLegend::RecipeIngredient& mat,
+                uint32_t legendary_id, const std::string& node_key) {
+    if (!CraftyLegend::GW2API::HasAccountData()) return 0;
+    if (mat.item_id == 0) {
+        int wallet_amount = CraftyLegend::GW2API::GetWalletAmountByName(mat.name);
+        return wallet_amount > 0 ? wallet_amount : 0;
+    }
+    if (legendary_id == 0 || node_key.empty() || mat.count == 0) {
+        return GetEffectiveOwnedCount(mat.item_id);
+    }
+    const int count = static_cast<int>(mat.count);
+    const int credited = count - RemainingNeededAtNode(legendary_id, node_key, mat.item_id, count);
+    return credited > 0 ? credited : 0;
+}
+
 void BuildShoppingList(uint32_t legendary_id) {
     g_ShoppingList.clear();
     if (legendary_id == 0) return;
@@ -687,15 +732,27 @@ void BuildShoppingList(uint32_t legendary_id) {
         int tp_price = CraftyLegend::GW2API::HasPriceData() ? CraftyLegend::GW2API::GetSellPrice(id) : 0;
         int vendor_coin = GetVendorCoinCost(id); // per-unit vendor gold cost
         bool is_bound = item && item->binding != "none" && !item->binding.empty();
-        // Anything gold can buy goes in the TP or Vendor group. What is left is a
-        // real shortfall you have to go and earn, and it is listed rather than
-        // dropped: silently omitting it understated the list (a Mystic Tribute can
-        // leave you a couple of hundred Obsidian Shards short with nothing on
-        // screen to say so). Only classify as unbuyable when we actually know -
-        // before TP prices load, an unbound item's price is unknown, not absent.
+        // Where the item comes from, not what it costs. Grouping on price alone put
+        // two kinds of row in "Gather or Earn" that do not belong there: a tradeable
+        // material whose price happened to be missing from the cache (Large Scale),
+        // and anything a vendor sells for a currency rather than coin (Obsidian
+        // Shards for Karma, the Certificate of Heroics purchases). Both can be
+        // walked up to and bought, so both belong in a buying section. What is left
+        // in "Gather or Earn" is what no merchant will sell you at any price - a
+        // Ball of Dark Energy, a Gift of Battle - and that is the whole point of the
+        // group: a shortfall you have to go and earn, listed rather than dropped.
+        bool has_vendor = vendor_coin > 0 || HasVendorSource(id);
         bool unbuyable = false;
-        if (tp_price <= 0 && vendor_coin <= 0) {
-            if (is_bound || CraftyLegend::GW2API::HasPriceData()) unbuyable = true;
+        bool vendor_group = false;
+        if (tp_price > 0) {
+            // Listed on the trading post right now: buy it there.
+        } else if (has_vendor) {
+            vendor_group = true;
+        } else if (!is_bound) {
+            // Tradeable, but no price to hand - the cache may simply not have been
+            // refreshed. Still a trading post row; it just shows no cost yet.
+        } else {
+            unbuyable = true;
         }
         ShoppingEntry e;
         e.item_id = id;
@@ -703,7 +760,7 @@ void BuildShoppingList(uint32_t legendary_id) {
         e.required = info.second; // net amount to purchase
         e.owned = 0;
         e.is_unbuyable = unbuyable;
-        e.is_vendor = (!unbuyable && tp_price <= 0 && vendor_coin > 0);
+        e.is_vendor = vendor_group;
         e.tp_price = tp_price > 0 ? tp_price : vendor_coin; // prefer TP, fallback to vendor
         g_ShoppingList.push_back(e);
     }
@@ -1070,7 +1127,9 @@ void ClearDebugLog() {
 }
 
 // Helper: format a material label like "42/77 Mystic Clover >" or "77 Mystic Clover >"
-std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool* out_complete, bool* out_ready, bool append_drill_arrow) {
+std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool* out_complete,
+                                bool* out_ready, bool append_drill_arrow,
+                                uint32_t legendary_id, const std::string& node_key) {
     std::string label;
     bool hasData = CraftyLegend::GW2API::HasAccountData();
 
@@ -1079,19 +1138,9 @@ std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat, bool*
         ? Localization::ItemName(mat.item_id, mat.name)
         : CraftyLegend::GW2API::LocalizeCurrencyName(mat.name);
 
-    // Determine owned count: check wallet for vendor costs (item_id==0), items otherwise
-    int owned = 0;
-    if (hasData) {
-        if (mat.item_id == 0) {
-            // Vendor cost material - look up wallet by currency name
-            int wallet_amount = CraftyLegend::GW2API::GetWalletAmountByName(mat.name);
-            if (wallet_amount >= 0) {
-                owned = wallet_amount;
-            }
-        } else {
-            owned = GetEffectiveOwnedCount(mat.item_id);
-        }
-    }
+    // Owned count: the wallet for vendor costs (item_id==0), this node's share of
+    // the pooled stack for items (see OwnedAtNode).
+    int owned = hasData ? OwnedAtNode(mat, legendary_id, node_key) : 0;
 
     if (hasData && mat.count > 0) {
         label = std::to_string(owned) + "/" + std::to_string(mat.count) + " " + dispName;
@@ -1209,13 +1258,7 @@ RowResult DrawItemRow(const RowVisual& v) {
 
     // Progress bar behind row (if account data available)
     if (v.hasAccountData && mat.count > 0 && mat.name != "Coin") {
-        int pOwned = 0;
-        if (mat.item_id == 0) {
-            int wa = CraftyLegend::GW2API::GetWalletAmountByName(mat.name);
-            if (wa >= 0) pOwned = wa;
-        } else {
-            pOwned = GetEffectiveOwnedCount(mat.item_id);
-        }
+        int pOwned = OwnedAtNode(mat, v.legendaryId, v.nodeKey);
         float pct = std::min(1.0f, (float)pOwned / (float)mat.count);
         if (pct > 0.0f) {
             float barLeft = rowPos.x - textPadX;
@@ -1375,7 +1418,8 @@ RowResult DrawItemRow(const RowVisual& v) {
 
     bool isComplete = false;
     bool isReady = false;
-    std::string label = FormatMaterialLabel(mat, &isComplete, &isReady, v.drillArrow);
+    std::string label = FormatMaterialLabel(mat, &isComplete, &isReady, v.drillArrow,
+                                           v.legendaryId, v.nodeKey);
 
     if (isComplete) {
         ImGui::PushStyleColor(ImGuiCol_Text, completedColor);

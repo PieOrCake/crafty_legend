@@ -19,6 +19,10 @@ float RenderPrice(int total_copper);
 
 // Vendor cost helper
 int GetVendorCoinCost(uint32_t item_id);
+// True when a vendor sells this item for anything at all - coin, Karma, Fractal
+// Relics, Certificates of Heroics. Used to keep currency purchases out of the
+// shopping list's "Gather or Earn" group.
+bool HasVendorSource(uint32_t item_id);
 
 // True when account data is loaded and the wallet holds at least `total_copper`.
 bool CanAffordCoinCost(int total_copper);
@@ -91,11 +95,24 @@ void AddDebugLog(const std::string& message);
 std::vector<std::string> GetDebugLogSnapshot();
 void ClearDebugLog();
 
-// Material label formatter
+// Material label formatter.
+//
+// `legendary_id` + `node_key` make the "owned/needed" fraction agree with the
+// shopping list: the owned figure becomes this node's share of one pooled stack
+// instead of the whole stack credited again at every branch that wants the item.
+// Leave them at their defaults to get the old per-node reading.
 std::string FormatMaterialLabel(const CraftyLegend::RecipeIngredient& mat,
                                 bool* out_complete = nullptr,
                                 bool* out_ready    = nullptr,
-                                bool  append_drill_arrow = true);
+                                bool  append_drill_arrow = true,
+                                uint32_t legendary_id = 0,
+                                const std::string& node_key = std::string());
+
+// This node's share of the owned stack of `mat` - what FormatMaterialLabel shows
+// to the left of the slash, and what the row's progress bar fills to. Wallet
+// currencies (item_id 0) are read straight from the wallet and are not pooled.
+int OwnedAtNode(const CraftyLegend::RecipeIngredient& mat,
+                uint32_t legendary_id, const std::string& node_key);
 
 // Shared per-material row renderer (used by the Miller layout and, later, the
 // tree layout). Draws visuals only: alternating tint, progress bar, price,
@@ -114,6 +131,11 @@ struct RowVisual {
     bool  altTint;      // alternating-row background
     const std::vector<CraftyLegend::Prerequisite>* gates; // achievement gates (may be null/empty)
     bool  drillArrow = true; // append " >" for drillable items (Miller yes, tree no)
+    // Tree position of this row, so the owned count shown is this node's share of
+    // the pooled stack rather than the whole stack (see FormatMaterialLabel).
+    // Leave legendaryId 0 / nodeKey empty for the old per-node reading.
+    uint32_t    legendaryId = 0;
+    std::string nodeKey;
 };
 struct RowResult {
     bool clicked;

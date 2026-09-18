@@ -6,7 +6,7 @@
       "icon": "https://render.guildwars2.com/file/FD221A90427ADBD29B7E2DF8BDAF98BB16391162/456025.png",
       "description": "A legendary staff that shifts through the colors of the rainbow.",
       "type": "weapon",
-      "weapon_type": "staff",
+      "weapon_type": "Staff",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -20,7 +20,7 @@
       "icon": "https://render.guildwars2.com/file/FE47E046D10DF27508910869B5EB040F6BBBE793/456026.png",
       "description": "A legendary sword that crackles with electrical energy.",
       "type": "weapon",
-      "weapon_type": "sword",
+      "weapon_type": "Sword",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -34,7 +34,7 @@
       "icon": "https://render.guildwars2.com/file/98F0ED6A7F7A310FCE6D161C0B36B0071E4D1917/456011.png",
       "description": "A legendary shortbow that manifests dreams into reality.",
       "type": "weapon",
-      "weapon_type": "shortbow",
+      "weapon_type": "Shortbow",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -48,7 +48,7 @@
       "icon": "https://render.guildwars2.com/file/A30DA1A1EF05BD080C95AE2EF0067BADCDD0D89D/456014.png",
       "description": "A legendary greatsword that exists outside of time, forged from Sunrise and Twilight.",
       "type": "weapon",
-      "weapon_type": "greatsword",
+      "weapon_type": "Greatsword",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -90,7 +90,7 @@
       "icon": "https://render.guildwars2.com/file/BE58181BEA0559E60873ED940D0408D0596B4464/456021.png",
       "description": "A legendary shield that bears ancient prophecies.",
       "type": "weapon",
-      "weapon_type": "shield",
+      "weapon_type": "Shield",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -104,7 +104,7 @@
       "icon": "https://render.guildwars2.com/file/19E01CC637F4F370B43E132ACEBFD7C6E1570DE7/456029.png",
       "description": "A legendary warhorn that howls with primal power.",
       "type": "weapon",
-      "weapon_type": "warhorn",
+      "weapon_type": "Warhorn",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -118,7 +118,7 @@
       "icon": "https://render.guildwars2.com/file/D9B12A1EBEDC04047295CF0A66E43E650297D429/456012.png",
       "description": "A legendary dagger that burns with eternal flame.",
       "type": "weapon",
-      "weapon_type": "dagger",
+      "weapon_type": "Dagger",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -132,7 +132,7 @@
       "icon": "https://render.guildwars2.com/file/F9FAEDF77052A514E876145908B3B3346314A13E/456015.png",
       "description": "A legendary hammer that embodies the power of earth.",
       "type": "weapon",
-      "weapon_type": "hammer",
+      "weapon_type": "Hammer",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -160,7 +160,7 @@
       "icon": "https://render.guildwars2.com/file/1FAD3D4BE1FA503C49FCF532582867FB060664E4/456028.png",
       "description": "A legendary trident that commands the power of the deep.",
       "type": "weapon",
-      "weapon_type": "trident",
+      "weapon_type": "Trident",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -174,7 +174,7 @@
       "icon": "https://render.guildwars2.com/file/B604C764D3E19E391F5E24CCFBC414500606BD29/456010.png",
       "description": "A legendary longbow that grows with nature's power.",
       "type": "weapon",
-      "weapon_type": "longbow",
+      "weapon_type": "Longbow",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -188,7 +188,7 @@
       "icon": "https://render.guildwars2.com/file/AC940BF377C5D3EF13B2060D53EF19F1BC34BE48/456020.png",
       "description": "A legendary scepter that commands the power of storms.",
       "type": "weapon",
-      "weapon_type": "scepter",
+      "weapon_type": "Scepter",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -202,7 +202,7 @@
       "icon": "https://render.guildwars2.com/file/D3DBEB4FE4C81401AF6EA905FE16E4F3050F540B/456013.png",
       "description": "A legendary focus that inspires allies with its melodies.",
       "type": "weapon",
-      "weapon_type": "focus",
+      "weapon_type": "Focus",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -216,7 +216,7 @@
       "icon": "https://render.guildwars2.com/file/C0302BC8DDD84D20F0B73C1D702438F5534F3308/456017.png",
       "description": "A legendary mace that brings peace to the battlefield.",
       "type": "weapon",
-      "weapon_type": "mace",
+      "weapon_type": "Mace",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -230,7 +230,7 @@
       "icon": "https://render.guildwars2.com/file/3ECD99482DD865AA7D42B2EF6AFEFA705294555C/456019.png",
       "description": "A legendary rifle that hunts its prey with deadly precision.",
       "type": "weapon",
-      "weapon_type": "rifle",
+      "weapon_type": "Rifle",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -244,7 +244,7 @@
       "icon": "https://render.guildwars2.com/file/03342FFE0E35B35D5207B65ECB0C1D06442377AB/456018.png",
       "description": "A legendary pistol that unleashes chaotic energy.",
       "type": "weapon",
-      "weapon_type": "pistol",
+      "weapon_type": "Pistol",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -258,7 +258,7 @@
       "icon": "https://render.guildwars2.com/file/B1D6CB3AB4017633280ACDB36470F46829FDDD13/456027.png",
       "description": "A legendary torch that burns with the flame of Rodgort.",
       "type": "weapon",
-      "weapon_type": "torch",
+      "weapon_type": "Torch",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -272,7 +272,7 @@
       "icon": "https://render.guildwars2.com/file/EFF16C4F19792627355DC294E6D7093F544921E7/456030.png",
       "description": "A legendary greatsword that shines with the light of dawn.",
       "type": "weapon",
-      "weapon_type": "greatsword",
+      "weapon_type": "Greatsword",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -286,7 +286,7 @@
       "icon": "https://render.guildwars2.com/file/CE3AF0B7B9BB6244726779F5B6A930541BA6C15F/456031.png",
       "description": "A legendary greatsword that glows with the darkness of night.",
       "type": "weapon",
-      "weapon_type": "greatsword",
+      "weapon_type": "Greatsword",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -300,7 +300,7 @@
       "icon": "https://render.guildwars2.com/file/13B9B1A4A85E775E267D33B6B7FA2D436DEA0BA1/1200325.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "axe",
+      "weapon_type": "Axe",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -314,7 +314,7 @@
       "icon": "https://render.guildwars2.com/file/0F210EEC4136273F5224D21C28F50B48B4AA5756/1947147.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "dagger",
+      "weapon_type": "Dagger",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -328,7 +328,7 @@
       "icon": "https://render.guildwars2.com/file/D24F4476F94842E4A8B1F9650DA92A72B590DC02/1493252.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "mace",
+      "weapon_type": "Mace",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -342,7 +342,7 @@
       "icon": "https://render.guildwars2.com/file/08DBF1507C304507F618C0C4217E96074E1DD4EB/1204299.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "pistol",
+      "weapon_type": "Pistol",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -356,7 +356,7 @@
       "icon": "https://render.guildwars2.com/file/B51C094561D8D8DD30B8006E3DB84C149B3F1D90/2038676.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "scepter",
+      "weapon_type": "Scepter",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -370,7 +370,7 @@
       "icon": "https://render.guildwars2.com/file/DB4197185C097D04569265051654AA121F459A1D/1729769.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "sword",
+      "weapon_type": "Sword",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -384,7 +384,7 @@
       "icon": "https://render.guildwars2.com/file/2C2D04DA23E54103AD4C082033090D78A91BA0EE/1894811.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "focus",
+      "weapon_type": "Focus",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -398,7 +398,7 @@
       "icon": "https://render.guildwars2.com/file/7EE6042646197A0B6A0EF21E419645ED175564F5/1601552.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "shield",
+      "weapon_type": "Shield",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -412,7 +412,7 @@
       "icon": "https://render.guildwars2.com/file/0D4399FD6BC23DEF9DB32CBC49029C93682FFBC9/1676632.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "torch",
+      "weapon_type": "Torch",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -426,7 +426,7 @@
       "icon": "https://render.guildwars2.com/file/C791E818A1AC06DB5A61E239C1DB6CDF4F7D69E6/1999146.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "warhorn",
+      "weapon_type": "Warhorn",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -440,7 +440,7 @@
       "icon": "https://render.guildwars2.com/file/DCFDE7D52BBB71A34C06987C1798D5FDDC74B94A/2140499.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "greatsword",
+      "weapon_type": "Greatsword",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -454,7 +454,7 @@
       "icon": "https://render.guildwars2.com/file/BD331EF87CDCD678D22D4DF9B509E22C4606AAB6/1729253.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "hammer",
+      "weapon_type": "Hammer",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -468,7 +468,7 @@
       "icon": "https://render.guildwars2.com/file/D2C5CF133804E1062B08370044E774F854F107F5/2083170.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "longbow",
+      "weapon_type": "Longbow",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -482,7 +482,7 @@
       "icon": "https://render.guildwars2.com/file/0E9706D871154B6D43B62CC2969C2108905B9A12/1634157.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "rifle",
+      "weapon_type": "Rifle",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -496,7 +496,7 @@
       "icon": "https://render.guildwars2.com/file/6AA4DCD7BFD228EF1658DE017FF114700260D316/1423757.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "shortbow",
+      "weapon_type": "Shortbow",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -510,7 +510,7 @@
       "icon": "https://render.guildwars2.com/file/5346383A9218504978A57642D9F664DB6EE9984D/1206505.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "staff",
+      "weapon_type": "Staff",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -524,7 +524,7 @@
       "icon": "https://render.guildwars2.com/file/7AE67A529B6960E955B8BCDE02343C704D01B7F8/2593577.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "axe",
+      "weapon_type": "Axe",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -538,7 +538,7 @@
       "icon": "https://render.guildwars2.com/file/08769D9DC9EC1A9D94EC19A802DA2106CB0CF741/2594358.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "dagger",
+      "weapon_type": "Dagger",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -552,7 +552,7 @@
       "icon": "https://render.guildwars2.com/file/A56EAC4E2EFA53EDC7ECFA7B9131AB32262269FD/2595159.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "mace",
+      "weapon_type": "Mace",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -566,7 +566,7 @@
       "icon": "https://render.guildwars2.com/file/42B56CCE6997200828B06B7652F5DEAC0507A95E/2595779.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "pistol",
+      "weapon_type": "Pistol",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -580,7 +580,7 @@
       "icon": "https://render.guildwars2.com/file/46C3662430F1CEA74CCB062FD248FC260D129B43/2596776.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "scepter",
+      "weapon_type": "Scepter",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -594,7 +594,7 @@
       "icon": "https://render.guildwars2.com/file/CD7F0C7B39AE4529781EE126D7F4B8FDE220FAD3/2596930.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "sword",
+      "weapon_type": "Sword",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -608,7 +608,7 @@
       "icon": "https://render.guildwars2.com/file/3FFD5043BAB5710341A166C900BED8D47409600F/2594769.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "focus",
+      "weapon_type": "Focus",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -622,7 +622,7 @@
       "icon": "https://render.guildwars2.com/file/4F29EC22EA359F2EAA01E2924F9CF0733F3CA2A9/2596828.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "shield",
+      "weapon_type": "Shield",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -636,7 +636,7 @@
       "icon": "https://render.guildwars2.com/file/C3B21B45AA1A47A1470FAFFC1BFD9E426FC29D5C/2596992.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "torch",
+      "weapon_type": "Torch",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -650,7 +650,7 @@
       "icon": "https://render.guildwars2.com/file/480D1EBF4A468059631D11C100406AE1C617C3D4/2597054.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "warhorn",
+      "weapon_type": "Warhorn",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -664,7 +664,7 @@
       "icon": "https://render.guildwars2.com/file/94D19303448005274F24F433016D2CE1AC54057E/2594851.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "greatsword",
+      "weapon_type": "Greatsword",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -678,7 +678,7 @@
       "icon": "https://render.guildwars2.com/file/C1B30BCF7A11E56066A46004262D01F67094B834/2595011.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "hammer",
+      "weapon_type": "Hammer",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -692,7 +692,7 @@
       "icon": "https://render.guildwars2.com/file/F36B984CF57CF901A00526BAC1FA56979904C929/2593844.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "longbow",
+      "weapon_type": "Longbow",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -706,7 +706,7 @@
       "icon": "https://render.guildwars2.com/file/7309BE5518786B002106F59110E7F9CDFE541969/2596715.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "rifle",
+      "weapon_type": "Rifle",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -720,7 +720,7 @@
       "icon": "https://render.guildwars2.com/file/15B9AECD7B05250D4D90721CE67ACBE0E8E3DEA1/2593873.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "shortbow",
+      "weapon_type": "Shortbow",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
@@ -734,7 +734,7 @@
       "icon": "https://render.guildwars2.com/file/3B74D76E0400CC03E17097CE5E0BEFC0325EAD21/2596889.png",
       "description": "",
       "type": "weapon",
-      "weapon_type": "staff",
+      "weapon_type": "Staff",
       "binding": "account",
       "acquisition": [
         "mystic_forge"
