@@ -2,7 +2,7 @@
 
 // Version constants
 #define V_MAJOR    1
-#define V_MINOR    0
+#define V_MINOR    1
 #define V_BUILD    0
 #define V_REVISION 0
 
